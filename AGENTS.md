@@ -22,7 +22,11 @@ If you are changing the app, read Part 3 too.**
    `brain/_state/revision/<same path, .json instead of .md>`.
 5. Only create a subject's notes folder once he has started studying it. Studied so far: OS, DBMS, TOC;
    Compiler Design ongoing.
-6. Run `npm run check:tests` after writing or editing a mock test. Fix every error before committing.
+6. **Every mock test follows the Mock test protocol (2.2.1), every time, without being asked:** real GATE
+   level, calibrated on PYQs (look them up online when unsure), harder only when he says so, and never a
+   repeat of a question from an earlier mock.
+7. Run `npm run check:tests` after writing or editing a mock test. Fix every error (including repeats)
+   before committing.
 
 ## Part 2: The brain (data formats)
 
@@ -132,10 +136,53 @@ Rules:
 - Negative marking is automatic, as in GATE: MCQ loses 1/3 (1-mark) or 2/3 (2-mark); MSQ and NAT never lose marks.
 - Sections: General Aptitude questions (`subject: general-aptitude`) go in their own tab, as in GATE.
 - Always write a `### Solution`; the result page shows it.
-- Make them GATE-like: GATE-level difficulty and wording, the real MCQ/MSQ/NAT mix, plausible distractors, and
-  ~2.5–3 minutes per question for `duration` (the real paper is 65 questions in 180 minutes). PYQs are welcome;
-  cite the year in the solution.
+- `created:` is today's date (the repeat check uses it to know which test is newer).
 - Then `npm run check:tests -- <test-id>`, commit, push. It appears in the app's Tests tab after the next sync.
+
+### 2.2.1 Mock test protocol (always; he never has to ask for it)
+
+Every mock you write, whatever the request says ("make a quick test on deadlock", "10 questions on SQL",
+"full paper"), follows these rules. He should never have to say "GATE level".
+
+**1. Real GATE CS level, calibrated on PYQs.**
+- Before writing, recall actual GATE CSE PYQs (2010 onwards) for the topics in the request. **If you are not
+  sure what GATE asks on a topic, or how hard, search the internet first and read real PYQs**:
+  GATE Overflow (gateoverflow.in), official GATE papers on the organising IIT's site, GO Classes. Read
+  at least 5–10 PYQs per topic, note what they test and how, then write.
+- GATE level means: questions that need a concept *applied*, not recalled. Multi-step numericals, tracing an
+  algorithm or a schedule, reasoning about code, "which of these statements are true" with subtle
+  differences, distractors built from the common mistakes. One unambiguous answer. NAT answers computable
+  by hand plus the on-screen calculator in a few minutes.
+- Not GATE level, never write these: pure definitions or trivia ("what does PCB stand for"), one-line textbook
+  recall, questions that hinge on a specific book's convention, ambiguous wording, out-of-syllabus material,
+  puzzle or olympiad-style tricks.
+- Default difficulty is the real paper's mix: about **30% easy, 50% medium, 20% hard**. 1-mark questions are
+  short single-concept ones; 2-mark questions are multi-step. Type mix like recent papers: mostly MCQ, a few
+  MSQ, about **25–35% NAT**.
+- `duration`: about 2.5–3 minutes per question (the real paper is 65 questions in 180 minutes); a 2-mark
+  question deserves more than a 1-mark one.
+
+**2. "Tougher" only when he asks** ("tougher", "harder", "difficult paper"). Then shift to about
+10% easy, 40% medium, 50% hard, modelled on the hardest GATE PYQs (multi-concept, longer computation,
+closer distractors). Still strictly GATE style and syllabus: harder the way GATE gets hard, never obscure.
+Without that word, never drift harder or easier than GATE.
+
+**3. No repeats, ever.**
+- First read **every existing test** in `brain/tests/` (and `brain/results/` to see what he has attempted).
+  Never reuse a question, and never make a near copy: same scenario with a few words or numbers changed
+  counts as a repeat, since he may remember the answer. The same *concept* is fine with a genuinely new
+  question: different setup, different numbers, different thing asked.
+- Write original questions modelled on PYQs, not copied PYQs. Verbatim PYQs only when he asks for a PYQ paper.
+- `npm run check:tests` compares every question against all earlier tests: **"repeats" is an error, rewrite
+  that question; "is close to" is a warning, rewrite unless it truly asks something different.**
+
+**4. Every answer verified.** Solve each question yourself, independently of how you wrote it; for MSQ check
+every option; for NAT give a range when rounding can differ (`2.60 to 2.70`). The `### Solution` shows the full
+working and says why each wrong option is wrong. Wrong answer keys are the worst possible bug here.
+
+**5. Before you commit:** check:tests passes with no repeats; level, difficulty mix and type mix match the
+request; every question has a topic (except General Aptitude) and a solution. In your reply, list the topics
+covered and the difficulty mix in one or two lines.
 
 ### 2.3 Results (written by the app)
 
