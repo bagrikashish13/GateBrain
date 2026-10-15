@@ -1,15 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
-import { ChevronRight, Crosshair, Play, TriangleAlert } from "lucide-react";
+import { ChevronRight, Play, TriangleAlert } from "lucide-react";
 import { cn } from "cn";
 import { SubjectMarker } from "@/components/subject-marker";
 import { requireSession } from "@/lib/auth/session";
-import { prettyName } from "@/lib/brain/names";
 import { subjectMap, subjectOf } from "@/lib/brain/subjects";
-import { dayTime, marks, pct } from "@/lib/format";
+import { dayTime, marks } from "@/lib/format";
 import { allInProgress, listResults, listTests } from "@/lib/tests/store";
-import { topicStats, weakTopics } from "@/lib/tests/topics";
 import { SyncButton } from "../sync-button";
 
 export const metadata: Metadata = { title: "Tests · GateBrain" };
@@ -38,7 +36,6 @@ async function Tests() {
   const running = new Map(allInProgress().map((p) => [p.test, p]));
   const subjects = subjectMap();
   const taken = new Set(results.map((r) => r.test));
-  const weak = weakTopics(topicStats(results)).slice(0, 6);
   const trend = [...results].reverse().slice(-12);
 
   return (
@@ -134,30 +131,6 @@ async function Tests() {
           <p className="text-[13px] text-faint">No tests yet.</p>
         )}
       </section>
-
-      {weak.length > 0 && (
-        <section aria-label="Weak topics" className="grid gap-2">
-          <h2 className="label flex items-center gap-1.5">
-            <Crosshair className="size-[13px] stroke-[1.75] text-alert" aria-hidden />
-            Weak topics
-          </h2>
-          <ul className="grid border-t border-line">
-            {weak.map((t) => (
-              <li key={`${t.subject}/${t.topic}`} className="flex min-h-11 items-center gap-2.5 border-b border-line">
-                <SubjectMarker colour={subjectOf(t.subject, subjects).colour} />
-                <span className="min-w-0 flex-1 truncate text-[14px]">{prettyName(t.topic ?? "")}</span>
-                <span className="text-[12px] text-faint">
-                  {t.correct}/{t.questions}
-                </span>
-                <span className="num w-11 text-right text-[14px] font-semibold text-alert">{pct(t.strength)}</span>
-              </li>
-            ))}
-          </ul>
-          <Link href="/revise" className="text-[12.5px] text-muted-foreground hover:text-fg">
-            Revise them →
-          </Link>
-        </section>
-      )}
 
       <section aria-label="Attempts" className="grid gap-2">
         <h2 className="label">Attempts</h2>

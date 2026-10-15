@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { parseTest } from "./format";
 import { SAMPLE } from "./fixture";
 import { gradeAll } from "./grade";
-import { buildResult, duration, parseResult } from "./result";
+import { buildResult, duration, exactMarks, parseResult } from "./result";
 import { topicStats, weakTopics } from "./topics";
 
 const test = (() => {
@@ -47,6 +47,15 @@ describe("result files", () => {
     const stats = topicStats([a, b]);
     expect(stats.find((t) => t.topic === "deadlock")).toMatchObject({ questions: 2, correct: 0, wrong: 2 });
     expect(weakTopics(stats).map((t) => t.topic)).toEqual(["deadlock", "functional-dependencies-normal-forms", "cpu-scheduling"]);
+  });
+
+  it("adds up negative marks exactly after the round trip", () => {
+    // Q1 (1 mark) wrong, Q2 (MSQ 2 marks) right, Q4 (2 marks) wrong: 2 − 1/3 − 2/3 = 1, not 1.0 ± 0.01.
+    const r = parseResult("x", make(["A", "A,C", null, "A"]))!;
+    expect(r.questions.map((q) => q.awarded)).toEqual([-1 / 3, 2, 0, -2 / 3]);
+    expect(r.summary.score).toBe(1);
+    expect(exactMarks(-0.33)).toBeCloseTo(-1 / 3, 10);
+    expect(exactMarks(-0.25)).toBe(-0.25);
   });
 
   it("formats durations", () => {

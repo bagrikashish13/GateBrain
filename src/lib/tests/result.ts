@@ -128,6 +128,15 @@ function timeLines(rows: ResultQuestion[]): string[] {
   ];
 }
 
+/**
+ * Marks are stored to 2 decimals (−0.33 for −1/3). Read back, they snap to the third they stand for,
+ * so totals add up exactly: 2 − 4×(1/3) − 2/3 is 0, not the 0.01 the rounded parts would give.
+ */
+export function exactMarks(stored: number): number {
+  const thirds = Math.round(stored * 3) / 3;
+  return Math.abs(thirds - stored) < 0.006 ? thirds : stored;
+}
+
 /** Read a result file back. Null if it isn't one. */
 export function parseResult(file: string, raw: string): Result | null {
   let data: Record<string, unknown>;
@@ -149,7 +158,7 @@ export function parseResult(file: string, raw: string): Result | null {
     answer: String(r.answer ?? ""),
     response: r.response === null || r.response === undefined || r.response === "" ? null : String(r.response),
     outcome: (["correct", "wrong", "unattempted"].includes(String(r.outcome)) ? r.outcome : "unattempted") as Outcome,
-    awarded: Number(r.awarded) || 0,
+    awarded: exactMarks(Number(r.awarded) || 0),
     timeSec: Number(r.time_sec) || 0,
     visits: Number(r.visits) || 0,
     marked: r.marked === true,
