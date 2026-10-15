@@ -6,7 +6,7 @@ import { cn } from "cn";
 import { SubjectMarker } from "@/components/subject-marker";
 import { requireSession } from "@/lib/auth/session";
 import { subjectMap, subjectOf } from "@/lib/brain/subjects";
-import { dayTime, marks } from "@/lib/format";
+import { dayMonth, dayTime, marks } from "@/lib/format";
 import { allInProgress, listResults, listTests } from "@/lib/tests/store";
 import { SyncButton } from "../sync-button";
 
@@ -53,15 +53,26 @@ async function Tests() {
         </div>
       </header>
 
-      {trend.length > 1 && (
+      {trend.length > 0 && (
         <section aria-label="Scores" className="grid gap-2">
-          <h2 className="label">Score %, last {trend.length}</h2>
-          <div className="flex h-20 items-end gap-1 border-b border-line-2">
+          <h2 className="label">Score, last {trend.length}</h2>
+          {/* One column per attempt: the % on top, the bar in a full-height track (so 0% reads as empty,
+              not missing), the day under it. */}
+          <div className="flex items-end gap-1.5">
             {trend.map((r) => {
-              const p = r.summary.max ? Math.max(0, r.summary.score / r.summary.max) : 0;
+              const raw = r.summary.max ? r.summary.score / r.summary.max : 0;
               return (
-                <Link key={`${r.test}/${r.attempt}`} href={`/tests/${r.test}/${r.attempt}`} title={`${r.title}: ${Math.round(p * 100)}%`} className="group relative flex h-full flex-1 items-end">
-                  <i className="block w-full bg-line-2 transition-colors group-hover:bg-fg" style={{ height: `${Math.max(3, p * 100)}%` }} />
+                <Link
+                  key={`${r.test}/${r.attempt}`}
+                  href={`/tests/${r.test}/${r.attempt}`}
+                  title={`${r.title}: ${marks(r.summary.score)}/${r.summary.max}`}
+                  className="group grid max-w-12 min-w-0 flex-1 justify-items-center gap-1"
+                >
+                  <span className={cn("num text-[11.5px] leading-none font-semibold", raw < 0.4 ? "text-alert" : "text-fg")}>{Math.round(raw * 100)}%</span>
+                  <span className="flex h-16 w-full items-end bg-raised">
+                    <i className="block w-full bg-line-2 transition-colors group-hover:bg-fg" style={{ height: `${Math.max(0, raw) * 100}%` }} />
+                  </span>
+                  <span className="text-[10.5px] leading-none whitespace-nowrap text-faint">{dayMonth(new Date(r.submitted))}</span>
                 </Link>
               );
             })}
