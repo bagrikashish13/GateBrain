@@ -1,0 +1,11 @@
+.git
+.github
+node_modules
+.next
+.runtime
+brain
+docs
+.env*
+!.env.example
+Dockerfile
+docker-compose*.yml

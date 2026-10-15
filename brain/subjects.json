@@ -1,0 +1,16 @@
+{
+  "subjects": [
+    { "key": "os", "name": "Operating Systems", "short": "OS", "colour": "#fe8528" },
+    { "key": "dbms", "name": "Databases", "short": "DBMS", "colour": "#00c8c2" },
+    { "key": "toc", "name": "Theory of Computation", "short": "TOC", "colour": "#a8f72e" },
+    { "key": "compiler-design", "name": "Compiler Design", "short": "CD", "colour": "#9e5cff" },
+    { "key": "algorithms", "name": "Algorithms", "short": "Algo", "colour": "#3c8cff" },
+    { "key": "programming-ds", "name": "Programming & Data Structures", "short": "PDS", "colour": "#ff3cd7" },
+    { "key": "coa", "name": "Computer Organization & Architecture", "short": "COA", "colour": "#ffd23f" },
+    { "key": "computer-networks", "name": "Computer Networks", "short": "CN", "colour": "#7ee8fa" },
+    { "key": "digital-logic", "name": "Digital Logic", "short": "DL", "colour": "#ffb38a" },
+    { "key": "discrete-maths", "name": "Discrete Mathematics", "short": "DM", "colour": "#c9b6ff" },
+    { "key": "engineering-maths", "name": "Engineering Mathematics", "short": "EM", "colour": "#d6c08a" },
+    { "key": "general-aptitude", "name": "General Aptitude", "short": "GA", "colour": "#f3f5fa" }
+  ]
+}

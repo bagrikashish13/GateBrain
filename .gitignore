@@ -1,0 +1,12 @@
+node_modules/
+.next/
+out/
+.env*
+!.env.example
+.DS_Store
+*.tsbuildinfo
+next-env.d.ts
+/coverage
+npm-debug.log*
+# Per-device scratch: login throttle, session secret, tests in progress. Never pushed.
+/.runtime/

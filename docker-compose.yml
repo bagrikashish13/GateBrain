@@ -1,0 +1,36 @@
+# GateBrain on the VM (same box as secondBrain). From the clone's folder (~/GateBrain):
+#   cp .env.example .env    # fill it in (PASSCODE, GITHUB_TOKEN; COMPOSE_PROFILES=vm for the tunnel)
+#   scripts/deploy.sh       # pull, build, start, health check
+#
+# The app works on this very clone: it reads brain/ and commits + pushes its changes (results, ticks,
+# revision) with GITHUB_TOKEN. It runs as the clone's owner so the files stay yours. It only listens on
+# localhost; the public way in is a Cloudflare tunnel.
+
+services:
+  app:
+    build: .
+    image: gatebrain:latest
+    restart: unless-stopped
+    env_file: .env
+    user: "${HOST_UID:-1000}:${HOST_GID:-1000}"
+    environment:
+      REPO_PATH: /repo
+      HOME: /tmp
+      TZ: ${TZ:-Asia/Kolkata}
+    ports:
+      - "127.0.0.1:${GATEBRAIN_PORT:-3200}:3000"
+    volumes:
+      - .:/repo
+
+  # VM only (COMPOSE_PROFILES=vm): a Cloudflare tunnel (token mode). Every hostname routed to this
+  # tunnel goes to the app.
+  tunnel:
+    image: cloudflare/cloudflared:2026.9.3
+    restart: unless-stopped
+    command: tunnel --no-autoupdate --url http://app:3000 run
+    environment:
+      TUNNEL_TOKEN: ${CLOUDFLARE_TUNNEL_TOKEN:-}
+    depends_on:
+      app:
+        condition: service_healthy
+    profiles: ["vm"]

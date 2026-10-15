@@ -1,0 +1,666 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/* Design system (same as secondBrain/Afterglow, AGENTS.md): vivid flat colour on true black, sharp and angular.
+   The app itself is white + mint + greys. Colour jobs, never mixed:
+   1 ACCENT    = mint. Progress, done ticks, the day timer, roadmaps, the tab you're on.
+   2 SUBJECT   = which GATE subject (brain/subjects.json). Tasks, notes, topics. Never backgrounds.
+   3 MEMORY    = how fresh. Size / opacity, never a new hue.
+   4 ATTENTION = needs you now. One neon rose, used rarely.
+   5 ACTION    = what you can press. White.
+   No glow, no blur, no shadows. No rounded corners; hero surfaces get a cut corner (.cut). */
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  color-scheme: dark;
+
+  /* Neutrals: true black, then barely lifted layers */
+  --void: #000000;
+  --panel: #07080b;
+  --raised: #0d0f14;
+  --raised-2: #141720;
+  --line: #1b1f28;
+  --line-2: #2a2f3b;
+  --fg: #f3f5fa;
+  --fg-muted: #98a0b2;
+  --fg-body: #c2c8d4; /* running text on a note page: one step under white, so bold terms stand out */
+  --fg-faint: #5d6576;
+
+  /* 1 ACCENT: secondBrain's mint */
+  --mint: #00fd92;
+  --mint-dim: #00593a;
+
+
+  /* 4 ATTENTION */
+  --alert: #ff2e63;
+
+  /* 5 ACTION */
+  --act: #f3f5fa;
+  --act-ink: #000000;
+
+  /* The cut corner on hero surfaces */
+  --cut: 12px;
+
+  /* shadcn/ui slots, mapped onto the palette above. */
+  --background: var(--void);
+  --foreground: var(--fg);
+  --card: var(--raised);
+  --card-foreground: var(--fg);
+  --popover: var(--raised);
+  --popover-foreground: var(--fg);
+  --primary: var(--act);
+  --primary-foreground: var(--act-ink);
+  --secondary: var(--raised);
+  --secondary-foreground: var(--fg);
+  --muted: var(--raised);
+  --muted-foreground: var(--fg-muted);
+  --accent: var(--raised);
+  --accent-foreground: var(--fg);
+  --destructive: var(--alert);
+  --border: var(--line);
+  --input: var(--line-2);
+  --ring: var(--act);
+}
+
+@theme inline {
+  --font-display: var(--font-chakra), "Bahnschrift", system-ui, sans-serif;
+  --font-sans: var(--font-plex-sans), "Segoe UI", system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, Consolas, monospace;
+  --font-heading: var(--font-display);
+
+  --color-void: var(--void);
+  --color-ink: var(--void);
+  --color-panel: var(--panel);
+  --color-raised: var(--raised);
+  --color-raised-2: var(--raised-2);
+  --color-line: var(--line);
+  --color-line-2: var(--line-2);
+  --color-fg: var(--fg);
+  --color-faint: var(--fg-faint);
+  --color-mint: var(--mint);
+  --color-mint-dim: var(--mint-dim);
+  --color-alert: var(--alert);
+  --color-act: var(--act);
+  --color-act-ink: var(--act-ink);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Sharp: every radius step is zero, so no component can drift into soft shapes. */
+  --radius-xs: 0;
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-xl: 0;
+  --radius-2xl: 0;
+  --radius-3xl: 0;
+  --radius-4xl: 0;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply bg-background font-sans text-foreground;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    @apply bg-background text-[14px] leading-[1.45] text-foreground;
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+  :focus-visible {
+    outline: 2px solid var(--act);
+    outline-offset: 2px;
+  }
+  ::selection {
+    background: var(--fg);
+    color: var(--void);
+  }
+}
+
+@layer components {
+  /* Small quiet label: sentence case, never shouting. */
+  .label {
+    @apply text-[12px] leading-[1.3] font-medium text-faint;
+  }
+  /* Page title: Chakra Petch, tight. */
+  .display {
+    @apply font-display text-[32px] leading-[0.98] font-bold tracking-[-0.01em] text-balance;
+  }
+  .num {
+    @apply font-display tabular-nums;
+  }
+
+  /* Cut corner (top-left + bottom-right) with a 1px edge: hero cards, the primary button, tips.
+     Set --cut-edge / --cut-fill to recolour. The fill sits behind the content (isolation). */
+  .cut {
+    position: relative;
+    isolation: isolate;
+    background: var(--cut-edge, var(--line-2));
+    clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
+  }
+  .cut::before {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    z-index: -1;
+    background: var(--cut-fill, var(--raised));
+    clip-path: polygon(
+      calc(var(--cut) - 0.6px) 0,
+      100% 0,
+      100% calc(100% - var(--cut) + 0.6px),
+      calc(100% - var(--cut) + 0.6px) 100%,
+      0 100%,
+      0 calc(var(--cut) - 0.6px)
+    );
+  }
+  /* Solid cut shape, no edge (the primary button). */
+  .cut-solid {
+    clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
+  }
+}
+
+/* Notes reader: his Markdown, sized for reading on a phone. Neutral only; links are white
+   underlines (action), never a hue. */
+@layer components {
+  .prose-note {
+    @apply text-[15px] leading-[1.62] text-fg;
+    overflow-wrap: anywhere;
+  }
+  .prose-note > * + * {
+    @apply mt-3;
+  }
+  .prose-note h1,
+  .prose-note h2 {
+    @apply mt-9 font-display text-[22px] leading-[1.1] font-bold tracking-[-0.005em] text-balance;
+  }
+  .prose-note h3 {
+    @apply mt-6 font-display text-[17px] font-semibold;
+  }
+  .prose-note h4,
+  .prose-note h5,
+  .prose-note h6 {
+    @apply mt-5 text-[15px] font-semibold text-muted-foreground;
+  }
+  .prose-note h1:first-child,
+  .prose-note h2:first-child {
+    @apply mt-0;
+  }
+  .prose-note strong {
+    @apply font-semibold text-fg;
+  }
+  .prose-note ul,
+  .prose-note ol {
+    @apply grid gap-1 pl-5;
+  }
+  .prose-note ul {
+    list-style-type: square;
+  }
+  .prose-note ol {
+    @apply list-decimal;
+  }
+  .prose-note li::marker {
+    @apply text-faint;
+  }
+  .prose-note li > ul,
+  .prose-note li > ol {
+    @apply mt-1;
+  }
+  .prose-note a {
+    @apply underline decoration-line-2 underline-offset-[3px] hover:decoration-fg;
+  }
+  .prose-note .wikilink-missing {
+    @apply text-muted-foreground not-italic underline decoration-dashed decoration-line-2 underline-offset-[3px];
+  }
+  .prose-note blockquote {
+    @apply border-l-2 border-line-2 pl-3 text-muted-foreground;
+  }
+  .prose-note hr {
+    @apply my-6 border-line;
+  }
+  .prose-note img {
+    @apply max-w-full;
+  }
+  .prose-note :not(pre) > code {
+    @apply border border-line bg-raised px-1 py-px font-mono text-[0.86em];
+  }
+  .prose-note pre {
+    @apply -mx-4 overflow-x-auto border-y border-line bg-raised px-4 py-3 font-mono text-[12.5px] leading-[1.55] sm:mx-0 sm:border;
+    overflow-wrap: normal;
+  }
+  /* Tables scroll sideways on a phone instead of squashing. */
+  .prose-note .table-wrap {
+    @apply -mx-4 overflow-x-auto px-4;
+  }
+  .prose-note table {
+    @apply w-max min-w-full border-collapse text-[13px] leading-[1.45];
+  }
+  .prose-note th {
+    @apply border-b border-line-2 py-2 pr-4 text-left text-[12px] font-medium text-faint;
+  }
+  .prose-note td {
+    @apply max-w-[260px] border-b border-line py-2 pr-4 align-top;
+    overflow-wrap: normal;
+  }
+  .prose-note .katex {
+    font-size: 1.04em;
+  }
+  .prose-note .katex-display {
+    @apply overflow-x-auto overflow-y-hidden py-1;
+  }
+
+  /* Session item: the question reads like a headline, the answer stays compact. */
+  .prose-q .prose-note {
+    @apply font-display text-[22px] leading-[1.18] font-semibold text-balance;
+  }
+  .prose-q .prose-note :not(pre) > code {
+    @apply text-[0.8em];
+  }
+  .prose-a .prose-note {
+    @apply text-[14px] leading-[1.55];
+  }
+  .prose-a .prose-note > * + * {
+    @apply mt-2;
+  }
+
+  /* Code: grayscale only (colour is reserved for its four jobs). Brightness carries the syntax. */
+  .prose-note pre code {
+    color: #aeb3bf;
+  }
+  .prose-note .hljs-keyword,
+  .prose-note .hljs-built_in,
+  .prose-note .hljs-type,
+  .prose-note .hljs-literal,
+  .prose-note .hljs-meta .hljs-keyword {
+    @apply font-medium text-fg;
+  }
+  .prose-note .hljs-title,
+  .prose-note .hljs-title.function_,
+  .prose-note .hljs-section {
+    @apply text-fg;
+  }
+  .prose-note .hljs-string,
+  .prose-note .hljs-number,
+  .prose-note .hljs-meta .hljs-string {
+    color: #c9ccd4;
+  }
+  .prose-note .hljs-comment,
+  .prose-note .hljs-quote {
+    @apply text-faint italic;
+  }
+  .prose-note .hljs-meta,
+  .prose-note .hljs-operator,
+  .prose-note .hljs-punctuation {
+    @apply text-muted-foreground;
+  }
+}
+
+/* A note's own page (NoteMarkdown page): two text brightnesses (running text grey, bold/headings/code
+   white), each section opened by a hairline and a small square in the note's area colour (only
+   headings get it; bullets are a plain grey dash), the TL;DR as the one card, a bullet's bold lead
+   on its own line. Session items keep the plain .prose-note. */
+@layer components {
+  .prose-note.note-page {
+    @apply text-[15.5px] leading-[1.66];
+    color: var(--fg-body);
+  }
+  /* The square hangs in the left gutter, so a two-line heading wraps under its own text. */
+  .note-page h2 {
+    @apply relative mt-9 border-t border-line pt-5 pl-[17px] text-[20px] leading-[1.15] text-fg;
+  }
+  .note-page h2::before {
+    content: "";
+    @apply absolute left-0 mt-[0.32em] size-[7px];
+    background: var(--note-area);
+  }
+  .note-page h1:first-child,
+  .note-page h2:first-child {
+    @apply mt-0 border-t-0 pt-0;
+  }
+  .note-page h3 {
+    @apply text-fg;
+  }
+  .note-page h2 .arrow,
+  .note-page h3 .arrow {
+    @apply font-semibold text-faint;
+  }
+  .note-page strong,
+  .note-page em {
+    @apply text-fg;
+  }
+  .note-page :not(pre) > code {
+    @apply border-0 bg-raised-2 px-[5px] text-fg;
+  }
+  .note-page ul {
+    @apply gap-3.5 pl-[18px];
+    list-style: none;
+  }
+  .note-page ul > li {
+    @apply relative;
+  }
+  .note-page ul > li::before {
+    content: "";
+    @apply absolute top-[0.78em] -left-[17px] h-[2px] w-[9px] bg-faint;
+  }
+  .note-page ol {
+    @apply gap-3.5;
+  }
+  .note-page li::marker {
+    @apply text-faint;
+  }
+  .note-page .lead {
+    @apply mb-0.5 block leading-[1.4] font-semibold text-fg;
+  }
+  /* Where I got confused → what made it click: a grey rule per item, no dash */
+  .note-page ul.click > li {
+    @apply -ml-[18px] border-l-2 border-line-2 pl-3.5;
+  }
+  .note-page ul.click > li::before {
+    content: none;
+  }
+  .note-page .click .lead {
+    @apply mb-1;
+  }
+  .note-page .tldr {
+    @apply px-4 pt-4 pb-[17px];
+    --cut: 14px; /* with .cut (set by the plugin): the app's cut-corner card */
+  }
+  .note-page .tldr > * + * {
+    @apply mt-2;
+  }
+  .note-page .tldr-k {
+    @apply flex items-center gap-2 font-mono text-[11.5px] font-medium tracking-[0.08em] text-muted-foreground uppercase;
+  }
+  .note-page .tldr-k::before {
+    content: "";
+    @apply size-1.5;
+    background: var(--note-area);
+  }
+  .note-page .tldr p,
+  .note-page .tldr li {
+    @apply text-[16px] leading-[1.6] text-fg;
+  }
+}
+
+/* Mermaid diagrams (MermaidDiagram), in notes and session answers alike. */
+@layer components {
+  .mermaid-fig {
+    @apply -mx-4 overflow-x-auto border-y border-line bg-raised px-2 py-3.5 sm:mx-0 sm:border;
+  }
+  .mermaid-svg svg {
+    @apply mx-auto block h-auto max-w-full;
+  }
+  .mermaid-wait {
+    @apply h-40;
+  }
+}
+
+/* Day timer (Today): the hour block that's draining, striped, with a white edge. */
+.timer-live {
+  background: repeating-linear-gradient(-45deg, var(--mint) 0 3px, #00c873 3px 6px);
+  background-size: 8.5px 8.5px;
+}
+.timer-live::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--fg);
+}
+
+/* A task's text gets struck through left to right when it's ticked (and the line wraps with it). */
+.strike {
+  background: linear-gradient(var(--fg-faint), var(--fg-faint)) no-repeat 0 58% / 0 1.5px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  transition: background-size 0.4s cubic-bezier(0.6, 0, 0.2, 1) 0.1s, color 0.35s;
+}
+.strike[data-on="true"] {
+  background-size: 100% 1.5px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pulse {
+    animation: pulse 2.2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    50% {
+      opacity: 0.3;
+    }
+  }
+  .timer-live {
+    animation: march 1.2s linear infinite;
+  }
+  .timer-live::after {
+    animation: blink 1s steps(2) infinite;
+  }
+  @keyframes march {
+    to {
+      background-position: 8.5px 0;
+    }
+  }
+  @keyframes blink {
+    50% {
+      opacity: 0.25;
+    }
+  }
+  /* A ticked box's check draws itself. */
+  .draw-check path {
+    stroke-dasharray: 24;
+    stroke-dashoffset: 24;
+    animation: draw-check 0.3s 0.12s cubic-bezier(0.6, 0, 0.2, 1) forwards;
+  }
+  @keyframes draw-check {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  /* A flat ring that grows and fades from a marker (Today, you-are-here). No glow. */
+  .ring-out::after {
+    content: "";
+    position: absolute;
+    inset: -1.5px;
+    border: 1.5px solid currentColor;
+    animation: ring-out 2s cubic-bezier(0.2, 0.7, 0.3, 1) infinite;
+  }
+  @keyframes ring-out {
+    from {
+      transform: scale(1);
+      opacity: 0.9;
+    }
+    to {
+      transform: scale(2.8);
+      opacity: 0;
+    }
+  }
+}
+
+
+/* The exam screen (/exam/...): GATE's own look on purpose, so exam day feels familiar. Light, the
+   blue header, the palette's shapes and colours (Answered, Not Answered, Not Visited, Marked for
+   Review, Answered & Marked for Review). The one place the app's dark, square rules don't apply. */
+.exam {
+  --ex-bg: #ffffff;
+  --ex-ink: #1b2230;
+  --ex-muted: #5b6475;
+  --ex-line: #cfd6e0;
+  --ex-head: #2b5797;
+  --ex-head-2: #1f3f70;
+  --ex-panel: #e9f2fb;
+  --ex-bar: #f3f5f8;
+  --ex-blue: #2f6fbf;
+  --ex-answered: #3d9b3f;
+  --ex-not-answered: #d9442b;
+  --ex-not-visited: #e3e6eb;
+  --ex-marked: #6b3fb0;
+  color-scheme: light;
+  background: var(--ex-bg);
+  color: var(--ex-ink);
+  font-family: Arial, "Helvetica Neue", var(--font-plex-sans), sans-serif;
+}
+.exam ::selection {
+  background: #b9d3f5;
+  color: inherit;
+}
+.exam :focus-visible {
+  outline: 2px solid var(--ex-blue);
+  outline-offset: 1px;
+}
+
+/* Palette shapes, as on the GATE screen. */
+.pal {
+  display: inline-grid;
+  place-items: center;
+  position: relative;
+  min-width: 34px;
+  height: 30px;
+  padding: 0 4px;
+  font-size: 13px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  border: 1px solid transparent;
+  color: #fff;
+  line-height: 1;
+}
+.pal-not-visited {
+  background: var(--ex-not-visited);
+  border-color: #b9bfc9;
+  color: var(--ex-ink);
+  border-radius: 3px;
+}
+.pal-not-answered {
+  background: var(--ex-not-answered);
+  border-radius: 2px 2px 50% 50% / 2px 2px 34% 34%;
+}
+.pal-answered {
+  background: var(--ex-answered);
+  border-radius: 50% 50% 2px 2px / 34% 34% 2px 2px;
+}
+.pal-marked,
+.pal-answered-marked {
+  background: var(--ex-marked);
+  border-radius: 999px;
+  min-width: 30px;
+}
+.pal-answered-marked::after {
+  content: "";
+  position: absolute;
+  right: -3px;
+  bottom: -3px;
+  width: 13px;
+  height: 13px;
+  border-radius: 999px;
+  border: 1.5px solid #fff;
+  background: var(--ex-answered)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6.2l2.3 2.3 4.7-5' fill='none' stroke='%23fff' stroke-width='1.8'/%3E%3C/svg%3E")
+    center / 10px no-repeat;
+}
+.pal-current {
+  outline: 2px solid var(--ex-ink);
+  outline-offset: 2px;
+}
+
+/* Question text and options on the exam screen. */
+.prose-exam {
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.prose-exam > * + * {
+  margin-top: 0.75em;
+}
+.prose-exam strong {
+  font-weight: 700;
+}
+.prose-exam ul,
+.prose-exam ol {
+  padding-left: 1.4em;
+}
+.prose-exam ul {
+  list-style: disc;
+}
+.prose-exam ol {
+  list-style: decimal;
+}
+.prose-exam :not(pre) > code {
+  background: #eef1f5;
+  border: 1px solid #dde2ea;
+  padding: 0 0.3em;
+  font-family: var(--font-plex-mono), Consolas, monospace;
+  font-size: 0.9em;
+}
+.prose-exam pre {
+  background: #f5f7fa;
+  border: 1px solid #dde2ea;
+  padding: 10px 12px;
+  overflow-x: auto;
+  font-family: var(--font-plex-mono), Consolas, monospace;
+  font-size: 13.5px;
+  line-height: 1.5;
+  overflow-wrap: normal;
+}
+.prose-exam .table-wrap {
+  overflow-x: auto;
+}
+.prose-exam table {
+  border-collapse: collapse;
+  font-size: 14.5px;
+}
+.prose-exam th,
+.prose-exam td {
+  border: 1px solid #c3cad5;
+  padding: 4px 10px;
+  text-align: left;
+}
+.prose-exam th {
+  background: #eef2f7;
+}
+.prose-exam img {
+  max-width: 100%;
+}
+.prose-exam .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.prose-exam .mermaid-fig {
+  border: 1px solid #dde2ea;
+  padding: 8px;
+}
+.prose-exam p:first-child {
+  margin-top: 0;
+}
