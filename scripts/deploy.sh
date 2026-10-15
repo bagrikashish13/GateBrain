@@ -3,7 +3,14 @@
 # The app commits to this same clone, so pull with rebase (its pushed commits are already on GitHub).
 set -e
 cd "$(dirname "$0")/.."
-git pull --rebase --autostash
+# Pull with GITHUB_TOKEN from .env (works for a private repo too), else this machine's git login.
+token=$(grep -E '^GITHUB_TOKEN=' .env | cut -d= -f2-)
+if [ -n "$token" ]; then
+  auth=$(printf 'x-access-token:%s' "$token" | base64 | tr -d '\n')
+  git -c credential.helper= -c "http.https://github.com/.extraheader=AUTHORIZATION: basic $auth" pull --rebase --autostash
+else
+  git pull --rebase --autostash
+fi
 docker compose up -d --build
 docker image prune -f >/dev/null
 port=$(grep -E '^GATEBRAIN_PORT=' .env | cut -d= -f2)
