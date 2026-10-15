@@ -19,9 +19,18 @@ export function DayTimer() {
   const router = useRouter();
   const [now, setNow] = useState<number | null>(null); // device time; null until mounted
   const [intro, setIntro] = useState(true);
+  const [shown, setShown] = useState(0); // goes up each time Today is shown
   const day = useRef<string | null>(null);
 
   useEffect(() => {
+    // Shown, or shown again: with Cache Components, Next keeps Today mounted but hidden while another
+    // tab is open, and Motion drops the full hour blocks' widths (their target never changes, so
+    // nothing redraws them). A new key rebuilds the bar, and the blocks fill in again as on first open.
+    const show = () => {
+      setShown((n) => n + 1);
+      setIntro(true);
+    };
+    show();
     const tick = () => {
       const t = new Date();
       const key = t.toDateString();
@@ -60,7 +69,7 @@ export function DayTimer() {
         </span>
         <span className="ml-auto text-[12px] text-muted-foreground">left today</span>
       </div>
-      <div className="grid h-2 grid-cols-24 gap-[2px]">
+      <div key={shown} className="grid h-2 grid-cols-24 gap-[2px]">
         {Array.from({ length: 24 }, (_, i) => {
           const w = now === null ? 0 : i < full ? 100 : i === full ? (hoursLeft - full) * 100 : 0;
           return (
