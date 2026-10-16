@@ -1,0 +1,182 @@
+{
+  "done": ["os", "dbms", "toc"],
+  "daily": [
+    { "time": "30–40m", "title": "General Aptitude mock" },
+    { "time": "45–60m", "title": "Technical mock, finished subjects" },
+    { "time": "15m", "title": "Fix mistakes, revise due notes" },
+    { "time": "4–5h", "title": "Current block + its PYQs" }
+  ],
+  "phases": [
+    {
+      "title": "Compiler Design, second half",
+      "short": "CD",
+      "subject": "compiler-design",
+      "start": "2026-10-16",
+      "end": "2026-10-22",
+      "marks": "4–8",
+      "focus": [
+        { "text": "LR family: LR(0) items, SLR vs LALR vs CLR, SR/RR conflicts, counting states", "top": true },
+        { "text": "LL(1): FIRST/FOLLOW, parse table, is it LL(1)?", "top": true },
+        { "text": "Liveness analysis, basic blocks, control-flow graphs" },
+        { "text": "SDT: S- vs L-attributed, evaluate what an SDT prints" },
+        { "text": "Three-address code, DAG and common subexpressions, constant propagation" }
+      ],
+      "skip": ["Runtime environments in depth (activation-record layouts)", "Parser construction tricks beyond the four LR tables"],
+      "days": ["16–17 · LL(1), TDP vs BUP", "18–19 · LR(0), SLR, LALR, CLR", "20 · SDT", "21 · ICG, basic blocks", "22 · Optimisation + PYQs"]
+    },
+    {
+      "title": "Programming & Data Structures",
+      "short": "PDS",
+      "subject": "programming-ds",
+      "start": "2026-10-23",
+      "end": "2026-11-02",
+      "marks": "11–15",
+      "focus": [
+        { "text": "C output tracing: pointers, arrays, strings, recursion, static variables, scope", "top": true },
+        { "text": "Trees: BST, AVL rotations and height bounds, rebuild from traversals", "top": true },
+        { "text": "Heaps: build-heap, insert/delete, array positions" },
+        { "text": "Hashing: linear/quadratic probing, chaining, expected probes" },
+        { "text": "Stacks and queues: infix to postfix, evaluation, queue from stacks; linked lists" }
+      ],
+      "skip": ["Graph representation in depth (Algorithms covers it)"],
+      "days": [],
+      "note": "A few C-output PYQs every day of this block."
+    },
+    {
+      "title": "Algorithms",
+      "short": "Algo",
+      "subject": "algorithms",
+      "start": "2026-11-03",
+      "end": "2026-11-14",
+      "marks": "6–9",
+      "focus": [
+        { "text": "Graphs: BFS/DFS edge types and timings, Dijkstra, Bellman-Ford, MST (Prim, Kruskal)", "top": true },
+        { "text": "Asymptotics and recurrences: master theorem, recursion tree", "top": true },
+        { "text": "DP: LCS, matrix-chain, 0/1 knapsack, Floyd–Warshall" },
+        { "text": "Sorting: best/worst cases, comparisons, stability; quick and merge sort analysis" },
+        { "text": "Greedy: Huffman, activity selection, fractional knapsack" }
+      ],
+      "skip": ["Formal correctness proofs", "Amortised analysis beyond the basic idea"],
+      "days": [],
+      "note": "Dijkstra and Bellman-Ford come back in CN routing."
+    },
+    {
+      "title": "Digital Logic",
+      "short": "DL",
+      "subject": "digital-logic",
+      "start": "2026-11-15",
+      "end": "2026-11-21",
+      "marks": "4–6",
+      "focus": [
+        { "text": "Number representation: 2's complement range and overflow, IEEE 754 single precision", "top": true },
+        { "text": "K-maps: minimal SOP, prime and essential prime implicants, don't-cares", "top": true },
+        { "text": "Counters: mod-N, ripple vs synchronous, trace the sequence" },
+        { "text": "MUX as a function, decoders, adders and carry-lookahead delay" },
+        { "text": "Flip-flops: characteristic tables and conversions" }
+      ],
+      "skip": ["Hazards in combinational circuits", "State minimisation and ASM charts"],
+      "days": []
+    },
+    {
+      "title": "Computer Organization & Architecture",
+      "short": "COA",
+      "subject": "coa",
+      "start": "2026-11-22",
+      "end": "2026-12-05",
+      "marks": "8–12",
+      "focus": [
+        { "text": "Cache: mapping, tag/index/offset bits, hit ratio, AMAT, write-back vs write-through", "top": true },
+        { "text": "Pipelining: speedup, CPI with stalls, hazards, forwarding, branch penalty", "top": true },
+        { "text": "Instruction formats and addressing modes (opcode bit counting)" },
+        { "text": "I/O: interrupts, DMA burst vs cycle stealing, % of CPU time" },
+        { "text": "Main memory and interleaving" }
+      ],
+      "skip": ["Microprogrammed control beyond control-word size", "Device-level I/O details"],
+      "days": []
+    },
+    {
+      "title": "Computer Networks",
+      "short": "CN",
+      "subject": "computer-networks",
+      "start": "2026-12-06",
+      "end": "2026-12-19",
+      "marks": "7–10",
+      "focus": [
+        { "text": "IPv4, CIDR, subnetting, longest prefix match", "top": true },
+        { "text": "TCP: congestion window (slow start, AIMD, threshold), flow control, sequence numbers", "top": true },
+        { "text": "Sliding window: stop-and-wait, Go-Back-N, Selective Repeat efficiency and sequence bits" },
+        { "text": "Data link: CRC, CSMA/CD minimum frame size, Ethernet" },
+        { "text": "Routing: distance vector, link state; IP fragmentation; ARP, DHCP, ICMP, NAT" }
+      ],
+      "skip": ["Application-layer trivia (port numbers, header fields)", "Socket API details"],
+      "days": []
+    },
+    {
+      "title": "Maths, the scoring parts",
+      "short": "Maths",
+      "subject": "discrete-maths",
+      "start": "2026-12-20",
+      "end": "2027-01-02",
+      "marks": "13–16",
+      "focus": [
+        { "text": "Propositional and first-order logic: equivalence, validity, English to quantifiers", "top": true },
+        { "text": "Linear algebra: rank, determinant, eigenvalue shortcuts, when a system has solutions", "top": true },
+        { "text": "Sets, relations, functions: counting relations, equivalence relations, posets" },
+        { "text": "Graph theory: degree sum, connectivity, planar graphs, colouring, matching" },
+        { "text": "Probability: conditional, Bayes, expectation; binomial, Poisson, uniform" },
+        { "text": "Counting: permutations, combinations, pigeonhole, inclusion–exclusion" }
+      ],
+      "skip": ["Calculus: limits, maxima, integrals", "Groups, monoids, lattices beyond definitions", "Generating functions, hard recurrences", "Statistics beyond mean, median, variance"],
+      "days": ["20–22 · Logic", "23–24 · Sets, relations, functions", "25–27 · Graph theory, counting", "28–29 · Linear algebra", "30–1 · Probability", "2 Jan · Mixed maths PYQs"],
+      "note": "Aim for 8–10 of these marks. The skipped parts cost about 3–5."
+    },
+    {
+      "title": "Revision and full mocks",
+      "short": "Revise",
+      "subject": null,
+      "start": "2027-01-03",
+      "end": "2027-01-24",
+      "focus": [
+        { "text": "Full-length mock (65 Qs, 3 h) every Mon, Wed, Fri at exam time", "top": true },
+        { "text": "Morning after: analyse, fix notes, re-solve PYQs of topics under 60%" },
+        { "text": "Other days: revise subjects, heaviest first (PDS, COA, OS, CN, TOC)" },
+        { "text": "A block that ran late uses this buffer first" }
+      ],
+      "skip": [],
+      "days": []
+    },
+    {
+      "title": "Final week",
+      "short": "Final",
+      "subject": null,
+      "start": "2027-01-25",
+      "end": "2027-01-31",
+      "focus": [
+        { "text": "Last two full-length mocks: 25 and 28 Jan", "top": true },
+        { "text": "Formula sheets and GATE traps only, no new topics" },
+        { "text": "31 Jan: light revision, sleep early, check admit card and centre" }
+      ],
+      "skip": [],
+      "days": []
+    }
+  ],
+  "weightage": [
+    { "subject": "general-aptitude", "marks": "15" },
+    { "subject": "discrete-maths", "label": "Maths", "marks": "13–16" },
+    { "subject": "programming-ds", "marks": "11–15" },
+    { "subject": "coa", "marks": "8–12" },
+    { "subject": "os", "marks": "8–10" },
+    { "subject": "computer-networks", "marks": "7–10" },
+    { "subject": "toc", "marks": "7–9" },
+    { "subject": "algorithms", "marks": "6–9" },
+    { "subject": "dbms", "marks": "6–8" },
+    { "subject": "compiler-design", "marks": "4–8" },
+    { "subject": "digital-logic", "marks": "4–6" }
+  ],
+  "cut": [
+    "The skip list of every block",
+    "Maths: drop counting and graph theory, keep logic, linear algebra, probability",
+    "Revision days, at most 7: keep two weeks of full mocks"
+  ],
+  "keep": "Daily GA mock, daily technical mock, final week"
+}
