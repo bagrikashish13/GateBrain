@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Brain, ClipboardCheck, Library, Settings, Sun, type LucideIcon } from "lucide-react";
+import { Brain, ClipboardCheck, Library, Route, Sun, type LucideIcon } from "lucide-react";
 import { cn } from "cn";
 
 // Today is the app's main screen: it sits in the middle, raised and white (action colour). The tab
@@ -12,7 +12,7 @@ const TABS: { href: string; label: string; icon: LucideIcon; main?: boolean }[] 
   { href: "/revise", label: "Revise", icon: Brain },
   { href: "/", label: "Today", icon: Sun, main: true },
   { href: "/tests", label: "Tests", icon: ClipboardCheck },
-  { href: "/settings", label: "Settings", icon: Settings },
+  { href: "/roadmap", label: "Roadmap", icon: Route },
 ];
 
 export function TabBar() {

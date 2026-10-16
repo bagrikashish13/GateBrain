@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { LogOut } from "lucide-react";
+import { BackLink } from "@/components/back-link";
 import { Logo, Wordmark } from "@/components/logo";
 import { SubjectMarker } from "@/components/subject-marker";
 import { Button } from "@/components/ui/button";
@@ -39,7 +40,10 @@ async function Settings() {
 
   return (
     <>
-      <h1 className="display">Settings</h1>
+      <div className="-mt-3 grid gap-1">
+        <BackLink fallback="/" label="Today" />
+        <h1 className="display">Settings</h1>
+      </div>
 
       <section className="grid gap-3" aria-label="Exam">
         <h2 className="label">Exam</h2>

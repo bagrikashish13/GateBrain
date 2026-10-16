@@ -37,6 +37,7 @@ brain/
   tests/<test-id>.md            mock tests (you write these)
   results/<test-id>/<YYYY-MM-DD-HHMM>.md   one per submitted attempt (the app writes these)
   plan/<YYYY-MM-DD>.md          the day's tasks
+  roadmap.json                  the study roadmap to the exam (Roadmap tab)
   settings.json                 exam date, new notes a day (the app writes this)
   _state/revision/...           revision memory per note (the app writes this)
 ```
@@ -222,6 +223,37 @@ Learn, Revise, PYQ, Practice, Mock, Analyse (optional). ` — <duration>` (15m, 
 ` #<subject-key>` at the end are optional. Two tasks in one day can't have the same text. He also adds and
 ticks tasks in the app.
 
+### 2.6 Roadmap
+
+`brain/roadmap.json` is the study plan to the exam, shown on the Roadmap tab as a zig-zag of blocks with
+today marked on it. Update it when he asks to change the plan (a block running late, a subject added).
+
+```json
+{
+  "done": ["os", "dbms", "toc"],
+  "daily": [{ "time": "30–40m", "title": "General Aptitude mock" }],
+  "phases": [
+    {
+      "title": "Compiler Design, second half", "short": "CD", "subject": "compiler-design",
+      "start": "2026-10-16", "end": "2026-10-22", "marks": "4–8",
+      "focus": [{ "text": "LR family: SLR vs LALR vs CLR", "top": true }, { "text": "SDT" }],
+      "skip": ["Runtime environments in depth"],
+      "days": ["16–17 · LL(1)"],
+      "note": "Optional one line."
+    }
+  ],
+  "weightage": [{ "subject": "programming-ds", "marks": "11–15" }, { "subject": "discrete-maths", "label": "Maths", "marks": "13–16" }],
+  "cut": ["What to drop first if behind", "..."],
+  "keep": "What never to drop"
+}
+```
+
+- `phases` in order; `start`/`end` inclusive `YYYY-MM-DD`; blocks must not overlap. `subject` is a key from
+  `subjects.json`, or `null` for revision blocks. `short` is the node label (≤ 6 characters).
+- `focus` is highest weight first; `top: true` marks the topics PYQs hit most. `done` lists subjects finished
+  before the first block. Everything except `phases` is optional.
+- `npm test` parses the real file; keep it passing.
+
 ---
 
 ## Part 3: The app
@@ -237,6 +269,7 @@ ticks tasks in the app.
   palette's shapes and colours) on purpose. Keep it faithful to the real exam: an answer counts only after
   Save & Next or Mark for Review & Next, Clear Response, the five palette states, the NAT keypad, the
   virtual calculator, the exam summary before submit.
+- Tabs: Notes, Revise, Today, Tests, Roadmap. Settings opens from the gear on Today's GATE countdown.
 - Mobile-first (360–430px), desktop secondary (the exam is laptop-first but works on a phone).
 
 ### How it works

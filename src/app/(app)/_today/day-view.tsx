@@ -45,7 +45,7 @@ export function DayView({ data }: { data: TodayData }) {
             transition={{ duration: 0.25, ease: [0.2, 0.7, 0.2, 1] }}
           >
             <DayTimer />
-            {data.examDays !== null && <ExamCountdown days={data.examDays} date={data.examDate!} />}
+            <ExamCountdown days={data.examDays} date={data.examDate} />
           </motion.div>
         )}
       </AnimatePresence>
