@@ -12,7 +12,7 @@
       "short": "CD",
       "subject": "compiler-design",
       "start": "2026-10-16",
-      "end": "2026-10-22",
+      "end": "2026-10-25",
       "marks": "4–8",
       "focus": [
         { "text": "LR family: LR(0) items, SLR vs LALR vs CLR, SR/RR conflicts, counting states", "top": true },
@@ -22,14 +22,14 @@
         { "text": "Three-address code, DAG and common subexpressions, constant propagation" }
       ],
       "skip": ["Runtime environments in depth (activation-record layouts)", "Parser construction tricks beyond the four LR tables"],
-      "days": ["16–17 · LL(1), TDP vs BUP", "18–19 · LR(0), SLR, LALR, CLR", "20 · SDT", "21 · ICG, basic blocks", "22 · Optimisation + PYQs"]
+      "days": ["16–17 · LL(1), TDP vs BUP", "18–19 · LR(0), SLR, LALR, CLR", "20–21 · SDT", "22–23 · ICG, basic blocks", "24–25 · Optimisation + PYQs"]
     },
     {
       "title": "Programming & Data Structures",
       "short": "PDS",
       "subject": "programming-ds",
-      "start": "2026-10-23",
-      "end": "2026-11-02",
+      "start": "2026-10-26",
+      "end": "2026-11-05",
       "marks": "11–15",
       "focus": [
         { "text": "C output tracing: pointers, arrays, strings, recursion, static variables, scope", "top": true },
@@ -46,8 +46,8 @@
       "title": "Algorithms",
       "short": "Algo",
       "subject": "algorithms",
-      "start": "2026-11-03",
-      "end": "2026-11-14",
+      "start": "2026-11-06",
+      "end": "2026-11-17",
       "marks": "6–9",
       "focus": [
         { "text": "Graphs: BFS/DFS edge types and timings, Dijkstra, Bellman-Ford, MST (Prim, Kruskal)", "top": true },
@@ -64,8 +64,8 @@
       "title": "Digital Logic",
       "short": "DL",
       "subject": "digital-logic",
-      "start": "2026-11-15",
-      "end": "2026-11-21",
+      "start": "2026-11-18",
+      "end": "2026-11-24",
       "marks": "4–6",
       "focus": [
         { "text": "Number representation: 2's complement range and overflow, IEEE 754 single precision", "top": true },
@@ -81,8 +81,8 @@
       "title": "Computer Organization & Architecture",
       "short": "COA",
       "subject": "coa",
-      "start": "2026-11-22",
-      "end": "2026-12-05",
+      "start": "2026-11-25",
+      "end": "2026-12-08",
       "marks": "8–12",
       "focus": [
         { "text": "Cache: mapping, tag/index/offset bits, hit ratio, AMAT, write-back vs write-through", "top": true },
@@ -98,8 +98,8 @@
       "title": "Computer Networks",
       "short": "CN",
       "subject": "computer-networks",
-      "start": "2026-12-06",
-      "end": "2026-12-19",
+      "start": "2026-12-09",
+      "end": "2026-12-22",
       "marks": "7–10",
       "focus": [
         { "text": "IPv4, CIDR, subnetting, longest prefix match", "top": true },
@@ -115,8 +115,8 @@
       "title": "Maths, the scoring parts",
       "short": "Maths",
       "subject": "discrete-maths",
-      "start": "2026-12-20",
-      "end": "2027-01-02",
+      "start": "2026-12-23",
+      "end": "2027-01-05",
       "marks": "13–16",
       "focus": [
         { "text": "Propositional and first-order logic: equivalence, validity, English to quantifiers", "top": true },
@@ -127,14 +127,14 @@
         { "text": "Counting: permutations, combinations, pigeonhole, inclusion–exclusion" }
       ],
       "skip": ["Calculus: limits, maxima, integrals", "Groups, monoids, lattices beyond definitions", "Generating functions, hard recurrences", "Statistics beyond mean, median, variance"],
-      "days": ["20–22 · Logic", "23–24 · Sets, relations, functions", "25–27 · Graph theory, counting", "28–29 · Linear algebra", "30–1 · Probability", "2 Jan · Mixed maths PYQs"],
+      "days": ["23–25 · Logic", "26–27 · Sets, relations, functions", "28–30 · Graph theory, counting", "31 Dec – 1 Jan · Linear algebra", "2–4 Jan · Probability", "5 Jan · Mixed maths PYQs"],
       "note": "Aim for 8–10 of these marks. The skipped parts cost about 3–5."
     },
     {
       "title": "Revision and full mocks",
       "short": "Revise",
       "subject": null,
-      "start": "2027-01-03",
+      "start": "2027-01-06",
       "end": "2027-01-24",
       "focus": [
         { "text": "Full-length mock (65 Qs, 3 h) every Mon, Wed, Fri at exam time", "top": true },
