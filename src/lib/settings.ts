@@ -6,8 +6,9 @@ import { daysBetween, dayKey, isDay } from "@/lib/time";
 
 // brain/settings.json: the few things he sets in the app, synced like everything else.
 
-export type Settings = { examDate: string | null; newPerDay: number };
-const DEFAULTS: Settings = { examDate: null, newPerDay: 6 };
+export type Theme = "mint" | "pink";
+export type Settings = { examDate: string | null; newPerDay: number; theme: Theme };
+const DEFAULTS: Settings = { examDate: null, newPerDay: 6, theme: "mint" };
 
 export function getSettings(): Settings {
   try {
@@ -15,6 +16,7 @@ export function getSettings(): Settings {
     return {
       examDate: isDay(raw.examDate) ? raw.examDate : null,
       newPerDay: Number.isInteger(raw.newPerDay) && raw.newPerDay! > 0 && raw.newPerDay! <= 50 ? raw.newPerDay! : DEFAULTS.newPerDay,
+      theme: raw.theme === "pink" ? "pink" : "mint",
     };
   } catch {
     return DEFAULTS;

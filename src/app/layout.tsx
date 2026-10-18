@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { RegisterServiceWorker } from "@/components/register-sw";
+import { getSettings } from "@/lib/settings";
 import "./globals.css";
 
 // Fonts live in the repo (latin, woff2; SIL Open Font License), so building never needs Google.
@@ -32,8 +33,16 @@ export const viewport: Viewport = {
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
+  const settings = getSettings();
   return (
-    <html lang="en" className={`dark ${chakra.variable} ${plexSans.variable} ${plexMono.variable} h-full antialiased`}>
+    <html lang="en" data-theme={settings.theme} className={`dark ${chakra.variable} ${plexSans.variable} ${plexMono.variable} h-full antialiased`}>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var t=localStorage.getItem("gatebrain-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}`,
+          }}
+        />
+      </head>
       <body className="flex min-h-full flex-col">
         {children}
         <RegisterServiceWorker />

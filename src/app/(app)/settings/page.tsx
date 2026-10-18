@@ -13,6 +13,7 @@ import { syncStatus } from "@/lib/repo/git";
 import { getSettings } from "@/lib/settings";
 import { SyncButton } from "../sync-button";
 import { SettingsForm } from "./settings-form";
+import { ThemePicker } from "./theme-picker";
 
 export const metadata: Metadata = { title: "Settings · GateBrain" };
 
@@ -44,6 +45,11 @@ async function Settings() {
         <BackLink fallback="/" label="Today" />
         <h1 className="display">Settings</h1>
       </div>
+
+      <section className="grid gap-3" aria-label="Theme">
+        <h2 className="label">Theme</h2>
+        <ThemePicker current={s.theme} />
+      </section>
 
       <section className="grid gap-3" aria-label="Exam">
         <h2 className="label">Exam</h2>

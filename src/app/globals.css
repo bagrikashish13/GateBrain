@@ -64,6 +64,16 @@
   --ring: var(--act);
 }
 
+:root[data-theme="pink"],
+[data-theme="pink"] {
+  /* 1 ACCENT: Dark + Pink theme */
+  --mint: #ff4fa3;
+  --mint-dim: #540d33;
+
+  /* 4 ATTENTION: Crimson red to remain distinct from pink accent */
+  --alert: #ff3344;
+}
+
 @theme inline {
   --font-display: var(--font-chakra), "Bahnschrift", system-ui, sans-serif;
   --font-sans: var(--font-plex-sans), "Segoe UI", system-ui, sans-serif;
@@ -419,7 +429,7 @@
 
 /* Day timer (Today): the hour block that's draining, striped, with a white edge. */
 .timer-live {
-  background: repeating-linear-gradient(-45deg, var(--mint) 0 3px, #00c873 3px 6px);
+  background: repeating-linear-gradient(-45deg, var(--mint) 0 3px, color-mix(in srgb, var(--mint) 75%, black) 3px 6px);
   background-size: 8.5px 8.5px;
 }
 .timer-live::after {

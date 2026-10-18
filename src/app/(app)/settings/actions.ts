@@ -23,3 +23,17 @@ export async function saveSettingsAction(_prev: SettingsState, form: FormData): 
   refresh();
   return { ok: true };
 }
+
+/** Theme (mint or pink), saved to brain/settings.json (committed and pushed). */
+export async function saveThemeAction(theme: "mint" | "pink"): Promise<SettingsState> {
+  await requireSession();
+  if (theme !== "mint" && theme !== "pink") return { error: "Invalid theme." };
+  const current = getSettings();
+  try {
+    await saveSettings({ ...current, theme });
+  } catch {
+    return { error: "Couldn't save theme." };
+  }
+  refresh();
+  return { ok: true };
+}

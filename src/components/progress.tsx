@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { cn } from "cn";
 
-const MINT = "#00fd92";
 const SEGMENTS_UP_TO = 16; // more items than this → one continuous bar
 
 /**
@@ -60,11 +59,19 @@ function Block({ on, still }: { on: boolean; still: boolean }) {
   return (
     <span className="relative flex-1 overflow-hidden bg-raised-2">
       <motion.i
-        className="absolute inset-0 origin-left"
+        className="absolute inset-0 origin-left bg-mint"
         initial={false}
-        animate={{ scaleX: on ? 1 : 0, backgroundColor: on && !still ? ["#ffffff", MINT] : MINT }}
-        transition={still ? { duration: 0 } : { scaleX: { type: "spring", stiffness: 420, damping: 26 }, backgroundColor: { duration: 0.5, delay: 0.12 } }}
+        animate={{ scaleX: on ? 1 : 0 }}
+        transition={still ? { duration: 0 } : { scaleX: { type: "spring", stiffness: 420, damping: 26 } }}
       />
+      {on && !still && (
+        <motion.i
+          className="absolute inset-0 bg-white"
+          initial={{ opacity: 0.9 }}
+          animate={{ opacity: 0 }}
+          transition={{ duration: 0.45, delay: 0.12 }}
+        />
+      )}
     </span>
   );
 }
