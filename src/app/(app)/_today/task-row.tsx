@@ -33,8 +33,9 @@ export function TaskRow(props: {
   const tick = () => {
     if (!done && box.current) {
       setFresh(true);
-      celebrate(box.current, row.current, ["var(--mint)", "var(--mint)", colour ?? "var(--fg)", "var(--fg)"]);
-      love(box.current, { finale: props.last });
+      // No row sweep here: the love note's beam crosses the row instead.
+      celebrate(box.current, null, ["var(--mint)", "var(--mint)", colour ?? "var(--fg)", "var(--fg)"]);
+      love(box.current, row.current, { finale: props.last });
     }
     props.onToggle();
   };
