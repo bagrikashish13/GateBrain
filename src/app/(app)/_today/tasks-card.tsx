@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { EllipsisVertical, LoaderCircle, Pencil, Plus, Redo2, Trash, TriangleAlert, X } from "lucide-react";
 import { cn } from "cn";
 import { AllDone, Progress, RollingCount } from "@/components/progress";
 import { addDayKey } from "@/lib/time";
+import { preloadLove } from "@/lib/ui/love";
 import type { Task } from "@/lib/plan/tasks";
 import { addTaskAction, deleteTaskAction, editTaskAction, moveTaskAction, tickTask, type PlanResult } from "../plan-actions";
 import { TaskForm } from "./task-form";
@@ -25,8 +26,9 @@ export function TasksCard({ date, today, tasks, subjects }: { date: string; toda
   const [error, setError] = useState<string | null>(null);
   const [ticks, setTicks] = useState<Record<string, Tick>>({});
   const [, start] = useTransition();
+  useEffect(preloadLove, []);
 
-  const sub = (k: string | null) => (k ? subjects.find((s) => s.key === k) : undefined);
+  const sub =(k: string | null) => (k ? subjects.find((s) => s.key === k) : undefined);
   const live = tasks.filter((t) => !t.moved);
   // A tick the server hasn't confirmed yet wins over the props; once the props change, they win.
   const doneOf = (t: Task) => {
@@ -120,6 +122,7 @@ export function TasksCard({ date, today, tasks, subjects }: { date: string; toda
               task={t}
               done={isDone}
               pending={pendingOf(t)}
+              last={!t.moved && !isDone && done === live.length - 1}
               colour={s?.colour ?? null}
               subject={s?.short ?? t.subject}
               onToggle={() => toggle(t)}

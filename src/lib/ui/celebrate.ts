@@ -3,7 +3,7 @@
 // page (Web Animations API), so it survives the row re-rendering under it. Flat colour, no glow.
 // Nothing happens with reduced motion.
 
-const calm = () => typeof window === "undefined" || window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+export const calm = () => typeof window === "undefined" || window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /** A CSS colour token's value, e.g. token("--mint") → "#00fd92". */
 export function token(name: string, fallback: string): string {
@@ -11,10 +11,11 @@ export function token(name: string, fallback: string): string {
   return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
 }
 
-function layer(): HTMLDivElement {
+/** A fixed, click-through layer over the page; the caller removes it. */
+export function layer(z = 60): HTMLDivElement {
   const l = document.createElement("div");
   l.setAttribute("aria-hidden", "true");
-  l.style.cssText = "position:fixed;inset:0;pointer-events:none;z-index:60;overflow:hidden";
+  l.style.cssText = `position:fixed;inset:0;pointer-events:none;z-index:${z};overflow:hidden`;
   document.body.appendChild(l);
   return l;
 }
@@ -74,8 +75,8 @@ export function stamp(el: Element) {
   });
 }
 
-/** One short buzz (Android; the Vibration API has no strength, only length). */
-export function buzz(ms = 14) {
+/** One short buzz, or a pattern of buzz/pause lengths (Android; the Vibration API has no strength, only length). */
+export function buzz(ms: number | number[] = 14) {
   try {
     navigator.vibrate?.(ms);
   } catch {}

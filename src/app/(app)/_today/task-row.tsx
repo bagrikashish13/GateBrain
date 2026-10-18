@@ -5,13 +5,27 @@ import { Check, CornerDownRight, LoaderCircle } from "lucide-react";
 import { cn } from "cn";
 import type { Task } from "@/lib/plan/tasks";
 import { celebrate } from "@/lib/ui/celebrate";
+import { love } from "@/lib/ui/love";
 
 /** "Tue 13 Oct" for a YYYY-MM-DD day. */
 export const dayLabel = (date: string) =>
   new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" }).format(new Date(`${date}T00:00:00Z`));
 
-/** A task as a row: a subject-coloured rail on the left, the kind above the text, the time on the right. */
-export function TaskRow(props: { task: Task; done: boolean; pending: boolean; colour: string | null; subject: string | null; onToggle: () => void; action?: React.ReactNode; children?: React.ReactNode }) {
+/**
+ * A task as a row: a subject-coloured rail on the left, the kind above the text, the time on the right.
+ * Ticking it plays the love note; `last` (it's the day's last open task) plays the finale.
+ */
+export function TaskRow(props: {
+  task: Task;
+  done: boolean;
+  pending: boolean;
+  last: boolean;
+  colour: string | null;
+  subject: string | null;
+  onToggle: () => void;
+  action?: React.ReactNode;
+  children?: React.ReactNode;
+}) {
   const { task, done, pending, colour } = props;
   const box = useRef<HTMLSpanElement>(null);
   const row = useRef<HTMLDivElement>(null);
@@ -20,6 +34,7 @@ export function TaskRow(props: { task: Task; done: boolean; pending: boolean; co
     if (!done && box.current) {
       setFresh(true);
       celebrate(box.current, row.current, ["var(--mint)", "var(--mint)", colour ?? "var(--fg)", "var(--fg)"]);
+      love(box.current, { finale: props.last });
     }
     props.onToggle();
   };
