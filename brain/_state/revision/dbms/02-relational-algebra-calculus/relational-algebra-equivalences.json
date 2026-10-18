@@ -1,0 +1,21 @@
+{
+  "note": "dbms/02-relational-algebra-calculus/relational-algebra-equivalences.md",
+  "card": {
+    "due": "2026-10-26T17:09:47.171Z",
+    "stability": 8.2956,
+    "difficulty": 1,
+    "elapsed_days": 0,
+    "scheduled_days": 8,
+    "learning_steps": 0,
+    "reps": 1,
+    "lapses": 0,
+    "state": 2,
+    "last_review": "2026-10-18T17:09:47.171Z"
+  },
+  "log": [
+    {
+      "at": "2026-10-18T17:09:47.171Z",
+      "rating": "easy"
+    }
+  ]
+}
