@@ -1,0 +1,21 @@
+{
+  "note": "toc/03-context-free-grammars-pda/chomsky-normal-form.md",
+  "card": {
+    "due": "2026-10-26T17:10:56.854Z",
+    "stability": 8.2956,
+    "difficulty": 1,
+    "elapsed_days": 0,
+    "scheduled_days": 8,
+    "learning_steps": 0,
+    "reps": 1,
+    "lapses": 0,
+    "state": 2,
+    "last_review": "2026-10-18T17:10:56.854Z"
+  },
+  "log": [
+    {
+      "at": "2026-10-18T17:10:56.854Z",
+      "rating": "easy"
+    }
+  ]
+}
