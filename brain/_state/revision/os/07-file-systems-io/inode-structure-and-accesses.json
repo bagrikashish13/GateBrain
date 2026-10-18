@@ -1,0 +1,21 @@
+{
+  "note": "os/07-file-systems-io/inode-structure-and-accesses.md",
+  "card": {
+    "due": "2026-10-20T17:10:38.597Z",
+    "stability": 1.2931,
+    "difficulty": 5.1122,
+    "elapsed_days": 0,
+    "scheduled_days": 2,
+    "learning_steps": 0,
+    "reps": 1,
+    "lapses": 0,
+    "state": 2,
+    "last_review": "2026-10-18T17:10:38.597Z"
+  },
+  "log": [
+    {
+      "at": "2026-10-18T17:10:38.597Z",
+      "rating": "fuzzy"
+    }
+  ]
+}
