@@ -6,6 +6,14 @@ import { daysBetween, isDay } from "@/lib/time";
 
 export type Focus = { text: string; top: boolean };
 
+export type PhaseDay = {
+  date: string | null;
+  label: string;
+  lectures?: number;
+  summary?: string;
+  tasks?: string[];
+};
+
 export type Phase = {
   title: string;
   short: string;
@@ -15,7 +23,7 @@ export type Phase = {
   marks: string | null; // "4–8"
   focus: Focus[];
   skip: string[];
-  days: string[];
+  days: PhaseDay[];
   note: string | null;
 };
 
@@ -33,6 +41,35 @@ export type Parsed = { ok: true; roadmap: Roadmap } | { ok: false; error: string
 const str = (v: unknown): v is string => typeof v === "string" && v.trim() !== "";
 const strings = (v: unknown): string[] => (Array.isArray(v) ? v.filter(str) : []);
 const obj = (v: unknown): Record<string, unknown> => (v && typeof v === "object" && !Array.isArray(v) ? (v as Record<string, unknown>) : {});
+
+function parseDays(raw: unknown): PhaseDay[] {
+  if (!Array.isArray(raw)) return [];
+  const out: PhaseDay[] = [];
+  for (const item of raw) {
+    if (typeof item === "string" && item.trim() !== "") {
+      const s = item.trim();
+      const m = /^(\d{4}-\d{2}-\d{2})\s*·\s*(.*)$/.exec(s);
+      out.push({
+        date: m && isDay(m[1]) ? m[1] : null,
+        label: s,
+        tasks: [],
+      });
+    } else if (item && typeof item === "object") {
+      const o = item as Record<string, unknown>;
+      const date = str(o.date) && isDay(o.date) ? o.date : null;
+      const label = str(o.label) ? o.label : str(o.title) ? o.title : "";
+      if (!label && !date) continue;
+      out.push({
+        date,
+        label: label || (date ?? ""),
+        lectures: typeof o.lectures === "number" ? o.lectures : undefined,
+        summary: str(o.summary) ? o.summary : undefined,
+        tasks: strings(o.tasks),
+      });
+    }
+  }
+  return out;
+}
 
 export function parseRoadmap(raw: unknown): Parsed {
   const r = obj(raw);
@@ -55,7 +92,7 @@ export function parseRoadmap(raw: unknown): Parsed {
       marks: str(p.marks) ? p.marks : null,
       focus: (Array.isArray(p.focus) ? p.focus : []).map(obj).filter((f) => str(f.text)).map((f) => ({ text: f.text as string, top: f.top === true })),
       skip: strings(p.skip),
-      days: strings(p.days),
+      days: parseDays(p.days),
       note: str(p.note) ? p.note : null,
     });
   }

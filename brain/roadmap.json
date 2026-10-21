@@ -22,7 +22,60 @@
         { "text": "Three-address code, DAG and common subexpressions, constant propagation" }
       ],
       "skip": ["Runtime environments in depth (activation-record layouts)", "Parser construction tricks beyond the four LR tables"],
-      "days": ["16–17 · LL(1), TDP vs BUP", "18–19 · LR(0), SLR, LALR, CLR", "20–21 · SDT", "22–23 · ICG, basic blocks", "24–25 · Optimisation + PYQs"]
+      "days": [
+        "16–17 Oct · Ch-01 Lec 01–03 (Lexical Analysis)",
+        "18–20 Oct · Ch-01 Lec 04–05 (Basics of Parsing)",
+        {
+          "date": "2026-10-21",
+          "label": "21 Oct · 2 lectures: Ch-01 Lec 06 & 07 (LL)",
+          "lectures": 2,
+          "summary": "Ch-01 Lec 06 & 07 (LL)",
+          "tasks": [
+            "Learn · CD Ch-01 Lec 06: LL — 2h #compiler-design",
+            "Learn · CD Ch-01 Lec 07: LL — 2h #compiler-design"
+          ]
+        },
+        {
+          "date": "2026-10-22",
+          "label": "22 Oct · 2 lectures: Ch-01 Lec 08 & 09 (LR Parser)",
+          "lectures": 2,
+          "summary": "Ch-01 Lec 08 & 09 (LR Parser)",
+          "tasks": [
+            "Learn · CD Ch-01 Lec 08: LR Parser — 2.5h #compiler-design",
+            "Learn · CD Ch-01 Lec 09: LR Parser — 3h #compiler-design"
+          ]
+        },
+        {
+          "date": "2026-10-23",
+          "label": "23 Oct · 2 lectures: Ch-01 Lec 10 (LR Parser) & Lec 11 (Practice TDP & BUP)",
+          "lectures": 2,
+          "summary": "Ch-01 Lec 10 (LR Parser) & Lec 11 (Practice)",
+          "tasks": [
+            "Learn · CD Ch-01 Lec 10: LR Parser — 3h #compiler-design",
+            "Learn · CD Ch-01 Lec 11: Practice on TDP and BUP — 2.5h #compiler-design"
+          ]
+        },
+        {
+          "date": "2026-10-24",
+          "label": "24 Oct · 2 lectures: Ch-03 Lec 01 & 02 (ICG & Optimization)",
+          "lectures": 2,
+          "summary": "Ch-03 Lec 01 & 02 (ICG & Optimization)",
+          "tasks": [
+            "Learn · CD Ch-03 Lec 01: Intermediate Code & Optimization — 2h #compiler-design",
+            "Learn · CD Ch-03 Lec 02: Intermediate Code & Optimization — 3.5h #compiler-design"
+          ]
+        },
+        {
+          "date": "2026-10-25",
+          "label": "25 Oct · 2 lectures: Ch-03 Lec 03 & 04 (ICG & Optimization)",
+          "lectures": 2,
+          "summary": "Ch-03 Lec 03 & 04 (ICG & Optimization)",
+          "tasks": [
+            "Learn · CD Ch-03 Lec 03: Intermediate Code & Optimization — 2h #compiler-design",
+            "Learn · CD Ch-03 Lec 04: Intermediate Code & Optimization — 2.5h #compiler-design"
+          ]
+        }
+      ]
     },
     {
       "title": "Programming & Data Structures",

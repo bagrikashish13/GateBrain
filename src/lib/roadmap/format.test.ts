@@ -24,6 +24,17 @@ describe("parseRoadmap", () => {
   it("parses the real brain/roadmap.json", () => {
     const r = parseRoadmap(JSON.parse(readFileSync("brain/roadmap.json", "utf8")));
     expect(r).toMatchObject({ ok: true });
+    if (!r.ok) return;
+    const cd = r.roadmap.phases.find((p) => p.short === "CD");
+    expect(cd).toBeDefined();
+    expect(cd?.days.length).toBeGreaterThan(0);
+    const day21 = cd?.days.find((d) => d.date === "2026-10-21");
+    expect(day21).toMatchObject({
+      date: "2026-10-21",
+      lectures: 2,
+      summary: "Ch-01 Lec 06 & 07 (LL)",
+    });
+    expect(day21?.tasks).toHaveLength(2);
   });
 });
 

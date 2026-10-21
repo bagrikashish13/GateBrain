@@ -37,13 +37,29 @@ export function RoadmapView({ roadmap, today, examDate, examDays, subjects }: Pr
           )}
         </div>
         {now && (
-          <p className="flex min-w-0 items-center gap-2.5 text-[13.5px]">
-            <i aria-hidden className="ring-out relative ml-0.5 size-[7px] flex-none rotate-45 bg-mint text-mint" />
-            <span className="truncate font-semibold">{now.title}</span>
-            <span className="flex-none text-muted-foreground">
-              {pos.daysLeftInBlock} {pos.daysLeftInBlock === 1 ? "day" : "days"} left
-            </span>
-          </p>
+          <div className="grid gap-1">
+            <p className="flex min-w-0 items-center gap-2.5 text-[13.5px]">
+              <i aria-hidden className="ring-out relative ml-0.5 size-[7px] flex-none rotate-45 bg-mint text-mint" />
+              <span className="truncate font-semibold">{now.title}</span>
+              <span className="flex-none text-muted-foreground">
+                {pos.daysLeftInBlock} {pos.daysLeftInBlock === 1 ? "day" : "days"} left
+              </span>
+            </p>
+            {(() => {
+              const todayDay = now.days.find((d) => d.date === today);
+              if (!todayDay) return null;
+              return (
+                <p className="flex items-center gap-2 text-[12.5px] text-muted-foreground">
+                  <span className="font-semibold text-mint">Today</span>
+                  <span>·</span>
+                  <span className="truncate text-fg">
+                    {todayDay.lectures ? `${todayDay.lectures} lectures: ` : ""}
+                    {todayDay.summary ?? todayDay.label}
+                  </span>
+                </p>
+              );
+            })()}
+          </div>
         )}
         <div className="grid gap-1.5">
           <Progress done={pos.elapsed} total={pos.total} label="Roadmap" />
@@ -239,6 +255,8 @@ function ZigZag({ roadmap, pos, today, examDate, examDays, subjects }: Omit<Prop
             );
           }
           const p = phases[row.i];
+          const isNow = pos.status[row.i] === "now";
+          const todayInPhase = isNow ? p.days.find((d) => d.date === today) : null;
           return (
             <li key={`${p.start}-${p.title}`} className="grid gap-3">
               <Line side={side} still={still}>
@@ -257,6 +275,11 @@ function ZigZag({ roadmap, pos, today, examDate, examDays, subjects }: Omit<Prop
                     {p.marks && <span className="text-muted-foreground">· {p.marks} marks</span>}
                     <ChevronDown className={cn("size-4 stroke-[1.75] text-faint transition-transform duration-300", open.has(row.i) && "rotate-180")} aria-hidden />
                   </span>
+                  {todayInPhase && (
+                    <span className="text-[12px] font-medium text-mint">
+                      Today: {todayInPhase.lectures ? `${todayInPhase.lectures} lecs · ` : ""}{todayInPhase.summary ?? todayInPhase.label}
+                    </span>
+                  )}
                 </Info>
               </Line>
               <AnimatePresence initial={false}>
@@ -264,6 +287,7 @@ function ZigZag({ roadmap, pos, today, examDate, examDays, subjects }: Omit<Prop
                   <Details
                     key="d"
                     phase={p}
+                    today={today}
                     side={side}
                     still={still}
                     panelRef={(el) => {
@@ -359,8 +383,7 @@ function StatusText({ status, phase, today, pos }: { status: Status; phase: Phas
   return <span className="text-faint">in {n === 1 ? "1 day" : `${n} days`}</span>;
 }
 
-// The panel keeps clear of the node's column, so the line runs down beside it.
-function Details({ phase, side, still, panelRef }: { phase: Phase; side: "left" | "right"; still: boolean; panelRef: (el: HTMLElement | null) => void }) {
+function Details({ phase, today, side, still, panelRef }: { phase: Phase; today: string; side: "left" | "right"; still: boolean; panelRef: (el: HTMLElement | null) => void }) {
   const item = (i: number) => ({
     initial: still ? false : { opacity: 0, x: -8 },
     animate: { opacity: 1, x: 0 },
@@ -408,10 +431,36 @@ function Details({ phase, side, still, panelRef }: { phase: Phase; side: "left" 
         {phase.days.length > 0 && (
           <div className="grid gap-2 border-t border-line pt-3.5">
             <h3 className="label">Day by day</h3>
-            <ul className="grid gap-1 font-mono text-[12px] text-muted-foreground">
-              {phase.days.map((d) => (
-                <li key={d}>{d}</li>
-              ))}
+            <ul className="grid gap-1.5 font-mono text-[12px]">
+              {phase.days.map((d, i) => {
+                const isToday = d.date === today;
+                const isPast = d.date ? d.date < today : false;
+                return (
+                  <li
+                    key={d.label + i}
+                    className={cn(
+                      "flex items-start gap-2 py-0.5",
+                      isToday ? "font-semibold text-mint" : isPast ? "text-faint" : "text-muted-foreground",
+                    )}
+                  >
+                    <span
+                      className={cn(
+                        "mt-1.5 size-1.5 flex-none rounded-full",
+                        isToday ? "bg-mint ring-2 ring-mint/30" : isPast ? "bg-muted-foreground/30" : "bg-line-2",
+                      )}
+                      aria-hidden
+                    />
+                    <div className="min-w-0 flex-1">
+                      <span className={isToday ? "text-mint" : undefined}>{d.label}</span>
+                      {isToday && (
+                        <span className="ml-2 border border-mint/40 bg-mint/10 px-1 py-px font-sans text-[10px] font-semibold uppercase tracking-wider text-mint">
+                          Today
+                        </span>
+                      )}
+                    </div>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         )}
