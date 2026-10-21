@@ -28,13 +28,13 @@ describe("parseRoadmap", () => {
     const cd = r.roadmap.phases.find((p) => p.short === "CD");
     expect(cd).toBeDefined();
     expect(cd?.days.length).toBeGreaterThan(0);
-    const day21 = cd?.days.find((d) => d.date === "2026-10-21");
-    expect(day21).toMatchObject({
-      date: "2026-10-21",
+    const day22 = cd?.days.find((d) => d.date === "2026-10-22");
+    expect(day22).toMatchObject({
+      date: "2026-10-22",
       lectures: 2,
       summary: "Ch-01 Lec 06 & 07 (LL)",
     });
-    expect(day21?.tasks).toHaveLength(2);
+    expect(day22?.tasks).toHaveLength(2);
   });
 });
 

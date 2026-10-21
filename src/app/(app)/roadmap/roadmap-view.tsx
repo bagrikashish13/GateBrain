@@ -47,17 +47,33 @@ export function RoadmapView({ roadmap, today, examDate, examDays, subjects }: Pr
             </p>
             {(() => {
               const todayDay = now.days.find((d) => d.date === today);
-              if (!todayDay) return null;
-              return (
-                <p className="flex items-center gap-2 text-[12.5px] text-muted-foreground">
-                  <span className="font-semibold text-mint">Today</span>
-                  <span>·</span>
-                  <span className="truncate text-fg">
-                    {todayDay.lectures ? `${todayDay.lectures} lectures: ` : ""}
-                    {todayDay.summary ?? todayDay.label}
-                  </span>
-                </p>
-              );
+              if (todayDay) {
+                return (
+                  <p className="flex items-center gap-2 text-[12.5px] text-muted-foreground">
+                    <span className="font-semibold text-mint">Today</span>
+                    <span>·</span>
+                    <span className="truncate text-fg">
+                      {todayDay.lectures ? `${todayDay.lectures} lectures: ` : ""}
+                      {todayDay.summary ?? todayDay.label}
+                    </span>
+                  </p>
+                );
+              }
+              const nextDay = now.days.find((d) => d.date && d.date > today);
+              if (nextDay) {
+                const isTomorrow = daysBetween(today, nextDay.date!) === 1;
+                return (
+                  <p className="flex items-center gap-2 text-[12.5px] text-muted-foreground">
+                    <span className="font-semibold text-mint">{isTomorrow ? "Tomorrow" : rangeLabel(nextDay.date!, nextDay.date!)}</span>
+                    <span>·</span>
+                    <span className="truncate text-fg">
+                      {nextDay.lectures ? `${nextDay.lectures} lectures: ` : ""}
+                      {nextDay.summary ?? nextDay.label}
+                    </span>
+                  </p>
+                );
+              }
+              return null;
             })()}
           </div>
         )}
@@ -257,6 +273,7 @@ function ZigZag({ roadmap, pos, today, examDate, examDays, subjects }: Omit<Prop
           const p = phases[row.i];
           const isNow = pos.status[row.i] === "now";
           const todayInPhase = isNow ? p.days.find((d) => d.date === today) : null;
+          const nextInPhase = isNow && !todayInPhase ? p.days.find((d) => d.date && d.date > today) : null;
           return (
             <li key={`${p.start}-${p.title}`} className="grid gap-3">
               <Line side={side} still={still}>
@@ -278,6 +295,11 @@ function ZigZag({ roadmap, pos, today, examDate, examDays, subjects }: Omit<Prop
                   {todayInPhase && (
                     <span className="text-[12px] font-medium text-mint">
                       Today: {todayInPhase.lectures ? `${todayInPhase.lectures} lecs · ` : ""}{todayInPhase.summary ?? todayInPhase.label}
+                    </span>
+                  )}
+                  {nextInPhase && (
+                    <span className="text-[12px] font-medium text-mint">
+                      {daysBetween(today, nextInPhase.date!) === 1 ? "Tomorrow" : rangeLabel(nextInPhase.date!, nextInPhase.date!)}: {nextInPhase.lectures ? `${nextInPhase.lectures} lecs · ` : ""}{nextInPhase.summary ?? nextInPhase.label}
                     </span>
                   )}
                 </Info>
@@ -399,8 +421,73 @@ function Details({ phase, today, side, still, panelRef }: { phase: Phase; today:
       transition={{ duration: 0.3, ease: EASE }}
     >
       <div className="cut grid gap-4 px-4 pt-4 pb-[18px]" style={{ "--cut": "12px", "--cut-fill": "var(--panel)" } as CSSProperties}>
+        {phase.days.length > 0 && (
+          <div className="grid gap-2">
+            <div className="flex items-center justify-between">
+              <h3 className="label">Day by day</h3>
+              <span className="font-mono text-[11px] text-faint">
+                {(() => {
+                  const total = phase.days.filter((d) => typeof d.lectures === "number").reduce((s, d) => s + (d.lectures ?? 0), 0);
+                  return total > 0 ? `${total} lectures scheduled` : "";
+                })()}
+              </span>
+            </div>
+            <ul className="grid gap-1.5 border border-line bg-void p-2.5">
+              {phase.days.map((d, i) => {
+                const isToday = d.date === today;
+                const isPast = d.date ? d.date < today : false;
+                const isTomorrow = d.date ? daysBetween(today, d.date) === 1 : false;
+                return (
+                  <li
+                    key={d.label + i}
+                    className={cn(
+                      "flex items-start justify-between gap-2 border-b border-line/50 pb-2 pt-1 last:border-none last:pb-0",
+                      isToday ? "font-medium text-mint" : isPast ? "text-faint opacity-60" : "text-fg",
+                    )}
+                  >
+                    <div className="grid min-w-0 gap-0.5">
+                      <div className="flex items-center gap-2">
+                        <span className={cn("font-mono text-[11.5px] font-semibold", isToday ? "text-mint" : isPast ? "text-faint" : "text-fg")}>
+                          {d.date ? rangeLabel(d.date, d.date) : d.label.split("·")[0].trim()}
+                        </span>
+                        {isToday && (
+                          <span className="border border-mint/40 bg-mint/15 px-1 py-px font-sans text-[9.5px] font-semibold uppercase tracking-wider text-mint">
+                            Today
+                          </span>
+                        )}
+                        {isTomorrow && (
+                          <span className="border border-line-2 bg-raised px-1 py-px font-sans text-[9.5px] font-medium uppercase tracking-wider text-muted-foreground">
+                            Tomorrow
+                          </span>
+                        )}
+                        {isPast && (
+                          <span className="font-mono text-[10px] text-faint">
+                            done
+                          </span>
+                        )}
+                      </div>
+                      <span className={cn("text-[12.5px] leading-snug", isPast ? "text-faint" : isToday ? "font-medium text-fg" : "text-muted-foreground")}>
+                        {d.summary ?? (d.date ? d.label.replace(/^.*?·\s*/, "") : d.label)}
+                      </span>
+                    </div>
+                    {typeof d.lectures === "number" && (
+                      <span
+                        className={cn(
+                          "flex-none border px-1.5 py-0.5 font-mono text-[11px]",
+                          isToday ? "border-mint font-semibold text-mint" : "border-line text-faint",
+                        )}
+                      >
+                        {d.lectures} lec{d.lectures === 1 ? "" : "s"}
+                      </span>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        )}
         {phase.focus.length > 0 && (
-          <div className="grid gap-2.5">
+          <div className={cn("grid gap-2.5", phase.days.length > 0 && "border-t border-line pt-3.5")}>
             <h3 className="label">Do first</h3>
             <ul className="grid gap-2.5">
               {phase.focus.map((f, i) => (
@@ -425,42 +512,6 @@ function Details({ phase, today, side, still, panelRef }: { phase: Phase; today:
                   {s}
                 </motion.li>
               ))}
-            </ul>
-          </div>
-        )}
-        {phase.days.length > 0 && (
-          <div className="grid gap-2 border-t border-line pt-3.5">
-            <h3 className="label">Day by day</h3>
-            <ul className="grid gap-1.5 font-mono text-[12px]">
-              {phase.days.map((d, i) => {
-                const isToday = d.date === today;
-                const isPast = d.date ? d.date < today : false;
-                return (
-                  <li
-                    key={d.label + i}
-                    className={cn(
-                      "flex items-start gap-2 py-0.5",
-                      isToday ? "font-semibold text-mint" : isPast ? "text-faint" : "text-muted-foreground",
-                    )}
-                  >
-                    <span
-                      className={cn(
-                        "mt-1.5 size-1.5 flex-none rounded-full",
-                        isToday ? "bg-mint ring-2 ring-mint/30" : isPast ? "bg-muted-foreground/30" : "bg-line-2",
-                      )}
-                      aria-hidden
-                    />
-                    <div className="min-w-0 flex-1">
-                      <span className={isToday ? "text-mint" : undefined}>{d.label}</span>
-                      {isToday && (
-                        <span className="ml-2 border border-mint/40 bg-mint/10 px-1 py-px font-sans text-[10px] font-semibold uppercase tracking-wider text-mint">
-                          Today
-                        </span>
-                      )}
-                    </div>
-                  </li>
-                );
-              })}
             </ul>
           </div>
         )}
