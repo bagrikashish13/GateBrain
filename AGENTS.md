@@ -15,9 +15,10 @@ If you are changing the app, read Part 3 too.**
 1. **Device independence.** Everything lives in this repo and on GitHub (`bagrikashish13/GateBrain`). After any
    change to `brain/`, **commit and push** (`git pull --rebase` first). Never leave work only on one machine.
 2. **Never commit `.env`** or any token. `.runtime/` is per-device scratch and is git-ignored.
-3. **Don't touch what the app owns:** `brain/_state/` (revision memory), `brain/settings.json`, and the
-   frontmatter and tables of `brain/results/**`. The one thing you may add to a result file is an `## Analysis`
-   section at the end (see 2.4).
+3. **Read anything in `brain/`; write anything except computed data.** Revision state (`brain/_state/`) changes
+   only when he marks a note in the app (2.7): never write FSRS numbers by hand (a broken file silently resets
+   the note). Result files are written by the app: never change a past attempt's score or tables; you may add
+   an `## Analysis` section at the end (2.4). `brain/settings.json` you may edit when he asks (2.0).
 4. If you **rename or move a note**, move its revision file too:
    `brain/_state/revision/<same path, .json instead of .md>`.
 5. Only create a subject's notes folder once he has started studying it. Studied so far: OS, DBMS, TOC;
@@ -27,6 +28,10 @@ If you are changing the app, read Part 3 too.**
    repeat of a question from an earlier mock.
 7. Run `npm run check:tests` after writing or editing a mock test. Fix every error (including repeats)
    before committing.
+8. **Learning goes in small steps.** Whenever he's learning (analysing a test, revising, any concept), each reply
+   is one small step that ends with a question or a check for him, never everything at once, unless he
+   explicitly asks for more. GATE CS syllabus and PYQ style only, nothing outside it.
+9. **He never runs commands.** Anything that needs a command (git, `npm run brain`, checks), you run.
 
 ## Part 2: The brain (data formats)
 
@@ -38,9 +43,28 @@ brain/
   results/<test-id>/<YYYY-MM-DD-HHMM>.md   one per submitted attempt (the app writes these)
   plan/<YYYY-MM-DD>.md          the day's tasks
   roadmap.json                  the study roadmap to the exam (Roadmap tab)
-  settings.json                 exam date, new notes a day (the app writes this)
-  _state/revision/...           revision memory per note (the app writes this)
+  settings.json                 exam date, new notes a day, theme, revision start (Settings in the app)
+  _state/revision/...           revision memory per note (written when he marks a note in the app)
 ```
+
+### 2.0 Reading the revision plan
+
+`npm run brain -- <command>` is a read-only helper for you (he never runs it). It uses the app's own code, so
+it always matches the Revise tab:
+
+```
+npm run brain -- revise today                notes due today, in revision order (weak topics first)
+npm run brain -- revise topic os/deadlock    every note in one topic not yet revised today, weakest first
+npm run brain -- revise show <note>          its rating history and the day it next comes up
+npm run brain -- weak                        topic strength over the last 10 mock attempts
+```
+
+- `<note>` is the path under `brain/notes/`: `os/03-deadlock/bankers-algorithm` (`.md` optional).
+- `_state/revision/<note path>.json` is `{ note, card, log }`: `card.due` is the next revision (ISO),
+  `log` every rating with its time. Read it if useful; don't write it.
+- `settings.json`: `{ "examDate": "YYYY-MM-DD" | null, "newPerDay": 1–50, "theme": "mint" | "pink",
+  "revisionStart": "YYYY-MM-DD" | null }`. `revisionStart`: notes added before that day count as added on it
+  (a fresh start; set 2026-10-22, his ask).
 
 Subject keys (`brain/subjects.json`): `os`, `dbms`, `toc`, `compiler-design`, `algorithms`, `programming-ds`,
 `coa`, `computer-networks`, `digital-logic`, `discrete-maths`, `engineering-maths`, `general-aptitude`.
@@ -74,7 +98,9 @@ Worked example, ideally a PYQ (cite the year: GATE 2019).
 
 - Math: `$...$` and `$$...$$` (KaTeX). Code: fenced blocks. Diagrams: ```` ```mermaid ```` blocks.
   Links between notes: `[[bankers-algorithm]]` (by file name). Images: put them next to the note and link relatively.
-- A new note is due for revision the day after it's committed. Every note is revised on a spaced schedule.
+- A new note enters revision by itself: it first comes up the day after it's committed (at most `newPerDay`
+  new notes a day, the rest on the following days), then on its FSRS schedule. The Revise tab and the note's
+  page show the day.
 
 ### 2.2 Mock tests
 
@@ -192,18 +218,36 @@ topic, type, marks, correct answer, his response, outcome (`correct` | `wrong` |
 seconds spent, visits, whether it was marked for review. The body has the same as tables: by subject, by topic
 (weakest first), per question, and time. Question text and solutions are in `brain/tests/<test-id>.md`.
 
-### 2.4 Analysing a result (when he asks)
+### 2.4 Analysing a result ("let's analyse the test")
 
-1. Read the result file(s) and the test file. Look across recent attempts too (`brain/results/**`), not just one.
-2. Find the weak points: wrong answers (especially negative-marked MCQs), skipped questions, topics under ~60%,
-   and time sinks (questions that took much longer than average, or slow and still wrong).
-3. **Teach** each weak point in the chat: the concept, why his answer was wrong, the GATE trap behind it.
-4. **Update the notes**: add what he missed to the right note (or create one) in the topic's section, usually
-   under `## GATE traps` or `## Where I got confused → what made it click`. Keep them short.
-5. Append an `## Analysis` section at the end of the result file (the app shows it on the result page):
-   2–6 bullets: what went wrong, what to revise, which notes were updated (as `[[note-name]]`).
-6. If he wants, add follow-up tasks to the plan (2.5).
-7. Commit and push (one commit is fine: `analysis: <test-id> <attempt>`).
+He goes through every test question by question, learning each concept properly, in small steps (rule 8).
+Never dump the whole analysis at once.
+
+1. **Start by asking.** Read the result file and the test file (and recent attempts in `brain/results/**` for
+   patterns). Reply with only a short overview: the score, and per subject which questions were wrong,
+   skipped or slow (a compact line each). Then ask **which subject and which question to start with**. Stop.
+2. **One question at a time, one step per reply.** For the question he picks, go through it in steps, each
+   ending with something for him to answer or a "ready for the next part?":
+   - Ask how he approached it (or why he skipped it), so you teach the actual gap.
+   - The concept it tests, then the theory, built up in small pieces in his terms.
+   - The numerical method, if the topic has one, worked through with him.
+   - Why his answer (and each wrong option) is wrong: the GATE trap behind it.
+   - **Practice he solves:** related questions, one at a time: other ways GATE asks the same concept (theory
+     and numericals, different setups), modelled on real PYQs (look them up when unsure). Check, correct,
+     give another until he gets them right.
+   - Related concepts PYQs pair with it, briefly.
+   Move on only when he says he's got it. Go faster when he clearly knows it; slower when he doesn't.
+3. **Then the personalised note for that concept, before the next question.** Only once the question is fully
+   done, write what he actually got wrong and what made it click into the concept's note in the right
+   section folder of that subject (`brain/notes/<subject>/<NN-section>/`, the section the question's `topic`
+   points to): add to the existing note (`## GATE traps`, `## Where I got confused → what made it click`) or
+   create one (2.1) when none fits. Short, in his terms. Commit and push it right away. Tell him the note's
+   name: it enters revision by itself (2.1) and the Revise tab shows its day.
+4. Ask which question is next (or suggest the next wrong one) and repeat 2–3.
+5. When he's done (or stops for the day): append an `## Analysis` section at the end of the result file (the
+   app shows it on the result page): 2–6 bullets: what went wrong, what to revise, which notes were updated or
+   created (as `[[note-name]]`), and which questions are still to go if he stopped early. Commit and push
+   (`analysis: <test-id> <attempt>`). If he wants, add follow-up tasks to the plan (2.5).
 
 ### 2.5 Plan (tasks)
 
@@ -254,13 +298,38 @@ today marked on it. Update it when he asks to change the plan (a block running l
   before the first block. Everything except `phases` is optional.
 - `npm test` parses the real file; keep it passing.
 
+### 2.7 Revision with the agent ("let's do today's revision")
+
+The app only shows the notes, when each is due, and the rating buttons. The revision itself happens here, with
+you: he practises each due concept, then marks it in the app. Small steps (rule 8).
+
+1. `git pull --rebase`, then `npm run brain -- revise today` (2.0; you run it). Tell him briefly what's due,
+   grouped by subject, and start with the first note (weak topics come first). "Revise deadlock" = only that
+   topic: `npm run brain -- revise topic os/deadlock`.
+2. **One note at a time, adaptive.** Read the note (and `revise show` for how it went before). Then:
+   - **Probe:** 1–2 questions on its core idea, one at a time, before showing anything.
+   - **He remembers it well:** 1–3 tough GATE-level questions on it (theory with close options, and a
+     numerical or trace when the topic has one), then done. Don't re-teach what he knows.
+   - **He doesn't remember it properly:** re-teach it in small steps, personally: from his own note, his
+     "where I got confused" and GATE traps, in his terms. Then questions like the ones he missed, one at a
+     time, until he gets them right.
+   - Fresh questions each time, PYQ style, GATE CS syllabus only; not questions from his mocks.
+3. **Tell him how to mark it, from how he did (not how he feels):** "Mark *Banker's algorithm* as **Fuzzy** in
+   the app" (Revise tab or the note's page → rating). Easy = all right, quick, no hesitation; Got it = right,
+   or one small slip he fixed himself; Fuzzy = some wrong or needed a hint, core idea held; Forgot = the core
+   idea or the method was gone. Never write `_state/` yourself. Wait for him to say it's marked, then the next
+   note.
+4. If a gap came up that the note doesn't cover, add it to the note (2.4 step 3 style), commit and push.
+5. At the end: one line per note (how it went) and anything to look at again. If he stops halfway, the rest
+   stay due.
+
 ---
 
 ## Part 3: The app
 
 ### Read first
 - This file. `README.md` for setup and deploy.
-- The UI is the same design system as his other app, secondBrain (`C:\dev\afterglow`):
+- The UI is the same design system as his other app, secondBrain (`C:\dev\secondBrain`):
   true black, mint `#00fd92` accent, vivid flat subject colours, square corners with cut-corner hero cards,
   Chakra Petch / IBM Plex, Lucide icons. **No glow, no blur, no shadows; never emojis as icons.**
   Colour jobs never mix: mint = progress/done; subject colour = which subject; rose `#ff2e63` = needs attention
@@ -294,7 +363,11 @@ npm run lint         # eslint, zero warnings
 npm run typecheck
 npm run build
 npm run check:tests  # validate brain/tests/*.md
+npm run brain        # read-only revision plan for agents (2.0)
 ```
+
+- `scripts/brain.ts` loads the app's server modules under the `react-server` condition (so `server-only`
+  imports work outside Next). New-note dates come from `revision/plan.ts` (pure, tested).
 
 ### Git
 - **Never add `Co-Authored-By` or any AI/model attribution to commits** (his rule).

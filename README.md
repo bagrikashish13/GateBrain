@@ -39,7 +39,8 @@ Make the token at GitHub → Settings → Developer settings → Fine-grained to
 Open the repo in Claude Code or Antigravity and ask, e.g. "make a 30-question mixed mock on OS deadlock,
 DBMS normal forms and TOC regular languages". The agent follows [AGENTS.md](AGENTS.md), runs
 `npm run check:tests`, commits and pushes. Sync in the app (or wait 3 minutes on the server) and it's in
-**Tests**. After an attempt: "analyse my last mock, teach me what I got wrong and update my notes".
+**Tests**. After an attempt: "let's analyse the test" (question by question, a note per concept). Each day:
+"let's do today's revision" (the agent quizzes you on each due note; you mark it in the Revise tab).
 
 ## On the VM (same one as secondBrain)
 
@@ -72,6 +73,7 @@ npm run lint
 npm run typecheck
 npm run build
 npm run check:tests  # validate brain/tests/*.md
+npm run brain        # read-only revision plan, for agents
 ```
 
 Next.js 16 · React 19 · Tailwind 4 · ts-fsrs. No database: the repo is the database.
