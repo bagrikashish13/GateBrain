@@ -32,6 +32,8 @@ If you are changing the app, read Part 3 too.**
    is one small step that ends with a question or a check for him, never everything at once, unless he
    explicitly asks for more. GATE CS syllabus and PYQ style only, nothing outside it.
 9. **He never runs commands.** Anything that needs a command (git, `npm run brain`, checks), you run.
+10. **Every session starts and checkpoints with the log (2.8).** Pull, `npm run check:log`, compact if it
+    says so, read the files it lists, and only then answer. Write a checkpoint whenever 2.8 says.
 
 ## Part 2: The brain (data formats)
 
@@ -43,6 +45,7 @@ brain/
   results/<test-id>/<YYYY-MM-DD-HHMM>.md   one per submitted attempt (the app writes these)
   plan/<YYYY-MM-DD>.md          the day's tasks
   roadmap.json                  the study roadmap to the exam (Roadmap tab)
+  log/                          what he did with the agents, so a new session picks up where he left off (2.8)
   settings.json                 exam date, new notes a day, theme, revision start (Settings in the app)
   _state/revision/...           revision memory per note (written when he marks a note in the app)
 ```
@@ -323,6 +326,43 @@ you: he practises each due concept, then marks it in the app. Small steps (rule 
 5. At the end: one line per note (how it went) and anything to look at again. If he stops halfway, the rest
    stay due.
 
+### 2.8 Session log (`brain/log/`)
+
+A new session knows nothing of earlier chats. The log carries over where he left off, in a fixed-size set
+of files so the start of a session never grows:
+
+```
+brain/log/
+  now.md                  where he is right now: what's in progress, where it stopped, what's next   ≤ 15 lines
+  days/YYYY-MM-DD.md      today's checkpoints (only today and yesterday are kept)                    ≤ 40 lines
+  weeks/YYYY-Www.md       one per ISO week (Mon–Sun), older days folded in                          ≤ 30 lines
+  summary.md              his whole prep so far, rewritten (never appended), "Through: YYYY-Www"     ≤ 60 lines
+```
+
+**Start of every session** (before answering anything, even "hi"):
+1. `git pull --rebase`, then `npm run check:log`. It lists the files to read first and anything to fix.
+2. If it says to compact, do that first, then run it again until it says `ok`:
+   - A day older than yesterday: fold it into its week file (merge, don't append: the week stays ≤ 30 lines),
+     delete the day file.
+   - A finished week not in the summary: rewrite `summary.md` with it and set `Through:` to that week. Keep
+     it ≤ 60 lines by squeezing the oldest history hardest (recent weeks a few lines, old ones one line,
+     the oldest grouped: "W42–W44: …"). Keep "Where he is", "Strong", "Shaky" current.
+   - Commit and push (`log: compact`).
+3. Read exactly the files it listed (now.md, yesterday, today, this week, summary). Read older weeks or git
+   history only when he asks about the past.
+
+**Checkpoints** (write the day's entry, update `now.md`, commit and push, ideally in the same commit as the
+note or result change that goes with it):
+- A test question's analysis is finished (2.4), or he stops or switches mid-analysis.
+- A revision session ends or he stops it (2.7).
+- He finishes or stops learning something, or changes the plan.
+- He says something worth remembering: a recurring confusion, a preference, a goal, a worry.
+
+Not after every reply. An entry is `## <Kind> · <what>` (Analysis, Revision, Learn, Plan, Other) and 1–4
+bullets: where it stopped, what clicked, what's still shaky, what he said. Don't copy what's already in the
+repo (scores, notes, ratings): point at it (`[[note-name]]`, the test id). `now.md` is overwritten each time
+with where things stand. `npm run check:log` before committing; it fails on a file over its cap.
+
 ---
 
 ## Part 3: The app
@@ -364,10 +404,12 @@ npm run typecheck
 npm run build
 npm run check:tests  # validate brain/tests/*.md
 npm run brain        # read-only revision plan for agents (2.0)
+npm run check:log    # session log: what to read first, what to compact (2.8)
 ```
 
 - `scripts/brain.ts` loads the app's server modules under the `react-server` condition (so `server-only`
   imports work outside Next). New-note dates come from `revision/plan.ts` (pure, tested).
+- `scripts/check-log.ts` runs `src/lib/log.ts` (pure, tested): line caps, what to compact, the startup set.
 
 ### Git
 - **Never add `Co-Authored-By` or any AI/model attribution to commits** (his rule).

@@ -10,6 +10,7 @@
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run",
     "check:tests": "tsx scripts/check-tests.ts",
+    "check:log": "tsx scripts/check-log.ts",
     "brain": "tsx --conditions=react-server scripts/brain.ts"
   },
   "dependencies": {
