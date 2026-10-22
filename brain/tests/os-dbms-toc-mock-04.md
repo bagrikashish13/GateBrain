@@ -97,7 +97,7 @@ type: MCQ
 marks: 1
 subject: toc
 topic: regular-expressions-finite-automata
-answer: C
+answer: B
 
 Consider the language $L$ over the alphabet $\Sigma = \{a, b\}$ defined as:
 
@@ -137,15 +137,15 @@ Let us construct the minimal complete DFA $M = (Q, \Sigma, \delta, q_0, F)$:
      - On input $a$: loop on $q_{\text{trap}}$ ($\delta(q_{\text{trap}}, a) = q_{\text{trap}}$).
      - On input $b$: loop on $q_{\text{trap}}$ ($\delta(q_{\text{trap}}, b) = q_{\text{trap}}$).
 
-3. **Verifying pairwise distinguishability of all 5 states:**
+3. **Verifying pairwise distinguishability of all 4 states:**
    - $q_{\text{trap}}$ is non-accepting, while $q_0, q_a, q_b$ are accepting. Hence, $q_{\text{trap}}$ is distinguished from the others by $\epsilon$.
    - Distinguishing $q_0$ and $q_a$: On input $a$, from $q_0 \to q_a$ (accepting), but from $q_a \to q_{\text{trap}}$ (rejecting). Thus, string $a$ distinguishes $q_0$ and $q_a$.
    - Distinguishing $q_0$ and $q_b$: On input $b$, from $q_0 \to q_b$ (accepting), but from $q_b \to q_{\text{trap}}$ (rejecting). Thus, string $b$ distinguishes $q_0$ and $q_b$.
    - Distinguishing $q_a$ and $q_b$: On input $a$, from $q_a \to q_{\text{trap}}$ (rejecting), while from $q_b \to q_a$ (accepting). Thus, string $a$ distinguishes $q_a$ and $q_b$.
 
-Since all 5 states are pairwise distinguishable, the minimal complete DFA contains exactly 5 states.
+Since all 4 states are pairwise distinguishable, the minimal complete DFA contains exactly 4 states.
 
-Hence, (C) is the correct option.
+Hence, (B) is the correct option.
 
 ## Q4
 type: NAT
