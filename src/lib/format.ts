@@ -12,12 +12,14 @@ export function relativeDay(d: Date, now = new Date()): string {
   return `in ${Math.round(n / 30)} mo`;
 }
 
-/** Short "when next": "today", "in 9d", "in 3mo". */
-export function inShort(d: Date, now = new Date()): string {
+/** A coming "YYYY-MM-DD": "today", "tomorrow", else "Sat 24 Oct" (or "24 Oct" without the weekday). */
+export function comingDay(day: string, now = new Date(), weekday = true): string {
+  const [y, m, dd] = day.split("-").map(Number);
+  const d = new Date(y, m - 1, dd);
   const n = between(now, d);
   if (n <= 0) return "today";
-  if (n < 60) return `in ${n}d`;
-  return `in ${Math.round(n / 30)}mo`;
+  if (n === 1) return "tomorrow";
+  return new Intl.DateTimeFormat("en-GB", { weekday: weekday ? "short" : undefined, day: "numeric", month: "short" }).format(d);
 }
 
 /** Short "how long ago": "today", "1d ago", "3mo ago". */

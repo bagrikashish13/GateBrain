@@ -5,10 +5,11 @@ import { readBrainText } from "@/lib/repo/paths";
 import { daysBetween, dayKey, isDay } from "@/lib/time";
 
 // brain/settings.json: the few things he sets in the app, synced like everything else.
+// revisionStart: notes added before this day count as added on it (a fresh start for revision).
 
 export type Theme = "mint" | "pink";
-export type Settings = { examDate: string | null; newPerDay: number; theme: Theme };
-const DEFAULTS: Settings = { examDate: null, newPerDay: 6, theme: "mint" };
+export type Settings = { examDate: string | null; newPerDay: number; theme: Theme; revisionStart: string | null };
+const DEFAULTS: Settings = { examDate: null, newPerDay: 6, theme: "mint", revisionStart: null };
 
 export function getSettings(): Settings {
   try {
@@ -17,6 +18,7 @@ export function getSettings(): Settings {
       examDate: isDay(raw.examDate) ? raw.examDate : null,
       newPerDay: Number.isInteger(raw.newPerDay) && raw.newPerDay! > 0 && raw.newPerDay! <= 50 ? raw.newPerDay! : DEFAULTS.newPerDay,
       theme: raw.theme === "pink" ? "pink" : "mint",
+      revisionStart: isDay(raw.revisionStart) ? raw.revisionStart : null,
     };
   } catch {
     return DEFAULTS;

@@ -9,17 +9,19 @@ import { daysToExam, getSettings } from "@/lib/settings";
 import { listResults } from "@/lib/tests/store";
 import { topicStats, weakTopics } from "@/lib/tests/topics";
 import { addDayKey, dayKey, daysBetween } from "@/lib/time";
+import { planNew } from "./plan";
 import { isRevisionState, maxGap, recallOf, review, type Rating4, type RevisionState } from "./schedule";
 
 // Revision state: brain/_state/revision/<note path>.json, one per note, written by the app (committed
 // and pushed). Every note is tracked from the day it was added: its first revision is the next day.
-// New notes come in at most `newPerDay` a day; due notes are never capped. Notes in topics his mocks
-// show as weak go first.
+// New notes come in at most `newPerDay` a day; due notes are never capped. Notes added before
+// settings.revisionStart count as added that day. Notes in topics his mocks show as weak go first.
 
 export type RevisionItem = {
   note: NoteRef;
   state: RevisionState | null;
-  dueDay: string; // YYYY-MM-DD
+  dueDay: string; // YYYY-MM-DD: FSRS due day, or the first day a new note can come up
+  nextDay: string; // the day it actually comes up (new notes under the daily cap; overdue = today)
   overdue: number; // days past due (0 = due today)
   recall: number | null;
   weak: boolean;
@@ -34,6 +36,7 @@ export type TodayRevision = {
   forecast: { day: string; count: number }[]; // the next 7 days
   history: Record<string, DayNote[]>; // day → notes revised that day (with how it went)
   upcoming: Record<string, DayNote[]>; // later day → notes due then, as things stand
+  all: RevisionItem[]; // every note, with the day it next comes up
 };
 export type DayNote = { id: string; title: string; subject: string; rating: Rating4 | null };
 
@@ -90,13 +93,15 @@ export async function todayRevision(now = new Date()): Promise<TodayRevision> {
 
   const items: RevisionItem[] = notes.map((note) => {
     const state = states.get(note.id) ?? null;
-    const addedDay = added.get(`brain/notes/${note.id}`) ?? today;
+    let addedDay = added.get(`brain/notes/${note.id}`) ?? today;
+    if (settings.revisionStart && addedDay < settings.revisionStart) addedDay = settings.revisionStart;
     const dueDay = state ? dayKey(new Date(state.card.due)) : addDayKey(addedDay, 1);
     const k = noteKey(note);
     return {
       note,
       state,
       dueDay,
+      nextDay: dueDay,
       overdue: Math.max(0, daysBetween(dueDay, today)),
       recall: recallOf(state, now),
       weak: !!k && weak.has(k),
@@ -112,14 +117,28 @@ export async function todayRevision(now = new Date()): Promise<TodayRevision> {
 
   const order = (a: RevisionItem, b: RevisionItem) =>
     Number(b.weak) - Number(a.weak) || b.overdue - a.overdue || (a.recall ?? 1) - (b.recall ?? 1) || a.note.id.localeCompare(b.note.id, undefined, { numeric: true });
-  const ready = items.filter((i) => !doneIds.has(i.note.id) && i.dueDay <= today);
-  const reviews = ready.filter((i) => i.state).sort(order);
-  const fresh = ready.filter((i) => !i.state).sort(order);
-  const room = Math.max(0, settings.newPerDay - newDoneToday);
+
+  // Revised notes come back on their FSRS day (overdue ones today). New notes are planned day by day
+  // under the new-notes-a-day cap, so every future day shows what will really come up then.
+  const fresh = items.filter((i) => !i.state).sort(order);
+  const plan = planNew(
+    fresh.map((i) => ({ id: i.note.id, from: i.dueDay })),
+    today,
+    settings.newPerDay,
+    settings.newPerDay - newDoneToday,
+  );
+  for (const i of items) {
+    if (i.state) i.nextDay = i.dueDay < today && !doneIds.has(i.note.id) ? today : i.dueDay;
+    else i.nextDay = plan.get(i.note.id) ?? i.dueDay;
+  }
+
+  const reviews = items.filter((i) => i.state && !doneIds.has(i.note.id) && i.dueDay <= today).sort(order);
+  const freshToday = fresh.filter((i) => i.nextDay === today);
+  const later = fresh.filter((i) => i.dueDay <= today && i.nextDay > today).length;
 
   const forecast = Array.from({ length: 7 }, (_, n) => {
     const day = addDayKey(today, n + 1);
-    return { day, count: items.filter((i) => i.dueDay === day).length };
+    return { day, count: items.filter((i) => i.nextDay === day).length };
   });
 
   const history: Record<string, DayNote[]> = {};
@@ -130,20 +149,26 @@ export async function todayRevision(now = new Date()): Promise<TodayRevision> {
     }
   }
   const upcoming: Record<string, DayNote[]> = {};
-  for (const i of items) {
-    if (i.dueDay > today) (upcoming[i.dueDay] ??= []).push({ id: i.note.id, title: i.note.title, subject: i.note.subject, rating: null });
+  for (const i of [...items].sort(order)) {
+    if (i.nextDay > today) (upcoming[i.nextDay] ??= []).push({ id: i.note.id, title: i.note.title, subject: i.note.subject, rating: null });
   }
 
   return {
     history,
     upcoming,
-    due: [...reviews, ...fresh.slice(0, room)],
+    due: [...reviews, ...freshToday],
     done,
-    later: Math.max(0, fresh.length - room),
+    later,
     tracked: items.filter((i) => i.state).length,
     notes: notes.length,
     forecast,
+    all: items,
   };
+}
+
+/** The day a note next comes up for revision (YYYY-MM-DD), as the Revise tab plans it. */
+export async function nextRevisionDay(noteId: string, now = new Date()): Promise<string | null> {
+  return (await todayRevision(now)).all.find((i) => i.note.id === noteId)?.nextDay ?? null;
 }
 
 /** Every note in one topic (subject + section slug), weakest memory first, for a focused session. */
@@ -154,7 +179,7 @@ export async function topicRevision(subject: string, topic: string, now = new Da
     .map((note) => {
       const state = readState(note.id);
       const dueDay = state ? dayKey(new Date(state.card.due)) : today;
-      return { note, state, dueDay, overdue: Math.max(0, daysBetween(dueDay, today)), recall: recallOf(state, now), weak: true, last: state?.log.at(-1)?.at ?? null };
+      return { note, state, dueDay, nextDay: dueDay, overdue: Math.max(0, daysBetween(dueDay, today)), recall: recallOf(state, now), weak: true, last: state?.log.at(-1)?.at ?? null };
     })
     .filter((i) => !i.state?.log.some((l) => dayKey(new Date(l.at)) === today))
     .sort((a, b) => (a.recall ?? 0) - (b.recall ?? 0));

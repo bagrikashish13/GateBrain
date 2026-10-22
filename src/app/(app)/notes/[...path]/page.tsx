@@ -11,8 +11,8 @@ import { requireSession } from "@/lib/auth/session";
 import { folderHref, prettyName, slugOf } from "@/lib/brain/names";
 import { allNotes, readNote, titleOf } from "@/lib/brain/notes";
 import { subjectOf } from "@/lib/brain/subjects";
-import { agoShort, inShort, pct, relativeDay } from "@/lib/format";
-import { readState } from "@/lib/revision/store";
+import { agoShort, comingDay, pct, relativeDay } from "@/lib/format";
+import { nextRevisionDay, readState } from "@/lib/revision/store";
 import { maxGap, preview, recallOf } from "@/lib/revision/schedule";
 import { daysToExam } from "@/lib/settings";
 import { dayKey } from "@/lib/time";
@@ -45,12 +45,14 @@ async function Reader({ params }: { params: Promise<{ path: string[] }> }) {
   const slugs = new Map(allNotes().map((n) => [slugOf(n.id.split("/").at(-1)!), n.id]));
   const revisedToday = !!state?.log.some((l) => dayKey(new Date(l.at)) === dayKey(now));
   const due = state ? new Date(state.card.due) : null;
-  const overdue = !!due && dayKey(due) < dayKey(now);
+  const overdue = !!due && dayKey(due) < dayKey(now) && !revisedToday;
   const when = preview(state, now, maxGap(daysToExam()));
+  // A new note's first revision is planned (the new-notes-a-day cap), so ask the plan, not the card.
+  const next = overdue ? null : await nextRevisionDay(note.id, now);
 
   const cells = [
     { label: "memory", value: pct(recall), alert: recall !== null && recall < 0.75 },
-    { label: "next", value: due ? (overdue ? "overdue" : inShort(due, now)) : "new", alert: overdue },
+    { label: "next", value: overdue ? "overdue" : next ? comingDay(next, now, false) : "—", alert: overdue },
     { label: "last", value: state?.log.length ? agoShort(new Date(state.log.at(-1)!.at), now) : "—" },
     { label: "revised", value: `${state?.log.length ?? 0}×` },
   ];
