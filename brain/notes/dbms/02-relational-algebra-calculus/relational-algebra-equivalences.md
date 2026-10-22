@@ -24,6 +24,14 @@ Natural join is commutative and associative. Projections on join can push down o
   - If a single $A$ value appears in multiple tuples of $R$ (one matching $S$ and one not), the set difference removes $A$ entirely.
 - **Pushing projection past join without join attributes:** You cannot compute $\Pi_A(R) \bowtie \Pi_C(S)$ directly because the join attribute $B$ is lost. The join attribute must be retained until after the join.
 - **Anti-join ($R \rhd S$):** Tuples of $R$ that do NOT match any tuple in $S$. $R \rhd S = R \setminus (R \ltimes S)$.
+- **Distribution of Projection ($\Pi$) over Set Operations:**
+  - **Union:** $\Pi_A(R \cup S) \equiv \Pi_A(R) \cup \Pi_A(S)$ (ALWAYS EQUAL).
+  - **Intersection:** $\Pi_A(R \cap S) \subseteq \Pi_A(R) \cap \Pi_A(S)$ (Subset always holds, equality may fail).
+  - **Set Difference:** $\Pi_A(R) \setminus \Pi_A(S) \subseteq \Pi_A(R \setminus S)$ (Subset always holds, equality may fail).
+    - Left side ($\Pi_A(R) \setminus \Pi_A(S)$): $a$ has **ZERO** matching tuples in $S$.
+    - Right side ($\Pi_A(R \setminus S)$): $a$ has **AT LEAST ONE** non-matching tuple in $S$.
+    - Therefore: $\Pi_A(R) \setminus \Pi_A(R \bowtie S) \subseteq \Pi_A(R \setminus (R \bowtie \Pi_B(S)))$ always holds!
+- **Distribution of Selection ($\sigma$):** $\sigma$ distributes over $\cup$, $\cap$, and $\setminus$ with exact equality ($\equiv$).
 
 ## Example
 **Mock 02 Q9:** $R(A, B)$ and $S(B, C)$. Which are always equivalent to $\Pi_A(R \bowtie S)$?
