@@ -1,0 +1,21 @@
+{
+  "note": "dbms/06-transactions-concurrency-control/two-phase-locking-variants.md",
+  "card": {
+    "due": "2026-10-24T10:48:36.922Z",
+    "stability": 0.212,
+    "difficulty": 6.4133,
+    "elapsed_days": 0,
+    "scheduled_days": 1,
+    "learning_steps": 0,
+    "reps": 1,
+    "lapses": 0,
+    "state": 2,
+    "last_review": "2026-10-23T10:48:36.922Z"
+  },
+  "log": [
+    {
+      "at": "2026-10-23T10:48:36.922Z",
+      "rating": "forgot"
+    }
+  ]
+}
