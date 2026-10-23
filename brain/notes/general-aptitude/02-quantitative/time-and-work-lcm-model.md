@@ -20,8 +20,14 @@ Never use fractional rates like $\frac{1}{A} + \frac{1}{B}$ or $x/y$ algebra. As
 - **"More days" vs "Total days":**
   - *Confusion:* Giving the total days from start to finish when the question asked "how many *more* days will Q take to finish the rest".
   - *The click:* Read the prompt carefully: *remaining* work divided by Q's rate is the "more days".
+- **Leaving $N$ days before completion (unknown finish line):**
+  - *Confusion:* Trying to work backwards from an unknown end date or setting up $x$-equations ($T-3$), stalling on overlapping timelines.
+  - *The click:* "Don't let them leave / Cancel the holiday." Add the extra chairs they would have made during those $N$ days to the total: $\text{Total Work} + \text{Extra Chairs}$. Since everyone is now working from Day 1 to the end, simply divide by the combined rate: $\text{Total Days} = \frac{\text{Original Chairs} + \text{Extra Chairs}}{\text{Combined Rate}}$.
 
 ## GATE traps
+- **Leaving from start vs. Leaving before completion:**
+  - *Leaves after $N$ days from START:* **Subtract** the work already completed in $N$ days, divide remaining chairs by remaining workers.
+  - *Leaves $N$ days before COMPLETION:* **Add** the extra chairs for those $N$ days to the total, divide by all workers combined.
 - **Negative rates in pipes:** A drain pipe empties the tank, so its rate must be subtracted: $(R_A + R_B - R_{\text{drain}})$.
 - **Alternating work cycles:** When A and B work on alternate days (Day 1: A, Day 2: B), group them into **2-day blocks**. Never assume they work together continuously.
 
