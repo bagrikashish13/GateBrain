@@ -1,0 +1,21 @@
+{
+  "note": "os/05-memory-management/multilevel-page-table-overhead.md",
+  "card": {
+    "due": "2026-10-25T11:21:43.576Z",
+    "stability": 1.2931,
+    "difficulty": 5.1122,
+    "elapsed_days": 0,
+    "scheduled_days": 2,
+    "learning_steps": 0,
+    "reps": 1,
+    "lapses": 0,
+    "state": 2,
+    "last_review": "2026-10-23T11:21:43.576Z"
+  },
+  "log": [
+    {
+      "at": "2026-10-23T11:21:43.576Z",
+      "rating": "fuzzy"
+    }
+  ]
+}
