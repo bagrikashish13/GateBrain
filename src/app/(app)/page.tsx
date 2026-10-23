@@ -12,7 +12,7 @@ import type { TodayData } from "./_today/types";
 
 export default function TodayPage() {
   return (
-    <main className="mx-auto grid w-full max-w-[430px] grid-cols-1 content-start gap-4 overflow-x-clip px-4 pt-4 pb-8">
+    <main className="mx-auto grid w-full max-w-[430px] grid-cols-1 content-start gap-4 overflow-x-clip px-4 pt-4 pb-8 md:max-w-[720px] lg:max-w-[1120px] lg:px-8 lg:pt-8">
       <Suspense fallback={<p className="pt-6 text-[13px] text-faint">Loading your day…</p>}>
         <Today />
       </Suspense>

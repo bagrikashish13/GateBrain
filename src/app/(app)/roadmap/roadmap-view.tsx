@@ -89,43 +89,50 @@ export function RoadmapView({ roadmap, today, examDate, examDays, subjects }: Pr
         </div>
       </header>
 
-      {roadmap.daily.length > 0 && (
-        <section aria-label="Every day" className="grid gap-2">
-          <h2 className="label">Every day</h2>
-          <ul className="grid grid-cols-2 gap-px border border-line bg-line">
-            {roadmap.daily.map((d) => (
-              <li key={d.title} className="grid content-start gap-1 bg-void p-3">
-                <span className="font-mono text-[11px] text-faint">{d.time}</span>
-                <span className="text-[13px] leading-snug font-medium">{d.title}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-
-      <ZigZag roadmap={roadmap} pos={pos} today={today} examDate={examDate} examDays={examDays} subjects={subjects} />
-
-      {roadmap.weightage.length > 0 && <Weightage roadmap={roadmap} pos={pos} subjects={subjects} />}
-
-      {roadmap.cut.length > 0 && (
-        <section aria-label="If behind" className="grid gap-2">
-          <h2 className="label">If behind, cut in this order</h2>
-          <ol className="grid gap-2.5 border-t border-line pt-3">
-            {roadmap.cut.map((c, i) => (
-              <li key={c} className="flex gap-3 text-[13.5px] leading-snug text-muted-foreground">
-                <span className="num w-3 flex-none text-faint">{i + 1}</span>
-                {c}
-              </li>
-            ))}
-          </ol>
-          {roadmap.keep && (
-            <p className="mt-1 flex gap-3 border-t border-line pt-3 text-[13px] leading-snug">
-              <span className="flex-none font-semibold text-alert">Never cut</span>
-              <span className="text-muted-foreground">{roadmap.keep}</span>
-            </p>
+      {/* Phone: one column. Laptop: the map on the left, the routine, marks and cut list beside it.
+          The side column dissolves on a phone, so `order` keeps the stack. */}
+      <div className="grid gap-7 lg:grid-cols-[minmax(0,640px)_minmax(0,1fr)] lg:items-start lg:gap-x-12">
+        <div className="contents lg:sticky lg:top-8 lg:col-start-2 lg:row-start-1 lg:grid lg:gap-7">
+          {roadmap.daily.length > 0 && (
+            <section aria-label="Every day" className="order-1 grid gap-2">
+              <h2 className="label">Every day</h2>
+              <ul className="grid grid-cols-2 gap-px border border-line bg-line">
+                {roadmap.daily.map((d) => (
+                  <li key={d.title} className="grid content-start gap-1 bg-void p-3">
+                    <span className="font-mono text-[11px] text-faint">{d.time}</span>
+                    <span className="text-[13px] leading-snug font-medium">{d.title}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
           )}
-        </section>
-      )}
+
+          {roadmap.weightage.length > 0 && <Weightage roadmap={roadmap} pos={pos} subjects={subjects} />}
+
+          {roadmap.cut.length > 0 && (
+            <section aria-label="If behind" className="order-4 grid gap-2">
+              <h2 className="label">If behind, cut in this order</h2>
+              <ol className="grid gap-2.5 border-t border-line pt-3">
+                {roadmap.cut.map((c, i) => (
+                  <li key={c} className="flex gap-3 text-[13.5px] leading-snug text-muted-foreground">
+                    <span className="num w-3 flex-none text-faint">{i + 1}</span>
+                    {c}
+                  </li>
+                ))}
+              </ol>
+              {roadmap.keep && (
+                <p className="mt-1 flex gap-3 border-t border-line pt-3 text-[13px] leading-snug">
+                  <span className="flex-none font-semibold text-alert">Never cut</span>
+                  <span className="text-muted-foreground">{roadmap.keep}</span>
+                </p>
+              )}
+            </section>
+          )}
+        </div>
+        <div className="order-2 min-w-0 lg:col-start-1 lg:row-start-1">
+          <ZigZag roadmap={roadmap} pos={pos} today={today} examDate={examDate} examDays={examDays} subjects={subjects} />
+        </div>
+      </div>
     </>
   );
 }
@@ -528,7 +535,7 @@ function Weightage({ roadmap, pos, subjects }: { roadmap: Roadmap; pos: Position
   const covered = new Set([...roadmap.done, ...roadmap.phases.filter((_, i) => pos.status[i] === "done").map((p) => p.subject)]);
   const max = Math.max(...roadmap.weightage.map((w) => marksTop(w.marks)), 1);
   return (
-    <section aria-label="Marks per paper" className="grid gap-2">
+    <section aria-label="Marks per paper" className="order-3 grid gap-2">
       <h2 className="label">Marks per paper</h2>
       <ul className="grid border-t border-line">
         {roadmap.weightage.map((w, i) => {

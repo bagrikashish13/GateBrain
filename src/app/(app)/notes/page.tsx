@@ -12,7 +12,7 @@ export const metadata: Metadata = { title: "Notes · GateBrain" };
 
 export default function NotesPage() {
   return (
-    <main className="mx-auto grid w-full max-w-[430px] grid-cols-1 content-start gap-5 px-4 pt-5 pb-8">
+    <main className="mx-auto grid w-full max-w-[430px] grid-cols-1 content-start gap-5 px-4 pt-5 pb-8 md:max-w-[720px] lg:max-w-[1120px] lg:px-8 lg:pt-8">
       <Suspense
         fallback={
           <>

@@ -1,7 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { cn } from "cn";
 import { DatePicker, type When } from "./date-picker";
 import { DayHeading } from "./day-heading";
 import { DayTimer } from "./day-timer";
@@ -34,33 +35,54 @@ export function DayView({ data }: { data: TodayData }) {
         <DatePicker date={selected} years={years} slipped={slipped} onChange={(d) => inRange(d) && setSelected(d)} />
       </div>
 
-      <AnimatePresence initial={false}>
-        {when === "today" && (
-          <motion.div
-            key="timer"
-            className="grid gap-3 overflow-hidden"
-            initial={still ? false : { height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={still ? undefined : { height: 0, opacity: 0 }}
-            transition={{ duration: 0.25, ease: [0.2, 0.7, 0.2, 1] }}
-          >
-            <DayTimer />
-            <ExamCountdown days={data.examDays} date={data.examDate} />
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <motion.div
-        key={selected}
-        className="grid gap-4"
-        initial={still ? false : { opacity: 0, y: 6 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.22, ease: [0.2, 0.7, 0.2, 1] }}
-      >
-        {when === "today" && <TestsCard tests={data.tests} />}
-        <RevisionCard date={selected} today={today} revision={data.revision} subjects={data.subjects} />
-        <TasksCard date={selected} today={today} tasks={plans[selected] ?? []} subjects={data.subjects} />
-      </motion.div>
+      {/* Phone: one column (timer, tests, revision, tasks). Laptop: timer and revision on the left,
+          tests and tasks on the right. The columns dissolve on a phone, so `order` sets the stack. */}
+      <div className="grid gap-4 lg:grid-cols-2 lg:items-start lg:gap-x-8">
+        <div className="contents lg:grid lg:gap-4">
+          <AnimatePresence initial={false}>
+            {when === "today" && (
+              <motion.div
+                key="timer"
+                className="order-1 grid gap-3 overflow-hidden"
+                initial={still ? false : { height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={still ? undefined : { height: 0, opacity: 0 }}
+                transition={{ duration: 0.25, ease: [0.2, 0.7, 0.2, 1] }}
+              >
+                <DayTimer />
+                <ExamCountdown days={data.examDays} date={data.examDate} />
+              </motion.div>
+            )}
+          </AnimatePresence>
+          <Appear key={`rev-${selected}`} still={still} className="order-3">
+            <RevisionCard date={selected} today={today} revision={data.revision} subjects={data.subjects} />
+          </Appear>
+        </div>
+        <div className="contents lg:grid lg:gap-4">
+          {when === "today" && (
+            <Appear key={`tests-${selected}`} still={still} className="order-2">
+              <TestsCard tests={data.tests} />
+            </Appear>
+          )}
+          <Appear key={`tasks-${selected}`} still={still} className="order-4">
+            <TasksCard date={selected} today={today} tasks={plans[selected] ?? []} subjects={data.subjects} />
+          </Appear>
+        </div>
+      </div>
     </>
+  );
+}
+
+/** A card fading in when the selected day changes (keyed by the day). */
+function Appear({ still, className, children }: { still: boolean; className?: string; children: ReactNode }) {
+  return (
+    <motion.div
+      className={cn("grid min-w-0", className)}
+      initial={still ? false : { opacity: 0, y: 6 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.22, ease: [0.2, 0.7, 0.2, 1] }}
+    >
+      {children}
+    </motion.div>
   );
 }

@@ -19,7 +19,7 @@ export const metadata: Metadata = { title: "Test · GateBrain" };
 
 export default function TestPage({ params }: PageProps<"/tests/[id]">) {
   return (
-    <main className="mx-auto grid w-full max-w-[430px] grid-cols-1 content-start gap-5 px-4 pt-3 pb-8">
+    <main className="mx-auto grid w-full max-w-[430px] grid-cols-1 content-start gap-5 px-4 pt-3 pb-8 md:max-w-[680px] lg:px-8 lg:pt-6">
       <Suspense fallback={<p className="pt-8 text-[13px] text-faint">Opening…</p>}>
         <TestView params={params} />
       </Suspense>

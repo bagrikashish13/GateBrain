@@ -22,7 +22,7 @@ export const metadata: Metadata = { title: "Note · GateBrain" };
 
 export default function ReaderPage({ params }: PageProps<"/notes/[...path]">) {
   return (
-    <main className="mx-auto grid w-full max-w-[680px] grid-cols-1 content-start gap-4 px-4 pt-3 pb-10">
+    <main className="mx-auto grid w-full max-w-[680px] grid-cols-1 content-start gap-4 px-4 pt-3 pb-10 lg:px-8 lg:pt-6">
       <Suspense fallback={<p className="pt-8 text-[13px] text-faint">Opening…</p>}>
         <Reader params={params} />
       </Suspense>

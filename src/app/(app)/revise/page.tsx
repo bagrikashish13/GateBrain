@@ -21,7 +21,7 @@ export const metadata: Metadata = { title: "Revise · GateBrain" };
 
 export default function RevisePage() {
   return (
-    <main className="mx-auto grid w-full max-w-[430px] grid-cols-1 content-start gap-5 px-4 pt-5 pb-8">
+    <main className="mx-auto grid w-full max-w-[430px] grid-cols-1 content-start gap-5 px-4 pt-5 pb-8 md:max-w-[720px] lg:max-w-[1120px] lg:px-8 lg:pt-8">
       <Suspense
         fallback={
           <>
@@ -68,139 +68,145 @@ async function Revise() {
         </p>
       </header>
 
-      <section aria-label="Today" className="cut grid gap-3 p-4 [--cut:14px]">
-        <header className="flex items-center gap-2.5">
-          <h2 className="font-display text-[19px] leading-none font-bold">Today</h2>
-          {total > 0 && (
-            <span className="num text-[13px] text-muted-foreground">
-              <RollingCount value={rev.done.length} className="font-semibold text-fg" />/{total}
-            </span>
-          )}
-          <span className="ml-auto">
-            <AllDone show={total > 0 && rev.due.length === 0} />
-          </span>
-          {rev.due.length > 0 && (
-            <Link href="/revise/session" className={buttonVariants({ size: "sm", className: "-my-1" })}>
-              <Play aria-hidden className="fill-current" />
-              Start
-            </Link>
-          )}
-        </header>
-        <Progress done={rev.done.length} total={total} label={`${rev.done.length} of ${total} revised today`} className="-mt-0.5" />
-        {total === 0 ? (
-          <p className="text-[13px] text-faint">{rev.notes ? "Nothing due today." : "No notes yet."}</p>
-        ) : (
-          <div className="grid border-t border-line">
-            {todayGroups.map((g) => {
-              const s = subjectOf(g.subject, subjects);
-              const left = g.rows.filter((r) => r.kind === "due").length;
-              return (
-                <SubjectGroup key={g.subject} name={s.name} colour={s.colour} open count={`${g.rows.length - left}/${g.rows.length}`} done={left === 0}>
-                  {g.rows.map((r) =>
-                    r.kind === "due" ? (
-                      <NoteRow
-                        key={r.item.note.id}
-                        id={r.item.note.id}
-                        title={r.item.note.title}
-                        topic={r.item.note.section}
-                        weak={r.item.weak}
-                        right={r.item.last ? `Last ${agoShort(new Date(r.item.last), now)}${r.item.overdue ? ` · ${r.item.overdue}d overdue` : ""}` : "New"}
-                        tone={r.item.overdue > 0 ? "alert" : "faint"}
-                      />
-                    ) : (
-                      <NoteRow
-                        key={r.note.id}
-                        id={r.note.id}
-                        title={r.note.title}
-                        topic={r.note.section}
-                        faded
-                        right={RATING_LABEL[r.rating]}
-                        tone={r.rating === "forgot" ? "alert" : r.rating === "fuzzy" ? "faint" : "mint"}
-                      />
-                    ),
-                  )}
-                </SubjectGroup>
-              );
-            })}
-          </div>
-        )}
-        {rev.later > 0 && <p className="-mt-1 text-[12px] text-faint">+{rev.later} new held for the next days</p>}
-      </section>
-
-      <section aria-label="Coming up" className="grid gap-2">
-        <h2 className="label">Coming up</h2>
-        {comingGroups.length ? (
-          <div className="grid border-t border-line">
-            {comingGroups.map((g) => {
-              const s = subjectOf(g.subject, subjects);
-              return (
-                <SubjectGroup key={g.subject} name={s.name} colour={s.colour} count={`${g.rows.length}`} hint={`next ${comingDay(g.rows[0].nextDay, now)}`}>
-                  {g.rows.map((i) => (
-                    <NoteRow key={i.note.id} id={i.note.id} title={i.note.title} topic={i.note.section} weak={i.weak} right={`${i.state ? "" : "New · "}${comingDay(i.nextDay, now)}`} />
-                  ))}
-                </SubjectGroup>
-              );
-            })}
-          </div>
-        ) : (
-          <p className="text-[13px] text-faint">Nothing scheduled yet.</p>
-        )}
-      </section>
-
-      <section aria-label="Weak topics" className="grid gap-2">
-        <h2 className="label flex items-center gap-1.5">
-          <Crosshair className="size-[13px] stroke-[1.75] text-alert" aria-hidden />
-          Weak topics from mocks
-        </h2>
-        {weak.length ? (
-          <ul className="grid border-t border-line">
-            {weak.map((t) => {
-              const s = subjectOf(t.subject, subjects);
-              const folder = t.topic ? sectionFolder(t.subject, t.topic) : null;
-              const count = notes.filter((n) => n.subject === t.subject && n.section && slugOf(n.section) === t.topic).length;
-              return (
-                <li key={`${t.subject}/${t.topic}`} className="flex min-h-12 items-center gap-2.5 border-b border-line py-2">
-                  <SubjectMarker colour={s.colour} />
-                  <span className="grid min-w-0 flex-1 gap-0.5">
-                    <span className="truncate text-[14px]">{prettyName(t.topic ?? "")}</span>
-                    <span className="text-[12px] text-faint">
-                      {s.short} · {t.correct}/{t.questions} right
-                    </span>
-                  </span>
-                  <span className="num w-11 text-right text-[14px] font-semibold text-alert">{pct(t.strength)}</span>
-                  {count > 0 ? (
-                    <Link href={`/revise/session?topic=${encodeURIComponent(`${t.subject}/${t.topic}`)}`} className="flex h-8 flex-none items-center gap-1.5 border border-line-2 px-2.5 text-[12.5px] font-medium transition-colors hover:border-act">
-                      <Play className="size-3 fill-current stroke-[1.75]" aria-hidden />
-                      {count}
-                    </Link>
-                  ) : (
-                    <Link href={folderHref(folder ? `${t.subject}/${folder}` : t.subject)} className="flex h-8 flex-none items-center px-2.5 text-[12.5px] text-faint hover:text-fg">
-                      No notes
-                    </Link>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
-        ) : (
-          <p className="text-[13px] text-faint">None right now.</p>
-        )}
-      </section>
-
-      <section aria-label="Next 7 days" className="grid gap-2">
-        <h2 className="label">Next 7 days</h2>
-        <div className="grid grid-cols-7 gap-1.5">
-          {rev.forecast.map((f) => (
-            <div key={f.day} className="grid gap-1 text-center">
-              <div className="relative h-14 bg-raised">
-                <i className="absolute inset-x-0 bottom-0 bg-line-2" style={{ height: `${(f.count / maxForecast) * 100}%` }} />
-                <span className="num absolute inset-x-0 top-1 text-[12px] font-semibold">{f.count || ""}</span>
+      <div className="grid gap-5 lg:grid-cols-2 lg:items-start lg:gap-x-8">
+        <div className="grid min-w-0 gap-5">
+          <section aria-label="Today" className="cut grid gap-3 p-4 [--cut:14px]">
+            <header className="flex items-center gap-2.5">
+              <h2 className="font-display text-[19px] leading-none font-bold">Today</h2>
+              {total > 0 && (
+                <span className="num text-[13px] text-muted-foreground">
+                  <RollingCount value={rev.done.length} className="font-semibold text-fg" />/{total}
+                </span>
+              )}
+              <span className="ml-auto">
+                <AllDone show={total > 0 && rev.due.length === 0} />
+              </span>
+              {rev.due.length > 0 && (
+                <Link href="/revise/session" className={buttonVariants({ size: "sm", className: "-my-1" })}>
+                  <Play aria-hidden className="fill-current" />
+                  Start
+                </Link>
+              )}
+            </header>
+            <Progress done={rev.done.length} total={total} label={`${rev.done.length} of ${total} revised today`} className="-mt-0.5" />
+            {total === 0 ? (
+              <p className="text-[13px] text-faint">{rev.notes ? "Nothing due today." : "No notes yet."}</p>
+            ) : (
+              <div className="grid border-t border-line">
+                {todayGroups.map((g) => {
+                  const s = subjectOf(g.subject, subjects);
+                  const left = g.rows.filter((r) => r.kind === "due").length;
+                  return (
+                    <SubjectGroup key={g.subject} name={s.name} colour={s.colour} open count={`${g.rows.length - left}/${g.rows.length}`} done={left === 0}>
+                      {g.rows.map((r) =>
+                        r.kind === "due" ? (
+                          <NoteRow
+                            key={r.item.note.id}
+                            id={r.item.note.id}
+                            title={r.item.note.title}
+                            topic={r.item.note.section}
+                            weak={r.item.weak}
+                            right={r.item.last ? `Last ${agoShort(new Date(r.item.last), now)}${r.item.overdue ? ` · ${r.item.overdue}d overdue` : ""}` : "New"}
+                            tone={r.item.overdue > 0 ? "alert" : "faint"}
+                          />
+                        ) : (
+                          <NoteRow
+                            key={r.note.id}
+                            id={r.note.id}
+                            title={r.note.title}
+                            topic={r.note.section}
+                            faded
+                            right={RATING_LABEL[r.rating]}
+                            tone={r.rating === "forgot" ? "alert" : r.rating === "fuzzy" ? "faint" : "mint"}
+                          />
+                        ),
+                      )}
+                    </SubjectGroup>
+                  );
+                })}
               </div>
-              <span className="text-[11px] text-faint">{new Intl.DateTimeFormat("en-GB", { weekday: "narrow" }).format(parseDay(f.day))}</span>
-            </div>
-          ))}
+            )}
+            {rev.later > 0 && <p className="-mt-1 text-[12px] text-faint">+{rev.later} new held for the next days</p>}
+          </section>
+
+          <section aria-label="Coming up" className="grid gap-2">
+            <h2 className="label">Coming up</h2>
+            {comingGroups.length ? (
+              <div className="grid border-t border-line">
+                {comingGroups.map((g) => {
+                  const s = subjectOf(g.subject, subjects);
+                  return (
+                    <SubjectGroup key={g.subject} name={s.name} colour={s.colour} count={`${g.rows.length}`} hint={`next ${comingDay(g.rows[0].nextDay, now)}`}>
+                      {g.rows.map((i) => (
+                        <NoteRow key={i.note.id} id={i.note.id} title={i.note.title} topic={i.note.section} weak={i.weak} right={`${i.state ? "" : "New · "}${comingDay(i.nextDay, now)}`} />
+                      ))}
+                    </SubjectGroup>
+                  );
+                })}
+              </div>
+            ) : (
+              <p className="text-[13px] text-faint">Nothing scheduled yet.</p>
+            )}
+          </section>
         </div>
-      </section>
+
+        <div className="grid min-w-0 gap-5">
+          <section aria-label="Weak topics" className="grid gap-2">
+            <h2 className="label flex items-center gap-1.5">
+              <Crosshair className="size-[13px] stroke-[1.75] text-alert" aria-hidden />
+              Weak topics from mocks
+            </h2>
+            {weak.length ? (
+              <ul className="grid border-t border-line">
+                {weak.map((t) => {
+                  const s = subjectOf(t.subject, subjects);
+                  const folder = t.topic ? sectionFolder(t.subject, t.topic) : null;
+                  const count = notes.filter((n) => n.subject === t.subject && n.section && slugOf(n.section) === t.topic).length;
+                  return (
+                    <li key={`${t.subject}/${t.topic}`} className="flex min-h-12 items-center gap-2.5 border-b border-line py-2">
+                      <SubjectMarker colour={s.colour} />
+                      <span className="grid min-w-0 flex-1 gap-0.5">
+                        <span className="truncate text-[14px]">{prettyName(t.topic ?? "")}</span>
+                        <span className="text-[12px] text-faint">
+                          {s.short} · {t.correct}/{t.questions} right
+                        </span>
+                      </span>
+                      <span className="num w-11 text-right text-[14px] font-semibold text-alert">{pct(t.strength)}</span>
+                      {count > 0 ? (
+                        <Link href={`/revise/session?topic=${encodeURIComponent(`${t.subject}/${t.topic}`)}`} className="flex h-8 flex-none items-center gap-1.5 border border-line-2 px-2.5 text-[12.5px] font-medium transition-colors hover:border-act">
+                          <Play className="size-3 fill-current stroke-[1.75]" aria-hidden />
+                          {count}
+                        </Link>
+                      ) : (
+                        <Link href={folderHref(folder ? `${t.subject}/${folder}` : t.subject)} className="flex h-8 flex-none items-center px-2.5 text-[12.5px] text-faint hover:text-fg">
+                          No notes
+                        </Link>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            ) : (
+              <p className="text-[13px] text-faint">None right now.</p>
+            )}
+          </section>
+
+          <section aria-label="Next 7 days" className="grid gap-2">
+            <h2 className="label">Next 7 days</h2>
+            <div className="grid grid-cols-7 gap-1.5">
+              {rev.forecast.map((f) => (
+                <div key={f.day} className="grid gap-1 text-center">
+                  <div className="relative h-14 bg-raised">
+                    <i className="absolute inset-x-0 bottom-0 bg-line-2" style={{ height: `${(f.count / maxForecast) * 100}%` }} />
+                    <span className="num absolute inset-x-0 top-1 text-[12px] font-semibold">{f.count || ""}</span>
+                  </div>
+                  <span className="text-[11px] text-faint">{new Intl.DateTimeFormat("en-GB", { weekday: "narrow" }).format(parseDay(f.day))}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
+      </div>
     </>
   );
 }

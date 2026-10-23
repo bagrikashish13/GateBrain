@@ -22,7 +22,7 @@ export const metadata: Metadata = { title: "Revising · GateBrain" };
 
 export default function SessionPage({ searchParams }: PageProps<"/revise/session">) {
   return (
-    <main className="mx-auto grid w-full max-w-[680px] grid-cols-1 content-start gap-4 px-4 pt-3 pb-10">
+    <main className="mx-auto grid w-full max-w-[680px] grid-cols-1 content-start gap-4 px-4 pt-3 pb-10 lg:px-8 lg:pt-6">
       <Suspense fallback={<p className="pt-8 text-[13px] text-faint">Opening the next note…</p>}>
         <Session searchParams={searchParams} />
       </Suspense>
@@ -98,7 +98,7 @@ async function Session({ searchParams }: { searchParams: Promise<Record<string, 
         <MarkdownView source={note.content.replace(/^---\n[\s\S]*?\n---\n?/, "").replace(/^\s*#\s+.+\n/, "")} base={`notes/${note.id}`} variant="note" colour={subject.colour} slugs={slugs} />
       </article>
 
-      <section aria-label="How did it go?" className="sticky bottom-[calc(64px+env(safe-area-inset-bottom))] -mx-4 grid gap-2 border-t border-line bg-void px-4 py-3">
+      <section aria-label="How did it go?" className="sticky bottom-[calc(64px+env(safe-area-inset-bottom))] lg:bottom-0 -mx-4 grid gap-2 border-t border-line bg-void px-4 py-3">
         <RateNote key={item.note.id} noteId={item.note.id} choices={RATINGS.map((r) => ({ rating: r, when: relativeDay(when[r], now) }))} />
       </section>
     </>

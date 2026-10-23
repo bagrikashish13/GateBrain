@@ -11,7 +11,7 @@ export const metadata: Metadata = { title: "Roadmap · GateBrain" };
 
 export default function RoadmapPage() {
   return (
-    <main className="mx-auto grid w-full max-w-[430px] grid-cols-1 content-start gap-7 overflow-x-clip px-4 pt-5 pb-10">
+    <main className="mx-auto grid w-full max-w-[430px] grid-cols-1 content-start gap-7 overflow-x-clip px-4 pt-5 pb-10 md:max-w-[720px] lg:max-w-[1120px] lg:px-8 lg:pt-8">
       <Suspense fallback={<h1 className="display">Roadmap</h1>}>
         <Roadmap />
       </Suspense>

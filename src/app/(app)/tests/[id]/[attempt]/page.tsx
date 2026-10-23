@@ -22,7 +22,7 @@ export const metadata: Metadata = { title: "Result · GateBrain" };
 
 export default function ResultPage({ params }: PageProps<"/tests/[id]/[attempt]">) {
   return (
-    <main className="mx-auto grid w-full max-w-[680px] grid-cols-1 content-start gap-6 px-4 pt-3 pb-10">
+    <main className="mx-auto grid w-full max-w-[680px] grid-cols-1 content-start gap-6 px-4 pt-3 pb-10 lg:px-8 lg:pt-6">
       <Suspense fallback={<p className="pt-8 text-[13px] text-faint">Marking…</p>}>
         <ResultView params={params} />
       </Suspense>

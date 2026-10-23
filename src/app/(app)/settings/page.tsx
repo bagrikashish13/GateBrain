@@ -19,7 +19,7 @@ export const metadata: Metadata = { title: "Settings · GateBrain" };
 
 export default function SettingsPage() {
   return (
-    <main className="mx-auto grid w-full max-w-[430px] grid-cols-1 content-start gap-7 px-4 pt-5 pb-8">
+    <main className="mx-auto grid w-full max-w-[430px] grid-cols-1 content-start gap-7 px-4 pt-5 pb-8 md:max-w-[560px] lg:pt-8">
       <Suspense fallback={<h1 className="display">Settings</h1>}>
         <Settings />
       </Suspense>
