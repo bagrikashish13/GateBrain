@@ -46,48 +46,52 @@
         },
         {
           "date": "2026-10-24",
-          "label": "24 Oct · 2 lectures: Ch-01 Lec 10 & 11 (LR Parser & Practice TDP/BUP)",
+          "label": "24 Oct · 2 lectures: Ch-01 Lec 09 & 10 (LR Parser)",
           "lectures": 2,
-          "summary": "Ch-01 Lec 10 (LR Parser) & Lec 11 (Practice TDP/BUP)",
+          "summary": "Ch-01 Lec 09 & 10 (LR Parser)",
           "tasks": [
-            "Learn · CD Ch-01 Lec 10: LR Parser — 3h #compiler-design",
-            "Learn · CD Ch-01 Lec 11: Practice on TDP and BUP — 2.5h #compiler-design"
+            "Learn · CD Ch-01 Lec 09: LR Parser — 3h #compiler-design",
+            "Learn · CD Ch-01 Lec 10: LR Parser — 3h #compiler-design"
           ]
         },
         {
           "date": "2026-10-25",
-          "label": "25 Oct · 2 lectures: Ch-03 Lec 01 & 02 (ICG & Optimization)",
+          "label": "25 Oct · 2 lectures: Ch-01 Lec 11 (Practice) & Ch-02 Lec 01 (SDT)",
           "lectures": 2,
-          "summary": "Ch-03 Lec 01 & 02 (ICG & Optimization)",
+          "summary": "Ch-01 Lec 11 (Practice) & Ch-02 Lec 01 (SDT)",
           "tasks": [
-            "Learn · CD Ch-03 Lec 01: Intermediate Code & Optimization — 2h #compiler-design",
-            "Learn · CD Ch-03 Lec 02: Intermediate Code & Optimization — 3.5h #compiler-design"
+            "Learn · CD Ch-01 Lec 11: Practice on TDP and BUP — 2.5h #compiler-design",
+            "Learn · CD Ch-02 Lec 01: Syntax Directed Translation — 2h #compiler-design"
           ]
         },
         {
           "date": "2026-10-26",
-          "label": "26 Oct · 2 lectures: Ch-03 Lec 03 & 04 (ICG & Optimization)",
+          "label": "26 Oct · 2 lectures: Ch-02 Lec 02 (SDT) & Ch-03 Lec 01 (ICG & Optimization)",
           "lectures": 2,
-          "summary": "Ch-03 Lec 03 & 04 (ICG & Optimization)",
+          "summary": "Ch-02 Lec 02 (SDT) & Ch-03 Lec 01 (ICG)",
           "tasks": [
-            "Learn · CD Ch-03 Lec 03: Intermediate Code & Optimization — 2h #compiler-design",
-            "Learn · CD Ch-03 Lec 04: Intermediate Code & Optimization — 2.5h #compiler-design"
+            "Learn · CD Ch-02 Lec 02: Syntax Directed Translation — 2.5h #compiler-design",
+            "Learn · CD Ch-03 Lec 01: Intermediate Code & Optimization — 2h #compiler-design"
           ]
         },
         {
           "date": "2026-10-27",
-          "label": "27 Oct · CD PYQs · Parsing & LR tables",
-          "summary": "CD PYQs · Parsing & LR tables",
+          "label": "27 Oct · 2 lectures: Ch-03 Lec 02 & 03 (ICG & Optimization)",
+          "lectures": 2,
+          "summary": "Ch-03 Lec 02 & 03 (ICG & Optimization)",
           "tasks": [
-            "PYQ · CD Parsing and LR tables — 3h #compiler-design"
+            "Learn · CD Ch-03 Lec 02: Intermediate Code & Optimization — 3.5h #compiler-design",
+            "Learn · CD Ch-03 Lec 03: Intermediate Code & Optimization — 2h #compiler-design"
           ]
         },
         {
           "date": "2026-10-28",
-          "label": "28 Oct · CD PYQs · ICG & Code Optimization",
-          "summary": "CD PYQs · ICG & Code Optimization",
+          "label": "28 Oct · 1 lecture: Ch-03 Lec 04 (ICG) + CD PYQs",
+          "lectures": 1,
+          "summary": "Ch-03 Lec 04 (ICG) + CD PYQs (Parsing & LR)",
           "tasks": [
-            "PYQ · CD ICG and Optimization — 3h #compiler-design"
+            "Learn · CD Ch-03 Lec 04: Intermediate Code & Optimization — 2.5h #compiler-design",
+            "PYQ · CD Parsing and LR tables — 3h #compiler-design"
           ]
         }
       ]
