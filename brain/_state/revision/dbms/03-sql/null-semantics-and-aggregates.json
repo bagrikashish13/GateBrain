@@ -1,0 +1,21 @@
+{
+  "note": "dbms/03-sql/null-semantics-and-aggregates.md",
+  "card": {
+    "due": "2026-10-26T01:20:18.174Z",
+    "stability": 1.2931,
+    "difficulty": 5.1122,
+    "elapsed_days": 0,
+    "scheduled_days": 2,
+    "learning_steps": 0,
+    "reps": 1,
+    "lapses": 0,
+    "state": 2,
+    "last_review": "2026-10-24T01:20:18.174Z"
+  },
+  "log": [
+    {
+      "at": "2026-10-24T01:20:18.174Z",
+      "rating": "fuzzy"
+    }
+  ]
+}
