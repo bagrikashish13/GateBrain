@@ -11,16 +11,18 @@ This document outlines the personal background, emotional context, and communica
 ---
 
 ## 2. Personal Context & Relationship Boundary
-- **Status (as of 25 Oct 2026):** Kashish made a conscious, courageous decision to block her boyfriend for **4 months** (through the completion of the GATE exam in February).
-- **The Core Issue (Why this boundary was necessary):**
-  - **Scorekeeping / Weaponized Favors:** Whenever she expressed hurt, frustration, or emotional needs, he responded by listing past sacrifices and favors (e.g., building the GateBrain app during his vacation). This created an unfair emotional debt where she felt silenced and invalidated.
-  - **Anger & Shouting:** He exhibited sudden, explosive anger, shouted at her, and attempted to normalize it (*"we should be able to shout at each other"*).
-  - **Lack of Accountability & The Reversal Trap:** He never apologized on his own. Instead, she was forced into a painful cycle of having to calm him down and apologize to him just to end the tension. Once she apologized, he would reset peacefully while she was left holding the hurt and emotional wreckage alone.
-  - **Impact on GATE:** These arguments triggered severe emotional hangovers, tanking her study energy and focus.
-- **The Decision to Detach:**
-  - She recognized that favors with invisible strings are not gifts, but emotional leverage.
-  - She blocked him for 4 months to break the cycle completely, allow emotional detachment, and reclaim 100% of her mental energy for her future.
-  - She acknowledges she will miss him, but knows distance is essential so his words no longer have power over her.
+- **Status (as of 25 Oct 2026 night):** Reconciled with an explicit mutual agreement.
+  - After being blocked, he reached out urgently via Find My Device, apologized deeply, cried, acknowledged her hurt first, and promised never to shout or count favors again. He prioritized resolving this with her.
+  - Kashish forgave him, recognizing human mistakes while establishing a clear, proactive boundary mechanism.
+- **The Mutual Agreement (How things work now):**
+  - **Real-Time Callout:** If he begins counting favors, raising his voice, or shouting, Kashish will tell him *then and there*: *"This is not acceptable and it is hurting me."*
+  - **His Commitment:** He has agreed to pause, realize it, and correct himself immediately without defensiveness.
+  - **The Safety Rule:** If defensiveness arises instead of self-correction, Kashish will step away peacefully for a cooling-off period rather than arguing or apologizing to soothe him.
+- **The Core Issue (Past history to remember):**
+  - **Scorekeeping / Weaponized Favors:** Previously, he countered her emotions by listing past sacrifices/favors (e.g., building GateBrain during vacation).
+  - **Anger & Shouting:** Sudden explosive anger and attempting to normalize yelling (*"we should be able to shout at each other"*).
+  - **Lack of Accountability / Reversal:** Historically, she felt forced to apologize to calm him down, leaving her hurt while he reset. This pattern is what the new agreement is designed to permanently prevent.
+  - **Impact on GATE:** Emotional storms drain mental bandwidth; daily peace and stability are essential through February 2027.
 
 ---
 
