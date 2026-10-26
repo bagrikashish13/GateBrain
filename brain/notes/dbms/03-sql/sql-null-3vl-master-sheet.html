@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SQL NULL Semantics, 3VL & Subquery Predicates — GATE Master Sheet</title>
+<style>
+  @page {
+    size: A4 portrait;
+    margin: 10mm 10mm 10mm 10mm;
+  }
+  * {
+    box-sizing: border-box;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #111827;
+    background: #ffffff;
+    font-size: 11.5px;
+    line-height: 1.45;
+    margin: 0;
+    padding: 0;
+  }
+  .header {
+    border-bottom: 3px solid #00c853;
+    padding-bottom: 6px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .header h1 {
+    font-size: 19px;
+    font-weight: 800;
+    margin: 0;
+    color: #0f172a;
+    letter-spacing: -0.5px;
+  }
+  .header .subtitle {
+    font-size: 11px;
+    color: #475569;
+    font-weight: 500;
+    margin-top: 2px;
+  }
+  .header .badge {
+    background: #0f172a;
+    color: #00fd92;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  
+  .card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 9px 11px;
+    margin-bottom: 10px;
+    break-inside: avoid;
+  }
+  
+  .card.highlight {
+    background: #f0fdf4;
+    border-color: #86efac;
+  }
+  
+  .card.danger {
+    background: #fef2f2;
+    border-color: #fca5a5;
+  }
+  
+  .card.warning {
+    background: #fffbeb;
+    border-color: #fde68a;
+  }
+  
+  h2 {
+    font-size: 13px;
+    font-weight: 700;
+    margin: 0 0 6px 0;
+    color: #0f172a;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    padding-bottom: 3px;
+  }
+  
+  h3 {
+    font-size: 11.5px;
+    font-weight: 700;
+    margin: 6px 0 3px 0;
+    color: #1e293b;
+  }
+  
+  p {
+    margin: 0 0 5px 0;
+  }
+  
+  ul {
+    margin: 0 0 6px 0;
+    padding-left: 16px;
+  }
+  li {
+    margin-bottom: 2.5px;
+  }
+  
+  code, .code {
+    font-family: "Cascadia Code", Consolas, "Courier New", monospace;
+    font-size: 10.5px;
+    background: #f1f5f9;
+    padding: 1px 4px;
+    border-radius: 3px;
+    color: #0f172a;
+    font-weight: 600;
+  }
+  
+  pre {
+    font-family: "Cascadia Code", Consolas, "Courier New", monospace;
+    background: #1e293b;
+    color: #f8fafc;
+    padding: 7px 9px;
+    border-radius: 4px;
+    font-size: 10px;
+    margin: 4px 0 6px 0;
+    overflow-x: hidden;
+    line-height: 1.35;
+  }
+  pre .keyword { color: #38bdf8; font-weight: bold; }
+  pre .string { color: #fde047; }
+  pre .comment { color: #94a3b8; font-style: italic; }
+  pre .func { color: #a78bfa; }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10.5px;
+    margin: 4px 0 6px 0;
+  }
+  th, td {
+    padding: 4px 6px;
+    border: 1px solid #cbd5e1;
+    text-align: left;
+  }
+  th {
+    background: #e2e8f0;
+    color: #0f172a;
+    font-weight: 700;
+  }
+  tr:nth-child(even) td {
+    background: #f8fafc;
+  }
+  
+  .formula-box {
+    background: #ffffff;
+    border-left: 3px solid #0284c7;
+    padding: 5px 8px;
+    margin: 4px 0;
+    font-weight: 600;
+  }
+  
+  .tag {
+    display: inline-block;
+    font-size: 9px;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .tag-green { background: #dcfce7; color: #15803d; }
+  .tag-red { background: #fee2e2; color: #b91c1c; }
+  .tag-blue { background: #e0f2fe; color: #0369a1; }
+  .tag-amber { background: #fef3c7; color: #b45309; }
+
+  .page-break {
+    page-break-before: always;
+    break-before: page;
+  }
+  
+  .footer-bar {
+    margin-top: 10px;
+    padding-top: 5px;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    font-size: 9.5px;
+    color: #64748b;
+  }
+</style>
+</head>
+<body>
+
+<!-- PAGE 1 -->
+<div class="header">
+  <div>
+    <h1>GATE CS Master Sheet: SQL NULL Semantics & 3VL</h1>
+    <div class="subtitle">Complete Logic, Mental Shortcuts, Aggregates & Subquery Traps</div>
+  </div>
+  <div class="badge">GATE CSE Revision</div>
+</div>
+
+<div class="grid-2">
+  <!-- SECTION 1 -->
+  <div class="card highlight">
+    <h2>1. The Mental Shortcut for 3VL (Three-Valued Logic)</h2>
+    <p>Never memorize bulky truth tables. Convert SQL logic to numbers:</p>
+    <div class="formula-box">
+      <strong>TRUE = 1.0 &nbsp;|&nbsp; UNKNOWN (U) = 0.5 &nbsp;|&nbsp; FALSE = 0.0</strong>
+    </div>
+    <ul>
+      <li><strong>AND is min(A, B):</strong>
+        <br><code>TRUE AND U</code> &rarr; min(1, 0.5) = <strong>0.5 (UNKNOWN)</strong>
+        <br><code>FALSE AND U</code> &rarr; min(0, 0.5) = <strong>0 (FALSE)</strong>
+      </li>
+      <li><strong>OR is max(A, B):</strong>
+        <br><code>TRUE OR U</code> &rarr; max(1, 0.5) = <strong>1 (TRUE)</strong>
+        <br><code>FALSE OR U</code> &rarr; max(0, 0.5) = <strong>0.5 (UNKNOWN)</strong>
+      </li>
+      <li><strong>NOT is (1 - A):</strong>
+        <br><code>NOT(TRUE)</code> = 1 - 1 = <strong>0 (FALSE)</strong>
+        <br><code>NOT(UNKNOWN)</code> = 1 - 0.5 = <strong>0.5 (UNKNOWN)</strong>
+      </li>
+    </ul>
+    <div class="card danger" style="margin-bottom: 0; padding: 6px 8px;">
+      <strong>The Golden WHERE Clause Rule:</strong>
+      <br>A row is selected <strong>ONLY IF</strong> the condition evaluates to <strong>TRUE (1)</strong>.
+      <br>If it evaluates to <strong>FALSE (0)</strong> or <strong>UNKNOWN (0.5)</strong> &rarr; <strong>DISCARDED!</strong>
+    </div>
+  </div>
+
+  <!-- SECTION 2 -->
+  <div class="card">
+    <h2>2. Aggregates with NULL (Counting & Math)</h2>
+    <p>NULL is <em>missing information</em>, not 0 or blank.</p>
+    <table>
+      <thead>
+        <tr><th>Aggregate</th><th>What it does</th><th>All-NULL Group</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>COUNT(*)</code></td>
+          <td>Counts total rows (including NULLs)</td>
+          <td>Row count</td>
+        </tr>
+        <tr>
+          <td><code>COUNT(A)</code></td>
+          <td>Counts <strong>non-NULL</strong> values only</td>
+          <td><strong>0</strong></td>
+        </tr>
+        <tr>
+          <td><code>SUM(A)</code></td>
+          <td>Sums non-NULL values</td>
+          <td><strong>NULL</strong> (not 0!)</td>
+        </tr>
+        <tr>
+          <td><code>AVG(A)</code></td>
+          <td><code>SUM(A) / COUNT(A)</code> (divides by non-NULLs!)</td>
+          <td><strong>NULL</strong></td>
+        </tr>
+        <tr>
+          <td><code>MIN / MAX</code></td>
+          <td>Ignores NULLs completely</td>
+          <td><strong>NULL</strong></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3>Key Functions:</h3>
+    <ul>
+      <li><code>COALESCE(x, y, ...)</code>: Returns 1st non-NULL (e.g. <code>COALESCE(NULL, 0) = 0</code>).</li>
+      <li><code>NULLIF(x, y)</code>: Returns <code>NULL</code> if <code>x = y</code>, else returns <code>x</code>.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- SECTION 3: THE IS FAMILY -->
+<div class="card">
+  <h2>3. The "IS" Operator Family (State Inspector vs Value Comparator)</h2>
+  <div class="grid-2">
+    <div>
+      <p><strong>Why <code>=</code> fails on NULL:</strong>
+      <br><code>=</code> checks value equality. Since NULL is unknown, <code>x = NULL</code> and <code>NULL = NULL</code> both yield <strong>UNKNOWN (0.5)</strong>! It never survives <code>WHERE</code>.</p>
+      
+      <p><strong>Why <code>IS</code> works:</strong>
+      <br><code>IS</code> does not compare values; it inspects the <em>state of the container</em>. <strong><code>IS</code> NEVER yields UNKNOWN</strong> (strictly TRUE or FALSE)!</p>
+      
+      <table>
+        <thead><tr><th>Expression</th><th>When x = 10</th><th>When x = NULL</th></tr></thead>
+        <tbody>
+          <tr><td><code>x = NULL</code></td><td>UNKNOWN (0.5)</td><td>UNKNOWN (0.5) &times;</td></tr>
+          <tr><td><code>x IS NULL</code></td><td>FALSE (0)</td><td><strong>TRUE (1) &check;</strong></td></tr>
+          <tr><td><code>x IS NOT NULL</code></td><td><strong>TRUE (1) &check;</strong></td><td>FALSE (0) &times;</td></tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <div>
+      <h3>Advanced 3VL State Inspectors:</h3>
+      <ul>
+        <li><code>(expr) IS UNKNOWN</code>: Evaluates to <strong>TRUE</strong> if <code>expr</code> yielded UNKNOWN (0.5).
+          <br><em>Example:</em> If <code>score</code> is NULL, <code>(score > 50) IS UNKNOWN</code> &rarr; <strong>TRUE</strong>!
+        </li>
+        <li><code>(expr) IS TRUE</code> / <code>(expr) IS FALSE</code>: Strictly tests boolean outcome.</li>
+        <li><strong><code>A IS NOT DISTINCT FROM B</code></strong>:
+          <br>Treats two NULLs as identical!
+          <br>&bull; <code>5 IS NOT DISTINCT FROM 5</code> &rarr; <strong>TRUE</strong>
+          <br>&bull; <code>NULL IS NOT DISTINCT FROM NULL</code> &rarr; <strong>TRUE</strong> (unlike <code>=</code>!)
+          <br>&bull; <code>5 IS NOT DISTINCT FROM NULL</code> &rarr; <strong>FALSE</strong>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 4: IN vs NOT IN -->
+<div class="card danger">
+  <h2>4. IN vs NOT IN (The Infamous "Zero Rows" GATE Trap)</h2>
+  <div class="grid-2">
+    <div>
+      <h3>How <code>IN</code> expands (uses OR / max):</h3>
+      <p><code>x IN (v1, v2, v3) &equiv; (x = v1) OR (x = v2) OR (x = v3)</code></p>
+      <ul>
+        <li>If any match is found, that term is <strong>TRUE (1)</strong>. By the max rule, whole expression is <strong>TRUE</strong>!</li>
+        <li>Even if list has NULL, e.g. <code>10 IN (10, NULL)</code> &rarr; <code>1 OR 0.5 = 1 (TRUE)</code>.</li>
+        <li><strong>Rule:</strong> <code>IN</code> is safe as long as an exact match exists.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>How <code>NOT IN</code> expands (uses AND / min):</h3>
+      <p><code>x NOT IN (v1, v2, v3) &equiv; (x &ne; v1) AND (x &ne; v2) AND (x &ne; v3)</code></p>
+      <ul>
+        <li>What if the list has a NULL? E.g.: <code>x NOT IN (10, 20, NULL)</code>
+          <br><code>(x &ne; 10) AND (x &ne; 20) AND <strong>(x &ne; NULL)</strong></code></li>
+        <li>The term <code>(x &ne; NULL)</code> is <strong>always UNKNOWN (0.5)</strong>!</li>
+        <li>By min rule: if not matched &rarr; min(1, 1, 0.5) = <strong>0.5 (UNKNOWN)</strong>; if matched &rarr; min(0, 1, 0.5) = <strong>0 (FALSE)</strong>.</li>
+        <li><strong>THE GOLDEN TRAP:</strong> <code>WHERE x NOT IN (..., NULL)</code> <strong>NEVER evaluates to TRUE</strong> &rarr; <strong>ALWAYS RETURNS 0 ROWS!</strong></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="footer-bar">
+  <span>GateBrain &bull; GATE CSE Prep Sheet</span>
+  <span>Page 1 of 2</span>
+</div>
+
+<!-- PAGE BREAK -->
+<div class="page-break"></div>
+
+<div class="header">
+  <div>
+    <h1>GATE CS Master Sheet: SQL NULL Semantics & 3VL (Contd.)</h1>
+    <div class="subtitle">Subquery Predicates, Quantifiers & Worked Exam Traces</div>
+  </div>
+  <div class="badge">GATE CSE Revision</div>
+</div>
+
+<!-- SECTION 5: ANY vs ALL -->
+<div class="card">
+  <h2>5. Quantifiers: ANY (SOME) vs ALL</h2>
+  <p>Used to compare a single value against a set returned by a subquery:</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Operator</th>
+        <th>What it expands to</th>
+        <th>Intuition / Equivalent</th>
+        <th>Handling NULL in Subquery</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>= ANY (...)</code></td>
+        <td><code>(x=v1) OR (x=v2) ...</code></td>
+        <td><strong>Same as <code>IN</code></strong></td>
+        <td>Returns TRUE if at least 1 value matches</td>
+      </tr>
+      <tr>
+        <td><code>&lt;&gt; ALL (...)</code></td>
+        <td><code>(x&ne;v1) AND (x&ne;v2) ...</code></td>
+        <td><strong>Same as <code>NOT IN</code></strong></td>
+        <td><strong style="color:#b91c1c;">Returns 0 rows if NULL is present!</strong></td>
+      </tr>
+      <tr>
+        <td><code>&gt; ANY (...)</code></td>
+        <td><code>(x&gt;v1) OR (x&gt;v2) ...</code></td>
+        <td><strong><code>&gt; MIN(...)</code></strong></td>
+        <td>Safe if greater than any non-NULL number</td>
+      </tr>
+      <tr>
+        <td><code>&gt; ALL (...)</code></td>
+        <td><code>(x&gt;v1) AND (x&gt;v2) ...</code></td>
+        <td><strong><code>&gt; MAX(...)</code></strong></td>
+        <td>Yields UNKNOWN if NULL is present & no false</td>
+      </tr>
+      <tr>
+        <td><code>&lt; ANY (...)</code></td>
+        <td><code>(x&lt;v1) OR (x&lt;v2) ...</code></td>
+        <td><strong><code>&lt; MAX(...)</code></strong></td>
+        <td>Safe if smaller than any non-NULL number</td>
+      </tr>
+      <tr>
+        <td><code>&lt; ALL (...)</code></td>
+        <td><code>(x&lt;v1) AND (x&lt;v2) ...</code></td>
+        <td><strong><code>&lt; MIN(...)</code></strong></td>
+        <td>Yields UNKNOWN if NULL is present & no false</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="card warning" style="margin-bottom:0; padding: 6px 8px;">
+    <strong>The "Empty Subquery" Trap (GATE Favorite):</strong>
+    <br>&bull; <code>x &gt; ANY (&empty;)</code> &rarr; <strong>FALSE</strong> (no element exists to satisfy condition).
+    <br>&bull; <code>x &gt; ALL (&empty;)</code> &rarr; <strong>TRUE</strong> (vacuously true: x is greater than every element in an empty set!).
+  </div>
+</div>
+
+<!-- SECTION 6: EXISTS vs NOT EXISTS -->
+<div class="card highlight">
+  <h2>6. EXISTS vs NOT EXISTS (The NULL-Immune Operators)</h2>
+  <div class="grid-2">
+    <div>
+      <p><code>EXISTS</code> only inspects the <strong>count of returned rows</strong>:</p>
+      <ul>
+        <li>If subquery returns &ge; 1 row &rarr; <strong>TRUE (1)</strong></li>
+        <li>If subquery returns 0 rows &rarr; <strong>FALSE (0)</strong></li>
+        <li><strong><code>EXISTS</code> NEVER EVALUATES TO UNKNOWN!</strong></li>
+      </ul>
+      <p>Even if the subquery returns a row containing only <code>NULL</code> (e.g. <code>SELECT NULL FROM Table</code>), a row exists! Thus <code>EXISTS</code> evaluates to <strong>TRUE</strong>.</p>
+    </div>
+    <div>
+      <h3>Best Practice & GATE Equivalence:</h3>
+      <p>Whenever replacing a subquery that might contain NULLs:</p>
+      <div class="formula-box">
+        <strong>AVOID:</strong> <code>WHERE col NOT IN (SELECT col FROM T)</code><br>
+        <strong>USE:</strong> <code>WHERE NOT EXISTS (SELECT 1 FROM T WHERE T.col = Main.col)</code>
+      </div>
+      <p>Because <code>NOT EXISTS</code> is 100% immune to the NULL trap that destroys <code>NOT IN</code>!</p>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 7: WORKED GATE TRACES -->
+<div class="card">
+  <h2>7. Master GATE Trace Walkthroughs (Memorize These Scenarios)</h2>
+  <p>Given table <code>Student(id, marks)</code> with values: <code>{40, 60, 80, NULL, 50, NULL}</code></p>
+  
+  <div class="grid-2">
+    <div>
+      <h3>Trace 1: Complementary WHERE Query</h3>
+      <pre><span class="keyword">SELECT</span> <span class="func">COUNT</span>(*) <span class="keyword">FROM</span> Student 
+<span class="keyword">WHERE</span> marks &gt;= 50 <span class="keyword">OR NOT</span>(marks &gt;= 50);</pre>
+      <ul>
+        <li>For non-NULL marks (40, 60, 80, 50): <code>TRUE OR FALSE = TRUE</code> &rarr; <strong>Survives (4 rows)</strong>.</li>
+        <li>For NULL marks: <code>(NULL &gt;= 50) = 0.5</code>. <code>NOT(0.5) = 0.5</code>.
+          <br><code>0.5 OR 0.5 = 0.5 (UNKNOWN)</code> &rarr; <strong>DISCARDED!</strong></li>
+        <li><strong>Result = 4</strong> (Total is 6, but NULL rows never survive either side!).</li>
+      </ul>
+
+      <h3>Trace 2: AVG with NULLs</h3>
+      <pre><span class="keyword">SELECT</span> <span class="func">AVG</span>(marks) <span class="keyword">FROM</span> Student;</pre>
+      <ul>
+        <li>Sum = 40 + 60 + 80 + 50 = 230.</li>
+        <li>Non-NULL Count = 4 (NULLs ignored).</li>
+        <li><strong>Result = 230 / 4 = 57.5</strong> (Divided by 4, NOT 6!).</li>
+      </ul>
+    </div>
+
+    <div>
+      <h3>Trace 3: NOT IN with NULL in Subquery</h3>
+      <pre><span class="keyword">SELECT</span> <span class="func">COUNT</span>(*) <span class="keyword">FROM</span> Student
+<span class="keyword">WHERE</span> marks <span class="keyword">NOT IN</span> (40, 60, <span class="keyword">NULL</span>);</pre>
+      <ul>
+        <li>Condition: <code>(marks &ne; 40) AND (marks &ne; 60) AND (marks &ne; NULL)</code></li>
+        <li>Since <code>(marks &ne; NULL)</code> is <strong>0.5</strong>:
+          <br>&bull; If marks = 40 &rarr; min(0, 1, 0.5) = <strong>0 (FALSE)</strong>.
+          <br>&bull; If marks = 80 &rarr; min(1, 1, 0.5) = <strong>0.5 (UNKNOWN)</strong>.
+        </li>
+        <li>Zero rows evaluate to TRUE!</li>
+        <li><strong>Result = 0</strong>!</li>
+      </ul>
+
+      <h3>Trace 4: EXISTS with NULL row</h3>
+      <pre><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> Student 
+<span class="keyword">WHERE EXISTS</span> (<span class="keyword">SELECT</span> <span class="keyword">NULL FROM</span> Student <span class="keyword">WHERE</span> id = 4);</pre>
+      <ul>
+        <li>Row <code>id = 4</code> exists (even though marks is NULL).</li>
+        <li>Subquery returns 1 row containing NULL.</li>
+        <li>Row count = 1 &ge; 1 &rarr; <code>EXISTS</code> is <strong>TRUE</strong>!</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="footer-bar">
+  <span>GateBrain &bull; GATE CSE Prep Sheet</span>
+  <span>Page 2 of 2</span>
+</div>
+
+</body>
+</html>
