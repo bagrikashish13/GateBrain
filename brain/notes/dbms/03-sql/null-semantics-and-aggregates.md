@@ -31,11 +31,26 @@
   - `A IS NOT DISTINCT FROM B`: Treats two `NULL`s as equal ($\text{NULL} \text{ IS NOT DISTINCT FROM } \text{NULL} \implies \text{TRUE}$).
 
 - **Subquery Predicates with NULL:**
-  - `IN`: Expands with `OR` ($\max$). If at least one element matches, it returns `TRUE`.
-  - `NOT IN`: Expands with `AND` ($\min$). If the set contains any `NULL`, it can **never be TRUE** $\implies$ returns 0 rows!
-  - `ANY` / `SOME`: `= ANY` is `IN`; `> ANY` means `> MIN(...)`.
-  - `ALL`: `<> ALL` is `NOT IN`; `> ALL` means `> MAX(...)`.
-  - `EXISTS` / `NOT EXISTS`: Checks row count ($\ge 1$ vs $0$). **Immune to NULLs** and never returns `UNKNOWN`.
+  - `IN`: Expands with **`OR`** (the $\max$ rule):
+    $$x \text{ IN } (v_1, v_2) \equiv (x = v_1) \ \mathbf{\text{OR}} \ (x = v_2)$$
+    If at least one element matches, it evaluates to `TRUE` (1).
+  - `NOT IN`: Expands with **`AND`** (the $\min$ rule):
+    $$x \text{ NOT IN } (v_1, v_2) \equiv (x \neq v_1) \ \mathbf{\text{AND}} \ (x \neq v_2)$$
+    If the set contains any `NULL`, e.g. $(x \neq v_1) \text{ AND } (x \neq \text{NULL})$:
+    - $(x \neq \text{NULL})$ is **always `UNKNOWN` ($0.5$)**.
+    - By the $\min$ rule, the whole condition is at best $\min(1, 0.5) = 0.5$ (`UNKNOWN`).
+    - It can **never evaluate to `TRUE`** for any row $\implies$ **ALWAYS returns 0 rows!**
+  - **`ANY` (`SOME`) vs `ALL` mapping:**
+    - `= ANY(...)` $\equiv$ `IN(...)`
+    - `<> ALL(...)` $\equiv$ `NOT IN(...)`
+    - `> ANY(...)` $\implies$ greater than **`MIN(...)`** (greater than at least one).
+    - `> ALL(...)` $\implies$ greater than **`MAX(...)`** (must beat every value).
+    - `< ANY(...)` $\implies$ less than **`MAX(...)`**.
+    - `< ALL(...)` $\implies$ less than **`MIN(...)`**.
+  - **`EXISTS` vs `NOT EXISTS` (Immune to NULL):**
+    - Checks only **row count** ($\ge 1$ row $\implies$ `TRUE`, $0$ rows $\implies$ `FALSE`).
+    - **Never returns `UNKNOWN`**. Even `SELECT NULL FROM T` produces a row, so `EXISTS` is `TRUE`.
+    - Always prefer `NOT EXISTS` over `NOT IN` when nullable columns are involved.
 
 ## Where I got confused → what made it click
 - **`COUNT(*)` vs `COUNT(col)`:**
@@ -44,6 +59,9 @@
 - **`= NULL` vs `IS NULL`:**
   - *Confusion:* Writing `WHERE col = NULL` expecting it to match nulls.
   - *The click:* `=` asks for value equality and yields `UNKNOWN`. `IS` inspects state directly and strictly returns `TRUE` or `FALSE`.
+- **`NOT IN` with NULL:**
+  - *Confusion:* Thinking an element not equal to the non-null values should be selected (e.g. $3000 \text{ NOT IN } (5000, \text{NULL})$).
+  - *The click:* `NOT IN` is an `AND` chain. The term $(3000 \neq \text{NULL})$ is $0.5$ (`UNKNOWN`). Since $\min(1, 0.5) = 0.5$, it never becomes `TRUE` ($1$), so every row gets discarded!
 
 ## GATE traps
 - **The `NOT IN (..., NULL)` Trap:**
