@@ -25,6 +25,9 @@ Pointers per block $P = \frac{\text{Block Size}}{\text{Pointer Size}}$. Assuming
 - **Offset to block mapping:**
   - *Confusion:* Getting confused between byte offset and block number.
   - *The click:* Always convert byte offset to block index first: $B_i = \lfloor \text{byte offset} / \text{block size} \rfloor$. Then compare $B_i$ sequentially against cumulative block capacities: Direct ($< D$), Single Indirect ($< D + P$), Double Indirect ($< D + P + P^2$).
+- **Double indirect tree structure:**
+  - *Confusion:* Wondering how blocks beyond single indirect land in double indirect and why it takes 3 accesses.
+  - *The click:* Double indirect is a 2-tier tree: 1 pointer in inode $\to$ Level-1 index block ($P$ pointers) $\to$ Level-2 index blocks ($P$ pointers each) $\to$ $P^2$ data blocks! It holds a massive $P^2$ blocks, and requires 3 disk accesses (Level-1 Index + Level-2 Index + Data block).
 
 ## GATE traps
 - **Inode in memory vs on disk:** Standard GATE questions assume the inode is already in RAM. If the inode is NOT in memory, add $+1$ disk access to all operations to fetch the inode block.
