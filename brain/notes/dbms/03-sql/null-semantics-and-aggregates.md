@@ -17,22 +17,40 @@
 
 - **Three-Valued Logic (3VL):**
   - Any arithmetic with NULL ($A + \text{NULL}$, $5 \times \text{NULL}$) $\implies \text{NULL}$.
-  - Any comparison with NULL ($A = \text{NULL}$, $A > 10$, $\text{NULL} = \text{NULL}$) $\implies \mathbf{\text{UNKNOWN}}$.
-  - Truth table with `UNKNOWN` ($U$):
-    - $\text{TRUE AND } U = U$
-    - $\text{FALSE AND } U = \text{FALSE}$
-    - $\text{TRUE OR } U = \text{TRUE}$
-    - $\text{FALSE OR } U = U$
-    - $\mathbf{\text{NOT}(U) = U}$
+  - Any comparison with NULL ($A = \text{NULL}$, $A > 10$, $\text{NULL} = \text{NULL}$) $\implies \mathbf{\text{UNKNOWN}}$ ($U$).
+  - **The Mental Shortcut:** Assign $\text{TRUE} = 1$, $\text{UNKNOWN} = 0.5$, $\text{FALSE} = 0$.
+    - $\text{AND} = \min(A, B) \implies \text{TRUE AND } U = \min(1, 0.5) = U$; $\text{FALSE AND } U = \min(0, 0.5) = 0$.
+    - $\text{OR} = \max(A, B) \implies \text{TRUE OR } U = \max(1, 0.5) = 1$; $\text{FALSE OR } U = \max(0, 0.5) = U$.
+    - $\text{NOT}(A) = 1 - A \implies \mathbf{\text{NOT}(U) = 1 - 0.5 = 0.5} \ (U)$.
   - **The `WHERE` clause filter:** Discards any row that evaluates to `FALSE` or `UNKNOWN`. Only rows evaluating to `TRUE` survive.
-  - **Testing for NULL:** Always use `A IS NULL` or `A IS NOT NULL`. Never use `A = NULL` (always evaluates to `UNKNOWN`).
+
+- **The `IS` Operator (State Inspector):**
+  - `IS` inspects the state of a box, NOT values. It **never returns UNKNOWN** (strictly `TRUE` or `FALSE`).
+  - `A IS NULL` / `A IS NOT NULL`: Always use instead of `= NULL` or `!= NULL`.
+  - `(expr) IS UNKNOWN` / `IS TRUE` / `IS FALSE`: Tests the outcome of a 3VL expression.
+  - `A IS NOT DISTINCT FROM B`: Treats two `NULL`s as equal ($\text{NULL} \text{ IS NOT DISTINCT FROM } \text{NULL} \implies \text{TRUE}$).
+
+- **Subquery Predicates with NULL:**
+  - `IN`: Expands with `OR` ($\max$). If at least one element matches, it returns `TRUE`.
+  - `NOT IN`: Expands with `AND` ($\min$). If the set contains any `NULL`, it can **never be TRUE** $\implies$ returns 0 rows!
+  - `ANY` / `SOME`: `= ANY` is `IN`; `> ANY` means `> MIN(...)`.
+  - `ALL`: `<> ALL` is `NOT IN`; `> ALL` means `> MAX(...)`.
+  - `EXISTS` / `NOT EXISTS`: Checks row count ($\ge 1$ vs $0$). **Immune to NULLs** and never returns `UNKNOWN`.
 
 ## Where I got confused → what made it click
 - **`COUNT(*)` vs `COUNT(col)`:**
   - *Confusion:* Seeing 6 surviving rows and taking `COUNT(points) = 6`, giving $40 + 6 \times 10 = 100$.
   - *The click:* `COUNT(*)` counts rows; `COUNT(points)` counts only valid numbers. With four NULLs and two numbers, `COUNT(points) = 2`, giving $40 + 20 = 60$.
+- **`= NULL` vs `IS NULL`:**
+  - *Confusion:* Writing `WHERE col = NULL` expecting it to match nulls.
+  - *The click:* `=` asks for value equality and yields `UNKNOWN`. `IS` inspects state directly and strictly returns `TRUE` or `FALSE`.
 
 ## GATE traps
+- **The `NOT IN (..., NULL)` Trap:**
+  - `WHERE col NOT IN (10, 20, NULL)` always returns **0 rows**, because $(col \neq \text{NULL})$ evaluates to `UNKNOWN`, making the entire `AND` condition either `FALSE` or `UNKNOWN`. Use `NOT EXISTS` instead.
+- **Empty Subquery Trap (`ANY` vs `ALL`):**
+  - `x > ANY (empty)` evaluates to **`FALSE`** (no witness exists).
+  - `x > ALL (empty)` evaluates to **`TRUE`** (vacuously true!).
 - **Complementary WHERE queries:**
   - `SELECT COUNT(*) WHERE A > 50` + `SELECT COUNT(*) WHERE NOT(A > 50)` **does NOT equal total rows** if any NULL exists! The NULL rows evaluate to `UNKNOWN` in both and are excluded from both.
 - **`COALESCE` vs `NULLIF`:**
