@@ -95,7 +95,8 @@ export async function todayRevision(now = new Date()): Promise<TodayRevision> {
     const state = states.get(note.id) ?? null;
     let addedDay = added.get(`brain/notes/${note.id}`) ?? today;
     if (settings.revisionStart && addedDay < settings.revisionStart) addedDay = settings.revisionStart;
-    const dueDay = state ? dayKey(new Date(state.card.due)) : addDayKey(addedDay, 1);
+    let dueDay = state ? dayKey(new Date(state.card.due)) : addDayKey(addedDay, 1);
+    if (settings.revisionStart && dueDay < settings.revisionStart) dueDay = addDayKey(settings.revisionStart, 1);
     const k = noteKey(note);
     return {
       note,

@@ -106,8 +106,8 @@ async function Revise() {
                             title={r.item.note.title}
                             topic={r.item.note.section}
                             weak={r.item.weak}
-                            right={r.item.last ? `Last ${agoShort(new Date(r.item.last), now)}${r.item.overdue ? ` · ${r.item.overdue}d overdue` : ""}` : "New"}
-                            tone={r.item.overdue > 0 ? "alert" : "faint"}
+                            right={r.item.last ? `Last ${agoShort(new Date(r.item.last), now)}` : "New"}
+                            tone="faint"
                           />
                         ) : (
                           <NoteRow

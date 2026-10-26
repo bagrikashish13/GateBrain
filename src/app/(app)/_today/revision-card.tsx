@@ -50,7 +50,7 @@ export function RevisionCard({ date, today, revision, subjects }: { date: string
                 <SubjectMarker colour={colour(r.subject)} />
                 <span className="min-w-0 flex-1 text-[14px] leading-snug">{r.title}</span>
                 {"weak" in r && r.weak && <Crosshair className="size-[14px] flex-none stroke-[1.75] text-alert" aria-label="Weak topic" />}
-                {"overdue" in r && (r.fresh ? <span className="flex-none text-[12px] text-faint">new</span> : r.overdue > 0 && <span className="flex-none text-[12px] text-alert">{r.overdue}d late</span>)}
+                {"fresh" in r && r.fresh && <span className="flex-none text-[12px] text-faint">new</span>}
               </Link>
             </li>
           ))}
