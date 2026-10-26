@@ -30,8 +30,12 @@ An Inverted Page Table has exactly one entry per physical frame in RAM (shared b
 - **What determines IPT entries vs size:**
   - *Confusion:* Thinking the number of entries depends on virtual address space, or that virtual address space doesn't affect table size at all.
   - *The click:* The **number of entries** depends strictly on **Physical Frames**. But the **size of each entry** contains the **VPN**, so virtual address space width determines entry width!
+- **Translation speed: Slower, NOT faster!**
+  - *Confusion:* Thinking IPT must be faster because the table is so much smaller.
+  - *The click:* Traditional paging is a direct array index by VPN (`base + VPN * size`) $\implies$ instant $O(1)$ lookup. But IPT is indexed by *frame number*, while the CPU only has the *VPN*! It cannot direct-index; it must compute a hash on `(PID, VPN)` and traverse collision chains in memory on a TLB miss. IPT is chosen purely for massive **space savings** in 64-bit systems (e.g. 48 MB vs 512 GB), relying on high TLB hit rates (~98%) to absorb the miss penalty.
 
 ## GATE traps
+- **Translation speed trap:** Traditional paging is faster on TLB miss (direct array indexing); IPT is slower (requires hashing and chain search). The sole reason IPT is used is space savings in 64-bit systems.
 - **Byte rounding:** Always check if the question says "rounded up to the nearest integer byte". For example, $81\text{ bits} \implies \lceil 81/8 \rceil = 11\text{ bytes}$.
 - **Chain pointer width:** The hash chain pointer addresses another slot in the IPT; its bit width is $\log_2(\text{number of frames})$.
 - **Shared memory difficulty:** In traditional paging, two processes share memory easily by having entries in their separate tables point to the same frame. In IPT, each physical frame has only one entry, making shared memory complex.
