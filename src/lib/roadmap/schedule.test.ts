@@ -30,10 +30,12 @@ describe("roadmap schedule", () => {
     const all = getAllRoadmapTasks();
     expect(all.has("2026-10-22")).toBe(true);
     expect(all.has("2026-10-23")).toBe(true);
-    expect(all.has("2026-10-24")).toBe(true);
-    expect(all.has("2026-10-25")).toBe(true);
-    expect(all.has("2026-10-26")).toBe(true);
-    expect(all.has("2026-10-27")).toBe(true);
     expect(all.has("2026-10-28")).toBe(true);
+    expect(all.has("2026-10-29")).toBe(true);
+    expect(all.has("2026-10-30")).toBe(true);
+    expect(all.has("2026-10-31")).toBe(true);
+    expect(all.has("2026-11-01")).toBe(true);
+    expect(all.has("2026-11-02")).toBe(true);
+    expect(all.has("2026-11-03")).toBe(true);
   });
 });

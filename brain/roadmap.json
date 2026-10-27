@@ -12,7 +12,7 @@
       "short": "CD",
       "subject": "compiler-design",
       "start": "2026-10-16",
-      "end": "2026-10-30",
+      "end": "2026-11-03",
       "marks": "4–8",
       "focus": [
         { "text": "LR family: LR(0) items, SLR vs LALR vs CLR, SR/RR conflicts, counting states", "top": true },
@@ -36,17 +36,17 @@
         },
         {
           "date": "2026-10-23",
-          "label": "23 Oct · 2 lectures: Ch-01 Lec 08 & 09 (LR Parser)",
-          "lectures": 2,
-          "summary": "Ch-01 Lec 08 & 09 (LR Parser)",
+          "label": "23 Oct · 1 lecture: Ch-01 Lec 08 (LR Parser)",
+          "lectures": 1,
+          "summary": "Ch-01 Lec 08 (LR Parser)",
           "tasks": [
-            "Learn · CD Ch-01 Lec 08: LR Parser — 2.5h #compiler-design",
-            "Learn · CD Ch-01 Lec 09: LR Parser — 3h #compiler-design"
+            "Learn · CD Ch-01 Lec 08: LR Parser — 2.5h #compiler-design"
           ]
         },
+        "24–27 Oct · Work pause",
         {
-          "date": "2026-10-24",
-          "label": "24 Oct · 2 lectures: Ch-01 Lec 09 & 10 (LR Parser)",
+          "date": "2026-10-28",
+          "label": "28 Oct · 2 lectures: Ch-01 Lec 09 & 10 (LR Parser)",
           "lectures": 2,
           "summary": "Ch-01 Lec 09 & 10 (LR Parser)",
           "tasks": [
@@ -55,8 +55,8 @@
           ]
         },
         {
-          "date": "2026-10-25",
-          "label": "25 Oct · 2 lectures: Ch-01 Lec 11 (Practice) & Ch-02 Lec 01 (SDT)",
+          "date": "2026-10-29",
+          "label": "29 Oct · 2 lectures: Ch-01 Lec 11 (Practice) & Ch-02 Lec 01 (SDT)",
           "lectures": 2,
           "summary": "Ch-01 Lec 11 (Practice) & Ch-02 Lec 01 (SDT)",
           "tasks": [
@@ -65,8 +65,8 @@
           ]
         },
         {
-          "date": "2026-10-26",
-          "label": "26 Oct · 2 lectures: Ch-02 Lec 02 & 03 (SDT)",
+          "date": "2026-10-30",
+          "label": "30 Oct · 2 lectures: Ch-02 Lec 02 & 03 (SDT)",
           "lectures": 2,
           "summary": "Ch-02 Lec 02 & 03 (SDT)",
           "tasks": [
@@ -75,8 +75,8 @@
           ]
         },
         {
-          "date": "2026-10-27",
-          "label": "27 Oct · 2 lectures: Ch-02 Lec 04 (SDT) & Ch-03 Lec 01 (ICG & Optimization)",
+          "date": "2026-10-31",
+          "label": "31 Oct · 2 lectures: Ch-02 Lec 04 (SDT) & Ch-03 Lec 01 (ICG & Optimization)",
           "lectures": 2,
           "summary": "Ch-02 Lec 04 (SDT) & Ch-03 Lec 01 (ICG)",
           "tasks": [
@@ -85,8 +85,8 @@
           ]
         },
         {
-          "date": "2026-10-28",
-          "label": "28 Oct · 2 lectures: Ch-03 Lec 02 & 03 (ICG & Optimization)",
+          "date": "2026-11-01",
+          "label": "1 Nov · 2 lectures: Ch-03 Lec 02 & 03 (ICG & Optimization)",
           "lectures": 2,
           "summary": "Ch-03 Lec 02 & 03 (ICG & Optimization)",
           "tasks": [
@@ -95,8 +95,8 @@
           ]
         },
         {
-          "date": "2026-10-29",
-          "label": "29 Oct · 1 lecture: Ch-03 Lec 04 (ICG) + CD PYQs",
+          "date": "2026-11-02",
+          "label": "2 Nov · 1 lecture: Ch-03 Lec 04 (ICG) + CD PYQs",
           "lectures": 1,
           "summary": "Ch-03 Lec 04 (ICG) + CD PYQs (Parsing & LR)",
           "tasks": [
@@ -105,8 +105,8 @@
           ]
         },
         {
-          "date": "2026-10-30",
-          "label": "30 Oct · CD PYQs · SDT, ICG & Code Optimization",
+          "date": "2026-11-03",
+          "label": "3 Nov · CD PYQs · SDT, ICG & Code Optimization",
           "summary": "CD PYQs · SDT, ICG & Optimization",
           "tasks": [
             "PYQ · CD SDT, ICG and Optimization — 3h #compiler-design"
@@ -118,8 +118,8 @@
       "title": "Programming & Data Structures",
       "short": "PDS",
       "subject": "programming-ds",
-      "start": "2026-10-31",
-      "end": "2026-11-10",
+      "start": "2026-11-04",
+      "end": "2026-11-14",
       "marks": "11–15",
       "focus": [
         { "text": "C output tracing: pointers, arrays, strings, recursion, static variables, scope", "top": true },
@@ -136,8 +136,8 @@
       "title": "Algorithms",
       "short": "Algo",
       "subject": "algorithms",
-      "start": "2026-11-11",
-      "end": "2026-11-22",
+      "start": "2026-11-15",
+      "end": "2026-11-26",
       "marks": "6–9",
       "focus": [
         { "text": "Graphs: BFS/DFS edge types and timings, Dijkstra, Bellman-Ford, MST (Prim, Kruskal)", "top": true },
@@ -154,8 +154,8 @@
       "title": "Digital Logic",
       "short": "DL",
       "subject": "digital-logic",
-      "start": "2026-11-23",
-      "end": "2026-11-29",
+      "start": "2026-11-27",
+      "end": "2026-12-03",
       "marks": "4–6",
       "focus": [
         { "text": "Number representation: 2's complement range and overflow, IEEE 754 single precision", "top": true },
@@ -171,8 +171,8 @@
       "title": "Computer Organization & Architecture",
       "short": "COA",
       "subject": "coa",
-      "start": "2026-11-30",
-      "end": "2026-12-13",
+      "start": "2026-12-04",
+      "end": "2026-12-17",
       "marks": "8–12",
       "focus": [
         { "text": "Cache: mapping, tag/index/offset bits, hit ratio, AMAT, write-back vs write-through", "top": true },
@@ -188,8 +188,8 @@
       "title": "Computer Networks",
       "short": "CN",
       "subject": "computer-networks",
-      "start": "2026-12-14",
-      "end": "2026-12-27",
+      "start": "2026-12-18",
+      "end": "2026-12-31",
       "marks": "7–10",
       "focus": [
         { "text": "IPv4, CIDR, subnetting, longest prefix match", "top": true },
@@ -205,8 +205,8 @@
       "title": "Maths, the scoring parts",
       "short": "Maths",
       "subject": "discrete-maths",
-      "start": "2026-12-28",
-      "end": "2027-01-10",
+      "start": "2027-01-01",
+      "end": "2027-01-14",
       "marks": "13–16",
       "focus": [
         { "text": "Propositional and first-order logic: equivalence, validity, English to quantifiers", "top": true },
@@ -217,14 +217,14 @@
         { "text": "Counting: permutations, combinations, pigeonhole, inclusion–exclusion" }
       ],
       "skip": ["Calculus: limits, maxima, integrals", "Groups, monoids, lattices beyond definitions", "Generating functions, hard recurrences", "Statistics beyond mean, median, variance"],
-      "days": ["28–30 Dec · Logic", "31 Dec – 1 Jan · Sets, relations, functions", "2–4 Jan · Graph theory, counting", "5–6 Jan · Linear algebra", "7–9 Jan · Probability", "10 Jan · Mixed maths PYQs"],
+      "days": ["1–3 Jan · Logic", "4–5 Jan · Sets, relations, functions", "6–8 Jan · Graph theory, counting", "9–10 Jan · Linear algebra", "11–13 Jan · Probability", "14 Jan · Mixed maths PYQs"],
       "note": "Aim for 8–10 of these marks. The skipped parts cost about 3–5."
     },
     {
       "title": "Revision and full mocks",
       "short": "Revise",
       "subject": null,
-      "start": "2027-01-11",
+      "start": "2027-01-15",
       "end": "2027-01-24",
       "focus": [
         { "text": "Full-length mock (65 Qs, 3 h) every Mon, Wed, Fri at exam time", "top": true },
