@@ -1,0 +1,21 @@
+{
+  "note": "os/07-file-systems-io/hard-and-soft-links.md",
+  "card": {
+    "due": "2026-11-04T11:41:58.132Z",
+    "stability": 8.2956,
+    "difficulty": 1,
+    "elapsed_days": 0,
+    "scheduled_days": 8,
+    "learning_steps": 0,
+    "reps": 1,
+    "lapses": 0,
+    "state": 2,
+    "last_review": "2026-10-27T11:41:58.132Z"
+  },
+  "log": [
+    {
+      "at": "2026-10-27T11:41:58.132Z",
+      "rating": "easy"
+    }
+  ]
+}
