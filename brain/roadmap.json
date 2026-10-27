@@ -1,6 +1,7 @@
 {
   "done": ["os", "dbms", "toc"],
   "daily": [
+    { "time": "1h", "title": "General Aptitude: 34-day sprint to 15/15" },
     { "time": "45–60m", "title": "Technical mock, finished subjects" },
     { "time": "15m", "title": "Fix mistakes, revise due notes" },
     { "time": "4–5h", "title": "Current block + its PYQs" }
