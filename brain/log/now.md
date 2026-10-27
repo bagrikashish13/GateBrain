@@ -6,4 +6,4 @@ Updated Tue 27 Oct 2026.
 - Compiler Design: Parser block ongoing (Ch-01 Lec 09 & Lec 10).
 - Revision: Today's queue complete (3/3 notes marked Got it: RA equivalences, SQL NULL, Inverted Page Table).
 - Tests: DBMS Queries Master Mock (dbms-queries-mock-01, 20 qns) ready.
-- GA: wiped 27 Oct; new day-by-day plan in brain/ga-roadmap.md (Day 1 = Wed 28 Oct). Not in the app yet.
+- GA: 34-day sprint locked in brain/ga-roadmap.md (28 Oct – 30 Nov). Integrated in roadmap.json and plan/2026-10-28.md (Day 1 ready).
