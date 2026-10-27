@@ -1,7 +1,6 @@
 {
   "done": ["os", "dbms", "toc"],
   "daily": [
-    { "time": "30–40m", "title": "General Aptitude mock" },
     { "time": "45–60m", "title": "Technical mock, finished subjects" },
     { "time": "15m", "title": "Fix mistakes, revise due notes" },
     { "time": "4–5h", "title": "Current block + its PYQs" }
@@ -268,5 +267,5 @@
     "Maths: drop counting and graph theory, keep logic, linear algebra, probability",
     "Revision days, at most 7: keep two weeks of full mocks"
   ],
-  "keep": "Daily GA mock, daily technical mock, final week"
+  "keep": "Daily technical mock, final week"
 }
