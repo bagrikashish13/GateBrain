@@ -1,183 +1,125 @@
-# General Aptitude Roadmap (from zero)
+# General Aptitude Master Roadmap · 15/15 Target
 
-**Goal:** solve every GATE GA question type; 13–15 / 15.
-**Time:** 1 hour every day, separate from the subject roadmap (`roadmap.json`).
-**Dates:** Wed 28 Oct 2026 → Sun 31 Jan 2027 (exam Mon 1 Feb). 96 days.
-**Syllabus:** official GATE 2027 GA (IIT Madras): Verbal, Quantitative, Analytical, Spatial. 10 questions:
-5 × 1 mark + 5 × 2 marks.
-
----
-
-## 1. The daily hour
-
-| Block | Time | What |
-|---|---|---|
-| Verbal | 15m | Today's root set or grammar rule (learn → 10 questions), then a 3-minute re-quiz of the previous two days' roots/rules |
-| Topic | 35m | Today's quant / reasoning / spatial topic: method and tricks (10m) → PYQs on it (25m) |
-| Speed drill | 10m | Mental maths (see each phase). From Phase 2: error log instead |
-
-Sundays: **weekly test** (agent-written, cumulative: this week's topics + earlier ones) 25m → analysis 25m →
-vocab re-quiz 10m.
-
-## 2. Speed targets (honest version)
-
-- **1-mark questions: under 1 minute.** Yes, all of them, by January.
-- **2-mark questions: under 2 minutes.** Long data-interpretation and puzzle questions take 2–3 minutes even
-  for toppers; under 1 minute on those isn't realistic or needed.
-- **Whole GA section: under 18 minutes** by mid-January (GATE gives ~25 minutes' worth).
-- Ladder: Phase 0–1 accuracy first, no timer → from 23 Nov every PYQ is timed → Phase 2 sets at 25m, then
-  22m → Phase 3 at 20m, then 18m.
-
-## 3. PYQs: all of them
-
-- **Phase 1 (topic-wise):** every CSE GA PYQ 2010–2020 on that day's topic, plus GA PYQs 2021–2026 from
-  **other branches** (GA is common to all papers; since 2021 every session has its own GA set, so there's a big
-  pool). The agent brings them into the session (GATE Overflow GA tags).
-- **Phase 2 (year-wise, timed):** CSE GA papers **2021–2026 are kept untouched** until then and solved as real
-  10-question timed sets. So every CSE GA PYQ gets done, and the recent ones count as fresh mocks.
-
-## 4. Notes (formulas, roots, rules, tricks)
-
-- Each day's topic gets **one note** written in that day's session, in the student's own words: formulas, the trick, her
-  confusions, GATE traps. Path: `brain/notes/general-aptitude/<NN-section>/<topic>.md`.
-- Sections: `01-verbal`, `02-number-sense`, `03-arithmetic`, `04-counting-probability-stats`,
-  `05-geometry-mensuration`, `06-data-interpretation`, `07-analytical`, `08-spatial`.
-- Notes enter revision on their own, so roots and formulas come back on the FSRS schedule.
+**Target:** 13–15 / 15 marks in GATE 2027 General Aptitude (under 18 minutes).  
+**Commitment:** Exactly 1 hour per day (Zero disruption to technical subjects).  
+**Structure:**
+- **Phase 1 (28 Oct – 30 Nov · 34 Days):** 100% complete syllabus coverage across every single micro-topic (Untimed accuracy + Concept notes).
+- **Phase 2 (1 Dec – 31 Dec · 31 Days):** Full Sectional Mocks (10 Qs timed) every 2 days + Error Log + Speed drills.
+- **Phase 3 (1 Jan – 31 Jan · 31 Days):** Exam Mode (GA inside full-length mocks, 1-markers < 1 min, 2-markers < 2 min).
 
 ---
 
-## 5. Day by day
+## The Daily 1-Hour Protocol (Phase 1: 28 Oct – 30 Nov)
 
-### Phase 0 · Number sense and foundations (28 Oct – 8 Nov)
-Speed drill: tables 11–20 → squares to 30, cubes to 15 → fractions ↔ % (1/2 … 1/20) → approximations.
-
-| Date | Topic (35m) | Verbal (15m) |
+| Block | Duration | What happens |
 |---|---|---|
-| Wed 28 Oct | Tables 11–20, squares 1–30: patterns to remember them | Roots R1: good/bad (bene, mal, eu, dys, mis, caco) |
-| Thu 29 Oct | Fractions ↔ decimals ↔ percentages (1/2 to 1/20) | Grammar G1: articles (a / an / the / zero article) |
-| Fri 30 Oct | Estimation and approximation; using the GATE virtual calculator fast | Roots R2: negation (a/an, in/im/il/ir, un, non, dis, anti, contra) |
-| Sat 31 Oct | Number system: divisibility rules, factors, primes, HCF/LCM | Grammar G2: subject–verb agreement I (basic, collective nouns) |
-| Sun 1 Nov | **Weekly test 1** (numbers, articles, agreement) | Re-quiz R1–R2 |
-| Mon 2 Nov | Remainders, unit digit, cyclicity | Grammar G3: agreement II (either/neither, each, one of, along with, the number / a number) |
-| Tue 3 Nov | Powers and exponents: laws, surds, comparing big powers | Roots R3: size and number (magn, micro, mega, omni, pan, poly, mono, uni, bi, di, tri) |
-| Wed 4 Nov | Logarithms: 3 laws, change of base, number of digits | Grammar G4: tenses I (the 12 tenses map) |
-| Thu 5 Nov | Algebra basics: linear and quadratic equations, identities, inequalities | Grammar G5: tenses II (sequence of tenses, conditionals) |
-| Fri 6 Nov | Ratio and proportion, partnership, variation | Roots R4: speaking and writing (dict, loqu, voc, scrib, graph, log, clam) |
-| Sat 7 Nov | Percentages I: multiplier method, successive changes | Grammar G6: prepositions I (time, place, direction) |
-| Sun 8 Nov | **Weekly test 2** (cumulative) | Re-quiz R3–R4, G4–G6 |
-
-### Phase 1A · Arithmetic (9 Nov – 22 Nov)
-Speed drill: percentage ↔ multiplier, mental multiplication (2-digit × 2-digit), squaring tricks.
-
-| Date | Topic (35m) | Verbal (15m) |
-|---|---|---|
-| Mon 9 Nov | Percentages II: profit, loss, discount, marked price | Grammar G7: prepositions II (fixed: comply with, abide by, averse to …) |
-| Tue 10 Nov | Simple and compound interest, growth and decay | Roots R5: senses (vid/vis, spec/spic, aud, sent/sens, path, phon) |
-| Wed 11 Nov | Averages (incl. weighted average, add/remove a member) | Grammar G8: conjunctions and correlatives (not only … but also, either … or) |
-| Thu 12 Nov | Mixtures and alligation | Roots R6: movement (duc, port, mit/miss, ced/cess, ject, tract, vert, flu) |
-| Fri 13 Nov | Ages and number word problems (words → equation) | Grammar G9: pronouns (case, who/whom, reflexive, it/there) |
-| Sat 14 Nov | Time and work, pipes and cisterns | Grammar G10: adjectives and degrees of comparison (than, senior to, preferable to) |
-| Sun 15 Nov | **Weekly test 3** (cumulative) | Re-quiz R5–R6, G7–G10 |
-| Mon 16 Nov | Speed, time, distance I: relative speed, average speed | Roots R7: life, death, time (bio, viv/vit, mort, anim, corp, chron, temp, ann/enn) |
-| Tue 17 Nov | Speed, time, distance II: trains, boats, circular tracks | Grammar G11: adverbs and modals (hardly/hard, must/should/ought) |
-| Wed 18 Nov | Clocks and calendars | Grammar G12: gerund vs infinitive, verb patterns |
-| Thu 19 Nov | Series I: AP, GP, sums, special series | Roots R8: mind and belief (cogn/gno, sci, cred, fid, ver, sapi, put) |
-| Fri 20 Nov | Series II: number and letter series, missing term, odd one out | Grammar G13: parallelism and active/passive voice |
-| Sat 21 Nov | Arithmetic revision: redo the error log | Verbal V1: sentence completion with signal words (despite, although, hence) |
-| Sun 22 Nov | **Weekly test 4** (cumulative) | Re-quiz R7–R8, G11–G13 |
-
-### Phase 1B · Counting, probability, statistics, geometry (23 Nov – 6 Dec)
-Speed drill: factorials to 10!, nCr for small n, π and √2, √3 values, area/volume formulas. **All PYQs timed from now.**
-
-| Date | Topic (35m) | Verbal (15m) |
-|---|---|---|
-| Mon 23 Nov | Permutations and combinations I: counting principle, arrangements | Roots R9: feelings (phil, phob, am/ami, miso, pac, grat) |
-| Tue 24 Nov | P&C II: selections with restrictions, circular, identical objects, distributions | Roots R10: power and people (arch, crat, dem, pol, reg, dom, jur, leg) |
-| Wed 25 Nov | Probability I: coins, dice, cards, classical | Verbal V2: reading comprehension (stated vs inferred) |
-| Thu 26 Nov | Probability II: conditional, independent, "at least one", complement | Verbal V3: RC practice (main idea, tone, which can be inferred) |
-| Fri 27 Nov | Statistics: mean, median, mode, range, variance and SD basics | Verbal V4: narrative sequencing (ordering sentences) |
-| Sat 28 Nov | Sets and Venn diagrams (2 and 3 sets) | Idioms and phrasal verbs I |
-| Sun 29 Nov | **Weekly test 5** (cumulative) | Re-quiz R9–R10, V1–V4 |
-| Mon 30 Nov | Geometry I: angles, triangles, similarity, Pythagoras | Roots R11: position prefixes (pre, post, ante, inter, intra, sub, super, trans, circum, ex) |
-| Tue 1 Dec | Geometry II: circles (chords, tangents, inscribed angles), polygons | Idioms and phrasal verbs II |
-| Wed 2 Dec | Mensuration 2D: areas, perimeters, shaded regions | Roots R12: making and breaking (fac/fic/fect, struct, rupt, frag/fract, solv, tend) |
-| Thu 3 Dec | Mensuration 3D: cube, cuboid, cylinder, cone, sphere; melting and recasting | Confusable words I (affect/effect, principal/principle, …) |
-| Fri 4 Dec | Coordinate basics and graphs: lines, regions, absolute-value and other 2D/3D plots | Roots R13: change and fullness (nov, mut, ple, vac, plac) |
-| Sat 5 Dec | Data interpretation I: tables and bar graphs | Confusable words II |
-| Sun 6 Dec | **Weekly test 6** (cumulative) | Re-quiz R11–R13, idioms, confusables |
-
-### Phase 1C · Data interpretation, analytical, spatial (7 Dec – 20 Dec)
-Speed drill: quick % change and ratio from chart values; approximating division.
-
-| Date | Topic (35m) | Verbal (15m) |
-|---|---|---|
-| Mon 7 Dec | Data interpretation II: pie charts, line graphs, combined charts, maps | Roots R14: suffixes (-ous, -ity, -ize, -cide, -phile, -ism, -logy, -cracy, -escent) |
-| Tue 8 Dec | Logic I: statements and conclusions, syllogisms (Venn method) | Verbal V5: synonyms and antonyms in context |
-| Wed 9 Dec | Logic II: if-then, contrapositive, necessary vs sufficient, truth-teller/liar | Verbal V6: word analogies (relation types) |
-| Thu 10 Dec | Seating arrangements: linear and circular | Grammar G14: mixed error spotting (all rules) |
-| Fri 11 Dec | Puzzles: ordering, ranking, grouping, scheduling | Verbal V7: RC timed set |
-| Sat 12 Dec | Blood relations, directions, coding–decoding, number/letter analogies | Verbal V8: fill-in-the-blank PYQ set (grammar + vocab) |
-| Sun 13 Dec | **Weekly test 7** (cumulative) | Re-quiz R14, V5–V8 |
-| Mon 14 Dec | Numerical reasoning: inequalities, max/min reasoning, function puzzles | Roots full re-quiz (R1–R7) |
-| Tue 15 Dec | Spatial I: translation, rotation, mirror and water images | Roots full re-quiz (R8–R14) |
-| Wed 16 Dec | Spatial II: paper folding, cutting, punched holes | Grammar full re-quiz (G1–G7) |
-| Thu 17 Dec | Spatial III: cubes and dice (opposite faces, nets), painted cubes, counting cubes | Grammar full re-quiz (G8–G14) |
-| Fri 18 Dec | Spatial IV: assembling and grouping shapes, figure counting, 2D/3D patterns, views | Verbal PYQ mixed set |
-| Sat 19 Dec | Gap day: leftover PYQs and the error log | Vocab: all words missed so far |
-| Sun 20 Dec | **First full GA sectional mock** (10 Q, all topics, 25m) | Re-quiz misses |
-
-### Phase 2 · Full GA sectional mocks (21 Dec – 10 Jan)
-Each day: a 10-question GA set (timed) → analysis → 10m vocab/formula re-quiz. Timer 25m until 31 Dec,
-22m from 1 Jan. "Weak drill" = 35m on the error log's worst topic + 15m verbal.
-(Subject roadmap is in Maths 28 Dec – 10 Jan: GA probability/P&C helps there.)
-
-| Date | Session |
-|---|---|
-| Mon 21 Dec | CSE GA 2021 set 1 |
-| Tue 22 Dec | Weak drill |
-| Wed 23 Dec | CSE GA 2021 set 2 |
-| Thu 24 Dec | Agent GA mock 01 |
-| Fri 25 Dec | CSE GA 2022 |
-| Sat 26 Dec | Weak drill |
-| Sun 27 Dec | Agent GA mock 02 |
-| Mon 28 Dec | CSE GA 2023 |
-| Tue 29 Dec | Agent GA mock 03 |
-| Wed 30 Dec | CSE GA 2024 set 1 |
-| Thu 31 Dec | Weak drill |
-| Fri 1 Jan | CSE GA 2024 set 2 |
-| Sat 2 Jan | Agent GA mock 04 |
-| Sun 3 Jan | CSE GA 2025 set 1 |
-| Mon 4 Jan | Weak drill |
-| Tue 5 Jan | CSE GA 2025 set 2 |
-| Wed 6 Jan | Agent GA mock 05 |
-| Thu 7 Jan | CSE GA 2026 set 1 |
-| Fri 8 Jan | Weak drill |
-| Sat 9 Jan | CSE GA 2026 set 2 (if only one set exists: agent GA mock) |
-| Sun 10 Jan | Agent GA mock 06 |
-
-### Phase 3 · Exam mode (11 Jan – 31 Jan)
-Subject roadmap: revision and full-length mocks. GA is done **first** inside every full-length mock.
-On days without one: an agent GA mock (20m until 17 Jan, then 18m) or a 1-mark speed set
-(15 one-markers in 12m). Every day: 10m roots, grammar and formula re-quiz from the notes.
-
-| Date | Session |
-|---|---|
-| 11–24 Jan | GA inside full mocks; agent GA mocks 07–14 on the other days; weak drill whenever a topic slips twice |
-| Mon 25 Jan | Agent GA mock (18m) |
-| Tue 26 Jan | Formula, roots and grammar sheets only |
-| Wed 27 Jan | Agent GA mock (18m) |
-| Thu 28 Jan | Error log only |
-| Fri 29 Jan | Last GA mock (18m) |
-| Sat 30 Jan | Light: sheets, 30m |
-| Sun 31 Jan | 15-minute glance at the formula sheet. Rest. |
+| **Verbal Stream** | 15 mins | Today's Root Set / Grammar Rule (learn rule $\to$ solve 5 quick questions) + 2-min review of yesterday |
+| **Core Micro-Topic** | 35 mins | Today's Quant / Analytical / Spatial micro-topic: Concept & shortcut formulas (10m) $\to$ 5–8 PYQs solved step-by-step (25m) |
+| **Speed & Number Sense** | 10 mins | Mental shortcuts (fractions, multipliers, tables, squares, GATE virtual calculator drill) |
 
 ---
 
-## 6. For agents
+## Phase 1 · Day-by-Day Micro-Topic Breakdown (28 Oct – 30 Nov)
 
-- Small steps (rule 8). Teach the day's topic in pieces, then PYQs one at a time.
-- Write the day's note at the end of the session (section 4), commit and push.
-- Weekly tests and GA mocks follow the mock test protocol (2.2.1): `subject: general-aptitude`, run
-  `npm run check:tests`. Never use CSE GA 2021–2026 questions before Phase 2.
-- If a day is missed, shift that day's topic into the next Saturday gap slot or the following weak drill; never
-  stack two topics in one day.
+### Block 1 · Foundations & Number Sense (28 Oct – 31 Oct · 4 Days)
+
+| Day & Date | Core Micro-Topic (35m) | Verbal Stream (15m) | Speed Drill (10m) |
+|---|---|---|---|
+| **Day 1 · Wed 28 Oct** | Divisibility rules (2, 3, 4, 5, 7, 8, 9, 11), prime factorization, factors count/sum, HCF & LCM word problems | Root Set R1: *bene, mal, eu, dys, mis, caco* (Good vs Bad) | Tables 11–20 & Squares 1–25 patterns |
+| **Day 2 · Thu 29 Oct** | Fraction-to-percentage table (1/2 to 1/20), decimal conversions, multiplier method ($1 \pm r/100$), base-n systems | Root Set R2: *a/an, in/im/il/ir, un, non, dis, anti, contra* (Negation) | Fraction $\leftrightarrow$ % instant recall |
+| **Day 3 · Fri 30 Oct** | Remainders (basic theorems), unit digit patterns, cyclicity, powers, laws of exponents, surds simplification | Root Set R3: *magn, micro, mega, omni, pan, poly, mono, bi, tri* (Size & Number) | Cyclicity & Units digit shortcuts |
+| **Day 4 · Sat 31 Oct** | Logarithms (3 fundamental laws, base change, digit counting) + Linear & Quadratic equations (roots, discriminant) | Root Set R4: *dict, loqu, voc, scrib, graph, log, clam* (Speaking & Writing) | GATE Virtual Calculator shortcuts & memory keys |
+
+### Block 2 · Commercial & Core Arithmetic (1 Nov – 8 Nov · 8 Days)
+
+| Day & Date | Core Micro-Topic (35m) | Verbal Stream (15m) | Speed Drill (10m) |
+|---|---|---|---|
+| **Day 5 · Sun 1 Nov** | Percentages: successive percentage change, net multiplier, depreciation/population formulas | Root Set R5: *vid/vis, spec/spic, aud, sent/sens, path, phon* (Senses) | Multiplier conversion drills |
+| **Day 6 · Mon 2 Nov** | Profit, Loss, Discount, Marked Price & dishonest shopkeeper problems | Root Set R6: *duc, port, mit/miss, ced/cess, ject, tract, vert, flu* (Movement) | Profit/loss multiplier shortcuts |
+| **Day 7 · Tue 3 Nov** | Simple Interest & Compound Interest (annual, half-yearly, difference between CI and SI for 2 & 3 years) | Root Set R7: *bio, viv/vit, mort, anim, corp, chron, temp, ann/enn* (Life, Death, Time) | $(1 + r)^n$ approximation vs calculator |
+| **Day 8 · Wed 4 Nov** | Ratio, Proportion, Direct & Inverse Variations, Partnership profit shares | Root Set R8: *cogn/gno, sci, cred, fid, ver, sapi, put* (Mind & Belief) | Cross-multiplication ratio shortcuts |
+| **Day 9 · Thu 5 Nov** | Averages, Weighted Averages & Age word problems (translating words into clean linear equations) | Root Set R9: *phil, phob, am/ami, miso, pac, grat* (Feelings & Passions) | Deviation method for fast averages |
+| **Day 10 · Fri 6 Nov** | Mixtures & Solutions: The Alligation cross rule, repeated liquid replacement formula | Root Set R10: *arch, crat, dem, pol, reg, dom, jur, leg* (Power & Governance) | Alligation ratio grid drill |
+| **Day 11 · Sat 7 Nov** | Time and Work: LCM efficiency method, work & wages, Pipes and Cisterns (negative work/leaks) | Root Set R11: *pre, post, ante, inter, intra, sub, super, trans, circum, ex* (Position) | Inverse efficiency calculations |
+| **Day 12 · Sun 8 Nov** | Speed, Time & Distance: Average speed, Relative speed, Trains, Boats & Streams, Circular tracks | Root Set R12: *fac/fic/fect, struct, rupt, frag/fract, solv, tend* (Making & Breaking) | km/h $\leftrightarrow$ m/s ($\times \frac{5}{18}$) & relative speed |
+
+### Block 3 · Progressions, Counting & Statistics (9 Nov – 14 Nov · 6 Days)
+
+| Day & Date | Core Micro-Topic (35m) | Verbal Stream (15m) | Speed Drill (10m) |
+|---|---|---|---|
+| **Day 13 · Mon 9 Nov** | Progressions: Arithmetic (AP), Geometric (GP), infinite GP sum, special series ($\sum n, \sum n^2, \sum n^3$) | Root Set R13: *nov, mut, ple, vac, plac* (Change & Fullness) | Fast series sum formulas |
+| **Day 14 · Tue 10 Nov** | Permutations & Combinations I: Fundamental counting principle, arrangements, word anagrams with repetitions | Root Set R14: Suffixes (*-ous, -ity, -ize, -cide, -phile, -ism, -logy, -cracy, -escent*) | Factorials $1!$ to $8!$ recall |
+| **Day 15 · Wed 11 Nov** | Permutations & Combinations II: Selections under restrictions, circular permutations, identical distribution | Grammar G1: Articles (*a, an, the*, zero article rules) | Small $^nC_r$ calculations without pen |
+| **Day 16 · Thu 12 Nov** | Probability I: Classical probability (coins, dice, cards, balls in urns), addition rule $P(A \cup B)$ | Grammar G2: Subject–Verb Agreement I (basic, collective nouns, compound subjects) | Complement probability shortcuts |
+| **Day 17 · Fri 13 Nov** | Probability II: Conditional probability $P(A \mid B)$, independent events, complement rule ("at least one") | Grammar G3: Subject–Verb Agreement II (*either/neither, each, one of, the number vs a number*) | "At least one" $\to 1 - P(\text{none})$ |
+| **Day 18 · Sat 14 Nov** | Elementary Statistics: Mean, Median, Mode, Range, Variance, and Standard Deviation | Grammar G4: Tenses I (simple, continuous, perfect timeline map) | Variance & SD formula flashcards |
+
+### Block 4 · Geometry, Mensuration & Coordinate Geometry (15 Nov – 19 Nov · 5 Days)
+
+| Day & Date | Core Micro-Topic (35m) | Verbal Stream (15m) | Speed Drill (10m) |
+|---|---|---|---|
+| **Day 19 · Sun 15 Nov** | Geometry I: Angles, Parallel lines & transversals, Triangles (similarity, congruence, Pythagoras, medians/altitudes) | Grammar G5: Tenses II (sequence of tenses, 0/1st/2nd/3rd conditionals) | Pythagorean triplets (3-4-5, 5-12-13, 7-24-25, 8-15-17) |
+| **Day 20 · Mon 16 Nov** | Geometry II: Circles (tangents, intersecting chords, cyclic quadrilaterals) & Regular Polygons (interior/exterior angles) | Grammar G6: Prepositions I (time: *at/in/on*, place, movement/direction) | Polygon angle formulas $((n-2) \times 180^\circ / n)$ |
+| **Day 21 · Tue 17 Nov** | Mensuration 2D: Perimeters, Areas of quadrilaterals, circles, sectors, and shaded region subtraction | Grammar G7: Prepositions II (fixed: *comply with, abide by, averse to, abstain from...*) | Area scaling ratio ($A_1/A_2 = (L_1/L_2)^2$) |
+| **Day 22 · Wed 18 Nov** | Mensuration 3D: Surface areas & Volumes (Cube, Cuboid, Cylinder, Cone, Sphere, Hemisphere), Melting & Recasting | Grammar G8: Conjunctions & Correlatives (*not only... but also, neither... nor, scarcely... when*) | Volume scaling ratio ($V_1/V_2 = (L_1/L_2)^3$) |
+| **Day 23 · Thu 19 Nov** | Coordinate Geometry & Graphs: Lines ($y = mx + c$), slopes, intercepts, distance/midpoint, 2D inequality plots & regions | Grammar G9: Pronouns (cases, *who vs whom*, reflexive pronouns, ambiguity) | Line slope from 2 points in 5 seconds |
+
+### Block 5 · Data Interpretation (20 Nov – 22 Nov · 3 Days)
+
+| Day & Date | Core Micro-Topic (35m) | Verbal Stream (15m) | Speed Drill (10m) |
+|---|---|---|---|
+| **Day 24 · Fri 20 Nov** | Data Interpretation I: Tables & Bar Charts (rapid percentage growth, ratio comparisons) | Grammar G10: Adjectives & Adverbs (degrees of comparison, *elder/older, farther/further*) | Fast fractional comparison without division |
+| **Day 25 · Sat 21 Nov** | Data Interpretation II: Pie Charts (converting degrees to percentage, single & double pie charts) & Line Graphs | Grammar G11: Modals & Auxiliaries (*must, should, ought to, can/could, may/might*) | Degree to % conversion ($36^\circ = 10\%$) |
+| **Day 26 · Sun 22 Nov** | Data Interpretation III: Combined charts (Bar + Line, Table + Pie) & 2D/3D grids | Grammar G12: Verb patterns (Gerunds vs Infinitives) | Estimation & approximation for DI options |
+
+### Block 6 · Analytical Reasoning (23 Nov – 26 Nov · 4 Days)
+
+| Day & Date | Core Micro-Topic (35m) | Verbal Stream (15m) | Speed Drill (10m) |
+|---|---|---|---|
+| **Day 27 · Mon 23 Nov** | Syllogisms & Statements-Conclusions (the standard 3-circle Venn diagram method) | Grammar G13: Active & Passive Voice + Parallelism in sentences | Venn diagram minimum overlap drill |
+| **Day 28 · Tue 24 Nov** | Critical Reasoning: If-then implications, Contrapositive ($p \to q \equiv \neg q \to \neg p$), Truth-tellers and Liars | Grammar G14: Mixed sentence error spotting (all grammar rules combined) | Contrapositive equivalence flash check |
+| **Day 29 · Wed 25 Nov** | Seating Arrangements (Linear row, Circular facing in/out) & Ordering/Ranking/Comparison puzzles | Verbal V1: Reading Comprehension I (Central theme, stated vs implied details) | Left/Right orientation in circular grids |
+| **Day 30 · Thu 26 Nov** | Blood Relations (family tree generation method) & Direction Sense Tests (turns, shadows, Pythagoras distance) | Verbal V2: Reading Comprehension II (Author tone, inference traps) | Direction turn mapping (Clockwise/Anti-clockwise) |
+
+### Block 7 · Spatial Aptitude & Abstract Reasoning (27 Nov – 30 Nov · 4 Days)
+
+| Day & Date | Core Micro-Topic (35m) | Verbal Stream (15m) | Speed Drill (10m) |
+|---|---|---|---|
+| **Day 31 · Fri 27 Nov** | Clocks & Calendars (angle between hands, leap years, odd days) + Coding-Decoding & Letter/Number Analogies | Verbal V3: Narrative Sequencing / Para-jumbles (mandatory pairs, pronoun anchors) | Clock angle formula $|\frac{60H - 11M}{2}|$ |
+| **Day 32 · Sat 28 Nov** | Spatial I: 2D & 3D Transformations (Translation, Rotation by $90^\circ/180^\circ$, Scaling, Mirror & Water images) | Verbal V4: Confusable words (*affect/effect, principal/principle, discrete/discreet...*) | Mental rotation of asymmetrical shapes |
+| **Day 33 · Sun 29 Nov** | **Spatial II: Cubes, Dice & Nets** (Standard/ordinary dice rules, opposite faces from multiple views, painted $n \times n \times n$ cube formulas, unfolding & folding 2D nets into 3D cubes) | Verbal V5: High-yield idioms & phrasal verbs in GATE context | Painted cube formula recall ($8$, $12(n-2)$, $6(n-2)^2$, $(n-2)^3$) |
+| **Day 34 · Mon 30 Nov** | Spatial III: Paper folding, paper cutting, hole punching, assembling/grouping shapes, top/front/side views, figure counting | Verbal V6: Mixed Verbal PYQ Speed Blitz (10 questions in 8 minutes) | Unfolding symmetry tracking |
+
+---
+
+## Phase 2 · December (Sectional Mocks, Speed & Weak Drill)
+
+**Goal:** Transform theoretical knowledge into 13–15/15 exam speed.  
+**Routine:** One 10-Question Timed GA Sectional Mock every 2 days.
+
+- **Mocks Schedule:**
+  - 15 Full GA Sectional Mocks:
+    - 6 Mocks using official CSE GA papers (2021–2026).
+    - 6 Mocks using official ECE/EE/ME/IN papers (2021–2026).
+    - 3 Agent-curated tough/trap mocks.
+- **Between Mock Days (Weak Area Days):**
+  - 30 mins: Targeted drill on the lowest scoring topic from the previous test's error log.
+  - 15 mins: Re-quiz missed vocabulary roots and grammar rules.
+  - 15 mins: Virtual calculator speed run.
+- **Timer Ladder:**
+  - Dec 1 – Dec 15: 25 minutes limit.
+  - Dec 16 – Dec 31: 22 minutes limit.
+
+---
+
+## Phase 3 · January (Exam Mode & Full-Length Integration)
+
+**Goal:** Solve GA first inside the 3-hour exam in under 18 minutes with 100% accuracy.
+
+- **Speed Standards:**
+  - 1-mark questions: $< 1$ minute.
+  - 2-mark questions: $< 2$ minutes.
+  - Full section: $< 18$ minutes.
+- **Full Mock Days:** GA is solved as Section 1 inside every 3-hour full mock.
+- **Non-Mock Days:** 15-minute speed sets (10 questions rapid fire) + 1-page formula review.
+- **Last Week (25–31 Jan):** Zero new questions. Only the Formula Sheet, Grammar Rules Sheet, and Root Word Deck.
