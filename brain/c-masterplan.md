@@ -2,7 +2,7 @@
 
 **Target:** 100% accuracy on all GATE C Programming questions with $\le 1$ minute solve time per question.  
 **Mode:** Chat-only interactive micro-lessons (no video lectures). Zero omissions.  
-**Timeline:** 26 Oct 2026 – 31 Oct 2026 (Parallel with Compiler Design).
+**Timeline:** 27 Oct 2026 – 1 Nov 2026 (Parallel with Compiler Design).
 
 ---
 
@@ -65,16 +65,16 @@
 
 ---
 
-## 3. Timeline & Schedule (26–31 Oct 2026)
+## 3. Timeline & Schedule (27 Oct – 1 Nov 2026)
 
 | Day | Date | Target Chapters & Topics | Status |
 | :--- | :--- | :--- | :--- |
-| **Day 1** | Mon 26 Oct | **Ch-01: Data Types & Operators** + **Ch-02: Control Flow Statements** | 🟡 In Progress |
-| **Day 2** | Tue 27 Oct | **Ch-03: Functions, Storage Classes & Recursion** | ⚪ Pending |
-| **Day 3** | Wed 28 Oct | **Ch-04 Part 1: Pointers, Pointer Arithmetic, 1D Arrays** | ⚪ Pending |
-| **Day 4** | Thu 29 Oct | **Ch-04 Part 2: 2D Arrays, Pointer to Array, Array of Pointers, Function Pointers** | ⚪ Pending |
-| **Day 5** | Fri 30 Oct | **Ch-05: Strings** + **Ch-06: Structures & Unions** | ⚪ Pending |
-| **Day 6** | Sat 31 Oct | **Ch-07: Miscellaneous (Macros, DMA, Const)** + Mixed Speed Drills | ⚪ Pending |
+| **Day 1** | Tue 27 Oct | **Ch-01: Data Types & Operators** + **Ch-02: Control Flow Statements** | 🟡 In Progress |
+| **Day 2** | Wed 28 Oct | **Ch-03: Functions, Storage Classes & Recursion** | ⚪ Pending |
+| **Day 3** | Thu 29 Oct | **Ch-04 Part 1: Pointers, Pointer Arithmetic, 1D Arrays** | ⚪ Pending |
+| **Day 4** | Fri 30 Oct | **Ch-04 Part 2: 2D Arrays, Pointer to Array, Array of Pointers, Function Pointers** | ⚪ Pending |
+| **Day 5** | Sat 31 Oct | **Ch-05: Strings** + **Ch-06: Structures & Unions** | ⚪ Pending |
+| **Day 6** | Sun 1 Nov | **Ch-07: Miscellaneous (Macros, DMA, Const)** + Mixed Speed Drills | ⚪ Pending |
 
 ---
 
