@@ -6,4 +6,4 @@ Updated Tue 27 Oct 2026.
 - Compiler Design: Parser block ongoing (Ch-01 Lec 09 & Lec 10).
 - Revision: Today's queue complete (3/3 notes marked Got it: RA equivalences, SQL NULL, Inverted Page Table).
 - Tests: DBMS Queries Master Mock (dbms-queries-mock-01, 20 qns) ready.
-- GA: wiped to zero on 27 Oct (his ask). New 3-month GA plan being brainstormed, not in the app yet.
+- GA: wiped 27 Oct; new day-by-day plan in brain/ga-roadmap.md (Day 1 = Wed 28 Oct). Not in the app yet.
