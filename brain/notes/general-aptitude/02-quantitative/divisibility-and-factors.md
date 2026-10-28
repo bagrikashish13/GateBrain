@@ -23,14 +23,20 @@ Divisibility rules eliminate long division by isolating key digits. Total factor
   - Prime factorize $N = p_1^a \times p_2^b \times p_3^c$.
   - $\text{Total factors} = (a + 1)(b + 1)(c + 1)$.
 - **HCF & LCM essentials:**
-  - Product rule: $A \times B = \text{HCF}(A, B) \times \text{LCM}(A, B)$.
+  - Product rule: $A \times B = \text{HCF}(A, B) \times \text{LCM}(A, B)$ (strictly for 2 numbers).
+  - Ratio bridge: If ratio is $a : b$ (coprime), numbers are $A = a \cdot H$, $B = b \cdot H$, and $\text{LCM} = a \times b \times H$.
+  - Sum & diff: $A + B = (a + b)H$ and $|A - B| = |a - b|H$ (always multiples of HCF).
+  - Fractions rule: $\text{HCF} = \frac{\text{HCF(numerators)}}{\text{LCM(denominators)}}$ and $\text{LCM} = \frac{\text{LCM(numerators)}}{\text{HCF(denominators)}}$.
   - Word problem trigger: when cyclic events (bells, traffic lights, runners) coincide again in the future, take **$\text{LCM}$**.
 
 ## Where I got confused → what made it click
+- **Turning ratios into numbers:** A ratio $a : b$ is just numbers with their HCF divided out. To get the numbers back: $A = a \cdot H$ and $B = b \cdot H$. To get the LCM in 5 seconds without multiplying numbers: $\text{LCM} = a \times b \times H$.
 - **Stalling on long numbers:** Never divide the whole number! For 8, look only at the last 3 digits. For 72, isolate the last 3 digits first to pin down the last variable, then use the sum of digits for the remaining variable.
 - **Factor count multiplication slip:** Don't multiply powers directly; remember to add $1$ to each power first: for $36 = 2^2 \times 3^2$, it is $(2+1)(2+1) = 3 \times 3 = 9$ factors, not 12.
 
 ## GATE traps
+- **Product rule limitation:** $A \times B = \text{HCF} \times \text{LCM}$ holds strictly for **two** numbers, NEVER for three numbers.
+- **Divisibility check:** $\text{LCM}$ must always be completely divisible by $\text{HCF}$. If not, such numbers cannot exist.
 - **Single-digit constraint:** Missing digits in divisibility problems must be integers between $0$ and $9$.
 - **Bells / Traffic lights / Laps:** If the question asks when events meet next, the answer must be larger than individual intervals $\to$ use $\text{LCM}$, not $\text{HCF}$.
 - **Mental squaring shortcut:** For any number ending in 5, $n5^2 = [n(n+1)]25$ (e.g. $45^2 \to 4 \times 5 = 20 \implies 2025$).
