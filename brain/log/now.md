@@ -1,7 +1,7 @@
 # Now
 
-Updated Wed 28 Oct 2026.
+Updated Thu 29 Oct 2026.
 
-- GA: Day 1 Mock analysed (9/15). Notes [[divisibility-and-factors]] & [[root-set-r1-good-vs-bad]] updated.
-- C Programming: Day 1 ready (28 Oct – 2 Nov): Ch-01 & Ch-02 in chat.
-- Compiler Design: Ch-01 Lec 09 & 10 (LR Parser) scheduled for today.
+- C Programming: Ch-02 (Control Flow) & Ch-03 (Functions & Recursion) 100% complete with GATE PYQs verified. Ch-01 pending at user's choice; Ch-04 (Pointers & Arrays) next.
+- GA: Day 2 scheduled in plan (Fractions to percentages, multiplier method + Root Set R2).
+- Compiler Design: Ch-01 Lec 11 & Ch-02 Lec 01 scheduled today.
