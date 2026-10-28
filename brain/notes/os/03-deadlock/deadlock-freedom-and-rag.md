@@ -25,7 +25,9 @@ For single resource type $R$, maximum resources that deadlock is $\sum(\text{Max
     - Cycle is **necessary, but NOT sufficient**.
     - $\text{No Cycle} \implies \text{No Deadlock}$ (guaranteed).
     - $\text{Cycle} \implies \text{MAYBE Deadlock}$ (an external process can release an instance and break the cycle).
-    - A **knot** in RAG $\implies$ Deadlock.
+    - A **knot** in RAG $\implies$ Deadlock:
+    - A **knot** is a set of vertices $K$ where every vertex reachable from any node in $K$ can reach all vertices in $K$ (i.e., **no path leads out of the set**).
+    - If a RAG contains a knot, deadlock is guaranteed (even in multi-instance systems), because no process in the knot can ever receive an external release to unblock.
 
 ## Where I got confused → what made it click
 - **The $+1$ logic:**
@@ -34,6 +36,9 @@ For single resource type $R$, maximum resources that deadlock is $\sum(\text{Max
 - **RAG cycle in multi-instance:**
   - *Confusion:* Thinking a cycle always implies deadlock regardless of instance count.
   - *The click:* In multi-instance, if a resource in the cycle has another copy held by a process *outside* the cycle, that external process finishes, returns the resource, and dissolves the cycle.
+- **Cycle vs Knot:**
+  - *Confusion:* Wondering how a knot differs from a regular cycle in deadlock detection.
+  - *The click:* A cycle has a loop, but might have paths leading to external processes that can release resources and break it. A knot has **zero exit paths**—it is a closed trap. Once in a knot, deadlock is 100% guaranteed, even in multi-instance systems.
 
 ## GATE traps
 - **"Can never occur" vs "Can occur":** If $m \le n(k - 1)$, deadlock is *possible*. If $m \ge n(k - 1) + 1$, deadlock is *impossible*.
