@@ -1,16 +1,16 @@
 {
   "note": "os/03-deadlock/deadlock-freedom-and-rag.md",
   "card": {
-    "due": "2026-10-28T00:44:19.114Z",
-    "stability": 4.4694,
-    "difficulty": 6.7405,
-    "elapsed_days": 2,
-    "scheduled_days": 4,
+    "due": "2026-11-09T07:09:14.547Z",
+    "stability": 11.845,
+    "difficulty": 6.729,
+    "elapsed_days": 4,
+    "scheduled_days": 12,
     "learning_steps": 0,
-    "reps": 2,
+    "reps": 3,
     "lapses": 0,
     "state": 2,
-    "last_review": "2026-10-24T00:44:19.114Z"
+    "last_review": "2026-10-28T07:09:14.547Z"
   },
   "log": [
     {
@@ -20,6 +20,10 @@
     {
       "at": "2026-10-24T00:44:19.114Z",
       "rating": "fuzzy"
+    },
+    {
+      "at": "2026-10-28T07:09:14.547Z",
+      "rating": "gotit"
     }
   ]
 }
