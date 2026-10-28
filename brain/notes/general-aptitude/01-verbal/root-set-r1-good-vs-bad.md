@@ -15,8 +15,9 @@ Verbal questions test polarity ($+$ vs. $-$) and subject context. Decode words i
 - **Confusing words with identical polarity (e.g. *benevolent* vs. *benign*):**
   - `-volent` (*volo* = to wish/will): describes conscious human intention/kindness (*benevolent leader*).
   - `-nign` (*genus* = physical nature): describes inherent physical or medical harmlessness (*benign growth*).
-- **Confusing *euphemism* vs. *misnomer*:**
-  - `-phem` (*pheme* = voice/speech): intentionally substituting a mild/polite word for a harsh one (*pre-owned* instead of *used*).
+- **Confusing *euphemism* vs. *misnomer* vs. *euphony*:**
+  - `-phem` (*pheme* = voice/speech): intentionally substituting a mild/polite word for a harsh one (*"taking early retirement"* instead of *"dismissed"*, *"pre-owned"* instead of *"used"*).
+  - `-phon` (*phone* = sound): a pleasant acoustic sound (*euphony*), opposite of jarring noise (*cacophony*). Do not confuse pleasant speech with pleasant sound!
   - `-nomer` (*nomen* = name): a factually incorrect label (*lead pencil* is a misnomer because it's graphite).
 
 ## GATE traps
