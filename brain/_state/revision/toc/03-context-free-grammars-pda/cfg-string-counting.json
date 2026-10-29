@@ -1,16 +1,16 @@
 {
   "note": "toc/03-context-free-grammars-pda/cfg-string-counting.md",
   "card": {
-    "due": "2026-10-29T09:18:34.482Z",
-    "stability": 2.4329,
-    "difficulty": 6.4021,
-    "elapsed_days": 2,
-    "scheduled_days": 3,
+    "due": "2026-11-12T01:14:56.478Z",
+    "stability": 13.6973,
+    "difficulty": 5.1851,
+    "elapsed_days": 3,
+    "scheduled_days": 14,
     "learning_steps": 0,
-    "reps": 2,
+    "reps": 3,
     "lapses": 0,
     "state": 2,
-    "last_review": "2026-10-26T09:18:34.482Z"
+    "last_review": "2026-10-29T01:14:56.478Z"
   },
   "log": [
     {
@@ -20,6 +20,10 @@
     {
       "at": "2026-10-26T09:18:34.482Z",
       "rating": "gotit"
+    },
+    {
+      "at": "2026-10-29T01:14:56.478Z",
+      "rating": "easy"
     }
   ]
 }
