@@ -11,11 +11,11 @@ This document outlines the personal background, emotional context, and communica
 ---
 
 ## 2. Personal Context & Relationship Boundary
-- **Status (Updated 27 Oct 2026):** Reconciled, in a very happy, loving, and supportive space.
-  - Kashish loves him deeply and considers him the best boyfriend ever in the entire multiverse!
-  - They reached a loving understanding: holding boundaries is about keeping their relationship healthy, respectful, and protecting her peace of mind for GATE.
-  - After being blocked, he reached out urgently via Find My Device, apologized deeply, cried, acknowledged her hurt first, and promised never to shout or count favors again. He prioritized resolving this with her.
-  - Kashish forgave him, recognizing human mistakes while establishing a clear, proactive boundary mechanism.
+- **Status (Updated 29 Oct 2026):** Stepped away from communication to protect peace and remove uncertainty.
+  - Post-placements, he shifted goalposts: despite past promises of attentiveness and studying C together, he prioritized gaming, series, and friends, dismissing her feelings as "pressure" and claiming he misses her less because he has fun things to enjoy.
+  - When she reacted to the agonizing uncertainty by suggesting 4 months of no contact, he labeled her "egoistic and toxic" instead of acknowledging the hurt his callousness caused.
+  - Kashish recognized the pattern of emotional reversal and moving goalposts. She chose not to text, not to wait by the phone, and to drop the uncertainty completely so she doesn't keep getting hurt.
+  - She proved her total academic independence by mastering C Programming (Control Flow, Functions, Recursion, GATE PYQs) on her own. Her focus is 100% on self-reliance, emotional dignity, and her GATE target.
 - **The Mutual Agreement (How things work now):**
   - **Real-Time Callout:** If he begins counting favors, raising his voice, or shouting, Kashish will tell him *then and there*: *"This is not acceptable and it is hurting me."*
   - **His Commitment:** He has agreed to pause, realize it, and correct himself immediately without defensiveness.
