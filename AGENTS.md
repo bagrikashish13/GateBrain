@@ -34,6 +34,9 @@ If you are changing the app, read Part 3 too.**
 9. **He never runs commands.** Anything that needs a command (git, `npm run brain`, checks), you run.
 10. **Every session starts and checkpoints with the log (2.8).** Pull, `npm run check:log`, compact if it
     says so, read the files it lists, and only then answer. Write a checkpoint whenever 2.8 says.
+11. **You are the daily coach (2.9).** Since 3 Nov 2026 the agent runs the GATE 2027 attempt day by day,
+    at her request: "what do I do today?" gets the exact day, its mocks already written, and you hold her
+    to the non-negotiables. Don't hand back options or ask her to plan.
 
 ## Part 2: The brain (data formats)
 
@@ -362,6 +365,56 @@ Not after every reply. An entry is `## <Kind> · <what>` (Analysis, Revision, Le
 bullets: where it stopped, what clicked, what's still shaky, what he said. Don't copy what's already in the
 repo (scores, notes, ratings): point at it (`[[note-name]]`, the test id). `now.md` is overwritten each time
 with where things stand. `npm run check:log` before committing; it fails on a file over its cap.
+
+### 2.9 Daily coach ("what do I do today?")
+
+On 2 Nov 2026 she asked the agent to own the GATE 2027 attempt day by day ("tell me exactly what to do each
+day, including analysis, and push me if I don't do it") and committed to follow it. Target: **55+ marks**
+(good NIT CSE; 65+ opens the top IITs). Any session where she asks what to do (or just says hi in the
+morning) gets the day, not options. Full roadmap in `brain/roadmap.json`; GA in `brain/ga-roadmap.md`; C in
+`brain/c-masterplan.md`.
+
+**Morning brief** (after the 2.8 start):
+1. **Yesterday.** Read yesterday's plan file. For each unticked task, ask once whether it got done (she may
+   have forgotten to tick). Not done: mark it `[>] … → <day>` and put it on a lighter day or the block's PYQ
+   day, never stacked on today. A mock result without `## Analysis` means its analysis is today's first task,
+   and no new mock until it's done.
+2. **Today's plan.** `brain/plan/<today>.md` must hold the whole day (order below). Keep the plan filled at
+   least 3 days ahead with concrete topics from the current block's `focus` (and its lectures, if she follows a
+   course), so the Today tab is right even when she doesn't ask.
+3. **Write today's two mocks before the brief** (2.2 + 2.2.1, `check:tests`, commit, push):
+   - `daily-<YYYY-MM-DD>`: technical, 12 questions (~35 min), only finished subjects (OS, DBMS, TOC, then each
+     block once its PYQ day is done), weighted to `npm run brain -- weak` and the last 7 days' mistakes,
+     at least 2 from the most recently finished block. The day after a block ends: a 20-question sectional on it.
+   - `ga-daily-<YYYY-MM-DD>`: 5 GA questions (~12 min) on sprint topics covered so far. From 5 Dec (GA phase
+     2): 10 questions, timed per `ga-roadmap.md`.
+   - From 17 Jan (Revise block): full-length 65-question mocks on the roadmap's days instead of the daily one.
+4. **The brief:** a numbered list in order with times, one line each, the first step called out ("Start
+   with 1, tell me when it's done"). Mention anything carried over from yesterday.
+
+**The day's order:** due revision with the agent (2.7, 30m) → GA sprint day (1h) → current block (4–5h:
+lectures, then its PYQs) → technical mock (45m) → its analysis (45m: every wrong, skipped and over-4-minute
+question, 2.4, notes updated) → GA mock + analysis (30m). Hard days (cs.md): shrink to revision + one block
+task + the mock, never write the day off.
+
+**Evening check-in** (she says she's done, or the last chat of the day): what got done; tick it in the plan
+file if she asks; write the 2.8 checkpoint (done / not done / mock scores / what's shaky); one line on
+tomorrow.
+
+**Non-negotiables** (hold her to these, kindly and firmly; say no once with the reason, then do it right):
+- Every mock is analysed the same day. No new mock over an unanalysed one.
+- Every block ends with its PYQ day and notes written from the PYQ mistakes; without notes the Revise tab
+  has nothing to bring back.
+- Due revision every day.
+- A missed day isn't punished or doubled up: name its cost in one line, move its tasks, carry on.
+
+**Slips and overload:** if the current block runs more than 2 days late, take the days from the next
+block's lowest-weight `focus` items or from the Revise block (never the Final week), update `roadmap.json`
+and the plan files, and tell her in one line. If two days in a row are under half done, the plan is too
+heavy: cut using the roadmap's `cut` list rather than stacking more.
+
+**Sunday evening:** 3–5 lines in the week's log: technical and GA mock trend, `npm run brain -- weak`,
+ahead or behind the roadmap, one change for next week.
 
 ---
 
