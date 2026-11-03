@@ -21,6 +21,9 @@ Product DFA states multiply ($m \times n$) only when tracking independent, ortho
 - **Overestimating minimal states:**
   - *Confusion:* Using Cartesian product $m \times n$ as the answer for minimal DFA states.
   - *The click:* Product construction is an **upper bound**, not the minimal automaton! Whenever two conditions share the same alphabet stream or position, always test what *unique minimal memory* the machine needs to maintain.
+- **Prematurely merging accepting states for suffix conditions (Mock 06 Q3):**
+  - *Confusion:* Merging distinct accepting suffixes like "ends in $01$" and "ends in $10$" into 1 shared accepting state ($[\epsilon], [0], [1], [\text{accept}] \to 4\text{ states}$).
+  - *The click:* Test distinguishability on the next input symbol! On input $0$: $010$ ends in $10$ (accepts), but $100$ ends in $00$ (rejects). Because the future behavior on input $0$ differs, they *cannot* be merged. They must remain 2 separate accepting states $\implies 5$ states ($[\epsilon], [0], [1], [01], [10]$).
 
 ## GATE traps
 - **LCM vs Multiplication:**
