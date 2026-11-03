@@ -20,8 +20,13 @@ Last digit repeats in cycles of 1, 2, or 4 (rem 0 means 4th power). For remainde
   - Find $\text{HCF}(x, y) = k$. Rewrite as $(A^{x/k})^k$ vs $(B^{y/k})^k$. Compare the inside bases.
 - **Comparing surds ($\sqrt[n]{A}$ vs $\sqrt[m]{B}$):**
   - Write as $A^{1/n}$ vs $B^{1/m}$. Find $\text{LCM}(n, m) = L$. Raise both to power $L$: $(A^{1/n})^L = A^{L/n}$ vs $(B^{1/m})^L = B^{L/m}$. Compare values.
+- **Rationalizing surd denominators (Telescoping sums):**
+  - For fractions $\frac{1}{\sqrt{k+1} + \sqrt{k}}$, multiply numerator and denominator by the conjugate $(\sqrt{k+1} - \sqrt{k})$.
+  - Denominator becomes $(k+1) - k = 1$, reducing the fraction to $\sqrt{k+1} - \sqrt{k}$.
+  - In a continuous sum from $1$ to $N$, all intermediate terms cancel: only $-\sqrt{1} + \sqrt{N+1}$ remains.
 
 ## Where I got confused → what made it click
+- **Telescoping series with roots:** Never take LCM across radical fractions. Rationalize each term with its conjugate $(\sqrt{a} - \sqrt{b})$; adjacent terms cancel in pairs leaving just the very first and very last root.
 - **Remainder 0 in cyclicity:** Remainder 0 doesn't mean power 0 (which gives 1); it means the 4th position of the cycle.
 - **Negative remainders are intermediate tools:** When $(-1)^{\text{odd}} = -1$, add the divisor to get the positive remainder (e.g. $-1 + 4 = 3$; $-1 + 7 = 6$).
 - **Borrowing in subtraction:** When subtracting unit digits $(2 - 7)$, borrow 1 from the tens place: $12 - 7 = 5$.
