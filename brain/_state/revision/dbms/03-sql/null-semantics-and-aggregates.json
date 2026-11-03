@@ -1,16 +1,16 @@
 {
   "note": "dbms/03-sql/null-semantics-and-aggregates.md",
   "card": {
-    "due": "2026-11-02T07:48:16.241Z",
-    "stability": 6.5747,
-    "difficulty": 5.1023,
-    "elapsed_days": 2,
-    "scheduled_days": 7,
+    "due": "2026-11-20T05:43:47.487Z",
+    "stability": 17.1032,
+    "difficulty": 6.7339,
+    "elapsed_days": 8,
+    "scheduled_days": 17,
     "learning_steps": 0,
-    "reps": 2,
+    "reps": 3,
     "lapses": 0,
     "state": 2,
-    "last_review": "2026-10-26T07:48:16.241Z"
+    "last_review": "2026-11-03T05:43:47.487Z"
   },
   "log": [
     {
@@ -20,6 +20,10 @@
     {
       "at": "2026-10-26T07:48:16.241Z",
       "rating": "gotit"
+    },
+    {
+      "at": "2026-11-03T05:43:47.487Z",
+      "rating": "fuzzy"
     }
   ]
 }
