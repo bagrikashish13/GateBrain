@@ -27,6 +27,7 @@ For $k$-level paging with sequential TLB lookup: $\text{EMAT} = \text{TLB} + M +
   - *The click:* Remember that finding the frame number is only step 1; you still have to fetch the actual data byte from physical memory! That adds the $+1$. In the simplified formula $\text{TLB} + M + (1 - h) \cdot k \cdot M$, the data fetch $M$ is factored out upfront because you *always* fetch the data word whether TLB hits or misses.
 
 ## GATE traps
+- **Missing the data access on TLB miss (Mock 06 Q10):** Writing $T_{\text{miss}} = \text{TLB} + k \cdot M$ instead of $\text{TLB} + (k + 1) \cdot M$. If writing out $h \cdot T_{\text{hit}} + (1 - h) \cdot T_{\text{miss}}$, remember that $T_{\text{miss}}$ must have $(k + 1)$ RAM accesses ($k$ page table levels $+ 1$ data fetch). Or simply use the foolproof factored form: $\text{EMAT} = \text{TLB} + M + (1 - h) \cdot k \cdot M$.
 - **Sequential vs Simultaneous:** Always read the question carefully. Unless "simultaneous" or "parallel" is explicitly stated, assume TLB lookup is sequential and adds to the miss penalty.
 - **Inverted page table:** An inverted page table has 1 entry per physical frame, not per virtual page. Translation uses a hash table; miss or hash collision requires searching or page faulting.
 - **Unit mismatch:** Watch out for $\text{ns}$ (nanoseconds) vs $\mu\text{s}$ (microseconds) vs $\text{ms}$ (milliseconds). Page fault service time is usually in $\text{ms}$ ($10^6\text{ ns}$), while memory access is in $\text{ns}$.
