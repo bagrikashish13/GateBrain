@@ -72,7 +72,7 @@
 | **Day 1** | Wed 28 Oct | **Ch-01: Data Types & Operators** + **Ch-02: Control Flow Statements** | Ch-02 done; Ch-01 to confirm |
 | **Day 2** | Thu 29 Oct | **Ch-03: Functions, Storage Classes & Recursion** | Done |
 | **Day 3** | Tue 3 Nov | **Ch-04 Part 1: Pointers, Pointer Arithmetic, 1D Arrays** | Done |
-| **Day 4** | Wed 4 Nov | **Ch-04 Part 2: 2D Arrays, Pointer to Array, Array of Pointers, Function Pointers** | ⚪ Pending |
+| **Day 4** | Wed 4 Nov | **Ch-04 Part 2: 2D Arrays, Pointer to Array, Array of Pointers, Function Pointers** | Done |
 | **Day 5** | Thu 5 Nov | **Ch-05: Strings** + **Ch-06: Structures & Unions** | ⚪ Pending |
 | **Day 6** | Fri 6 Nov | **Ch-07: Miscellaneous (Macros, DMA, Const)** + Mixed Speed Drills | ⚪ Pending |
 
@@ -105,12 +105,12 @@
 - [x] 4.1 Address-of (`&`), dereference (`*`), pointer sizes
 - [x] 4.2 Pointer arithmetic & scaling factors (`p + i` scaling by `sizeof(*p)`)
 - [x] 4.3 1D array-pointer equivalence: `a[i] == *(a + i)`, `&a` vs `a` vs `*a`
-- [ ] 4.4 2D array row-major layout, `*(*(a + i) + j)`
-- [ ] 4.5 Pointer to array `int (*p)[N]` vs array of pointers `int *p[N]`
+- [x] 4.4 2D array row-major layout, `*(*(a + i) + j)`
+- [x] 4.5 Pointer to array `int (*p)[N]` vs array of pointers `int *p[N]`
 - [x] 4.6 Pointer to pointer (`int **`) & multi-level dereferencing
-- [ ] 4.7 Function pointers: declaration, invocation, callbacks
-- [ ] 4.8 Pointer casting, byte-level memory inspection & endianness
-- [ ] 4.9 Void pointers, `NULL`, wild and dangling pointers
+- [x] 4.7 Function pointers: declaration, invocation, callbacks
+- [x] 4.8 Pointer casting, byte-level memory inspection & endianness
+- [x] 4.9 Void pointers, `NULL`, wild and dangling pointers
 
 ### Ch-05: Strings
 - [ ] 5.1 `char s[]` vs `char *s` (read-only literal segment traps)

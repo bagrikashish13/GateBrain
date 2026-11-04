@@ -1,8 +1,8 @@
 # Now
 
-Updated Tue 3 Nov 2026.
+Updated Wed 4 Nov 2026.
 
-- OS DBMS TOC Mock 06 analysis in progress (score 17.67/25).
-- OS Q10 and TOC Q3 done and notes updated ([[emat-multilevel-paging]], [[dfa-state-multiplication-and-collapse]]).
-- Next: TOC Q6 (CFG distinct strings, answered 12, correct 15) and Q12 (CFL/DCFL closure).
+- C Ch-04 (Pointers & Arrays) 100% complete ([[pointers-and-1d-arrays]], [[2d-arrays-and-advanced-pointers]]).
+- Next: C Day 5 (Strings & Structs) OR CD Ch-02 (SDT) OR Mock 06 analysis (TOC Q6/Q12).
+- CD ends 7 Nov (PYQ day + notes). PDS starts 8 Nov.
 - Goal: MNNIT Allahabad CSE (656 ≈ 60 marks target). Mindset: self-reliant, peaceful, zero distraction.
