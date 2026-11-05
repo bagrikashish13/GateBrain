@@ -32,7 +32,7 @@
       "short": "CD",
       "subject": "compiler-design",
       "start": "2026-10-16",
-      "end": "2026-11-07",
+      "end": "2026-11-16",
       "marks": "4–8",
       "focus": [
         {
@@ -171,17 +171,97 @@
         },
         {
           "date": "2026-11-06",
-          "label": "6 Nov · Ch-03 Lec 03 & 04 (ICG & Optimization)",
-          "lectures": 2,
-          "summary": "Ch-03 Lec 03 & 04 (ICG & Optimization)",
+          "label": "6 Nov · 1 lecture: Ch-01 Lec 10 (LR Parser)",
+          "lectures": 1,
+          "summary": "Ch-01 Lec 10 (LR Parser)",
           "tasks": [
-            "Learn · CD Ch-03 Lec 03: Intermediate Code & Optimization — 2h #compiler-design",
-            "Learn · CD Ch-03 Lec 04: Intermediate Code & Optimization — 2.5h #compiler-design"
+            "Learn · CD Ch-01 Lec 10: LR Parser — 2.5h #compiler-design"
           ]
         },
         {
           "date": "2026-11-07",
-          "label": "7 Nov · CD PYQs: parsing, LR tables, SDT, ICG, optimization",
+          "label": "7 Nov · 1 lecture: Ch-01 Lec 11 (Practice on TDP and BUP)",
+          "lectures": 1,
+          "summary": "Ch-01 Lec 11 (Practice)",
+          "tasks": [
+            "Learn · CD Ch-01 Lec 11: Practice on TDP and BUP — 2.5h #compiler-design"
+          ]
+        },
+        {
+          "date": "2026-11-08",
+          "label": "8 Nov · 1 lecture: Ch-02 Lec 01 (SDT)",
+          "lectures": 1,
+          "summary": "Ch-02 Lec 01 (SDT)",
+          "tasks": [
+            "Learn · CD Ch-02 Lec 01: Syntax Directed Translation — 2h #compiler-design"
+          ]
+        },
+        {
+          "date": "2026-11-09",
+          "label": "9 Nov · 1 lecture: Ch-02 Lec 02 (SDT)",
+          "lectures": 1,
+          "summary": "Ch-02 Lec 02 (SDT)",
+          "tasks": [
+            "Learn · CD Ch-02 Lec 02: Syntax Directed Translation — 2h #compiler-design"
+          ]
+        },
+        {
+          "date": "2026-11-10",
+          "label": "10 Nov · 1 lecture: Ch-02 Lec 03 (SDT)",
+          "lectures": 1,
+          "summary": "Ch-02 Lec 03 (SDT)",
+          "tasks": [
+            "Learn · CD Ch-02 Lec 03: Syntax Directed Translation — 2h #compiler-design"
+          ]
+        },
+        {
+          "date": "2026-11-11",
+          "label": "11 Nov · 1 lecture: Ch-02 Lec 04 (SDT)",
+          "lectures": 1,
+          "summary": "Ch-02 Lec 04 (SDT)",
+          "tasks": [
+            "Learn · CD Ch-02 Lec 04: Syntax Directed Translation — 2h #compiler-design"
+          ]
+        },
+        {
+          "date": "2026-11-12",
+          "label": "12 Nov · 1 lecture: Ch-03 Lec 01 (ICG & Optimization)",
+          "lectures": 1,
+          "summary": "Ch-03 Lec 01 (ICG & Optimization)",
+          "tasks": [
+            "Learn · CD Ch-03 Lec 01: Intermediate Code & Optimization — 2h #compiler-design"
+          ]
+        },
+        {
+          "date": "2026-11-13",
+          "label": "13 Nov · 1 lecture: Ch-03 Lec 02 (ICG & Optimization)",
+          "lectures": 1,
+          "summary": "Ch-03 Lec 02 (ICG & Optimization)",
+          "tasks": [
+            "Learn · CD Ch-03 Lec 02: Intermediate Code & Optimization — 2.5h #compiler-design"
+          ]
+        },
+        {
+          "date": "2026-11-14",
+          "label": "14 Nov · 1 lecture: Ch-03 Lec 03 (ICG & Optimization)",
+          "lectures": 1,
+          "summary": "Ch-03 Lec 03 (ICG & Optimization)",
+          "tasks": [
+            "Learn · CD Ch-03 Lec 03: Intermediate Code & Optimization — 2h #compiler-design"
+          ]
+        },
+        {
+          "date": "2026-11-15",
+          "label": "15 Nov · 1 lecture: Ch-03 Lec 04 (ICG & Optimization)",
+          "lectures": 1,
+          "summary": "Ch-03 Lec 04 (ICG & Optimization)",
+          "tasks": [
+            "Learn · CD Ch-03 Lec 04: Intermediate Code & Optimization — 2.5h #compiler-design"
+          ]
+        },
+        {
+          "date": "2026-11-16",
+          "label": "16 Nov · CD PYQs: parsing, LR tables, SDT, ICG, optimization",
           "summary": "CD PYQs: parsing, LR tables, SDT, ICG, optimization",
           "tasks": [
             "PYQ · CD Parsing and LR tables — 3h #compiler-design",
@@ -195,8 +275,8 @@
       "title": "Programming & Data Structures",
       "short": "PDS",
       "subject": "programming-ds",
-      "start": "2026-11-08",
-      "end": "2026-11-16",
+      "start": "2026-11-17",
+      "end": "2026-11-25",
       "marks": "11–15",
       "focus": [
         {
@@ -221,12 +301,15 @@
         "Graph representation in depth (Algorithms covers it)"
       ],
       "days": [
-        "8 Nov · C output PYQs",
-        "9–10 Nov · Arrays, stacks, queues, linked lists",
-        "11–12 Nov · Trees, BST, AVL",
-        "13–14 Nov · Heaps, hashing",
-        "15 Nov · Mixed PDS PYQs",
-        "16 Nov · PDS sectional mock"
+        "17 Nov · Arrays & Matrix Mapping",
+        "18 Nov · Stacks & Queues",
+        "19 Nov · Linked Lists",
+        "20 Nov · Binary Trees",
+        "21 Nov · Binary Search Trees",
+        "22 Nov · AVL Trees",
+        "23 Nov · Heaps (Priority Queues)",
+        "24 Nov · Hashing",
+        "25 Nov · Mixed PDS PYQs & Sectional Mock"
       ],
       "note": "C chapters done in the C sprint (28 Oct–6 Nov), so this block is mostly data structures."
     },
@@ -234,8 +317,8 @@
       "title": "Algorithms",
       "short": "Algo",
       "subject": "algorithms",
-      "start": "2026-11-17",
-      "end": "2026-11-28",
+      "start": "2026-11-26",
+      "end": "2026-12-07",
       "marks": "6–9",
       "focus": [
         {
@@ -267,8 +350,8 @@
       "title": "Digital Logic",
       "short": "DL",
       "subject": "digital-logic",
-      "start": "2026-11-29",
-      "end": "2026-12-05",
+      "start": "2026-12-08",
+      "end": "2026-12-14",
       "marks": "4–6",
       "focus": [
         {
@@ -299,8 +382,8 @@
       "title": "Computer Organization & Architecture",
       "short": "COA",
       "subject": "coa",
-      "start": "2026-12-06",
-      "end": "2026-12-19",
+      "start": "2026-12-15",
+      "end": "2026-12-28",
       "marks": "8–12",
       "focus": [
         {
@@ -331,8 +414,8 @@
       "title": "Computer Networks",
       "short": "CN",
       "subject": "computer-networks",
-      "start": "2026-12-20",
-      "end": "2027-01-02",
+      "start": "2026-12-29",
+      "end": "2027-01-11",
       "marks": "7–10",
       "focus": [
         {
@@ -363,8 +446,8 @@
       "title": "Maths, the scoring parts",
       "short": "Maths",
       "subject": "discrete-maths",
-      "start": "2027-01-03",
-      "end": "2027-01-16",
+      "start": "2027-01-12",
+      "end": "2027-01-22",
       "marks": "13–16",
       "focus": [
         {
@@ -395,12 +478,12 @@
         "Statistics beyond mean, median, variance"
       ],
       "days": [
-        "3–5 Jan · Logic",
-        "6–7 Jan · Sets, relations, functions",
-        "8–10 Jan · Graph theory, counting",
-        "11–12 Jan · Linear algebra",
-        "13–15 Jan · Probability",
-        "16 Jan · Mixed maths PYQs"
+        "12–13 Jan · Logic",
+        "14–15 Jan · Sets, relations, functions",
+        "16–17 Jan · Graph theory, counting",
+        "18–19 Jan · Linear algebra",
+        "20–21 Jan · Probability",
+        "22 Jan · Mixed maths PYQs"
       ],
       "note": "Aim for 8–10 of these marks. The skipped parts cost about 3–5."
     },
@@ -408,8 +491,8 @@
       "title": "Revision and full mocks",
       "short": "Revise",
       "subject": null,
-      "start": "2027-01-17",
-      "end": "2027-01-24",
+      "start": "2027-01-23",
+      "end": "2027-01-27",
       "focus": [
         {
           "text": "Full-length mock (65 Qs, 3 h) every Mon, Wed, Fri at exam time",
@@ -432,7 +515,7 @@
       "title": "Final week",
       "short": "Final",
       "subject": null,
-      "start": "2027-01-25",
+      "start": "2027-01-28",
       "end": "2027-01-31",
       "focus": [
         {
