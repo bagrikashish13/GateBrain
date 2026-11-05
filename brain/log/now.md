@@ -1,8 +1,8 @@
 # Now
 
-Updated Thu 5 Nov 2026 (Afternoon).
+Updated Thu 5 Nov 2026 (Night).
 
-- GA Day 4 Quant (Logs & Equations) complete; created [[logarithms-and-equations]].
-- Removed daily root sets from GA roadmap & plans; to be covered on-demand in chat whenever she chooses.
-- Next up: Attempt [[os-dbms-toc-mock-07]] (15 Qs, 45 min) or CD Ch-02 Lec 03–04 (SDT).
+- GA Day 4 Quant complete; created [[logarithms-and-equations]].
+- DS 8-day master sprint planned in `ds-masterplan.md`.
+- Next up: Kick off DS Day 1 (Arrays & Matrix Mapping) or CD Ch-02 Lec 04 (SDT).
 - Target: Top 7 IITs / IIT Bombay (65–70 marks target). Grounded, self-reliant, zero panic.
