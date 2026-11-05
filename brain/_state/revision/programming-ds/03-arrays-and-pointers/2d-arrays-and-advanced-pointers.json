@@ -1,0 +1,21 @@
+{
+  "note": "programming-ds/03-arrays-and-pointers/2d-arrays-and-advanced-pointers.md",
+  "card": {
+    "due": "2026-11-13T09:06:24.148Z",
+    "stability": 8.2956,
+    "difficulty": 1,
+    "elapsed_days": 0,
+    "scheduled_days": 8,
+    "learning_steps": 0,
+    "reps": 1,
+    "lapses": 0,
+    "state": 2,
+    "last_review": "2026-11-05T09:06:24.148Z"
+  },
+  "log": [
+    {
+      "at": "2026-11-05T09:06:24.148Z",
+      "rating": "easy"
+    }
+  ]
+}
