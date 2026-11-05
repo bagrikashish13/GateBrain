@@ -1,16 +1,16 @@
 {
   "note": "dbms/04-functional-dependencies-normal-forms/decomposition-and-normal-forms.md",
   "card": {
-    "due": "2026-11-05T01:15:21.077Z",
-    "stability": 6.5747,
-    "difficulty": 5.1023,
-    "elapsed_days": 2,
-    "scheduled_days": 7,
+    "due": "2026-12-11T09:07:18.400Z",
+    "stability": 36.4649,
+    "difficulty": 3.4509,
+    "elapsed_days": 7,
+    "scheduled_days": 36,
     "learning_steps": 0,
-    "reps": 2,
+    "reps": 3,
     "lapses": 0,
     "state": 2,
-    "last_review": "2026-10-29T01:15:21.077Z"
+    "last_review": "2026-11-05T09:07:18.400Z"
   },
   "log": [
     {
@@ -20,6 +20,10 @@
     {
       "at": "2026-10-29T01:15:21.077Z",
       "rating": "gotit"
+    },
+    {
+      "at": "2026-11-05T09:07:18.400Z",
+      "rating": "easy"
     }
   ]
 }
