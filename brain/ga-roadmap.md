@@ -13,7 +13,7 @@
 
 | Block | Duration | What happens |
 |---|---|---|
-| **Verbal Stream** | 15 mins | Today's Root Set / Grammar Rule (learn rule $\to$ solve 5 quick questions) + 2-min review of yesterday |
+| **Verbal Stream** | 15 mins | Grammar Rules (learn rule $\to$ solve 5 quick questions) / PYQ check (Root sets R1–R14 handled on-demand in chat) |
 | **Core Micro-Topic** | 35 mins | Today's Quant / Analytical / Spatial micro-topic: Concept & shortcut formulas (10m) $\to$ 5–8 PYQs solved step-by-step (25m) |
 | **Speed & Number Sense** | 10 mins | Mental shortcuts (fractions, multipliers, tables, squares, GATE virtual calculator drill) |
 
@@ -25,30 +25,30 @@
 
 | Day & Date | Core Micro-Topic (35m) | Verbal Stream (15m) | Speed Drill (10m) |
 |---|---|---|---|
-| **Day 1 · Wed 28 Oct** | Divisibility rules (2, 3, 4, 5, 7, 8, 9, 11), prime factorization, factors count/sum, HCF & LCM word problems | Root Set R1: *bene, mal, eu, dys, mis, caco* (Good vs Bad) | Tables 11–20 & Squares 1–25 patterns |
-| **Day 2 · Thu 29 Oct** | Fraction-to-percentage table (1/2 to 1/20), decimal conversions, multiplier method ($1 \pm r/100$), base-n systems | Root Set R2: *a/an, in/im/il/ir, un, non, dis, anti, contra* (Negation) | Fraction $\leftrightarrow$ % instant recall |
-| **Day 3 · Tue 3 Nov** | Remainders (basic theorems), unit digit patterns, cyclicity, powers, laws of exponents, surds simplification | Root Set R3: *magn, micro, mega, omni, pan, poly, mono, bi, tri* (Size & Number) | Cyclicity & Units digit shortcuts |
-| **Day 4 · Wed 4 Nov** | Logarithms (3 fundamental laws, base change, digit counting) + Linear & Quadratic equations (roots, discriminant) | Root Set R4: *dict, loqu, voc, scrib, graph, log, clam* (Speaking & Writing) | GATE Virtual Calculator shortcuts & memory keys |
+| **Day 1 · Wed 28 Oct** | Divisibility rules (2, 3, 4, 5, 7, 8, 9, 11), prime factorization, factors count/sum, HCF & LCM word problems | — | Tables 11–20 & Squares 1–25 patterns |
+| **Day 2 · Thu 29 Oct** | Fraction-to-percentage table (1/2 to 1/20), decimal conversions, multiplier method ($1 \pm r/100$), base-n systems | — | Fraction $\leftrightarrow$ % instant recall |
+| **Day 3 · Tue 3 Nov** | Remainders (basic theorems), unit digit patterns, cyclicity, powers, laws of exponents, surds simplification | — | Cyclicity & Units digit shortcuts |
+| **Day 4 · Wed 4 Nov** | Logarithms (3 fundamental laws, base change, digit counting) + Linear & Quadratic equations (roots, discriminant) | — | GATE Virtual Calculator shortcuts & memory keys |
 
 ### Block 2 · Commercial & Core Arithmetic (5 Nov – 12 Nov · 8 Days)
 
 | Day & Date | Core Micro-Topic (35m) | Verbal Stream (15m) | Speed Drill (10m) |
 |---|---|---|---|
-| **Day 5 · Thu 5 Nov** | Percentages: successive percentage change, net multiplier, depreciation/population formulas | Root Set R5: *vid/vis, spec/spic, aud, sent/sens, path, phon* (Senses) | Multiplier conversion drills |
-| **Day 6 · Fri 6 Nov** | Profit, Loss, Discount, Marked Price & dishonest shopkeeper problems | Root Set R6: *duc, port, mit/miss, ced/cess, ject, tract, vert, flu* (Movement) | Profit/loss multiplier shortcuts |
-| **Day 7 · Sat 7 Nov** | Simple Interest & Compound Interest (annual, half-yearly, difference between CI and SI for 2 & 3 years) | Root Set R7: *bio, viv/vit, mort, anim, corp, chron, temp, ann/enn* (Life, Death, Time) | $(1 + r)^n$ approximation vs calculator |
-| **Day 8 · Sun 8 Nov** | Ratio, Proportion, Direct & Inverse Variations, Partnership profit shares | Root Set R8: *cogn/gno, sci, cred, fid, ver, sapi, put* (Mind & Belief) | Cross-multiplication ratio shortcuts |
-| **Day 9 · Mon 9 Nov** | Averages, Weighted Averages & Age word problems (translating words into clean linear equations) | Root Set R9: *phil, phob, am/ami, miso, pac, grat* (Feelings & Passions) | Deviation method for fast averages |
-| **Day 10 · Tue 10 Nov** | Mixtures & Solutions: The Alligation cross rule, repeated liquid replacement formula | Root Set R10: *arch, crat, dem, pol, reg, dom, jur, leg* (Power & Governance) | Alligation ratio grid drill |
-| **Day 11 · Wed 11 Nov** | Time and Work: LCM efficiency method, work & wages, Pipes and Cisterns (negative work/leaks) | Root Set R11: *pre, post, ante, inter, intra, sub, super, trans, circum, ex* (Position) | Inverse efficiency calculations |
-| **Day 12 · Thu 12 Nov** | Speed, Time & Distance: Average speed, Relative speed, Trains, Boats & Streams, Circular tracks | Root Set R12: *fac/fic/fect, struct, rupt, frag/fract, solv, tend* (Making & Breaking) | km/h $\leftrightarrow$ m/s ($\times \frac{5}{18}$) & relative speed |
+| **Day 5 · Thu 5 Nov** | Percentages: successive percentage change, net multiplier, depreciation/population formulas | — | Multiplier conversion drills |
+| **Day 6 · Fri 6 Nov** | Profit, Loss, Discount, Marked Price & dishonest shopkeeper problems | — | Profit/loss multiplier shortcuts |
+| **Day 7 · Sat 7 Nov** | Simple Interest & Compound Interest (annual, half-yearly, difference between CI and SI for 2 & 3 years) | — | $(1 + r)^n$ approximation vs calculator |
+| **Day 8 · Sun 8 Nov** | Ratio, Proportion, Direct & Inverse Variations, Partnership profit shares | — | Cross-multiplication ratio shortcuts |
+| **Day 9 · Mon 9 Nov** | Averages, Weighted Averages & Age word problems (translating words into clean linear equations) | — | Deviation method for fast averages |
+| **Day 10 · Tue 10 Nov** | Mixtures & Solutions: The Alligation cross rule, repeated liquid replacement formula | — | Alligation ratio grid drill |
+| **Day 11 · Wed 11 Nov** | Time and Work: LCM efficiency method, work & wages, Pipes and Cisterns (negative work/leaks) | — | Inverse efficiency calculations |
+| **Day 12 · Thu 12 Nov** | Speed, Time & Distance: Average speed, Relative speed, Trains, Boats & Streams, Circular tracks | — | km/h $\leftrightarrow$ m/s ($\times \frac{5}{18}$) & relative speed |
 
 ### Block 3 · Progressions, Counting & Statistics (13 Nov – 18 Nov · 6 Days)
 
 | Day & Date | Core Micro-Topic (35m) | Verbal Stream (15m) | Speed Drill (10m) |
 |---|---|---|---|
-| **Day 13 · Fri 13 Nov** | Progressions: Arithmetic (AP), Geometric (GP), infinite GP sum, special series ($\sum n, \sum n^2, \sum n^3$) | Root Set R13: *nov, mut, ple, vac, plac* (Change & Fullness) | Fast series sum formulas |
-| **Day 14 · Sat 14 Nov** | Permutations & Combinations I: Fundamental counting principle, arrangements, word anagrams with repetitions | Root Set R14: Suffixes (*-ous, -ity, -ize, -cide, -phile, -ism, -logy, -cracy, -escent*) | Factorials $1!$ to $8!$ recall |
+| **Day 13 · Fri 13 Nov** | Progressions: Arithmetic (AP), Geometric (GP), infinite GP sum, special series ($\sum n, \sum n^2, \sum n^3$) | — | Fast series sum formulas |
+| **Day 14 · Sat 14 Nov** | Permutations & Combinations I: Fundamental counting principle, arrangements, word anagrams with repetitions | — | Factorials $1!$ to $8!$ recall |
 | **Day 15 · Sun 15 Nov** | Permutations & Combinations II: Selections under restrictions, circular permutations, identical distribution | Grammar G1: Articles (*a, an, the*, zero article rules) | Small $^nC_r$ calculations without pen |
 | **Day 16 · Mon 16 Nov** | Probability I: Classical probability (coins, dice, cards, balls in urns), addition rule $P(A \cup B)$ | Grammar G2: Subject–Verb Agreement I (basic, collective nouns, compound subjects) | Complement probability shortcuts |
 | **Day 17 · Tue 17 Nov** | Probability II: Conditional probability $P(A \mid B)$, independent events, complement rule ("at least one") | Grammar G3: Subject–Verb Agreement II (*either/neither, each, one of, the number vs a number*) | "At least one" $\to 1 - P(\text{none})$ |
