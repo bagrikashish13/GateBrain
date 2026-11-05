@@ -1,21 +1,25 @@
 {
   "note": "os/04-cpu-scheduling/highest-response-ratio-next.md",
   "card": {
-    "due": "2026-11-05T08:40:42.634Z",
-    "stability": 8.2956,
+    "due": "2026-12-14T09:07:04.783Z",
+    "stability": 38.9052,
     "difficulty": 1,
-    "elapsed_days": 0,
-    "scheduled_days": 8,
+    "elapsed_days": 8,
+    "scheduled_days": 39,
     "learning_steps": 0,
-    "reps": 1,
+    "reps": 2,
     "lapses": 0,
     "state": 2,
-    "last_review": "2026-10-28T08:40:42.634Z"
+    "last_review": "2026-11-05T09:07:04.783Z"
   },
   "log": [
     {
       "at": "2026-10-28T08:40:42.634Z",
       "rating": "easy"
+    },
+    {
+      "at": "2026-11-05T09:07:04.783Z",
+      "rating": "gotit"
     }
   ]
 }
