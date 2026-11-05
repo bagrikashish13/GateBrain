@@ -1,7 +1,7 @@
 # Now
 
-Updated Thu 5 Nov 2026 (Morning).
+Updated Thu 5 Nov 2026 (Afternoon).
 
-- Ch-04 Part 1 rapid recap completed; C Ch-04 hard mock deleted per request.
-- Today: Revise due notes, GA Day 4 (Logs/Eqs), CD Ch-02 Lec 03–04 (SDT), daily technical & GA mocks.
+- GA Day 4 Quant (Logs & Equations) complete; created [[logarithms-and-equations]].
+- Next up: GA Day 4 Verbal (Root Set R4) / Speed Drill, then CD Ch-02 Lec 03–04 (SDT) & daily mocks.
 - Target: Top 7 IITs / IIT Bombay (65–70 marks target). Grounded, self-reliant, zero panic.
