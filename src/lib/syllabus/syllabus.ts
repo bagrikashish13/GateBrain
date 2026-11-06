@@ -1,6 +1,7 @@
 import { slugOf } from "@/lib/brain/names";
 import type { Test } from "@/lib/tests/format";
 import type { Result } from "@/lib/tests/result";
+import { compileConcepts, conceptsIn, orderErrors, teachingOrder, type Concept } from "./order";
 
 // The C + Data Structures + Algorithms syllabus in brain/syllabus/ (pure: no fs). The Markdown files say
 // what to teach and in which order, sequence.json where the tests fall, progress.json what is done, and
@@ -10,8 +11,8 @@ import type { Result } from "@/lib/tests/result";
 export type ItemKind = "T" | "Q" | "N" | "L";
 export const KIND_NAME: Record<ItemKind, string> = { T: "concept", Q: "PYQ pattern", N: "never asked yet", L: "legacy" };
 
-export type Item = { id: string; unit: string; kind: ItemKind; text: string; pyqs: string[]; subtopic: string | null };
-export type Unit = { id: string; title: string; notes: string; hours: number; items: Item[] };
+export type Item = { id: string; unit: string; kind: ItemKind; text: string; pyqs: string[]; teaches: string[]; subtopic: string | null };
+export type Unit = { id: string; title: string; part: string; notes: string; hours: number; items: Item[] };
 export type Pyq = {
   id: string;
   title: string;
@@ -25,6 +26,7 @@ export type Pyq = {
   scope: "core" | "cross";
   tags: string[];
   url: string | null;
+  uses?: string[]; // concepts this PYQ needs, from reading its real text (concepts.json)
 };
 export type Blueprint = {
   label: string;
@@ -42,7 +44,8 @@ export type UnitStep = { unit: string; by: string };
 export type TestStep = { test: string; kind: string; covers: string[]; by: string };
 export type Step = UnitStep | TestStep;
 export type Sequence = { blueprints: Record<string, Blueprint>; steps: Step[] };
-export type Progress = { done: Record<string, string> };
+// done: ticked, with the day. seen: met before this syllabus existed, so one right answer earns the tick.
+export type Progress = { done: Record<string, string>; seen?: string[] };
 export type Catalog = { units: Map<string, Unit>; items: Map<string, Item> };
 
 export const isUnitStep = (s: Step): s is UnitStep => "unit" in s;
@@ -50,20 +53,29 @@ export const retestId = (test: string) => `${test}-r2`;
 export const subjectOf = (u: Unit) => u.notes.split("/")[0];
 export const topicOf = (u: Unit) => slugOf(u.notes.split("/")[1] ?? "");
 
-const UNIT_HEAD = /^##\s+([PDA]\d\d)\s+·\s+(.+?)\s*$/;
-const ITEM = /^-\s+([PDA]\d\d\.\d+)\s+([TQNL])\s+(.+?)\s*$/;
+const PART_HEAD = /^#\s+Part\s+\d+\s+·\s+(.+?)\s*$/;
+const UNIT_HEAD = /^##\s+([PXDA]\d\d)\s+·\s+(.+?)\s*$/;
+const ITEM = /^-\s+([PXDA]\d\d\.\d+)\s+([TQNL])\s+(.+?)\s*$/;
 const SUB_HEAD = /^###\s+(.+?)\s*$/;
 const PYQ_SPLIT = " PYQ: ";
+const TEACHES_SPLIT = " Teaches: ";
+const csv = (s: string | undefined) => (s ? s.split(",").map((x) => x.trim()).filter(Boolean) : []);
 
 /** One syllabus file → its units. Problems go to `errors`. */
 export function parseSyllabus(file: string, raw: string, errors: string[]): Unit[] {
   const units: Unit[] = [];
   let sub: string | null = null;
+  let part = "";
   for (const [i, line] of raw.replace(/\r\n/g, "\n").split("\n").entries()) {
     const where = `${file}:${i + 1}`;
+    const partHead = PART_HEAD.exec(line);
+    if (partHead) {
+      part = partHead[1];
+      continue;
+    }
     const head = UNIT_HEAD.exec(line);
     if (head) {
-      units.push({ id: head[1], title: head[2], notes: "", hours: 0, items: [] });
+      units.push({ id: head[1], title: head[2], part, notes: "", hours: 0, items: [] });
       sub = null;
       continue;
     }
@@ -90,13 +102,15 @@ export function parseSyllabus(file: string, raw: string, errors: string[]): Unit
       errors.push(`${where}: an item must look like "- ${unit.id}.1 T text".`);
       continue;
     }
-    const [text, list] = m[3].split(PYQ_SPLIT);
+    const [body, teaches] = m[3].split(TEACHES_SPLIT);
+    const [text, cited] = body.split(PYQ_SPLIT);
     const item: Item = {
       id: m[1],
       unit: unit.id,
       kind: m[2] as ItemKind,
       text: text.trim(),
-      pyqs: list ? list.split(",").map((s) => s.trim()).filter(Boolean) : [],
+      pyqs: csv(cited),
+      teaches: csv(teaches),
       subtopic: sub,
     };
     if (!item.id.startsWith(`${unit.id}.`)) errors.push(`${where}: ${item.id} is inside unit ${unit.id}.`);
@@ -111,7 +125,7 @@ export function buildCatalog(units: Unit[]): Catalog {
 }
 
 /** Everything that must hold for the syllabus to be trustworthy: `npm run check:syllabus`. Empty = fine. */
-export function validate(catalog: Catalog, pyqs: Map<string, Pyq>, sequence: Sequence, progress: Progress): string[] {
+export function validate(catalog: Catalog, pyqs: Map<string, Pyq>, sequence: Sequence, progress: Progress, concepts: Concept[] = []): string[] {
   const out: string[] = [];
   const cited = new Set<string>();
   for (const unit of catalog.units.values()) {
@@ -157,6 +171,8 @@ export function validate(catalog: Catalog, pyqs: Map<string, Pyq>, sequence: Seq
     if (b.mcq[0] + b.msq[0] + b.nat[0] > b.questions || b.mcq[1] + b.msq[1] + b.nat[1] < b.questions) out.push(`blueprint ${name}: the type ranges cannot add up to ${b.questions}.`);
   }
   for (const id of Object.keys(progress.done)) if (!catalog.items.has(id)) out.push(`progress: unknown item ${id}.`);
+  for (const id of progress.seen ?? []) if (!catalog.items.has(id)) out.push(`progress: unknown seen item ${id}.`);
+  if (concepts.length) out.push(...orderErrors(catalog, pyqs, sequence, concepts));
   return out;
 }
 
@@ -184,6 +200,7 @@ export type State = {
   progress: Progress;
   tests: Map<string, Attempted>; // includes retests
   hasNotes: (folder: string) => boolean;
+  concepts?: Concept[];
 };
 
 const attempted = (s: State, id: string): Attempted => s.tests.get(id) ?? { test: null, first: null };
@@ -366,7 +383,26 @@ export function auditTest(s: State, id: string, test: Test): { errors: string[];
     if (missed.size && onMissed < Math.ceil(b.questions / 2)) errors.push(`Only ${onMissed} questions test what the first attempt missed; at least ${Math.ceil(b.questions / 2)} must.`);
   } else {
     const uncoveredUnits = plan.covers.filter((u) => ![...used].some((i) => i.startsWith(`${u}.`)));
-    if (uncoveredUnits.length) errors.push(`No question from ${uncoveredUnits.join(", ")}.`);
+    // A grand test covers more units than it has questions: there, every part must appear instead.
+    if (uncoveredUnits.length && plan.covers.length <= b.questions) errors.push(`No question from ${uncoveredUnits.join(", ")}.`);
+    else if (uncoveredUnits.length) warnings.push(`No question from ${uncoveredUnits.join(", ")}.`);
+    const partOf = (u: string | undefined) => s.catalog.units.get(u ?? "")?.part;
+    const usedParts = new Set([...used].map((i) => partOf(s.catalog.items.get(i)?.unit)));
+    for (const p of new Set(plan.covers.map(partOf))) if (p && !usedParts.has(p)) errors.push(`No question from Part "${p}".`);
+  }
+  // Nothing in a question may lean on an idea the student hasn't been taught yet.
+  if (s.concepts?.length) {
+    const compiled = compileConcepts(s.concepts);
+    const { teacher } = teachingOrder(s.catalog, s.sequence);
+    const known = new Set([...plan.covers, ...plan.earlier]);
+    const nameOf = new Map(s.concepts.map((c) => [c.id, c.name]));
+    for (const x of q) {
+      const text = [x.text, ...x.options.map((o) => o.text)].join("\n");
+      for (const c of conceptsIn(text, compiled)) {
+        const t = teacher.get(c);
+        if (t && !known.has(t.unit)) errors.push(`Q${x.n} uses ${nameOf.get(c)}, taught at ${t.id}, which comes after this test.`);
+      }
+    }
   }
   const skippedCarry = plan.carry.filter((i) => !used.has(i.id)).slice(0, 3);
   if (skippedCarry.length) warnings.push(`Still weak and not tested here: ${skippedCarry.map((i) => i.id).join(", ")}.`);

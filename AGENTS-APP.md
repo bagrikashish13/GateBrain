@@ -13,7 +13,7 @@ Read this, as well as `AGENTS.md`, before changing the app (`src/`, `scripts/`).
   palette's shapes and colours) on purpose. Keep it faithful to the real exam: an answer counts only after
   Save & Next or Mark for Review & Next, Clear Response, the five palette states, the NAT keypad, the
   virtual calculator, the exam summary before submit.
-- Tabs: Notes, Revise, Today, Tests, Roadmap. Settings opens from the gear on Today's GATE countdown.
+- Tabs: Notes, Revise, Today, Tests, Syllabus. Roadmap opens from the Syllabus page on a phone and sits in the rail on a laptop. Settings opens from the gear on Today's GATE countdown.
 - Mobile-first (360–430px), desktop secondary (the exam is laptop-first but works on a phone).
 
 ### How it works
@@ -41,13 +41,13 @@ npm run check:tests  # validate brain/tests/*.md
 npm run brain        # read-only revision plan for agents (2.0)
 npm run check:log    # session log: what to read first, what to compact (2.8)
 npm run syllabus     # C, DS, Algo: what to teach or test next (2.10)
-npm run check:syllabus # validate brain/syllabus/: every PYQ covered, every unit tested
+npm run check:syllabus # validate brain/syllabus/: every PYQ covered, every unit tested, nothing used before it's taught
 ```
 
 - `scripts/brain.ts` loads the app's server modules under the `react-server` condition (so `server-only`
   imports work outside Next). New-note dates come from `revision/plan.ts` (pure, tested).
 - `scripts/check-log.ts` runs `src/lib/log.ts` (pure, tested): line caps, what to compact, the startup set.
-- `scripts/syllabus.ts` runs `src/lib/syllabus/` (pure, tested): the syllabus files, the next step, test blueprints.
+- `scripts/syllabus.ts` runs `src/lib/syllabus/` (pure, tested): `syllabus.ts` (the files, the next step, test blueprints), `order.ts` (concepts and the topological check), `tree.ts` (what the Syllabus tab shows).
 
 ### Git
 - **Never add `Co-Authored-By` or any AI/model attribution to commits** (his rule).

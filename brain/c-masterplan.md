@@ -3,7 +3,7 @@
 **Target:** 100% accuracy on all GATE C Programming questions with $\le 1$ minute solve time per question.  
 **Mode:** Chat-only interactive micro-lessons (no video lectures). Zero omissions.  
 
-**What to teach, in which order, and when to test comes from `brain/syllabus/` (`npm run syllabus`).** This file only keeps the teaching style and the three tracing templates. The old day table and checklist are all inside units P01–P09.
+**What to teach, in which order, and when to test comes from `brain/syllabus/` (`npm run syllabus`).** This file only keeps the teaching style and the three tracing templates. The old day table and checklist are all inside units P01–P13.
 
 ---
 

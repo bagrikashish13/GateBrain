@@ -39,7 +39,7 @@ If you are changing the app, read `AGENTS-APP.md` too.**
     to the non-negotiables. Don't hand back options or ask her to plan.
 12. **C, Data Structures and Algorithms are taught only from `brain/syllabus/`, every time, without being asked.**
     Before teaching or testing any of them, run `npm run syllabus` and do exactly what it prints (2.10). Never pick
-    topics yourself or plan them from memory.
+    topics yourself or plan them from memory. Never use what it lists as NOT TAUGHT YET.
 13. **Keep this file under 24,000 bytes.** Antigravity cuts anything longer, silently. Details go in other files.
 14. **Talking to him:** front-load the answer, short paragraphs, bullets. One clear next step beats a wall of options. Be honest when something is a bad idea.
 
@@ -299,13 +299,14 @@ ahead or behind the roadmap, one change for next week.
 
 ### 2.10 Teaching C, Data Structures and Algorithms
 
-`brain/syllabus/` holds the whole syllabus: 36 units and 410 items in teaching order, with every one of 770 PYQs (1987–2026) assigned to a question pattern, and 21 GATE-style tests placed between the units. **"Teach me DS", "continue", "what's next": run `npm run syllabus` and follow it.** Read `brain/syllabus/README.md` once per session before teaching these subjects: it says how to teach each item and how to write the tests.
+`brain/syllabus/` holds the whole syllabus: 41 units and 619 items in strict teaching order, with every one of 770 PYQs (1987–2026) assigned to a question pattern, and 25 GATE-style tests placed between the units. **"Teach me DS", "continue", "what's next": run `npm run syllabus` and follow it.** Read `brain/syllabus/README.md` once per session before teaching these subjects: it says how to teach each item and how to write the tests.
 
 Key commands: `npm run syllabus` (the exact next step), `-- done <item>` (only after a correct answer), `-- test <id>` and `-- check-test <id>` (blueprint), `-- pyq <id>` (a real PYQ; never write one from memory), `npm run check:syllabus`.
 
-It refuses skipped items and stops new teaching until a due test is taken and analysed. If a plan file or `roadmap.json` disagrees with it, the syllabus wins: fix them. `c-masterplan.md` only keeps the tracing templates.
+It refuses skipped items and stops new teaching until a due test is taken and analysed. Nothing is used before it is taught: each step prints NOT TAUGHT YET. `done` commits, pushes and prints tick lines: show them. If a plan file or `roadmap.json` disagrees with it, the syllabus wins: fix them. `c-masterplan.md` only keeps the tracing templates.
 
 <!-- BEGIN:nextjs-agent-rules -->
+
 ## This is NOT the Next.js you know
 
 This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.

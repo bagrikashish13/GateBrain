@@ -1,6 +1,6 @@
-# Syllabus: C, Data Structures, Algorithms
+# Syllabus: C, Complexity, Data Structures, Algorithms
 
-**This is the only syllabus for these three subjects. Teach from it, in its order, every time, without being asked.** The student should never have to remind you, and you should never plan these subjects from memory.
+**This is the only syllabus for these subjects. Teach from it, in its order, every time, without being asked.** The student should never have to remind you, and you should never plan these subjects from memory.
 
 ## Start here, every time
 
@@ -9,21 +9,38 @@ git pull --rebase
 npm run syllabus
 ```
 
-Do exactly what it prints. It knows what has been taught, what comes next, and when a test is due. Everything below explains why, and how to do each step well.
+Do exactly what it prints. It knows what has been taught, what comes next, what must not be used yet, and when a test is due. Everything below explains why, and how to do each step well.
 
 | Command | What it does |
 |---|---|
 | `npm run syllabus` | The exact next step |
-| `npm run syllabus -- done <item>` | Mark an item, only after the student answered its check correctly. Skipping is refused |
+| `npm run syllabus -- done <item>` | Tick an item, only after the student answered its check correctly. Skipping is refused. It commits, pushes and prints tick lines: show them to the student |
 | `npm run syllabus -- unit D07` | One whole unit |
 | `npm run syllabus -- status` | Every unit and test, and pace against the target dates |
 | `npm run syllabus -- test <id>` | What a test must contain, before you write it |
-| `npm run syllabus -- check-test <id>` | Check a written test against its blueprint |
+| `npm run syllabus -- check-test <id>` | Check a written test against its blueprint and against what has been taught |
 | `npm run syllabus -- weak` | Items missed in tests |
 | `npm run syllabus -- pyq <id>` | A real PYQ: link, text and answer key. A NAT key like `7:7` is a range |
-| `npm run check:syllabus` | Validate everything after editing these files |
+| `npm run check:syllabus` | Validate everything after editing these files, including the order |
 
 "Teach me DS", "continue", "what's next in algo", "let's study": all mean run the command and carry on from the next item. Don't offer options.
+
+The student sees all of this in the app's **Syllabus** tab: every topic in order, what is ticked, what is next, and what is left.
+
+## The order is topological
+
+The student must never meet an idea before its lesson. This is checked, not hoped for.
+
+- `concepts.json` names every idea that has to be taught before it can appear (casts, `for` loops, pointers, BST, Dijkstra…) and how to spot it in text or code.
+- Exactly one syllabus line teaches each one, marked `Teaches: cast`.
+- `pyq-index.jsonl` has `uses` on every PYQ: the concepts it really needs, from scanning its real text, with false positives removed by reading the question.
+- `npm run check:syllabus` and `npm test` fail if any line, or any PYQ it cites, uses a concept taught later. The first version of this syllabus had 114 such cases, including loops used in the operators unit and pointers used in the functions unit. Now there are none.
+
+**Why the parts are in this order:** C comes first because everything else is written in it. Complexity and searching come next because every data structure is costed in those terms, and lists, heaps and trees are compared with binary search. Data Structures come before Algorithms because sorting uses heaps and graph algorithms use queues, stacks and union-find. Inside C: operators before control flow, control flow before functions, pointers before strings, and all of those before recursion, because the recursion PYQs use them.
+
+**When you teach,** the command prints NOT TAUGHT YET at every step. Never use anything on that list in an explanation, an example or a question, not even in passing. Write your own examples with only what the student has. If the student asks about something from the list, answer in a line and say which unit covers it. It also prints "Builds on": if the student wobbles on one of those, go back to that item before continuing.
+
+**When you write a test,** `check-test` fails any question that uses a concept taught after the test. Questions on C, DS or Algorithms in a daily mock follow the same rule: only what is ticked.
 
 ## What it covers, and how we know
 
@@ -33,11 +50,12 @@ Do exactly what it prints. It knows what has been taught, what comes next, and w
 
 | Part | File | Units | Hours |
 |---|---|---|---|
-| Programming in C | `1-programming-in-c.md` | P01–P09 | 27 |
-| Data Structures (with hashing) | `2-data-structures.md` | D01–D11 | 36.5 |
-| Algorithms | `3-algorithms.md` | A01–A16 | 47.5 |
+| Programming in C | `1-programming-in-c.md` | P01–P13 | 33.5 |
+| Complexity and searching | `2-complexity-and-searching.md` | X01–X04 | 12 |
+| Data Structures (with hashing) | `3-data-structures.md` | D01–D11 | 37.5 |
+| Algorithms | `4-algorithms.md` | A01–A13 | 38 |
 
-Each unit is a topic, each `###` a subtopic, each line one minor topic. The kinds:
+Each unit is a topic, each `###` a subtopic, each line one minor topic with one idea. The kinds:
 
 - **T, concept:** teach it, check it.
 - **Q, PYQ pattern:** a type of question GATE has really asked. Show the method, then the student solves the PYQs.
@@ -60,30 +78,30 @@ Small steps always (AGENTS.md rule 8): one idea per reply, ending in one questio
 Rules that keep this honest:
 
 - **Never write a PYQ from memory.** Use `pyq`. If its text has holes (2022 onwards lose symbols), open the link or ask the student to read it out. Cite real ids only.
-- **Mark `done` only after a correct answer**, on the check or on the last PYQ of the pattern, without a hint. Explaining something is not teaching it.
-- **"I already know this":** ask one hard check. Right means `done`, wrong means teach it. Fast is fine; skipping is not.
+- **Tick only after a correct answer**, on the check or on the last PYQ of the pattern, without a hint. Explaining something is not teaching it. A tick has to mean something.
+- **Show the tick lines `done` prints, and say so when a unit is complete.** The student asked for this: progress they can see is part of how they keep going.
+- **Items marked "seen"** were met in the C sprint, before this syllabus and out of order. They are not ticked. Ask one hard check first: right means `done` and move on, wrong means teach it. It should go fast.
+- **"I already know this":** the same. One hard check. Fast is fine; skipping is not.
 - **Doubts are welcome any time.** Answer them, then return to the next item. They don't move the pointer. If the student insists on another topic today, do it, say once what comes next in the order, and when you get back to those items probe them quickly.
 - **Scope:** nothing outside these files. No red-black trees, B-trees (those are in DBMS), segment trees, tries, KMP, flow, or anything else not listed. If you think something is missing, tell the student and add it with its evidence, don't just teach it.
-- **Items marked `prior`** were taught in the C sprint before this syllabus existed. Their PYQ patterns are still pending, and `pds-check-c` proves the concepts.
 - **Feelings first:** `brain/cs.md` overrides the schedule. On a hard day, shrink as AGENTS.md 2.9 says.
 
 **Finishing a unit:** write its notes in the folder on the unit's `notes:` line (shape in AGENTS.md 2.1), from what the student actually found hard, not a summary of the item list. The command refuses to continue without them. They enter revision by themselves.
 
-**Stopping for the day:** write the 2.8 checkpoint with the next item id, commit `progress.json` with it, and push.
+**Stopping for the day:** `done` has already pushed the ticks. Write the 2.8 checkpoint with the next item id, commit and push.
 
 ## Tests
 
-A test comes after about every 4–9 hours of new teaching, and **no new teaching happens until the test is taken and analysed.** The command enforces this. All tests appear in the app's Tests tab and use its exam screen.
+A test comes after about every 3–8 hours of new teaching, and **no new teaching happens until the test is taken and analysed.** The command enforces this. All tests appear in the app's Tests tab and use its exam screen.
 
 | Kind | When | Questions | 1m / 2m | Minutes | MCQ / MSQ / NAT | Pass |
 |---|---|---|---|---|---|---|
-| Diagnostic | Once, over the C already taught | 15 | 7 / 8 | 40 | 6–9 / 2–4 / 4–6 | 60% |
-| Unit test | After 1–2 units | 10 | 5 / 5 | 30 | 4–6 / 1–3 / 2–4 | 70% |
-| Stage test | After 3–5 units, covers them all | 20 | 10 / 10 | 60 | 8–12 / 3–5 / 5–8 | 65% |
-| Subject sectional | End of Parts 1+2, end of Part 3 | 30 | 14 / 16 | 90 | 13–17 / 4–7 / 8–11 | 65% |
-| Grand test | Twice, over all three parts | 40 | 19 / 21 | 120 | 18–22 / 6–9 / 11–15 | 65% |
+| Unit test | After 1–4 units | 10 | 5 / 5 | 30 | 4–6 / 1–3 / 2–4 | 70% |
+| Stage test | At the end of a stretch, covers all of it | 20 | 10 / 10 | 60 | 8–12 / 3–5 / 5–8 | 65% |
+| Subject sectional | End of C + DS, end of Complexity + Algorithms | 30 | 14 / 16 | 90 | 13–17 / 4–7 / 8–11 | 65% |
+| Grand test | Twice, over everything | 40 | 19 / 21 | 120 | 18–22 / 6–9 / 11–15 | 65% |
 
-The order is in `sequence.json`, 21 tests in all. Minutes follow the real paper's 1.8 minutes per mark.
+The order is in `sequence.json`, 25 tests in all. Minutes follow the real paper's 1.8 minutes per mark.
 
 **A syllabus test due today replaces the daily technical mock (AGENTS.md 2.9).** Never both on one day. Stage tests and longer take their extra time from that day's block. Its analysis is the same day, triaged as 2.9 says.
 
@@ -131,4 +149,4 @@ Draw these every time they apply. Don't rely on the student remembering them.
 
 ## Changing the syllabus
 
-The syllabus may grow. GATE 2027's own questions, or a real gap, are good reasons. Add the item with its PYQ evidence, keep the numbering sequential, and run `npm run check:syllabus`. Don't remove an item because it is hard. New PYQs go in `pyq-index.jsonl` and into an item.
+The syllabus may grow. GATE 2027's own questions, or a real gap, are good reasons. Add the item with its PYQ evidence, at the point where everything it needs has been taught, keep the numbering sequential, and run `npm run check:syllabus`. A line that introduces a new idea gets `Teaches: <id>` and an entry in `concepts.json`. A new PYQ goes in `pyq-index.jsonl` with its `uses`, and into an item. Don't remove an item because it is hard.

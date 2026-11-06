@@ -276,7 +276,7 @@
       "short": "PDS",
       "subject": "programming-ds",
       "start": "2026-11-17",
-      "end": "2026-11-25",
+      "end": "2026-11-27",
       "marks": "7–12",
       "focus": [
         {
@@ -305,22 +305,19 @@
         "Anything not in brain/syllabus/ (B-trees are in DBMS; no red-black trees, segment trees or tries)"
       ],
       "days": [
-        "6–13 Nov · C: P01–P09, alongside CD, tests pds-check-c, pds-ut-01",
-        "14–16 Nov · D01 arrays, D02 stacks, tests pds-st-01, pds-ut-02",
-        "17–18 Nov · D03 queues, D04 linked lists, test pds-st-02",
-        "19–20 Nov · D05 binary trees, D06 traversals, test pds-ut-03",
-        "21–22 Nov · D07 BST, D08 AVL, test pds-ut-04",
-        "22–23 Nov · D09 heaps, test pds-st-03",
-        "23–24 Nov · D10 hashing, D11 graphs, test pds-ut-05",
-        "25 Nov · Remaining PYQs, sectional pds-sectional"
+        "6–15 Nov · C: P01–P13, alongside CD at first, tests c-ut-01 to c-ut-05, c-stage",
+        "15–18 Nov · Complexity and searching: X01–X04, tests cx-ut-01, cx-stage",
+        "18–21 Nov · D01 arrays, D02 lists, D03 stacks, D04 queues, tests ds-ut-01, ds-stage-01",
+        "21–25 Nov · D05–D09 trees, BSTs, AVL, heaps, tests ds-ut-02, ds-ut-03, ds-stage-02",
+        "25–27 Nov · D10 hashing, D11 graphs, test ds-ut-04, sectional pds-sectional"
       ],
-      "note": "Follows brain/syllabus/ item by item (npm run syllabus). C and the first data structures run alongside CD from 6 Nov."
+      "note": "Follows brain/syllabus/ item by item (npm run syllabus). Complexity and searching come before Data Structures, because every structure is costed in those terms."
     },
     {
       "title": "Algorithms",
       "short": "Algo",
       "subject": "algorithms",
-      "start": "2026-11-26",
+      "start": "2026-11-28",
       "end": "2026-12-07",
       "marks": "5–10",
       "focus": [
@@ -351,18 +348,13 @@
         "Formal correctness proofs"
       ],
       "days": [
-        "26–27 Nov · A01 asymptotics, A02 code complexity, test algo-ut-01",
-        "27–28 Nov · A03 recurrences, test algo-ut-02",
-        "28–29 Nov · A04 searching, A05 divide and conquer, test algo-st-01",
-        "29 Nov–1 Dec · A06–A09 sorting, test algo-st-02",
-        "1–2 Dec · A10 graph traversals, test algo-ut-03",
-        "2–4 Dec · A11 greedy, A12 MST, test algo-ut-04",
-        "4–5 Dec · A13 Dijkstra, test algo-st-03",
-        "5–6 Dec · A14 DP, A15 DP on graphs, test algo-ut-05",
-        "7 Dec · A16 design, remaining PYQs, sectional algo-sectional",
+        "27–30 Nov · A01–A06 sorting, divide and conquer, tests algo-ut-01, algo-ut-02, algo-stage-01",
+        "30 Nov–3 Dec · A07 traversals, A08 greedy, A09 MST, A10 shortest paths, tests algo-ut-03, algo-ut-04, algo-stage-02",
+        "3–6 Dec · A11 and A12 dynamic programming, A13 design, test algo-ut-05, sectional algo-sectional",
+        "7 Dec · Weak patterns from the sectional",
         "13 and 20 Dec · Grand tests dsa-grand-01, dsa-grand-02"
       ],
-      "note": "Follows brain/syllabus/ item by item (npm run syllabus). Dijkstra and Bellman-Ford come back in CN routing."
+      "note": "Follows brain/syllabus/ item by item (npm run syllabus). Asymptotics, recurrences and searching were done before Data Structures. Dijkstra and Bellman-Ford come back in CN routing."
     },
     {
       "title": "Digital Logic",
