@@ -277,41 +277,44 @@
       "subject": "programming-ds",
       "start": "2026-11-17",
       "end": "2026-11-25",
-      "marks": "11–15",
+      "marks": "7–12",
       "focus": [
         {
-          "text": "C output tracing: pointers, arrays, strings, recursion, static variables, scope",
+          "text": "C output tracing: recursion, pointers, arrays, static and scope",
           "top": true
         },
         {
-          "text": "Trees: BST, AVL rotations and height bounds, rebuild from traversals",
+          "text": "Trees: BST, traversals, rebuild, node counting",
           "top": true
         },
         {
-          "text": "Heaps: build-heap, insert/delete, array positions"
+          "text": "Heaps: positions, build, insert and delete, counting",
+          "top": true
         },
         {
-          "text": "Hashing: linear/quadratic probing, chaining, expected probes"
+          "text": "Hashing: linear probing, chaining, probabilities, double hashing"
         },
         {
-          "text": "Stacks and queues: infix to postfix, evaluation, queue from stacks; linked lists"
+          "text": "Stacks and queues: permutations, postfix, built from each other"
+        },
+        {
+          "text": "Linked list code, AVL heights, graph representation"
         }
       ],
       "skip": [
-        "Graph representation in depth (Algorithms covers it)"
+        "Anything not in brain/syllabus/ (B-trees are in DBMS; no red-black trees, segment trees or tries)"
       ],
       "days": [
-        "17 Nov · Arrays & Matrix Mapping",
-        "18 Nov · Stacks & Queues",
-        "19 Nov · Linked Lists",
-        "20 Nov · Binary Trees",
-        "21 Nov · Binary Search Trees",
-        "22 Nov · AVL Trees",
-        "23 Nov · Heaps (Priority Queues)",
-        "24 Nov · Hashing",
-        "25 Nov · Mixed PDS PYQs & Sectional Mock"
+        "6–13 Nov · C: P01–P09, alongside CD, tests pds-check-c, pds-ut-01",
+        "14–16 Nov · D01 arrays, D02 stacks, tests pds-st-01, pds-ut-02",
+        "17–18 Nov · D03 queues, D04 linked lists, test pds-st-02",
+        "19–20 Nov · D05 binary trees, D06 traversals, test pds-ut-03",
+        "21–22 Nov · D07 BST, D08 AVL, test pds-ut-04",
+        "22–23 Nov · D09 heaps, test pds-st-03",
+        "23–24 Nov · D10 hashing, D11 graphs, test pds-ut-05",
+        "25 Nov · Remaining PYQs, sectional pds-sectional"
       ],
-      "note": "C chapters done in the C sprint (28 Oct–6 Nov), so this block is mostly data structures."
+      "note": "Follows brain/syllabus/ item by item (npm run syllabus). C and the first data structures run alongside CD from 6 Nov."
     },
     {
       "title": "Algorithms",
@@ -319,32 +322,47 @@
       "subject": "algorithms",
       "start": "2026-11-26",
       "end": "2026-12-07",
-      "marks": "6–9",
+      "marks": "5–10",
       "focus": [
         {
-          "text": "Graphs: BFS/DFS edge types and timings, Dijkstra, Bellman-Ford, MST (Prim, Kruskal)",
+          "text": "BFS and DFS: valid orders, edge types, timings, trees, topological sort",
           "top": true
         },
         {
-          "text": "Asymptotics and recurrences: master theorem, recursion tree",
+          "text": "MST: cut and cycle properties, Kruskal and Prim orders, counting MSTs",
           "top": true
         },
         {
-          "text": "DP: LCS, matrix-chain, 0/1 knapsack, Floyd–Warshall"
+          "text": "Recurrences and asymptotics: master theorem, square-root recurrences, loops",
+          "top": true
         },
         {
-          "text": "Sorting: best/worst cases, comparisons, stability; quick and merge sort analysis"
+          "text": "Sorting: swaps, passes and comparisons, quick and merge sort traces, lower bounds"
         },
         {
-          "text": "Greedy: Huffman, activity selection, fractional knapsack"
+          "text": "DP: fill order, LCS, knapsack and subset sum, matrix chain, Bellman-Ford, Floyd-Warshall"
+        },
+        {
+          "text": "Greedy: Huffman, activity selection, optimal merge. Searching: binary search variants"
         }
       ],
       "skip": [
-        "Formal correctness proofs",
-        "Amortised analysis beyond the basic idea"
+        "P, NP and NP-complete (off the syllabus: one line only)",
+        "Formal correctness proofs"
       ],
-      "days": [],
-      "note": "Dijkstra and Bellman-Ford come back in CN routing."
+      "days": [
+        "26–27 Nov · A01 asymptotics, A02 code complexity, test algo-ut-01",
+        "27–28 Nov · A03 recurrences, test algo-ut-02",
+        "28–29 Nov · A04 searching, A05 divide and conquer, test algo-st-01",
+        "29 Nov–1 Dec · A06–A09 sorting, test algo-st-02",
+        "1–2 Dec · A10 graph traversals, test algo-ut-03",
+        "2–4 Dec · A11 greedy, A12 MST, test algo-ut-04",
+        "4–5 Dec · A13 Dijkstra, test algo-st-03",
+        "5–6 Dec · A14 DP, A15 DP on graphs, test algo-ut-05",
+        "7 Dec · A16 design, remaining PYQs, sectional algo-sectional",
+        "13 and 20 Dec · Grand tests dsa-grand-01, dsa-grand-02"
+      ],
+      "note": "Follows brain/syllabus/ item by item (npm run syllabus). Dijkstra and Bellman-Ford come back in CN routing."
     },
     {
       "title": "Digital Logic",
@@ -545,7 +563,7 @@
     },
     {
       "subject": "programming-ds",
-      "marks": "11–15"
+      "marks": "7–12"
     },
     {
       "subject": "coa",
@@ -565,7 +583,7 @@
     },
     {
       "subject": "algorithms",
-      "marks": "6–9"
+      "marks": "5–10"
     },
     {
       "subject": "dbms",

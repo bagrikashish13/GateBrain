@@ -2,7 +2,8 @@
 
 **Target:** 100% accuracy on all GATE C Programming questions with $\le 1$ minute solve time per question.  
 **Mode:** Chat-only interactive micro-lessons (no video lectures). Zero omissions.  
-**Timeline:** 28 Oct 2026 – 6 Nov 2026 (Days 3–6 shifted on 2 Nov) (Parallel with Compiler Design wrap-up, flowing into Data Structures).
+
+**What to teach, in which order, and when to test comes from `brain/syllabus/` (`npm run syllabus`).** This file only keeps the teaching style and the three tracing templates. The old day table and checklist are all inside units P01–P09.
 
 ---
 
@@ -62,74 +63,3 @@
   | 2         | i=2, sum=3                  | 2 < n (True)    | sum += 2        |
   Invariant: At step k, sum = k*(k+1)/2. Termination when i == n.
   ```
-
----
-
-## 3. Timeline & Schedule (28 Oct – 6 Nov 2026)
-
-| Day | Date | Target Chapters & Topics | Status |
-| :--- | :--- | :--- | :--- |
-| **Day 1** | Wed 28 Oct | **Ch-01: Data Types & Operators** + **Ch-02: Control Flow Statements** | Ch-02 done; Ch-01 to confirm |
-| **Day 2** | Thu 29 Oct | **Ch-03: Functions, Storage Classes & Recursion** | Done |
-| **Day 3** | Tue 3 Nov | **Ch-04 Part 1: Pointers, Pointer Arithmetic, 1D Arrays** | Done |
-| **Day 4** | Wed 4 Nov | **Ch-04 Part 2: 2D Arrays, Pointer to Array, Array of Pointers, Function Pointers** | Done |
-| **Day 5** | Thu 5 Nov | **Ch-05: Strings** + **Ch-06: Structures & Unions** | ⚪ Pending |
-| **Day 6** | Fri 6 Nov | **Ch-07: Miscellaneous (Macros, DMA, Const)** + Mixed Speed Drills | ⚪ Pending |
-
----
-
-## 4. Exhaustive Chapter Checklist
-
-### Ch-01: Data Types & Operators
-- [ ] 1.1 Primitive types, ranges, signed/unsigned representation & 2's complement
-- [ ] 1.2 Type conversion & implicit promotions (signed vs unsigned `sizeof` trap)
-- [ ] 1.3 Arithmetic, bitwise shifts (`<<`, `>>`), bitwise masking (`&`, `|`, `^`, `~`)
-- [ ] 1.4 Logical operators & guaranteed **short-circuit evaluation**
-- [ ] 1.5 Increment/decrement (`++`, `--`), prefix vs postfix, evaluation order
-- [ ] 1.6 Precedence and associativity master table
-- [ ] 1.7 Comma operator and conditional ternary (`?:`) operator
-
-### Ch-02: Control Flow Statements
-- [ ] 2.1 `if-else` & dangling-else resolution
-- [ ] 2.2 `switch-case`: fall-through, `break`, `default` placement anywhere
-- [ ] 2.3 `for`, `while`, `do-while`: loop invariants, condition timing, updates
-- [ ] 2.4 `break` vs `continue` across nested loops and switches
-
-### Ch-03: Functions & Storage Classes
-- [ ] 3.1 Call stack & activation records (pass-by-value vs pass-by-reference)
-- [ ] 3.2 Storage classes: `auto`, `register`, `static`, `extern` (scope vs lifetime vs linkage)
-- [ ] 3.3 Static variables in recursion (state retention across calls)
-- [ ] 3.4 Recursion tracing: winding vs unwinding prints, tree recursion
-
-### Ch-04: Arrays and Pointers
-- [x] 4.1 Address-of (`&`), dereference (`*`), pointer sizes
-- [x] 4.2 Pointer arithmetic & scaling factors (`p + i` scaling by `sizeof(*p)`)
-- [x] 4.3 1D array-pointer equivalence: `a[i] == *(a + i)`, `&a` vs `a` vs `*a`
-- [x] 4.4 2D array row-major layout, `*(*(a + i) + j)`
-- [x] 4.5 Pointer to array `int (*p)[N]` vs array of pointers `int *p[N]`
-- [x] 4.6 Pointer to pointer (`int **`) & multi-level dereferencing
-- [x] 4.7 Function pointers: declaration, invocation, callbacks
-- [x] 4.8 Pointer casting, byte-level memory inspection & endianness
-- [x] 4.9 Void pointers, `NULL`, wild and dangling pointers
-
-### Ch-05: Strings
-- [ ] 5.1 `char s[]` vs `char *s` (read-only literal segment traps)
-- [ ] 5.2 Null-terminator `'\0'` mechanics in declarations and array bounds
-- [ ] 5.3 Pointer walking string loops (`while(*s++)`, `*p++ = *q++`)
-- [ ] 5.4 Standard library internals: `strlen`, `strcpy`, `strcat`, `strcmp`
-- [ ] 5.5 `printf` and `scanf`: format specifiers, field width, return values
-
-### Ch-06: Structure & Union
-- [ ] 6.1 `struct` definition, member access (`.` vs `->`), nested structs
-- [ ] 6.2 Structure padding, data alignment rules, exact `sizeof(struct)`
-- [ ] 6.3 Self-referential structures
-- [ ] 6.4 `union`: overlapping memory, sizing, member overwriting
-- [ ] 6.5 Bit-fields: allocation, signedness, sizing
-
-### Ch-07: Miscellaneous
-- [ ] 7.1 Preprocessor `#define` macros: text substitution traps, parenthesis rules
-- [ ] 7.2 Conditional compilation (`#ifdef`, `#ifndef`, `#if`)
-- [ ] 7.3 Dynamic memory allocation: `malloc`, `calloc`, `realloc`, `free`, memory leaks
-- [ ] 7.4 `const` pointer variants: `const int *`, `int * const`, `const int * const`
-- [ ] 7.5 `typedef` vs `#define`
-- [ ] 7.6 Command line arguments: `argc`, `argv` pointer navigation
