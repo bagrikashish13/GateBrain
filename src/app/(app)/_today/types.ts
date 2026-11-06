@@ -27,4 +27,5 @@ export type TodayData = {
     next: { id: string; title: string; questions: number; duration: number } | null;
     last: { id: string; attempt: string; title: string; score: number; max: number } | null;
   };
+  syllabus: { done: number; total: number; today: number; next: string | null } | null;
 };

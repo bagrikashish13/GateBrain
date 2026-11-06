@@ -8,6 +8,7 @@ import { DayHeading } from "./day-heading";
 import { DayTimer } from "./day-timer";
 import { ExamCountdown } from "./exam-countdown";
 import { RevisionCard } from "./revision-card";
+import { SyllabusCard } from "./syllabus-card";
 import { TasksCard } from "./tasks-card";
 import { TestsCard } from "./tests-card";
 import type { TodayData } from "./types";
@@ -51,6 +52,7 @@ export function DayView({ data }: { data: TodayData }) {
               >
                 <DayTimer />
                 <ExamCountdown days={data.examDays} date={data.examDate} />
+                {data.syllabus && <SyllabusCard syllabus={data.syllabus} />}
               </motion.div>
             )}
           </AnimatePresence>

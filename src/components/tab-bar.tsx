@@ -2,20 +2,21 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Brain, ClipboardCheck, Library, Route, Settings, Sun, type LucideIcon } from "lucide-react";
+import { Brain, ClipboardCheck, Library, ListChecks, Route, Settings, Sun, type LucideIcon } from "lucide-react";
 import { cn } from "cn";
 import { Logo, Wordmark } from "@/components/logo";
 
 // Today is the app's main screen: on a phone it sits in the middle, raised and white (action colour);
 // on a laptop it leads the side rail. The tab you are on is marked in mint, the app's accent. No glow.
-const TABS: { href: string; label: string; icon: LucideIcon; main?: boolean }[] = [
+// A phone has room for five: the Roadmap opens from the Syllabus page, and the Syllabus tab stays lit there.
+const TABS: { href: string; label: string; icon: LucideIcon; main?: boolean; also?: string }[] = [
   { href: "/notes", label: "Notes", icon: Library },
   { href: "/revise", label: "Revise", icon: Brain },
   { href: "/", label: "Today", icon: Sun, main: true },
   { href: "/tests", label: "Tests", icon: ClipboardCheck },
-  { href: "/roadmap", label: "Roadmap", icon: Route },
+  { href: "/syllabus", label: "Syllabus", icon: ListChecks, also: "/roadmap" },
 ];
-const RAIL = [TABS[2], TABS[0], TABS[1], TABS[3], TABS[4], { href: "/settings", label: "Settings", icon: Settings }];
+const RAIL = [TABS[2], TABS[0], TABS[1], TABS[3], { href: "/syllabus", label: "Syllabus", icon: ListChecks }, { href: "/roadmap", label: "Roadmap", icon: Route }, { href: "/settings", label: "Settings", icon: Settings }];
 
 export function TabBar() {
   return <TabBarView pathname={usePathname()} />;
@@ -29,8 +30,8 @@ export function TabBarView({ pathname }: { pathname: string | null }) {
     <>
       <nav aria-label="Tabs" className="fixed inset-x-0 bottom-0 z-20 border-t border-line bg-void pb-[env(safe-area-inset-bottom)] lg:hidden">
         <div className="mx-auto grid h-16 max-w-[430px]" style={{ gridTemplateColumns: `repeat(${TABS.length}, 1fr)` }}>
-          {TABS.map(({ href, label, icon: Icon, main }) => {
-            const on = isOn(href, pathname);
+          {TABS.map(({ href, label, icon: Icon, main, also }) => {
+            const on = isOn(href, pathname) || (!!also && isOn(also, pathname));
             if (main) {
               return (
                 <Link key={href} href={href} aria-current={on ? "page" : undefined} className="relative flex justify-center">

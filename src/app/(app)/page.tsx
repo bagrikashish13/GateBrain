@@ -5,6 +5,7 @@ import { subjects as allSubjects } from "@/lib/brain/subjects";
 import { planDays } from "@/lib/plan/store";
 import { todayRevision } from "@/lib/revision/store";
 import { daysToExam, getSettings } from "@/lib/settings";
+import { getSyllabusTree } from "@/lib/syllabus/store";
 import { allInProgress, getTest, listResults, listTests } from "@/lib/tests/store";
 import { addDays, dayKey } from "@/lib/time";
 import { DayView } from "./_today/day-view";
@@ -50,6 +51,16 @@ async function Today() {
   const fresh = listTests().find((t) => t.parsed.ok && !taken.has(t.id));
   const last = results[0];
 
+  const loaded = getSyllabusTree(now);
+  const syllabus = loaded.ok
+    ? {
+        done: loaded.tree.done,
+        total: loaded.tree.total,
+        today: loaded.tree.today,
+        next: loaded.tree.next.kind === "teach" ? `${loaded.tree.next.item.id}, ${loaded.tree.next.unitTitle}` : loaded.tree.next.kind === "test" ? loaded.tree.next.id : loaded.tree.next.kind === "notes" ? `notes for ${loaded.tree.next.unit}` : null,
+      }
+    : null;
+
   const data: TodayData = {
     today,
     years: yearList,
@@ -70,6 +81,7 @@ async function Today() {
       next: fresh?.parsed.ok ? { id: fresh.id, title: fresh.parsed.test.title, questions: fresh.parsed.test.questions.length, duration: fresh.parsed.test.duration } : null,
       last: last ? { id: last.test, attempt: last.attempt, title: last.title, score: last.summary.score, max: last.summary.max } : null,
     },
+    syllabus,
   };
 
   return <DayView data={data} />;
