@@ -14,6 +14,7 @@ import { slugOf } from "@/lib/brain/names";
 //   subject: os             a key from brain/subjects.json
 //   topic: deadlock         the notes section it belongs to (folder name without its number)
 //   answer: B               MCQ: B · MSQ: A, C · NAT: 42 or 2.40 to 2.60
+//   syllabus: D07.5         optional: the brain/syllabus/ item it tests (required in syllabus tests)
 //
 //   Question text (Markdown, math, code, images).
 //
@@ -41,6 +42,7 @@ export type Question = {
   options: Option[];
   answer: Answer;
   solution: string | null;
+  syllabus?: string[]; // items of brain/syllabus/ this question tests ("D07.5"); never sent to the browser
 };
 export type Test = {
   id: string;
@@ -59,7 +61,7 @@ const SOLUTION = /^###\s+(?:Solution|Explanation)\s*$/i;
 const OPTION = /^\(([A-D])\)\s?(.*)$/;
 const META = /^([a-z_]+)\s*:\s*(.*?)\s*$/i;
 const FENCE = /^\s*(```|~~~)/;
-const META_KEYS = new Set(["type", "marks", "negative", "subject", "topic", "answer", "section"]);
+const META_KEYS = new Set(["type", "marks", "negative", "subject", "topic", "answer", "section", "syllabus"]);
 const NUMBER = /^-?\d+(?:\.\d+)?$/;
 
 /** GATE's default negative marking: a third of the marks for an MCQ, nothing for MSQ and NAT. */
@@ -228,6 +230,7 @@ function parseQuestion(n: number, lines: string[], error: (m: string) => void, w
     options: type === "NAT" ? [] : options,
     answer,
     solution,
+    ...(meta.syllabus?.trim() ? { syllabus: meta.syllabus.split(",").map((x) => x.trim()).filter(Boolean) } : {}),
   };
 }
 

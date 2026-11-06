@@ -6,6 +6,8 @@ process.env.TZ ||= "Asia/Kolkata";
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { checkLog, startupFiles } from "../src/lib/log";
+import { loadSyllabus } from "../src/lib/syllabus/load";
+import { nextStep, oneLine } from "../src/lib/syllabus/syllabus";
 import { dayKey } from "../src/lib/time";
 
 const root = join(process.env.REPO_PATH || join(import.meta.dirname, ".."), "brain", "log");
@@ -26,6 +28,13 @@ const today = dayKey(new Date());
 const start = startupFiles(files.keys(), today);
 const count = (t: string) => t.replace(/\s+$/, "").split("\n").length;
 console.log(`Today ${today}. Read first (brain/log/): ${start.length ? start.map((f) => `${f} (${count(files.get(f)!)})`).join(", ") : "nothing yet"}`);
+
+try {
+  const { state } = loadSyllabus(join(root, ".."));
+  console.log(`Teaching C, Data Structures or Algorithms? Run "npm run syllabus" and follow it. Right now: ${oneLine(nextStep(state))}.`);
+} catch (err) {
+  console.log(`Syllabus unreadable, fix it first (npm run check:syllabus): ${(err as Error).message}`);
+}
 
 const problems = checkLog(files, today);
 for (const p of problems) console.log(`  fix: ${p}`);

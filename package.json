@@ -11,6 +11,8 @@
     "test": "vitest run",
     "check:tests": "tsx scripts/check-tests.ts",
     "check:log": "tsx scripts/check-log.ts",
+    "check:syllabus": "tsx scripts/syllabus.ts check",
+    "syllabus": "tsx scripts/syllabus.ts",
     "brain": "tsx --conditions=react-server scripts/brain.ts"
   },
   "dependencies": {

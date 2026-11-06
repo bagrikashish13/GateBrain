@@ -14,6 +14,31 @@ describe("parseTest", () => {
     expect(t.totalMarks).toBe(7);
   });
 
+  it("reads the syllabus items a question tests, and keeps them out of the text", () => {
+    const raw = `---
+title: T
+duration: 3
+---
+
+## Q1
+type: NAT
+marks: 1
+subject: os
+topic: deadlock
+answer: 4
+syllabus: D07.5, D07.6
+
+How many?
+
+### Solution
+Four.
+`;
+    const r = parseTest("t", raw);
+    if (!r.ok) throw new Error(r.errors.join(", "));
+    expect(r.test.questions[0].syllabus).toEqual(["D07.5", "D07.6"]);
+    expect(r.test.questions[0].text).toBe("How many?");
+  });
+
   it("splits question text, options and solution", () => {
     const r = parseTest("sample", SAMPLE);
     if (!r.ok) throw new Error();
