@@ -6,7 +6,7 @@ plans the day and runs mock tests in a GATE-style exam screen. Results land back
 analyse them, teach the weak points and update the notes. Single user.
 
 **If you are an agent working on his GATE prep (notes, tests, analysis, plan), read Parts 1–2.
-If you are changing the app, read Part 3 too.**
+If you are changing the app, read `AGENTS-APP.md` too.**
 
 ---
 
@@ -37,6 +37,11 @@ If you are changing the app, read Part 3 too.**
 11. **You are the daily coach (2.9).** Since 3 Nov 2026 the agent runs the GATE 2027 attempt day by day,
     at her request: "what do I do today?" gets the exact day, its mocks already written, and you hold her
     to the non-negotiables. Don't hand back options or ask her to plan.
+12. **C, Data Structures and Algorithms are taught only from `brain/syllabus/`, every time, without being asked.**
+    Before teaching or testing any of them, run `npm run syllabus` and do exactly what it prints (2.10). Never pick
+    topics yourself or plan them from memory.
+13. **Keep this file under 24,000 bytes.** Antigravity cuts anything longer, silently. Details go in other files.
+14. **Talking to him:** front-load the answer, short paragraphs, bullets. One clear next step beats a wall of options. Be honest when something is a bad idea.
 
 ## Part 2: The brain (data formats)
 
@@ -55,25 +60,12 @@ brain/
 
 ### 2.0 Reading the revision plan
 
-`npm run brain -- <command>` is a read-only helper for you (he never runs it). It uses the app's own code, so
-it always matches the Revise tab:
-
-```
-npm run brain -- revise today                notes due today, in revision order (weak topics first)
-npm run brain -- revise topic os/deadlock    every note in one topic not yet revised today, weakest first
-npm run brain -- revise show <note>          its rating history and the day it next comes up
-npm run brain -- weak                        topic strength over the last 10 mock attempts
-```
+`npm run brain -- <command>` is a read-only helper for you (he never runs it), using the app's own code. Commands: `revise today`, `revise topic os/deadlock`, `revise show <note>`, `weak` (topic strength over the last 10 attempts).
 
 - `<note>` is the path under `brain/notes/`: `os/03-deadlock/bankers-algorithm` (`.md` optional).
 - `_state/revision/<note path>.json` is `{ note, card, log }`: `card.due` is the next revision (ISO),
   `log` every rating with its time. Read it if useful; don't write it.
-- `settings.json`: `{ "examDate": "YYYY-MM-DD" | null, "newPerDay": 1–50, "theme": "mint" | "pink",
-  "revisionStart": "YYYY-MM-DD" | null }`. `revisionStart`: notes added before that day count as added on it
-  (a fresh start; set 2026-10-22, his ask).
-
-Subject keys (`brain/subjects.json`): `os`, `dbms`, `toc`, `compiler-design`, `algorithms`, `programming-ds`,
-`coa`, `computer-networks`, `digital-logic`, `discrete-maths`, `engineering-maths`, `general-aptitude`.
+- `settings.json` and the subject keys: `brain/FORMATS.md`.
 
 ### 2.1 Notes
 
@@ -81,27 +73,7 @@ Subject keys (`brain/subjects.json`): `os`, `dbms`, `toc`, `compiler-design`, `a
   `brain/notes/os/03-deadlock/bankers-algorithm.md`. Sections are the GATE syllabus, numbered in syllabus order.
   A new section folder for a studied subject is fine; keep the `NN-` numbering.
 - Short notes for revision, not textbook chapters. Phone-first: short paragraphs, bullets, tables.
-- Shape (the app styles these):
-
-```markdown
-# Banker's algorithm
-
-## TL;DR
-Two or three lines: the thing to remember. (Rendered as a highlighted card.)
-
-## Core idea
-- **Lead term:** explanation. (A bold opener becomes a lead line.)
-
-## Where I got confused → what made it click
-- **Confusion:** the click.
-
-## GATE traps
-- What PYQs test, common wrong options, formulas.
-
-## Example
-Worked example, ideally a PYQ (cite the year: GATE 2019).
-```
-
+- Shape (the app styles these; example in `brain/FORMATS.md`): `# Title`, `## TL;DR`, `## Core idea`, `## Where I got confused → what made it click`, `## GATE traps`, `## Example` (ideally a PYQ, with its year).
 - Math: `$...$` and `$$...$$` (KaTeX). Code: fenced blocks. Diagrams: ```` ```mermaid ```` blocks.
   Links between notes: `[[bankers-algorithm]]` (by file name). Images: put them next to the note and link relatively.
 - A new note enters revision by itself: it first comes up the day after it's committed (at most `newPerDay`
@@ -110,67 +82,7 @@ Worked example, ideally a PYQ (cite the year: GATE 2019).
 
 ### 2.2 Mock tests
 
-One file per test: `brain/tests/<test-id>.md`. `test-id` is lowercase letters, digits, `-` (e.g.
-`os-dbms-mock-03`, `full-length-01`). Tests can mix any subjects and topics.
-
-```markdown
----
-title: OS + DBMS · Mock 03
-duration: 60
-created: 2026-10-20
-description: Optional one line.
----
-
-## Q1
-type: MCQ
-marks: 1
-subject: os
-topic: deadlock
-answer: B
-
-Question text in Markdown. Math $O(n \log n)$, tables, code blocks, images all work.
-
-(A) First option
-(B) Second option
-(C) Third option
-(D) Fourth option
-
-### Solution
-Why B is right and why the others are wrong.
-
-## Q2
-type: MSQ
-marks: 2
-subject: dbms
-topic: functional-dependencies-normal-forms
-answer: A, C
-
-...
-
-## Q3
-type: NAT
-marks: 2
-subject: os
-topic: cpu-scheduling
-answer: 2.60 to 2.70
-
-...
-```
-
-Rules:
-- `## Q<n>` starts each question; numbering is by position in the file.
-- Metadata lines right under the heading: `type` (MCQ | MSQ | NAT), `marks` (1 or 2), `subject` (a key from
-  `subjects.json`), `topic`, `answer`. Optional: `negative` (override), `section`.
-- **`topic` must be the notes section folder name without its number**: `deadlock` for `os/03-deadlock`,
-  `cpu-scheduling` for `os/04-cpu-scheduling`. That's how weak topics link to notes. The checker warns if it
-  doesn't match. General Aptitude questions need no topic.
-- Options are lines starting `(A)` … `(D)` (an option may run over several lines). NAT has no options.
-- Answers: MCQ one letter; MSQ letters like `A, C`; NAT a number (`42`) or a range (`2.60 to 2.70`, inclusive).
-- Negative marking is automatic, as in GATE: MCQ loses 1/3 (1-mark) or 2/3 (2-mark); MSQ and NAT never lose marks.
-- Sections: General Aptitude questions (`subject: general-aptitude`) go in their own tab, as in GATE.
-- Always write a `### Solution`; the result page shows it.
-- `created:` is today's date (the repeat check uses it to know which test is newer).
-- Then `npm run check:tests -- <test-id>`, commit, push. It appears in the app's Tests tab after the next sync.
+One file per test: `brain/tests/<test-id>.md`. `test-id` is lowercase letters, digits, `-`. Tests can mix subjects. **Exact format and rules: `brain/FORMATS.md`, read it before writing a test.** Each question has `type`, `marks`, `subject`, `topic` (the notes folder name without its number), `answer`, its options, and a `### Solution`. Then `npm run check:tests -- <test-id>`, commit, push. It appears in the app's Tests tab after the next sync.
 
 ### 2.2.1 Mock test protocol (always; he never has to ask for it)
 
@@ -219,10 +131,7 @@ covered and the difficulty mix in one or two lines.
 
 ### 2.3 Results (written by the app)
 
-`brain/results/<test-id>/<YYYY-MM-DD-HHMM>.md`. Frontmatter has the score and one line per question: subject,
-topic, type, marks, correct answer, his response, outcome (`correct` | `wrong` | `unattempted`), marks awarded,
-seconds spent, visits, whether it was marked for review. The body has the same as tables: by subject, by topic
-(weakest first), per question, and time. Question text and solutions are in `brain/tests/<test-id>.md`.
+`brain/results/<test-id>/<YYYY-MM-DD-HHMM>.md`: score and one line per question (topic, answer, response, outcome, seconds) in the frontmatter, tables in the body. Details: `brain/FORMATS.md`.
 
 ### 2.4 Analysing a result ("let's analyse the test")
 
@@ -257,52 +166,11 @@ Never dump the whole analysis at once.
 
 ### 2.5 Plan (tasks)
 
-`brain/plan/YYYY-MM-DD.md`, one file per day:
-
-```markdown
-# Thu 15 Oct 2026
-
-- [ ] PYQ · Deadlock 2010–2024 — 1h #os
-- [ ] Revise · Normal forms — 30m #dbms
-- [x] Learn · LR parsing — 2h #compiler-design
-- [>] Practice · Paging problems — 45m #os → 2026-10-16
-```
-
-`- [ ]` open, `- [x]` done, `- [>] … → YYYY-MM-DD` moved to that day. The kind before ` · ` is one of
-Learn, Revise, PYQ, Practice, Mock, Analyse (optional). ` — <duration>` (15m, 30m, 45m, 1h, 1.5h, 2h, 3h) and
-` #<subject-key>` at the end are optional. Two tasks in one day can't have the same text. He also adds and
-ticks tasks in the app.
+`brain/plan/YYYY-MM-DD.md`, one file per day, lines like `- [ ] Learn · LR parsing — 2h #compiler-design`, `[x]` done, `[>] … → YYYY-MM-DD` moved. Details: `brain/FORMATS.md`.
 
 ### 2.6 Roadmap
 
-`brain/roadmap.json` is the study plan to the exam, shown on the Roadmap tab as a zig-zag of blocks with
-today marked on it. Update it when he asks to change the plan (a block running late, a subject added).
-
-```json
-{
-  "done": ["os", "dbms", "toc"],
-  "daily": [{ "time": "30–40m", "title": "General Aptitude mock" }],
-  "phases": [
-    {
-      "title": "Compiler Design, second half", "short": "CD", "subject": "compiler-design",
-      "start": "2026-10-16", "end": "2026-10-22", "marks": "4–8",
-      "focus": [{ "text": "LR family: SLR vs LALR vs CLR", "top": true }, { "text": "SDT" }],
-      "skip": ["Runtime environments in depth"],
-      "days": ["16–17 · LL(1)"],
-      "note": "Optional one line."
-    }
-  ],
-  "weightage": [{ "subject": "programming-ds", "marks": "11–15" }, { "subject": "discrete-maths", "label": "Maths", "marks": "13–16" }],
-  "cut": ["What to drop first if behind", "..."],
-  "keep": "What never to drop"
-}
-```
-
-- `phases` in order; `start`/`end` inclusive `YYYY-MM-DD`; blocks must not overlap. `subject` is a key from
-  `subjects.json`, or `null` for revision blocks. `short` is the node label (≤ 6 characters).
-- `focus` is highest weight first; `top: true` marks the topics PYQs hit most. `done` lists subjects finished
-  before the first block. Everything except `phases` is optional.
-- `npm test` parses the real file; keep it passing.
+`brain/roadmap.json` is the study plan to the exam, shown on the Roadmap tab. Update it when he asks to change the plan. Format: `brain/FORMATS.md`. `npm test` parses the real file; keep it passing.
 
 ### 2.7 Revision with the agent ("let's do today's revision")
 
@@ -385,6 +253,7 @@ morning) gets the day, not options. Full roadmap in `brain/roadmap.json`; GA in 
    least 3 days ahead with concrete topics from the current block's `focus` (and its lectures, if she follows a
    course), so the Today tab is right even when she doesn't ask.
 3. **Write today's two mocks before the brief** (2.2 + 2.2.1, `check:tests`, commit, push):
+   - A syllabus test due today (`npm run syllabus`, 2.10) replaces `daily-<YYYY-MM-DD>`. Never both.
    - `daily-<YYYY-MM-DD>`: technical, 8 questions (~25 min) to start; 10, then 12, only once the analysis
      has fitted in 1h five days running. Only finished subjects (OS, DBMS, TOC, then each
      block once its PYQ day is done), weighted to `npm run brain -- weak` and the last 7 days' mistakes,
@@ -428,66 +297,15 @@ heavy: cut using the roadmap's `cut` list rather than stacking more.
 **Sunday evening:** 3–5 lines in the week's log: technical and GA mock trend, `npm run brain -- weak`,
 ahead or behind the roadmap, one change for next week.
 
----
+### 2.10 Teaching C, Data Structures and Algorithms
 
-## Part 3: The app
+`brain/syllabus/` holds the whole syllabus: 36 units and 410 items in teaching order, with every one of 770 PYQs (1987–2026) assigned to a question pattern, and 21 GATE-style tests placed between the units. **"Teach me DS", "continue", "what's next": run `npm run syllabus` and follow it.** Read `brain/syllabus/README.md` once per session before teaching these subjects: it says how to teach each item and how to write the tests.
 
-### Read first
-- This file. `README.md` for setup and deploy.
-- The UI is the same design system as his other app, secondBrain (`C:\dev\secondBrain`):
-  true black, mint `#00fd92` accent, vivid flat subject colours, square corners with cut-corner hero cards,
-  Chakra Petch / IBM Plex, Lucide icons. **No glow, no blur, no shadows; never emojis as icons.**
-  Colour jobs never mix: mint = progress/done; subject colour = which subject; rose `#ff2e63` = needs attention
-  (wrong, overdue, weak); white = actions. Labels small and sentence case. No explanatory copy in the UI.
-- **The exam screen (`/exam/[id]`) is the exception:** it copies GATE's own look (light, blue header, the
-  palette's shapes and colours) on purpose. Keep it faithful to the real exam: an answer counts only after
-  Save & Next or Mark for Review & Next, Clear Response, the five palette states, the NAT keypad, the
-  virtual calculator, the exam summary before submit.
-- Tabs: Notes, Revise, Today, Tests, Roadmap. Settings opens from the gear on Today's GATE countdown.
-- Mobile-first (360–430px), desktop secondary (the exam is laptop-first but works on a phone).
+Key commands: `npm run syllabus` (the exact next step), `-- done <item>` (only after a correct answer), `-- test <id>` and `-- check-test <id>` (blueprint), `-- pyq <id>` (a real PYQ; never write one from memory), `npm run check:syllabus`.
 
-### How it works
-- Next.js 16 (App Router, Cache Components, Server Actions), React 19, Tailwind 4. **This is not the Next.js in
-  your training data:** read `node_modules/next/dist/docs/` before using an API you're unsure of.
-- No database. Pages read `brain/` straight from disk on each request. Every write goes through
-  `src/lib/repo/git.ts`: write files, `git commit` (local, instant), then push in the background (rebasing on
-  GitHub's commits if needed). A background loop pulls and pushes every 3 minutes on the server.
-  Auth for pushing: `GITHUB_TOKEN` from `.env`, else the machine's own git credentials.
-- `.runtime/` (git-ignored): login throttle, session secret, a test in progress. Only a *submitted* test is
-  committed.
-- Answers and solutions never reach the browser during a test; grading happens on the server.
-- Pure logic lives in `src/lib/**` with unit tests: test format (`tests/format.ts`), GATE grading
-  (`tests/grade.ts`), result files (`tests/result.ts`), weak topics (`tests/topics.ts`), the plan
-  (`plan/tasks.ts`), FSRS revision (`revision/schedule.ts`), the calculator (`calc.ts`).
-
-### Commands
-```
-npm run dev          # http://localhost:3000
-npm test             # vitest
-npm run lint         # eslint, zero warnings
-npm run typecheck
-npm run build
-npm run check:tests  # validate brain/tests/*.md
-npm run brain        # read-only revision plan for agents (2.0)
-npm run check:log    # session log: what to read first, what to compact (2.8)
-```
-
-- `scripts/brain.ts` loads the app's server modules under the `react-server` condition (so `server-only`
-  imports work outside Next). New-note dates come from `revision/plan.ts` (pure, tested).
-- `scripts/check-log.ts` runs `src/lib/log.ts` (pure, tested): line caps, what to compact, the startup set.
-
-### Git
-- **Never add `Co-Authored-By` or any AI/model attribution to commits** (his rule).
-- Small commits with clear messages (`feat: exam palette`, `fix: nat range`). Run lint, typecheck, tests and build
-  before pushing app changes.
-- Deploy: see `README.md` (VM `ssh 24vm`, `~/GateBrain`, `scripts/deploy.sh`).
-
-### Talking to him
-- Front-load the answer, short paragraphs, bullets. One clear next step beats a wall of options.
-- Be honest when something is a bad idea.
+It refuses skipped items and stops new teaching until a due test is taken and analysed. If a plan file or `roadmap.json` disagrees with it, the syllabus wins: fix them. `c-masterplan.md` only keeps the tracing templates.
 
 <!-- BEGIN:nextjs-agent-rules -->
-
 ## This is NOT the Next.js you know
 
 This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
