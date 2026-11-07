@@ -3,6 +3,6 @@
 Updated Sat 7 Nov 2026.
 
 - C, Data Structures and Algorithms run strictly from `brain/syllabus/` (`npm run syllabus`).
-- Unit P01 completed; note written ([[variables-types-and-printing]]).
-- Next up in syllabus: P02.1 (Unit P02 · Arithmetic, conversions and casts).
+- Units P01 and P02 completed; notes written ([[variables-types-and-printing]], [[arithmetic-conversions-and-casts]]).
+- Next up in syllabus: P03.1 (Unit P03 · Operators and the precedence table).
 - Target: Top 7 IITs / IIT Bombay (65–70 marks target). Grounded, self-reliant, zero panic.
