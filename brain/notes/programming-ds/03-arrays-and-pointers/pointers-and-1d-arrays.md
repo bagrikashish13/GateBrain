@@ -41,6 +41,9 @@ arr:      |  arr[0]   |  arr[1]   |  arr[2]   |  arr[3]   |
 ```
 
 ## Where I got confused → what made it click
+- **Redirecting caller's pointer via `int **pp`:**
+  - *Confusion:* Assuming that modifying a pointer inside a function never affects the caller's pointer.
+  - *The click:* With a single pointer `int *p`, reassigning `p = ...` only changes the local copy. But with a double pointer `int **pp`, `*pp = new_target;` reaches directly into the caller's stack frame and permanently swings the caller's pointer to the new address! Any subsequent `*ptr` in the caller accesses that new target.
 - **`sizeof(a)` does NOT decay to `a[0]`:**
   - *Confusion:* Thinking `sizeof(a)` evaluates to just the first element `a[0]` because `a` points to `a[0]` everywhere else in C.
   - *The click:* `sizeof` is an explicit exception to decay! `sizeof(a)` always gives the **entire array** size ($N \times \text{element size}$). To get one element, you must explicitly ask for `sizeof(a[0])`.
