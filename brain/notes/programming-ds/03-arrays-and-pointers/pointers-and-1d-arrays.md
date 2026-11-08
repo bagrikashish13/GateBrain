@@ -41,17 +41,28 @@ arr:      |  arr[0]   |  arr[1]   |  arr[2]   |  arr[3]   |
 ```
 
 ## Where I got confused → what made it click
+- **No bounds checking in C:**
+  - *Confusion:* Expecting `a[5] = 10` on `int a[5]` to give a compile error or throw an out-of-bounds exception.
+  - *The click:* C does zero bounds checking. It calculates the offset and silently accesses memory $\rightarrow$ Undefined Behavior!
 - **`arr` vs `&arr`:**
   - *Confusion:* Both print the same numerical address (e.g. 1000), so they seem identical.
   - *The click:* Their **types** are different! `arr` is `int*` (points to 1 element; `arr + 1` jumps 4 bytes). `&arr` is `int (*)[N]` (points to the *entire array*; `&arr + 1` jumps the whole array size $N \times 4$ bytes!).
 - **Pointer parameter reassignment in functions:**
   - *Confusion:* Doing `p = q;` inside a function changes the caller's pointer.
-  - *The click:* Pointers are passed by value! `p` is a local copy of an address. `p = q;` only swings the local arrow. To change the caller's value, you must dereference: `*p = ...`.
+  - *The click:* Pointers are passed by value! `p` is a local copy of an address. `p = q;` only swings the local arrow. To change the caller's value, you must dereference: `*p = ...`. To change the caller's pointer, the parameter must be `int **pp`.
 - **`*p++` vs `(*p)++`:**
   - *Confusion:* Mixing up which one moves the pointer and which one changes the value.
   - *The click:* Postfix `++` has higher priority: `*p++` reads the current value, then advances the pointer arrow (`p = p + 1`). `(*p)++` forces `*p` first, adding 1 to the *content* inside the house while the arrow stays put.
+- **Endianness byte layout:**
+  - *Confusion:* Mixing up which end goes to the lowest memory address.
+  - *The click:* *"Little end comes first"* $\rightarrow$ Little-Endian stores the Least Significant Byte (LSB) at the lowest memory address. Tested via `*(char *)&x == 1` for `x = 1`.
 
 ## GATE traps
+- **Partial initialization zeroing:** `int a[5] = {1, 2};` sets `a[0]=1, a[1]=2`, and ALL missing elements `a[2], a[3], a[4]` automatically become `0` (unlike uninitialized `int a[5];` which has garbage).
+- **The declaration asterisk trap:** `int *p, q;` declares `p` as `int *` and `q` as plain `int`!
+- **Array decay in parameters:** In `void f(int a[10])`, `a` decays to `int *a`. So `sizeof(a)` inside `f` is pointer size (8 bytes), NOT 40 bytes!
+- **`scanf` return value:** `scanf("%d %d", &a, &b)` returns the number of successfully matched items (e.g. 2), NOT the values scanned.
+- **Wild vs Dangling pointer:** Wild pointer = never initialized (contains garbage bits). Dangling pointer = points to deallocated memory (e.g. returning address of a local stack variable).
 - **`*(p + 2)` vs `*p + 2`:**
   - `*(p + 2)` steps 2 elements forward in memory and reads the value.
   - `*p + 2` evaluates `(*p) + 2`: reads the current element and adds regular integer 2.
