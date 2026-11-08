@@ -41,6 +41,9 @@ arr:      |  arr[0]   |  arr[1]   |  arr[2]   |  arr[3]   |
 ```
 
 ## Where I got confused → what made it click
+- **`sizeof(a)` does NOT decay to `a[0]`:**
+  - *Confusion:* Thinking `sizeof(a)` evaluates to just the first element `a[0]` because `a` points to `a[0]` everywhere else in C.
+  - *The click:* `sizeof` is an explicit exception to decay! `sizeof(a)` always gives the **entire array** size ($N \times \text{element size}$). To get one element, you must explicitly ask for `sizeof(a[0])`.
 - **No bounds checking in C:**
   - *Confusion:* Expecting `a[5] = 10` on `int a[5]` to give a compile error or throw an out-of-bounds exception.
   - *The click:* C does zero bounds checking. It calculates the offset and silently accesses memory $\rightarrow$ Undefined Behavior!
