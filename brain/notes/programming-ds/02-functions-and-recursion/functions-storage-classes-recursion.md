@@ -38,6 +38,9 @@ x = 0 -> 1 -> 2 ...
 ```
 
 ## Where I got confused → what made it click
+- **Missing prototype when definition is below (Top-to-Bottom single pass):**
+  - *Confusion:* Assuming the compiler scans ahead to find the definition below `main`, or misreading code without noticing a removed prototype.
+  - *The click:* C compiles strictly top-to-bottom. If a prototype is missing, it assumes the function returns `int`. When it later hits `float func(...)` below, the types clash $\rightarrow$ instant **conflicting types compilation error**!
 - **Static variable during unwinding:**
   - *Confusion:* Believing a static variable rolls back its value as recursive stack frames pop off.
   - *The click:* Static variables do NOT live on the stack. They live in permanent global memory. Any increment persists, so every returning frame sees the latest accumulated value!
