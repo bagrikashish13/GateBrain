@@ -54,6 +54,14 @@ Always trace loops by capturing the state invariant over 2–3 rows rather than 
   - `int c = 2; switch(x) { case c: ... }` causes a **Compile Error** because case expressions must be constants known at compile time.
 - **`default:` at the top without `break`:**
   - If no cases match, execution jumps to `default:`, executes its statements, and falls right through to `case 1:` below it unless terminated with `break`.
+- **Unsigned loop termination trap (`unsigned int i >= 0`):**
+  - An `unsigned` variable is mathematically always $\ge 0$. A loop condition like `for (unsigned int i = n; i >= 0; i--)` can NEVER become false—when $i = 0$, `i--` wraps around to `UINT_MAX`, running infinitely.
+- **Fall-through cascading in loops:**
+  - When `switch` lacks `break` inside a loop, execution cascades through all statements below the entry point. E.g., matching `case 1:` with cases 2, 3, and default below it executes all 3 `printf` calls in a single iteration.
+- **Float loop boundary condition (`>` vs `>=`):**
+  - When counting iterations of a halving ratio (e.g. `while (i/j > 0.0625)`): once $i/j = 0.0625$, strict inequality `>` is **false**. Do not count the boundary equality as an iteration.
+- **Short-circuit with side effects inside loops:**
+  - In `if ((j >= 0) && (i++))`: when $j < 0$, `&&` short-circuits and `(i++)` never runs. When $j = 0$, `j >= 0` is true, so `(i++)` runs; if $i = 0$, `i++` evaluates to `0` (false), blocking the body, but increments `i` to 1.
 
 ## Example
 **GATE CSE 2014:**
