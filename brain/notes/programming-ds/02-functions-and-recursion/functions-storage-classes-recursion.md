@@ -46,6 +46,16 @@ x = 0 -> 1 -> 2 ...
   - *The click:* Calls dive to the base case first. Then, as each stack frame pops off (LIFO), lines after the recursive call execute, producing reverse order ($1, 2, 3$).
 
 ## GATE traps
+- **Missing Prototype Implicit `int` Conflict:**
+  - In C, calling a function before its prototype or definition causes the compiler to assume an implicit return type of `int`. If the function is later defined below returning `double` or `float`, it triggers a **conflicting types compile error**.
+- **Unspecified Argument Evaluation Order:**
+  - The C standard does not specify whether function arguments are evaluated left-to-right or right-to-left. When calls have side effects (e.g. `f(g(10), h(20))`), GATE specifies the order; right-to-left means `h(20)` finishes completely before `g(10)` starts.
+- **File-Scope `static` vs Local `static`:**
+  - Local `static` controls **lifetime** (persists in Static Store across calls). File-scope (global) `static` controls **visibility** (hides the symbol from other translation units/files to avoid linker collisions).
+- **Shadowing with Function Side Effects:**
+  - In `y = funcp() + x;` inside `main`: even if `funcp()` modifies its own internal `static x`, the local `x` in `main` remains unchanged.
+- **Bit-length vs Set-bit Counting:**
+  - `while (num) { count++; num >>= 1; }` counts the total bit-length ($\lfloor \log_2(\text{num}) \rfloor + 1$) until `num == 0`. Counting only set bits requires `count += (num & 1)`.
 - **Address of Register Variable:**
   - `register int r; int *p = &r;` produces an immediate **Compile Error** because CPU registers have no memory addresses.
 - **Repeated Static Initialization:**
