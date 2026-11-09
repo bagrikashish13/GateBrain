@@ -1,26 +1,26 @@
 # Prep summary
 
-Through: 2026-W44
+Through: 2026-W45
 
 ## Where he is
-- OS, DBMS, TOC done before GateBrain started (15 Oct). Compiler Design runs to 3 Nov,
-  then PDS (4–14 Nov), Algorithms, DL, COA, CN, Maths, revision (roadmap.json). Exam 1 Feb 2027.
-- Studies CD from lectures (2 lecs/day); mocks are OS + DBMS + TOC. GA on a 34-day sprint from zero
-  (`brain/ga-roadmap.md`, started 28 Oct). C Programming sprint running (Ch-02, Ch-03 done by 29 Oct).
+- OS, DBMS, TOC done before GateBrain started (15 Oct). Compiler Design in progress.
+- C Programming: Units P01–P06 completed (97/188 C items done, 52% of C, 16% overall syllabus).
+- Tests: `c-ut-01` 15/15 (100%), `c-ut-02` 6.67/15 (all slips diagnosed), `c-ut-02-r2` 12/15 (80% pass).
+- Next up: Unit P07 · Multi-dimensional arrays and pointer arrays. Target: Top 7 IITs (65–70 marks).
 
 ## Strong
-- TOC theory: closure properties, decidability, regular languages; accurate when he attempts.
+- TOC theory: closure properties, decidability, regular languages.
 - DBMS: ER model, basic SQL, normal-form checks; OS: semaphores, Banker's algorithm, scheduling.
-- C: control flow, static, recursion tracing (GATE 2014/2015 PYQs solved).
+- C: types, operator precedence & associativity, control flow & loop invariants, function scope & shadowing, storage classes & memory segments, 1D array indexing, pointer arithmetic, double pointers, swap mechanisms.
 
 ## Shaky (to revisit)
-- Time management: skips 2-mark NATs after long stalls; OS numericals eat the clock.
+- Time management: rushing against the clock leading to arithmetic/reading slips on NATs.
+- Postfix vs prefix dereference (`*p++` vs `*++p`) under time pressure.
 - OS numericals: multilevel paging and EMAT, page-table frame counts, inverted page table, inode accesses.
 - DBMS: relational algebra equivalences (semi-join), 2PL variants.
-- TOC: CNF derivation-length counting.
-- General Aptitude: quant and maths basics weak (used a calculator in school in Nepal); speed.
+- General Aptitude: quant speed without calculator.
 
 ## History
-- W42 (12–18 Oct): GateBrain started 15 Oct. GA mock 01: 8/15. OS+DBMS+TOC mock 02 (17 Oct): 13/24. Notes on EMAT multilevel paging, inode accesses, RA equivalences, 2PL variants, CNF, closure of REC/RE.
-- W43 (19–25 Oct): OS+DBMS+TOC mocks 03 (15/24), 04 (10.67/24), 05 (15/24); GA mocks 02–05. Fresh FSRS revision restart. Notes across memory management, file systems, RA, SQL, B+ trees, TOC undecidability.
-- W44 (26 Oct–1 Nov): Revision reset to 26 Oct. GA reset from zero, 34-day sprint; GA Day 1–2 done, `ga-day-01-mock` 9/15. `dbms-queries-mock-01` created. C sprint Ch-02/03 done. CD paced to 2 lecs/day. Personal boundary set 29 Oct to protect focus (see cs.md).
+- W42–W43 (12–25 Oct): GateBrain started 15 Oct. GA mocks 01–05. OS+DBMS+TOC mocks 02–05. Notes across paging, inodes, RA, SQL, B+ trees, undecidability.
+- W44 (26 Oct–1 Nov): Revision reset to 26 Oct. GA 34-day sprint started. C sprint Ch-02/03 done. Personal boundary set 29 Oct to protect focus (see cs.md).
+- W45 (2–8 Nov): Strict syllabus engine built (`brain/syllabus/`). Mastered Units P01–P06 from scratch. `c-ut-01` 15/15 (100%), `c-ut-02` analysed and re-taught. Notes created for variables, conversions, operators, control flow, functions, and arrays/pointers.
