@@ -59,6 +59,15 @@ Address:    1000       1004       1008        1012       1016       1020
 - **Wild vs Dangling:**
   - *Confusion:* Calling any invalid pointer a dangling pointer.
   - *The click:* Wild was *never initialized* (born broken, points to garbage). Dangling *used to point to valid memory*, but the memory died (was freed or stack frame popped).
+- **`int **` is NOT `int [][N]`:**
+  - *Confusion:* Assigning `int **p = a;` and expecting `p[0][0]` to access `a[0][0]`.
+  - *The click:* In `a[i][j]`, a 2D array computes a single physical offset `base + (i*cols + j)*4`. But `p[0][0]` performs two pointer dereferences: it reads the integer value inside `a[0][0]` (e.g. `1`), treats that value `1` as a memory address, and tries to dereference address `1` — causing an immediate Segmentation Fault / Crash!
+- **`typedef` vs Multi-Variable Declaration:**
+  - *Confusion:* Thinking `int* p, q;` declares two pointers.
+  - *The click:* `*` binds to the variable name `p`, so `q` is a plain `int`. But with `typedef int* IntPtr; IntPtr p, q;`, both `p` and `q` are pointers to `int`.
+- **Arrays as Lvalues:**
+  - *Confusion:* Trying to assign `B[1] = ...` in `int B[10][10];`.
+  - *The click:* Array names and subarray names (`B[1]`) evaluate to address constants (non-modifiable lvalues). They cannot appear on the LHS of an assignment. Meanwhile, in `int *A[10]`, each `A[i]` is a real pointer variable and CAN be assigned!
 
 ## GATE traps
 - **Dereferencing `void *`:**
