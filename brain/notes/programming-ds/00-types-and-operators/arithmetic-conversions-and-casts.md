@@ -38,6 +38,8 @@ Integer division (`/`) truncates toward zero ($7/2=3$, $-7/2=-3$). Modulo (`%`) 
   - *The click:* If $n = 5$, $5 \times 4 = 20$. In C, $20 / 3$ truncates to $6$, permanently losing the $.666$ remainder! But between any 2 consecutive numbers $n, (n-1)$, one is always even $\rightarrow n(n-1)$ is always divisible by 2 with zero remainder. And across any 3 consecutive numbers, one is always a multiple of 3 $\rightarrow$ dividing by 3 after multiplying $(n-2)$ is guaranteed clean with zero remainder.
 
 ## GATE traps
+- **Modulo when Numerator < Denominator ($A < B$):**
+  Whenever $0 \le A < B$, $A \% B \equiv A$ (e.g. $2 \% 3 = \mathbf{2}$, not 1). The quotient is 0, so the entire numerator is the remainder.
 - **The Modulo Divisor Sign Trap:**
   `11 % -4` is **`+3`**, NOT `-3`. The negative sign on the divisor has zero effect on the answer.
 - **Associativity Left-to-Right Trap:**
