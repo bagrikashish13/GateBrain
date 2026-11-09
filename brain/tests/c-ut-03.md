@@ -13,122 +13,109 @@ topic: arrays-and-pointers
 syllabus: P07.15
 answer: B
 
-Consider the following declarations in a C program:
+Consider the following declaration in a C program:
 
 ```c
-int *P[5], (*Q)[5];
-int R[5][5];
+int *(*foo[4])(int *);
 ```
 
-Which of the following expressions are valid modifiable lvalues (i.e. can appear as the left-hand side of an assignment without causing a compilation error)?
+According to the rules of C declarations (the Right-Left rule), what is `foo`?
 
-I. `P[1]`
-II. `Q[1]`
-III. `(*Q)[2]`
-IV. `R[1]`
-V. `R[2][3]`
-
-(A) I, II, and V only
-(B) I, III, and V only
-(C) II, III, and IV only
-(D) III and V only
+(A) An array of 4 functions taking `int *` as argument and returning `int *`
+(B) An array of 4 pointers to functions taking `int *` as argument and returning `int *`
+(C) A pointer to an array of 4 functions taking `int *` as argument and returning `int *`
+(D) A function taking an array of 4 `int *` and returning `int *`
 
 ### Solution
-1. `P` is declared as `int *P[5]`, an array of 5 pointers to `int`. Each element `P[i]` is a pointer variable of type `int *`. Hence, `P[1]` is a valid modifiable lvalue (e.g. `P[1] = &x;` compiles cleanly). (I is valid).
-2. `Q` is declared as `int (*Q)[5]`, a pointer to an array of 5 integers. `Q[1]` is equivalent to `*(Q + 1)`. Its type is `int [5]` (an array type). In C, expressions of array type decay to address constants and are not modifiable lvalues. Attempting `Q[1] = ...` causes a compilation error (`assignment to expression with array type`). (II is invalid).
-3. `(*Q)` dereferences `Q` to access the array of 5 integers at index 0 (`Q[0]`). Then `(*Q)[2]` accesses the integer element at index 2, which has type `int`. A scalar integer element is a modifiable lvalue. (III is valid).
-4. `R` is declared as `int R[5][5]`. `R[1]` represents the entire 1st row (an array of 5 integers, type `int [5]`). An array name/subarray cannot appear on the LHS of an assignment. (IV is invalid).
-5. `R[2][3]` represents a specific scalar element of type `int` in row 2, column 3. It can be modified (e.g. `R[2][3] = 42;`). (V is valid).
+Applying the Right-Left rule:
+1. Start at the identifier name: `foo` ("`foo` is...").
+2. Look inside the brackets/parentheses first:
+   - To the right: `[4]` ("...an array of 4...").
+   - To the left: `*` ("...pointers to...").
+3. Step outside the grouping parentheses:
+   - To the right: `(int *)` ("...functions taking `int *` as argument and returning...").
+   - To the left: `int *` ("...pointer to `int`").
+4. Combining all components: `foo` is an **array of 4 pointers to functions taking `int *` and returning `int *`**.
 
-Thus, only I, III, and V are valid modifiable lvalues. Correct option is (B).
+Correct option is (B).
 
 ## Q2
 type: MCQ
 marks: 1
 subject: programming-ds
 topic: strings
-syllabus: P08.5
+syllabus: P08.3
 answer: B
 
 Consider the following C program:
 
 ```c
 #include <stdio.h>
-#include <string.h>
 
 int main(void) {
-    char s1[12] = "GATE";
-    char *s2 = "COMPUTER";
-    int res = 0;
-
-    if (strlen(s1) - strlen(s2) > 0)
-        res += 10;
-    else
-        res += 20;
-
-    if (sizeof(s1) > sizeof(s2))
-        res += 100;
-    else
-        res += 200;
-
-    printf("%d\n", res);
+    char s[10] = "GATEWAY";
+    s[4] = '\0';
+    printf("%s-%s\n", s, s + 5);
     return 0;
 }
 ```
 
-Assume a 64-bit architecture where `sizeof(void *) = 8` and `sizeof(int) = 4`. What is printed by the program?
+What will be printed by the program?
 
-(A) 220
-(B) 110
-(C) 120
-(D) 210
+(A) `GATE-WAY`
+(B) `GATE-AY`
+(C) `GATEWAY-`
+(D) `GATE-`
 
 ### Solution
-1. **Analysis of strings:**
-   - `s1` is a `char` array of size 12 initialized with `"GATE"`. Its length is `strlen(s1) = 4`. Its allocated buffer size is `sizeof(s1) = 12` bytes.
-   - `s2` is a pointer of type `char *` pointing to the string literal `"COMPUTER"`. Its length is `strlen(s2) = 8`. Being a pointer variable on a 64-bit machine, `sizeof(s2) = 8` bytes.
-2. **First condition (`strlen(s1) - strlen(s2) > 0`):**
-   - In `<string.h>`, `strlen()` returns an unsigned integer type (`size_t`).
-   - The expression `strlen(s1) - strlen(s2)` performs unsigned subtraction: $4 - 8 = -4$.
-   - In unsigned arithmetic (two's complement wrap-around), $-4$ underflows to a very large positive value (`SIZE_MAX - 3`).
-   - Because this value is unsigned and non-zero, `(unsigned value > 0)` evaluates to **true**!
-   - Therefore, the `if` branch executes: `res += 10` (so `res` becomes 10).
-3. **Second condition (`sizeof(s1) > sizeof(s2)`):**
-   - `sizeof(s1) = 12` bytes (the full array size).
-   - `sizeof(s2) = 8` bytes (the size of a `char *` pointer on a 64-bit platform).
-   - $12 > 8$ is **true**.
-   - Therefore, `res += 100` (so `res` becomes $10 + 100 = 110$).
-4. The program prints `110`. Correct option is (B).
+1. `s` is initialized as a character array with `"GATEWAY"`. Its memory layout is:
+   - `s[0]='G', s[1]='A', s[2]='T', s[3]='E', s[4]='W', s[5]='A', s[6]='Y', s[7]='\0'`
+2. The assignment `s[4] = '\0';` overwrites `'W'` with the null terminator:
+   - `s[0]='G', s[1]='A', s[2]='T', s[3]='E', s[4]='\0', s[5]='A', s[6]='Y', s[7]='\0'`
+3. In `printf("%s-%s\n", s, s + 5);`:
+   - The first `%s` starts at `s[0]` and prints up to `s[4] = '\0'`, producing `"GATE"`.
+   - The literal character `'-'` is printed.
+   - The second `%s` starts at `s + 5` (`&s[5]`), printing characters `'A'`, `'Y'` until it hits the null terminator at `s[7] = '\0'`, producing `"AY"`.
+4. The output is `GATE-AY`.
+
+Correct option is (B).
 
 ## Q3
 type: MSQ
 marks: 1
 subject: programming-ds
 topic: strings
-syllabus: P08.2
-answer: B, C, D
+syllabus: P08.13
+answer: A, B, D
 
-Consider the following two declarations in a C program:
+Consider a C program executed from the terminal as:
+
+```bash
+./runner one two three
+```
+
+where `main` is defined as:
 
 ```c
-char str1[] = "Antigravity";
-char *str2  = "Antigravity";
+int main(int argc, char *argv[])
 ```
 
 Which of the following statements is/are **TRUE**?
 
-(A) `str1 = "NewString";` is a valid statement that reassigns the array.
-(B) `str2 = "NewString";` is a valid statement that updates the pointer.
-(C) `str1[0] = 'a';` is well-defined and modifies the first character of `str1`.
-(D) `str2[0] = 'a';` attempts to modify a string literal, resulting in undefined behavior.
+(A) `argc` evaluates to `4`.
+(B) `argv[0]` points to the string `"./runner"`.
+(C) `argv[3][1]` evaluates to the character `'r'`.
+(D) `*argv[2]` evaluates to the character `'t'`.
 
 ### Solution
-1. **Option (A):** `str1` is an array identifier. In C, array names represent fixed addresses and are non-modifiable lvalues. They cannot be reassigned. Attempting `str1 = "NewString";` produces a compilation error. Hence, (A) is FALSE.
-2. **Option (B):** `str2` is a pointer variable of type `char *`. It holds the address of a string literal. Reassigning `str2` to point to a different string literal (`str2 = "NewString";`) is completely valid in C. Hence, (B) is TRUE.
-3. **Option (C):** `char str1[]` allocates a 12-byte array in writable stack memory. Mutating its elements (e.g. `str1[0] = 'a';`) is well-defined. Hence, (C) is TRUE.
-4. **Option (D):** `str2` points directly to the string literal `"Antigravity"` located in read-only memory (`.rodata`). In the C standard, attempting to modify a string literal invokes undefined behavior (typically causing a segmentation fault at runtime). Hence, (D) is TRUE.
+1. **Statement (A):** In C, `argc` counts the total number of command-line arguments, including the program name itself. The tokens are `./runner` (1), `one` (2), `two` (3), `three` (4). Thus, `argc == 4`. (A is TRUE).
+2. **Statement (B):** By convention and C standard, `argv[0]` holds the string representing the program name or invocation path (`"./runner"`). (B is TRUE).
+3. **Statement (C):** `argv[3]` points to the string `"three"`. The character indices of `"three"` are:
+   `[0]='t'`, `[1]='h'`, `[2]='r'`, `[3]='e'`, `[4]='e'`.
+   Thus, `argv[3][1]` is `'h'`, not `'r'`. (C is FALSE).
+4. **Statement (D):** `argv[2]` points to `"two"`. Dereferencing `*argv[2]` gives `argv[2][0]`, which is `'t'`. (D is TRUE).
 
-Correct options are B, C, D.
+Correct options are A, B, D.
 
 ## Q4
 type: NAT
@@ -136,41 +123,34 @@ marks: 1
 subject: programming-ds
 topic: arrays-and-pointers
 syllabus: P07.7
-answer: 1284
+answer: 43
 
-Consider a 3-dimensional array declared in C as:
+A 3-dimensional array `A` of characters (where `sizeof(char) = 1` byte) is declared in C as:
 
 ```c
-int M[10][15][20];
+char A[12][M][N];
 ```
 
-Assume that elements of `M` are stored in row-major order, each `int` occupies 4 bytes of memory, and the base address `&M[0][0][0]` is 2000.
+The array is stored in row-major order with 0-based indexing.
 
-An optimizing compiler generates intermediate code to compute the byte address of element `M[i][j][k]` in the form:
+An optimizing compiler translates the element reference `A[i][j][k]` into the memory offset expression:
 
-$$\text{Address}(M[i][j][k]) = 2000 + i \times C_1 + j \times C_2 + k \times C_3$$
+$$\text{Offset} = i \times 280 + j \times 35 + k$$
 
-where $C_1, C_2, C_3$ are integer constants.
-
-The value of $C_1 + C_2 + C_3$ is _______.
+What is the integer value of $M + N$?
 
 ### Solution
-1. **Dimensions and size:**
-   - Dimension sizes: $D_1 = 10$, $D_2 = 15$, $D_3 = 20$.
-   - Element size $S = 4$ bytes.
-2. **Row-Major 3D Address Formula:**
-   For a 3D array $M[D_1][D_2][D_3]$, the element index offset for $M[i][j][k]$ is:
-   $$\text{Offset} = \Big(i \times (D_2 \times D_3) + j \times D_3 + k\Big) \times S$$
-   Expanding this with the element size $S = 4$:
-   $$\text{Address} = \text{Base} + i \times (D_2 \times D_3 \times S) + j \times (D_3 \times S) + k \times S$$
-3. **Calculating coefficients:**
-   - $C_1 = D_2 \times D_3 \times S = 15 \times 20 \times 4 = 1200$
-   - $C_2 = D_3 \times S = 20 \times 4 = 80$
-   - $C_3 = S = 4$
-4. **Sum of coefficients:**
-   $$C_1 + C_2 + C_3 = 1200 + 80 + 4 = 1284$$
+1. In row-major order for a 3D array $A[D_1][D_2][D_3]$, the element offset from the base address is given by:
+   $$\text{Offset}(i, j, k) = \Big(i \times (D_2 \times D_3) + j \times D_3 + k\Big) \times \text{element\_size}$$
+2. Given that elements are `char` (`sizeof(char) = 1` byte), the formula simplifies to:
+   $$\text{Offset} = i \times (M \times N) + j \times N + k$$
+3. Comparing coefficients with the compiler expression $i \times 280 + j \times 35 + k$:
+   - $N = 35$
+   - $M \times N = 280 \implies M \times 35 = 280 \implies M = \frac{280}{35} = 8$
+4. Calculating $M + N$:
+   $$M + N = 8 + 35 = 43$$
 
-Hence, the answer is 1284.
+The answer is 43.
 
 ## Q5
 type: MCQ
@@ -183,57 +163,41 @@ answer: C
 Consider the following C function:
 
 ```c
-int solve(int n) {
-    int count = 0;
-    while (n > 0) {
-        if (n % 2 == 1) {
-            count += (n & 3);
-        }
-        n /= 2;
+int compute(int x) {
+    int s = 0;
+    while (x > 0) {
+        s += (x % 10);
+        x /= 4;
     }
-    return count;
+    return s;
 }
 ```
 
-What value is returned by the call `solve(23)`?
+What value is returned by the function call `compute(53)`?
 
 (A) 5
-(B) 6
-(C) 8
-(D) 10
+(B) 7
+(C) 9
+(D) 11
 
 ### Solution
-We trace `solve(23)` iteration by iteration:
+We trace `compute(53)` step by step:
 
-* **Initial state:** `n = 23`, `count = 0`.
+* **Initial state:** `x = 53`, `s = 0`.
 * **Iteration 1:**
-  - `n = 23`: $23 \% 2 == 1$ (True).
-  - Binary representation of 23 is $10111_2$.
-  - `23 & 3` $= 10111_2 \ \& \ 00011_2 = 00011_2 = 3$.
-  - `count += 3` $\implies \text{count} = 3$.
-  - `n /= 2` $\implies n = 11$.
+  - `x = 53 > 0` (True).
+  - `s += (53 % 10)` $\implies s += 3 \implies s = 3$.
+  - `x /= 4` $\implies x = \lfloor 53 / 4 \rfloor = 13$.
 * **Iteration 2:**
-  - `n = 11`: $11 \% 2 == 1$ (True).
-  - Binary representation of 11 is $1011_2$.
-  - `11 & 3` $= 1011_2 \ \& \ 0011_2 = 3$.
-  - `count += 3` $\implies \text{count} = 6$.
-  - `n /= 2` $\implies n = 5$.
+  - `x = 13 > 0` (True).
+  - `s += (13 % 10)` $\implies s += 3 \implies s = 3 + 3 = 6$.
+  - `x /= 4` $\implies x = \lfloor 13 / 4 \rfloor = 3$.
 * **Iteration 3:**
-  - `n = 5`: $5 \% 2 == 1$ (True).
-  - Binary representation of 5 is $0101_2$.
-  - `5 & 3` $= 0101_2 \ \& \ 0011_2 = 1$.
-  - `count += 1` $\implies \text{count} = 7$.
-  - `n /= 2` $\implies n = 2$.
-* **Iteration 4:**
-  - `n = 2`: $2 \% 2 == 0$ (False, `if` body does not execute).
-  - `n /= 2` $\implies n = 1$.
-* **Iteration 5:**
-  - `n = 1`: $1 \% 2 == 1$ (True).
-  - `1 & 3` $= 1$.
-  - `count += 1` $\implies \text{count} = 8$.
-  - `n /= 2` $\implies n = 0$.
-* **Loop termination:** `n = 0`, loop terminates.
-* The function returns `count = 8`.
+  - `x = 3 > 0` (True).
+  - `s += (3 % 10)` $\implies s += 3 \implies s = 6 + 3 = 9$.
+  - `x /= 4` $\implies x = \lfloor 3 / 4 \rfloor = 0$.
+* **Loop termination:** `x = 0`, loop terminates.
+* The function returns `s = 9`.
 
 Correct option is (C).
 
@@ -243,7 +207,7 @@ marks: 2
 subject: programming-ds
 topic: arrays-and-pointers
 syllabus: P07.6
-answer: 48
+answer: 100
 
 Consider the following C program:
 
@@ -251,18 +215,18 @@ Consider the following C program:
 #include <stdio.h>
 
 int main(void) {
-    int arr[3][4] = {
-        {2,  4,  6,  8},
-        {10, 12, 14, 16},
-        {18, 20, 22, 24}
+    int mat[3][3] = {
+        {5,  10, 15},
+        {20, 25, 30},
+        {35, 40, 45}
     };
-    int (*ptr)[4] = arr;
-    
-    int val1 = *(*(ptr + 1) + 2);
-    int val2 = *(ptr[2] - 1);
-    int val3 = **(ptr + 2);
-    
-    printf("%d\n", val1 + val2 + val3);
+    int (*p)[3] = mat;
+
+    int a = *(*(p + 2) + 1);
+    int b = *(*p + 5);
+    int c = *(p[1] + 2);
+
+    printf("%d\n", a + b + c);
     return 0;
 }
 ```
@@ -270,32 +234,32 @@ int main(void) {
 The output of the program is _______.
 
 ### Solution
-1. `arr` is a $3 \times 4$ 2D integer array laid out contiguously in row-major order:
-   - Row 0: `arr[0][0]=2,  arr[0][1]=4,  arr[0][2]=6,  arr[0][3]=8`
-   - Row 1: `arr[1][0]=10, arr[1][1]=12, arr[1][2]=14, arr[1][3]=16`
-   - Row 2: `arr[2][0]=18, arr[2][1]=20, arr[2][2]=22, arr[2][3]=24`
-2. `ptr` is declared as `int (*ptr)[4] = arr;`, which is a pointer to an array of 4 integers, initially pointing to Row 0 (`arr[0]`).
-3. **Evaluating `val1 = *(*(ptr + 1) + 2)`:**
-   - `ptr + 1` advances by 1 entire row, pointing to Row 1 (`arr[1]`).
-   - `*(ptr + 1)` unpacks Row 1, decaying into pointer to its first element (`&arr[1][0]`).
-   - `*(ptr + 1) + 2` moves 2 elements forward to `&arr[1][2]`.
-   - Dereferencing gives `*(*(ptr + 1) + 2) = arr[1][2] = 14`.
-   - Thus, `val1 = 14`.
-4. **Evaluating `val2 = *(ptr[2] - 1)`:**
-   - `ptr[2]` is equivalent to `*(ptr + 2)`, which represents Row 2 (`arr[2]`).
-   - In pointer arithmetic, `ptr[2]` decays to `&arr[2][0]`.
-   - `ptr[2] - 1` steps 1 integer backward in memory from `&arr[2][0]`.
-   - Because 2D arrays are stored contiguously row by row, the element immediately preceding `arr[2][0]` in physical memory is the last element of Row 1, which is `arr[1][3]` (value 16).
-   - Thus, `val2 = 16`.
-5. **Evaluating `val3 = **(ptr + 2)`:**
-   - `ptr + 2` points to Row 2 (`&arr[2]`).
-   - `*(ptr + 2)` unpacks to `&arr[2][0]`.
-   - `**(ptr + 2)` reads `arr[2][0] = 18`.
-   - Thus, `val3 = 18`.
-6. **Final sum:**
-   $$\text{val1} + \text{val2} + \text{val3} = 14 + 16 + 18 = 48$$
+1. `mat` is a $3 \times 3$ integer array stored contiguously in row-major order:
+   - Row 0: `mat[0][0]=5,  mat[0][1]=10, mat[0][2]=15`
+   - Row 1: `mat[1][0]=20, mat[1][1]=25, mat[1][2]=30`
+   - Row 2: `mat[2][0]=35, mat[2][1]=40, mat[2][2]=45`
+2. `p` is declared as `int (*p)[3] = mat;`, pointing to Row 0 (`mat[0]`).
+3. **Evaluating `a = *(*(p + 2) + 1)`:**
+   - `p + 2` points to Row 2 (`mat[2]`).
+   - `*(p + 2)` decays to `&mat[2][0]`.
+   - `*(p + 2) + 1` points to `&mat[2][1]`.
+   - Dereferencing gives `mat[2][1] = 40`.
+   - So `a = 40`.
+4. **Evaluating `b = *(*p + 5)`:**
+   - `*p` decays to `&mat[0][0]`.
+   - Adding 5 moves 5 integers linearly along the contiguous row-major block:
+     Index 0: 5, Index 1: 10, Index 2: 15, Index 3: 20, Index 4: 25, Index 5: 30 (`mat[1][2]`).
+   - Dereferencing gives `30`.
+   - So `b = 30`.
+5. **Evaluating `c = *(p[1] + 2)`:**
+   - `p[1]` is equivalent to `*(p + 1)`, which represents Row 1 and decays to `&mat[1][0]`.
+   - `p[1] + 2` points to `&mat[1][2]`.
+   - Dereferencing gives `mat[1][2] = 30`.
+   - So `c = 30`.
+6. **Total sum:**
+   $$a + b + c = 40 + 30 + 30 = 100$$
 
-The output of the program is 48.
+The output of the program is 100.
 
 ## Q7
 type: MCQ
@@ -311,41 +275,39 @@ Consider the following C program:
 #include <stdio.h>
 
 int main(void) {
-    int nums[] = {15, 25, 35, 45, 55, 65};
-    int *arr[] = {nums + 1, nums + 4, nums, nums + 3, nums + 2};
-    int **p = arr;
+    static int val[] = {100, 200, 300, 400, 500};
+    static int *ptrs[] = {val + 4, val, val + 2, val + 1, val + 3};
+    int **ptr = ptrs + 1;
 
-    p++;
-    printf("%ld, %d, %d\n", p - arr, **p, *(*p - 1));
+    ptr++;
+    printf("%ld, %d, %d\n", ptr - ptrs, **ptr, *(*ptr + 1));
     return 0;
 }
 ```
 
 What is printed by the program?
 
-(A) `1, 55, 45`
-(B) `1, 55, 35`
-(C) `4, 45, 35`
-(D) `2, 15, 25`
+(A) `2, 300, 400`
+(B) `1, 100, 200`
+(C) `2, 300, 200`
+(D) `3, 200, 300`
 
 ### Solution
-1. **Initial setup:**
-   - `nums` is an array of 6 integers:
-     `nums[0] = 15, nums[1] = 25, nums[2] = 35, nums[3] = 45, nums[4] = 55, nums[5] = 65`.
-   - `arr` is an array of 5 pointers to `int`:
-     - `arr[0] = nums + 1` (points to `nums[1]`, value 25)
-     - `arr[1] = nums + 4` (points to `nums[4]`, value 55)
-     - `arr[2] = nums`     (points to `nums[0]`, value 15)
-     - `arr[3] = nums + 3` (points to `nums[3]`, value 45)
-     - `arr[4] = nums + 2` (points to `nums[2]`, value 35)
-   - `int **p = arr;` initializes `p` pointing to `arr[0]`.
-2. **Pointer increment (`p++`):**
-   - `p` advances by 1 element of `arr` (`sizeof(int *)`), so `p` now points to `arr[1]`.
-3. **Evaluating expressions in `printf`:**
-   - `p - arr`: Pointer subtraction `&arr[1] - &arr[0] = 1` element.
-   - `**p`: Dereferencing `p` once gives `arr[1]` (which holds `nums + 4`). Dereferencing again gives `*(nums + 4) = nums[4] = 55`.
-   - `*(*p - 1)`: `*p` is `nums + 4`. Subtracting 1 gives pointer `nums + 3`. Dereferencing gives `*(nums + 3) = nums[3] = 45`.
-4. The output is `1, 55, 45`.
+1. `val` is an array of 5 integers:
+   `val[0]=100, val[1]=200, val[2]=300, val[3]=400, val[4]=500`.
+2. `ptrs` is an array of 5 pointers to `int`:
+   - `ptrs[0] = val + 4` (points to `val[4] = 500`)
+   - `ptrs[1] = val`     (points to `val[0] = 100`)
+   - `ptrs[2] = val + 2` (points to `val[2] = 300`)
+   - `ptrs[3] = val + 1` (points to `val[1] = 200`)
+   - `ptrs[4] = val + 3` (points to `val[3] = 400`)
+3. `ptr` is initialized as `int **ptr = ptrs + 1;`, pointing to `ptrs[1]`.
+4. `ptr++;` advances `ptr` to point to `ptrs[2]`.
+5. **Evaluating the expressions:**
+   - `ptr - ptrs`: Distance between pointer `&ptrs[2]` and `&ptrs[0]` is 2 elements.
+   - `**ptr`: `*ptr` is `ptrs[2]` (which holds `val + 2`). `**ptr` is `*(val + 2) = val[2] = 300`.
+   - `*(*ptr + 1)`: `*ptr` is pointer `val + 2`. Adding 1 gives pointer `val + 3`. Dereferencing yields `*(val + 3) = val[3] = 400`.
+6. Output: `2, 300, 400`.
 
 Correct option is (A).
 
@@ -355,7 +317,7 @@ marks: 2
 subject: programming-ds
 topic: strings
 syllabus: P08.10
-answer: 8
+answer: 11
 
 Consider the following C program:
 
@@ -364,10 +326,10 @@ Consider the following C program:
 #include <string.h>
 
 int main(void) {
-    char *str = "ALGORITHM2026";
-    char *p = str;
-    int offset = 3[p] - 1[p] + 2;
-    printf("%d\n", (int)strlen(str + offset));
+    char s[] = "ENGINEERING2027";
+    char *p = s;
+    int offset = 7[p] - 1[p];
+    printf("%d\n", (int)strlen(p + offset));
     return 0;
 }
 ```
@@ -375,29 +337,27 @@ int main(void) {
 The output of the program is _______.
 
 ### Solution
-1. **Character array layout:**
-   The string literal `"ALGORITHM2026"` has 13 characters plus the null terminator `'\0'` at index 13:
+1. `s` is initialized with the string `"ENGINEERING2027"`.
+   Let us list its character indices:
    ```text
-   Index: 0  1  2  3  4  5  6  7  8  9  10 11 12 13
-   Char:  A  L  G  O  R  I  T  H  M  2  0  2  6  \0
+   Index: 0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15
+   Char:  E  N  G  I  N  E  E  R  I  N  G  2  0  2  7  \0
    ```
-2. **Evaluating commutative indexing `3[p]` and `1[p]`:**
-   - In C, `i[p] \equiv *(p + i) \equiv p[i]`.
-   - `3[p] = p[3] = 'O'`.
-   - `1[p] = p[1] = 'L'`.
-3. **Evaluating character arithmetic:**
-   - In C, characters in arithmetic expressions are promoted to integer ASCII values.
-   - Alphabetically, `'O'` is the 15th letter and `'L'` is the 12th letter (ASCII 79 and 76).
-   - `3[p] - 1[p] = 'O' - 'L' = 79 - 76 = 3`.
-   - Therefore, `offset = 3 + 2 = 5`.
-4. **Evaluating `strlen(str + offset)`:**
-   - `str + offset` points to `str + 5`, which starts at index 5 (character `'I'`).
-   - The substring starting from index 5 is `"ITHM2026"`.
-   - Counting characters before `'\0'`:
-     `'I'`, `'T'`, `'H'`, `'M'`, `'2'`, `'0'`, `'2'`, `'6'` $\implies$ exactly 8 characters.
-   - `strlen(str + 5) = 8`.
+   Total length of `s` is 15 characters.
+2. In C, commutative indexing specifies that `7[p] \equiv p[7]` and `1[p] \equiv p[1]`.
+   - `7[p] = p[7] = 'R'`
+   - `1[p] = p[1] = 'N'`
+3. In character arithmetic, the difference `'R' - 'N'` evaluates to the difference in their ASCII codes:
+   - Alphabetically, R is the 18th letter and N is the 14th letter:
+     $$18 - 14 = 4$$
+   - Thus, `offset = 4`.
+4. `p + offset` points to `s + 4`, which starts at index 4 (character `'N'`).
+   The substring starting from index 4 is `"NEERING2027"`.
+   Counting characters from index 4 to index 14 gives:
+   $$15 - 4 = 11 \text{ characters}$$
+5. `strlen(p + offset)` returns `11`.
 
-The output of the program is 8.
+The output of the program is 11.
 
 ## Q9
 type: MCQ
@@ -412,56 +372,55 @@ Consider the following C program:
 ```c
 #include <stdio.h>
 
-void swap_ptrs(char **p1, char **p2) {
-    char *t = *p1;
-    *p1 = *p2;
-    *p2 = t;
+void step1(char *s1, char *s2) {
+    char *tmp = s1;
+    s1 = s2;
+    s2 = tmp;
 }
 
-void modify_ptrs(char *p1, char *p2) {
-    p1 = p2;
+void step2(char **s1, char **s2) {
+    char *tmp = *s1;
+    *s1 = *s2;
+    *s2 = tmp;
 }
 
 int main(void) {
-    char *a = "Apple";
-    char *b = "Berry";
-    char *c = "Cherry";
+    char *w1 = "Red";
+    char *w2 = "Green";
+    char *w3 = "Blue";
 
-    modify_ptrs(a, b);
-    swap_ptrs(&b, &c);
+    step1(w1, w2);
+    step2(&w1, &w3);
 
-    printf("%s %s %s\n", a, b, c);
+    printf("%s %s %s\n", w1, w2, w3);
     return 0;
 }
 ```
 
 What is printed by the program?
 
-(A) `Berry Cherry Apple`
-(B) `Apple Cherry Berry`
-(C) `Apple Berry Cherry`
-(D) `Berry Berry Cherry`
+(A) `Green Red Blue`
+(B) `Blue Green Red`
+(C) `Red Green Blue`
+(D) `Blue Red Green`
 
 ### Solution
 1. **Initial state in `main`:**
-   - `a` points to `"Apple"`
-   - `b` points to `"Berry"`
-   - `c` points to `"Cherry"`
-2. **Call `modify_ptrs(a, b)`:**
-   - Parameters `p1` and `p2` receive copies of pointers `a` and `b` (pass-by-value).
-   - Inside `modify_ptrs`, `p1 = p2;` alters only the local parameter `p1` within `modify_ptrs`'s activation record.
-   - Pointers `a`, `b`, and `c` in `main` remain completely unchanged!
-   - After return: `a` still points to `"Apple"`, `b` still points to `"Berry"`, `c` still points to `"Cherry"`.
-3. **Call `swap_ptrs(&b, &c)`:**
-   - The addresses of pointers `b` and `c` are passed to `char **p1` and `char **p2`.
-   - `*p1` accesses variable `b` in `main`; `*p2` accesses variable `c` in `main`.
-   - The swap logic:
-     - `char *t = *p1;` stores pointer `b` (`"Berry"`).
-     - `*p1 = *p2;` sets `b` to point to `"Cherry"`.
-     - `*p2 = t;` sets `c` to point to `"Berry"`.
-   - After return: `b` now points to `"Cherry"`, and `c` now points to `"Berry"`.
+   - `w1` points to `"Red"`
+   - `w2` points to `"Green"`
+   - `w3` points to `"Blue"`
+2. **Executing `step1(w1, w2)`:**
+   - `w1` and `w2` are passed by value. The copies `s1` and `s2` are swapped only within `step1`'s local stack frame.
+   - Pointers `w1`, `w2`, and `w3` in `main` remain completely unchanged:
+     `w1 = "Red"`, `w2 = "Green"`, `w3 = "Blue"`.
+3. **Executing `step2(&w1, &w3)`:**
+   - The addresses of pointer variables `w1` and `w3` in `main` are passed to `char **s1` and `char **s2`.
+   - `step2` dereferences the double pointers to swap the pointers `w1` and `w3` directly in `main`'s stack frame:
+     - `w1` now points to `"Blue"`.
+     - `w3` now points to `"Red"`.
+     - `w2` remains pointing to `"Green"`.
 4. **Final output:**
-   - `printf("%s %s %s\n", a, b, c);` prints: `Apple Cherry Berry`.
+   - `printf("%s %s %s\n", w1, w2, w3);` prints: `Blue Green Red`.
 
 Correct option is (B).
 
@@ -471,48 +430,33 @@ marks: 2
 subject: programming-ds
 topic: arrays-and-pointers
 syllabus: P06.19
-answer: A, B, D
+answer: A, B, C
 
 Consider the following C code segment:
 
 ```c
-int arr[] = {2, 4, 6, 8, 10, 12};
-int *p1 = arr + 1;
-int *p2 = arr + 4;
+int data[] = {10, 20, 30, 40, 50};
+int *ptr = data;
 ```
 
 Which of the following statements is/are **TRUE**?
 
-(A) The expression `p2 - p1` evaluates to `3`.
-(B) The expression `*(p1 + 2)` evaluates to `8`.
-(C) The expression `*p2 - *p1` evaluates to `3`.
-(D) After executing `*(p1++) += 5;`, `arr[1]` equals `9` and `*p1` equals `6`.
+(A) The expression `*(ptr + 3)` evaluates to `40`.
+(B) The expression `(ptr + 4) - ptr` evaluates to `4`.
+(C) The expression `*(ptr++)` evaluates to `10`, and afterwards `*ptr` evaluates to `20`.
+(D) The statement `*(data + 2) = 35;` causes a compilation error because `data` is an array name.
 
 ### Solution
-1. **Initial state:**
-   - `arr`: `arr[0]=2, arr[1]=4, arr[2]=6, arr[3]=8, arr[4]=10, arr[5]=12`.
-   - `p1 = arr + 1` points to `&arr[1]` (value 4).
-   - `p2 = arr + 4` points to `&arr[4]` (value 10).
-2. **Statement (A):**
-   - In C pointer arithmetic, subtracting two pointers of the same type yields the number of elements between them:
-     $$\text{distance} = p2 - p1 = (\text{arr} + 4) - (\text{arr} + 1) = 3$$
-   - Hence, (A) is TRUE.
-3. **Statement (B):**
-   - `p1 + 2` is `(arr + 1) + 2 = arr + 3`.
-   - Dereferencing gives `*(arr + 3) = arr[3] = 8`.
-   - Hence, (B) is TRUE.
-4. **Statement (C):**
-   - `*p2` evaluates to the integer value at `p2`, which is `arr[4] = 10`.
-   - `*p1` evaluates to the integer value at `p1`, which is `arr[1] = 4`.
-   - `*p2 - *p1 = 10 - 4 = 6`.
-   - Note the difference between pointer subtraction `p2 - p1 = 3` and integer value subtraction `*p2 - *p1 = 6`.
-   - Hence, (C) is FALSE.
-5. **Statement (D):**
-   - `*(p1++) += 5;`:
-     - Post-increment `p1++` evaluates to current `p1` (`&arr[1]`) for dereferencing, while advancing `p1` to `&arr[2]`.
-     - `*(&arr[1]) += 5` modifies `arr[1]`: was 4, now becomes $4 + 5 = 9$.
-     - After the statement, `p1` points to `arr[2]`, so `*p1` evaluates to `arr[2] = 6`.
-   - Both assertions (`arr[1] == 9` and `*p1 == 6`) are correct.
-   - Hence, (D) is TRUE.
+1. **Statement (A):** `ptr + 3` points to `&data[3]`. Dereferencing yields `data[3] = 40`. Hence, (A) is TRUE.
+2. **Statement (B):** In C pointer subtraction, subtracting two pointers of the same type gives the number of elements between them:
+   $$(\text{ptr} + 4) - \text{ptr} = 4$$
+   Hence, (B) is TRUE.
+3. **Statement (C):** In `*(ptr++)`:
+   - Post-increment `ptr++` evaluates to the current pointer value (`&data[0]`) before incrementing.
+   - Dereferencing `*(&data[0])` gives `10`.
+   - As a side-effect, `ptr` advances to `&data[1]`.
+   - Subsequently, `*ptr` evaluates to `data[1] = 20`.
+   - Hence, (C) is TRUE.
+4. **Statement (D):** `data` is an array identifier and cannot be reassigned directly (e.g. `data = ...` is illegal). However, `*(data + 2)` is identical to `data[2]`, which is a modifiable lvalue integer element. Writing `*(data + 2) = 35;` is completely valid in C and successfully updates `data[2]` to 35. Therefore, claiming it causes a compilation error is FALSE.
 
-Correct options are A, B, D.
+Correct options are A, B, C.
