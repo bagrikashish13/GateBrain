@@ -266,6 +266,51 @@ describe("planTest and auditTest", () => {
   });
 });
 
+describe("two tracks", () => {
+  // D01 and its test on the main block; K01 (two-letter unit ids) on the 2nd slot, held only by its own test.
+  const md = `${MD}
+## KD01 · Parsing
+notes: compiler-design/02-parsing
+hours: 1
+
+- KD01.1 T What a grammar is.
+- KD01.2 Q Is it ambiguous. PYQ: 2020-1
+`;
+  const cat = buildCatalog(parseSyllabus("x.md", md, []));
+  const seq: Sequence = {
+    blueprints: { unit: UNIT },
+    steps: [
+      { unit: "D01", by: "2026-11-01" },
+      { test: "t1", kind: "unit", covers: ["D01"], by: "2026-11-02" },
+      { unit: "D02", by: "2026-11-03" },
+      { test: "t2", kind: "unit", covers: ["D02"], by: "2026-11-04" },
+      { unit: "KD01", by: "2026-11-01", track: "second" },
+      { test: "k1", kind: "unit", covers: ["KD01"], by: "2026-11-02", track: "second" },
+    ],
+  };
+  const two = (over: Partial<State> = {}) => state({ catalog: cat, sequence: seq, ...over });
+
+  it("gives each track its own next step", () => {
+    const m = nextStep(two());
+    expect(m.kind === "teach" && m.item.id).toBe("D01.1");
+    const n = nextStep(two(), "second");
+    expect(n.kind === "teach" && n.item.id).toBe("KD01.1");
+  });
+
+  it("lets an item be ticked on its own track while the other track waits for a test", () => {
+    const done = { "D01.1": "x", "D01.2": "x" };
+    expect(nextStep(two({ progress: { done } })).kind).toBe("write-test");
+    expect(checkDone(two({ progress: { done } }), ["KD01.1"])).toBeNull();
+    expect(checkDone(two({ progress: { done } }), ["KD01.2"])).toContain("Out of order");
+  });
+
+  it("validates dates per track and refuses a test covering the other track", () => {
+    expect(validate(cat, PYQS, seq, { done: {} })).toEqual([]);
+    const bad: Sequence = { ...seq, steps: [...seq.steps, { test: "k2", kind: "unit", covers: ["D01"], by: "2026-11-03", track: "second" }] };
+    expect(validate(cat, PYQS, bad, { done: {} }).join("\n")).toContain("on the other track");
+  });
+});
+
 describe("daysBehind", () => {
   it("counts whole days past the target", () => {
     expect(daysBehind("2026-11-06", "2026-11-06")).toBe(0);

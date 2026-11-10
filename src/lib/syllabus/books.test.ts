@@ -6,6 +6,8 @@ describe("pyqRef", () => {
     expect(pyqRef("GATE CSE 2016 | Set 1 | Question: 25")).toMatchObject({ id: "2016s1-25", paper: "CS", year: 2016, set: 1, q: "25", title: "GATE CSE 2016 Set 1 | Question: 25" });
     expect(pyqRef("GATE CSE 2008 | Question: 14, ISRO2016-74")?.id).toBe("2008-14");
     expect(pyqRef("GATE CSE 1987 | Question: 1-xix")?.id).toBe("1987-1.xix");
+    expect(pyqRef("GATE CSE 1992 | Question: 01,ii")).toMatchObject({ id: "1992-01.ii", q: "01,ii", title: "GATE CSE 1992 | Question: 01,ii" });
+    expect(pyqRef("GATE CSE 1992 | Question: 01-iv")?.id).toBe("1992-01.iv");
     expect(pyqRef("GATE IT 2004 | Question: 13")?.id).toBe("IT2004-13");
     expect(pyqRef("GATE DS&AI 2024 | Question: 4")?.id).toBe("DA2024-4");
     expect(pyqRef("GATE CSE 2017 Set 2 | Question: 55")?.id).toBe("2017s2-55");

@@ -7,7 +7,12 @@ import { buildCatalog, isUnitStep, parseSyllabus, retestId, type Attempted, type
 
 // Reads brain/syllabus/ and the test results from disk, for scripts/ and for the app's Syllabus tab.
 
-export const SYLLABUS_FILES = ["1-programming-in-c.md", "2-complexity-and-searching.md", "3-data-structures.md", "4-algorithms.md"];
+/** The part files, in part order: 1-programming-in-c.md, 2-…, 10-…. */
+export function syllabusFiles(brain: string): string[] {
+  return readdirSync(join(brain, "syllabus"))
+    .filter((f) => /^\d+-[a-z0-9-]+\.md$/.test(f))
+    .sort((a, b) => parseInt(a, 10) - parseInt(b, 10));
+}
 
 export function readPyqs(brain: string): Map<string, Pyq> {
   const lines = readFileSync(join(brain, "syllabus", "pyq-index.jsonl"), "utf8").split("\n").filter((l) => l.trim());
@@ -29,7 +34,7 @@ function attemptedTest(brain: string, id: string): Attempted | null {
 export function loadSyllabus(brain: string): { state: State; errors: string[] } {
   const errors: string[] = [];
   const units: Unit[] = [];
-  for (const f of SYLLABUS_FILES) units.push(...parseSyllabus(f, readFileSync(join(brain, "syllabus", f), "utf8"), errors));
+  for (const f of syllabusFiles(brain)) units.push(...parseSyllabus(f, readFileSync(join(brain, "syllabus", f), "utf8"), errors));
   const sequence = JSON.parse(readFileSync(join(brain, "syllabus", "sequence.json"), "utf8")) as Sequence;
   const progress = JSON.parse(readFileSync(join(brain, "syllabus", "progress.json"), "utf8")) as Progress;
   const concepts = JSON.parse(readFileSync(join(brain, "syllabus", "concepts.json"), "utf8")) as Concept[];

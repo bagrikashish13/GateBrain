@@ -1,4 +1,5 @@
 import type { Catalog, Item, Pyq, Sequence } from "./syllabus";
+import { trackOf, TRACKS, type Track } from "./tracks";
 
 // Topological order for the syllabus (pure: no fs). brain/syllabus/concepts.json names every idea a
 // student has to be taught before it can appear, and how to spot it in text or code. Each concept is
@@ -19,16 +20,42 @@ export function conceptsIn(text: string, compiled: Compiled[]): string[] {
 }
 
 export type Order = {
-  items: Item[]; // every item in teaching order
-  position: Map<string, number>; // item id → its place in that order
+  items: Item[]; // every item, track by track, each track in teaching order
+  position: Map<string, number>; // item id → its place in its own track's order
+  track: Map<string, Track>; // item id → the track it is taught on
   teacher: Map<string, Item>; // concept id → the item that teaches it
 };
 
+/**
+ * Every item in the order the student meets it, per track. The two tracks run side by side and each
+ * teaches its own ideas: the order is checked within a track (a parse tree's "leaf" in Compiler Design
+ * isn't the Data Structures tree, taught on the other track).
+ */
 export function teachingOrder(catalog: Catalog, sequence: Sequence): Order {
-  const items = sequence.steps.flatMap((s) => ("unit" in s ? (catalog.units.get(s.unit)?.items ?? []) : []));
+  const items: Item[] = [];
+  const position = new Map<string, number>();
+  const track = new Map<string, Track>();
+  for (const t of TRACKS) {
+    let n = 0;
+    for (const s of sequence.steps) {
+      if (!("unit" in s) || trackOf(s) !== t) continue;
+      for (const item of catalog.units.get(s.unit)?.items ?? []) {
+        items.push(item);
+        position.set(item.id, n++);
+        track.set(item.id, t);
+      }
+    }
+  }
   const teacher = new Map<string, Item>();
   for (const item of items) for (const c of item.teaches) if (!teacher.has(c)) teacher.set(c, item);
-  return { items, position: new Map(items.map((i, n) => [i.id, n])), teacher };
+  return { items, position, track, teacher };
+}
+
+/** The item teaching `c`, if it comes after `item` on the same track. */
+export function taughtLater(order: Order, c: string, item: Item): Item | null {
+  const t = order.teacher.get(c);
+  if (!t || order.track.get(t.id) !== order.track.get(item.id)) return null;
+  return order.position.get(t.id)! > order.position.get(item.id)! ? t : null;
 }
 
 /** Everything an item leans on: what its text mentions and what its PYQs really need. */
@@ -56,11 +83,7 @@ export function orderErrors(catalog: Catalog, pyqs: Map<string, Pyq>, sequence: 
   for (const c of concepts) if (!taughtBy.has(c.id)) out.push(`Concept ${c.id} is never taught: add "Teaches: ${c.id}" to the item that introduces it.`);
 
   const nameOf = (c: string) => known.get(c)?.name ?? c;
-  const position = order.position;
-  const later = (c: string, item: Item) => {
-    const t = order.teacher.get(c);
-    return t && position.get(t.id)! > position.get(item.id)! ? t : null;
-  };
+  const later = (c: string, item: Item) => taughtLater(order, c, item);
   for (const item of order.items) {
     for (const c of conceptsIn(item.text, compiled)) {
       const t = later(c, item);

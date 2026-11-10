@@ -3,9 +3,11 @@
 // .runtime/pyq-cache/ (scripts/pyq-books.ts) and use these functions on the fly.
 
 export type PyqRef = { id: string; paper: "CS" | "IT" | "DA"; year: number; set: number | null; q: string; title: string };
-export type BookEntry = PyqRef & { section: string; topic: string; text: string; tags: string[]; line: number };
+export type BookEntry = PyqRef & { section: string; topic: string; text: string; tags: string[]; line: number; url: string | null };
 
-const TITLE = /GATE\s+(CSE?|IT|DA|DS&AI)\s+(\d{4})\s*(?:\|?\s*Set\s*(\d+))?\s*\|\s*Question:\s*([^,\s|]+)/;
+// "Question: 01,ii" and "Question: 01-iv" are sub-parts of an old composite question; "Question: 14, ISRO2016-74"
+// (comma and a space) is the same question in another exam.
+const TITLE = /GATE\s+(CSE?|IT|DA|DS&AI)\s+(\d{4})\s*(?:\|?\s*Set\s*(\d+))?\s*\|\s*Question:\s*([0-9A-Za-z.-]+(?:,(?:[ivxlc]+|[a-z])\b)?)/;
 
 /** "GATE CSE 2016 | Set 1 | Question: 25" → { id: "2016s1-25", … }, the ids brain/syllabus/ uses. */
 export function pyqRef(title: string): PyqRef | null {
@@ -16,7 +18,7 @@ export function pyqRef(title: string): PyqRef | null {
   const set = m[3] ? Number(m[3]) : null;
   const q = m[4];
   const s = set ? `s${set}` : "";
-  const id = paper === "CS" ? `${year}${s}-${q.replace(/-/g, ".")}` : `${paper}${year}${s}-${q}`;
+  const id = paper === "CS" ? `${year}${s}-${q.replace(/[-,]/g, ".")}` : `${paper}${year}${s}-${q}`;
   const name = paper === "CS" ? "GATE CSE" : paper === "IT" ? "GATE IT" : "GATE DS&AI";
   return { id, paper, year, set, q, title: `${name} ${year}${set ? ` Set ${set}` : ""} | Question: ${q}` };
 }
@@ -59,7 +61,8 @@ export function parseBook(raw: string): BookEntry[] {
       }
       if (!NOISE(t)) body.push(lines[j].trimEnd());
     }
-    out.push({ ...ref, section: h[1], topic: h[2].trim(), text: dedent(body).trim(), tags, line: i });
+    const url = /https?:\/\/gateoverflow\.in\/\d+/.exec(lines[i])?.[0] ?? null; // the 2022 books print it on the heading
+    out.push({ ...ref, section: h[1], topic: h[2].trim(), text: dedent(body).trim(), tags, line: i, url });
     i = j - 1;
   }
   return out;

@@ -11,6 +11,13 @@ npm run syllabus
 
 Do exactly what it prints. It knows what has been taught, what comes next, what must not be used yet, and when a test is due. Everything below explains why, and how to do each step well.
 
+**Two tracks run side by side**, each in its own strict order with its own tests (`track` in `sequence.json`):
+
+- **Main block:** C, Complexity, Data Structures, Algorithms (Parts 1–4).
+- **2nd slot:** Compiler Design (Part 5, `5-compiler-design.md`; units CD01–CD06 were studied in lectures, so their items are *seen*: one hard check each).
+
+`npm run syllabus` prints the next step of each track; `npm run syllabus -- next second` only the 2nd slot. A test due on one track never holds the other. The order check works within a track (a parse tree's "leaf" in Compiler Design is not the Data Structures tree).
+
 | Command | What it does |
 |---|---|
 | `npm run syllabus` | The exact next step |

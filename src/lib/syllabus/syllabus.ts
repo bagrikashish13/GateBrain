@@ -2,6 +2,9 @@ import { slugOf } from "@/lib/brain/names";
 import type { Test } from "@/lib/tests/format";
 import type { Result } from "@/lib/tests/result";
 import { compileConcepts, conceptsIn, orderErrors, teachingOrder, type Concept } from "./order";
+import { trackOf, TRACKS, type Track } from "./tracks";
+
+export { trackOf, TRACK_NAME, TRACKS, type Track } from "./tracks";
 
 // The C + Data Structures + Algorithms syllabus in brain/syllabus/ (pure: no fs). The Markdown files say
 // what to teach and in which order, sequence.json where the tests fall, progress.json what is done, and
@@ -40,8 +43,8 @@ export type Blueprint = {
   pass: number; // fraction of the marks
   earlierMax: number; // questions allowed from units before this test's own
 };
-export type UnitStep = { unit: string; by: string };
-export type TestStep = { test: string; kind: string; covers: string[]; by: string };
+export type UnitStep = { unit: string; by: string; track?: Track };
+export type TestStep = { test: string; kind: string; covers: string[]; by: string; track?: Track };
 export type Step = UnitStep | TestStep;
 export type Sequence = { blueprints: Record<string, Blueprint>; steps: Step[] };
 // done: ticked, with the day. seen: met before this syllabus existed, so one right answer earns the tick.
@@ -53,9 +56,15 @@ export const retestId = (test: string) => `${test}-r2`;
 export const subjectOf = (u: Unit) => u.notes.split("/")[0];
 export const topicOf = (u: Unit) => slugOf(u.notes.split("/")[1] ?? "");
 
+/** The track a unit is taught on. */
+export function trackOfUnit(sequence: Sequence, unit: string): Track {
+  const step = sequence.steps.find((s) => isUnitStep(s) && s.unit === unit);
+  return step ? trackOf(step) : "main";
+}
+
 const PART_HEAD = /^#\s+Part\s+\d+\s+·\s+(.+?)\s*$/;
-const UNIT_HEAD = /^##\s+([PXDA]\d\d)\s+·\s+(.+?)\s*$/;
-const ITEM = /^-\s+([PXDA]\d\d\.\d+)\s+([TQNL])\s+(.+?)\s*$/;
+const UNIT_HEAD = /^##\s+([A-Z]{1,2}\d\d)\s+·\s+(.+?)\s*$/;
+const ITEM = /^-\s+([A-Z]{1,2}\d\d\.\d+)\s+([TQNL])\s+(.+?)\s*$/;
 const SUB_HEAD = /^###\s+(.+?)\s*$/;
 const PYQ_SPLIT = " PYQ: ";
 const TEACHES_SPLIT = " Teaches: ";
@@ -129,7 +138,7 @@ export function validate(catalog: Catalog, pyqs: Map<string, Pyq>, sequence: Seq
   const out: string[] = [];
   const cited = new Set<string>();
   for (const unit of catalog.units.values()) {
-    if (!/^(programming-ds|algorithms)\/\d+-[a-z0-9-]+$/.test(unit.notes)) out.push(`${unit.id}: "notes:" must be a section folder like programming-ds/10-arrays.`);
+    if (!/^[a-z][a-z-]*\/\d+-[a-z0-9-]+$/.test(unit.notes)) out.push(`${unit.id}: "notes:" must be a section folder like programming-ds/10-arrays.`);
     if (!(unit.hours > 0)) out.push(`${unit.id}: needs "hours:".`);
     if (!unit.items.length) out.push(`${unit.id}: has no items.`);
     for (const item of unit.items) {
@@ -144,21 +153,27 @@ export function validate(catalog: Catalog, pyqs: Map<string, Pyq>, sequence: Seq
   for (const id of pyqs.keys()) if (!cited.has(id)) out.push(`PYQ ${id} is in the index but no syllabus item covers it.`);
 
   const seen = new Set<string>();
-  const placed = new Set<string>();
-  let lastBy = "";
+  const placed = new Map<string, Track>(); // unit → its track, once taught
+  const lastBy: Record<string, string> = {};
   for (const step of sequence.steps) {
-    if (step.by < lastBy) out.push(`${isUnitStep(step) ? step.unit : step.test}: its target date ${step.by} is before the previous step's ${lastBy}.`);
-    lastBy = step.by;
+    const track = trackOf(step);
+    const name = isUnitStep(step) ? step.unit : step.test;
+    if (!TRACKS.includes(track)) out.push(`${name}: unknown track "${track}".`);
+    if (step.by < (lastBy[track] ?? "")) out.push(`${name}: its target date ${step.by} is before the previous step's ${lastBy[track]} on the same track.`);
+    lastBy[track] = step.by;
     if (isUnitStep(step)) {
       if (!catalog.units.has(step.unit)) out.push(`sequence: unknown unit ${step.unit}.`);
       if (placed.has(step.unit)) out.push(`sequence: ${step.unit} appears twice.`);
-      placed.add(step.unit);
+      placed.set(step.unit, track);
       continue;
     }
     if (seen.has(step.test)) out.push(`sequence: test ${step.test} appears twice.`);
     seen.add(step.test);
     if (!sequence.blueprints[step.kind]) out.push(`${step.test}: unknown kind "${step.kind}".`);
-    for (const u of step.covers) if (!placed.has(u)) out.push(`${step.test}: covers ${u}, which is not taught before it.`);
+    for (const u of step.covers) {
+      if (!placed.has(u)) out.push(`${step.test}: covers ${u}, which is not taught before it.`);
+      else if (placed.get(u) !== track) out.push(`${step.test}: covers ${u}, which is on the other track.`);
+    }
     if (!step.covers.length) out.push(`${step.test}: covers nothing.`);
   }
   for (const id of catalog.units.keys()) if (!placed.has(id)) out.push(`sequence: unit ${id} is never scheduled.`);
@@ -239,8 +254,10 @@ export type Next =
   | { kind: "reteach"; step: TestStep; id: string; missed: string[]; retest: string; score: number; pass: number }
   | { kind: "finished" };
 
-export function nextStep(s: State): Next {
+/** The next thing to do on one track (the main block unless asked). Each track is held by its own tests only. */
+export function nextStep(s: State, track: Track = "main"): Next {
   for (const step of s.sequence.steps) {
+    if (trackOf(step) !== track) continue;
     if (isUnitStep(step)) {
       const unit = s.catalog.units.get(step.unit);
       if (!unit) continue;
@@ -275,9 +292,10 @@ function testGate(s: State, step: TestStep, id: string, retest: boolean): Next |
 export function checkDone(s: State, ids: string[]): string | null {
   const done = { ...s.progress.done };
   for (const id of ids) {
-    if (!s.catalog.items.has(id)) return `Unknown item ${id}.`;
+    const item = s.catalog.items.get(id);
+    if (!item) return `Unknown item ${id}.`;
     if (done[id]) continue;
-    const next = nextStep({ ...s, progress: { done } });
+    const next = nextStep({ ...s, progress: { done } }, trackOfUnit(s.sequence, item.unit));
     if (next.kind !== "teach") return `Not yet. First: ${describeHold(next)}.`;
     if (next.item.id !== id) return `Out of order: the next item is ${next.item.id}. Teach that first; items are never skipped.`;
     done[id] = "x";
@@ -322,9 +340,14 @@ export function planTest(s: State, id: string): TestPlan | null {
   const step = s.sequence.steps[index] as TestStep;
   const blueprint = s.sequence.blueprints[id === base ? step.kind : "unit"];
   if (!blueprint) return null;
-  const before = s.sequence.steps.slice(0, index).flatMap((st) => (isUnitStep(st) ? [st.unit] : []));
+  const track = trackOf(step);
+  const before = s.sequence.steps.slice(0, index).flatMap((st) => (isUnitStep(st) && trackOf(st) === track ? [st.unit] : []));
+  const mine = new Set(before);
   const history = itemHistory(s);
-  const carry = [...history.entries()].filter(([, h]) => h.at(-1) !== "correct").map(([item]) => s.catalog.items.get(item)).filter((i): i is Item => !!i && i.kind !== "L");
+  const carry = [...history.entries()]
+    .filter(([, h]) => h.at(-1) !== "correct")
+    .map(([item]) => s.catalog.items.get(item))
+    .filter((i): i is Item => !!i && i.kind !== "L" && mine.has(i.unit));
   const carried = new Set(carry.map((i) => i.id));
   const targets = step.covers
     .flatMap((u) => s.catalog.units.get(u)?.items ?? [])
@@ -395,12 +418,13 @@ export function auditTest(s: State, id: string, test: Test): { errors: string[];
     const compiled = compileConcepts(s.concepts);
     const { teacher } = teachingOrder(s.catalog, s.sequence);
     const known = new Set([...plan.covers, ...plan.earlier]);
+    const track = trackOfUnit(s.sequence, plan.covers[0] ?? "");
     const nameOf = new Map(s.concepts.map((c) => [c.id, c.name]));
     for (const x of q) {
       const text = [x.text, ...x.options.map((o) => o.text)].join("\n");
       for (const c of conceptsIn(text, compiled)) {
         const t = teacher.get(c);
-        if (t && !known.has(t.unit)) errors.push(`Q${x.n} uses ${nameOf.get(c)}, taught at ${t.id}, which comes after this test.`);
+        if (t && !known.has(t.unit) && trackOfUnit(s.sequence, t.unit) === track) errors.push(`Q${x.n} uses ${nameOf.get(c)}, taught at ${t.id}, which comes after this test.`);
       }
     }
   }

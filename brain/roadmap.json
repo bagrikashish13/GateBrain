@@ -187,7 +187,7 @@
           ]
         }
       ],
-      "note": "Done: Ch-01 (Lec 01–11) and Ch-02 Lec 01–03. The rest (Ch-02 Lec 04, Ch-03 Lec 01–04, PYQs) runs in the 2h second slot, 11–19 Nov, inside the PDS block; CD sectional on 20 Nov."
+      "note": "Done in lectures: Ch-01 (Lec 01–11) and Ch-02 Lec 01–03. From 11 Nov the rest runs from the syllabus (Part 5, npm run syllabus, 2nd slot) inside the PDS block; CD stage test on 20 Nov."
     },
     {
       "title": "Programming & Data Structures",
@@ -231,84 +231,82 @@
         "25–27 Nov · D10 hashing, D11 graphs, test ds-ut-04, sectional pds-sectional",
         {
           "date": "2026-11-11",
-          "label": "11 Nov · 2nd slot: CD Ch-02 Lec 04 (SDT)",
-          "lectures": 1,
-          "summary": "2nd slot: CD Ch-02 Lec 04 (SDT)",
+          "label": "11 Nov · 2nd slot: CD01–CD02, quick checks (seen)",
+          "summary": "2nd slot: CD01–CD02, quick checks (seen)",
           "tasks": [
-            "Learn · CD Ch-02 Lec 04: Syntax Directed Translation — 2h #compiler-design"
+            "Learn · CD01–CD02 from the syllabus, one hard check per item (2nd slot) — 2h #compiler-design"
           ]
         },
         {
           "date": "2026-11-12",
-          "label": "12 Nov · 2nd slot: CD Ch-03 Lec 01 (ICG)",
-          "lectures": 1,
-          "summary": "2nd slot: CD Ch-03 Lec 01 (ICG)",
+          "label": "12 Nov · 2nd slot: CD03 and test cd-ut-01",
+          "summary": "2nd slot: CD03 and test cd-ut-01",
           "tasks": [
-            "Learn · CD Ch-03 Lec 01: Intermediate Code & Optimization — 2h #compiler-design"
+            "Learn · CD03 FIRST, FOLLOW and LL(1), quick checks (2nd slot) — 1h #compiler-design",
+            "Mock · Test cd-ut-01 (10 questions) + triaged analysis — 1h #compiler-design"
           ]
         },
         {
           "date": "2026-11-13",
-          "label": "13 Nov · 2nd slot: CD Ch-03 Lec 02 (ICG & optimisation)",
-          "lectures": 1,
-          "summary": "2nd slot: CD Ch-03 Lec 02 (ICG & optimisation)",
+          "label": "13 Nov · 2nd slot: CD04–CD05, quick checks (seen)",
+          "summary": "2nd slot: CD04–CD05, quick checks (seen)",
           "tasks": [
-            "Learn · CD Ch-03 Lec 02: Intermediate Code & Optimization — 2.5h #compiler-design"
+            "Learn · CD04–CD05 LR parsing, quick checks (2nd slot) — 2h #compiler-design"
           ]
         },
         {
           "date": "2026-11-14",
-          "label": "14 Nov · 2nd slot: CD Ch-03 Lec 03 (optimisation)",
-          "lectures": 1,
-          "summary": "2nd slot: CD Ch-03 Lec 03 (optimisation)",
+          "label": "14 Nov · 2nd slot: CD06 and test cd-ut-02",
+          "summary": "2nd slot: CD06 and test cd-ut-02",
           "tasks": [
-            "Learn · CD Ch-03 Lec 03: Intermediate Code & Optimization — 2h #compiler-design"
+            "Learn · CD06 Syntax-directed translation, quick checks (2nd slot) — 1h #compiler-design",
+            "Mock · Test cd-ut-02 (10 questions) + triaged analysis — 1h #compiler-design"
           ]
         },
         {
           "date": "2026-11-16",
-          "label": "16 Nov · 2nd slot: CD Ch-03 Lec 04 (data-flow analysis)",
-          "lectures": 1,
-          "summary": "2nd slot: CD Ch-03 Lec 04 (data-flow analysis)",
+          "label": "16 Nov · 2nd slot: CD07 Intermediate code (new)",
+          "summary": "2nd slot: CD07 Intermediate code (new)",
           "tasks": [
-            "Learn · CD Ch-03 Lec 04: Intermediate Code & Optimization — 2.5h #compiler-design"
+            "Learn · CD07 Intermediate code, from the syllabus (2nd slot) — 2h #compiler-design"
           ]
         },
         {
           "date": "2026-11-17",
-          "label": "17 Nov · 2nd slot: CD PYQs, parsing and LR tables",
-          "summary": "2nd slot: CD PYQs, parsing and LR tables",
+          "label": "17 Nov · 2nd slot: CD08 Basic blocks and local optimisation (new)",
+          "summary": "2nd slot: CD08 Basic blocks and local optimisation (new)",
           "tasks": [
-            "PYQ · CD Parsing and LR tables — 2h #compiler-design"
+            "Learn · CD08 Basic blocks and local optimisation (2nd slot) — 2h #compiler-design"
           ]
         },
         {
           "date": "2026-11-18",
-          "label": "18 Nov · 2nd slot: CD PYQs, SDT, ICG, optimisation",
-          "summary": "2nd slot: CD PYQs, SDT, ICG, optimisation",
+          "label": "18 Nov · 2nd slot: CD09 Data-flow analysis and test cd-ut-03",
+          "summary": "2nd slot: CD09 Data-flow analysis and test cd-ut-03",
           "tasks": [
-            "PYQ · CD SDT, ICG and Optimization — 2h #compiler-design"
+            "Learn · CD09 Data-flow analysis (2nd slot) — 1h #compiler-design",
+            "Mock · Test cd-ut-03 (10 questions) + triaged analysis — 1h #compiler-design"
           ]
         },
         {
           "date": "2026-11-19",
-          "label": "19 Nov · 2nd slot: CD notes from PYQ mistakes",
-          "summary": "2nd slot: CD notes from PYQ mistakes",
+          "label": "19 Nov · 2nd slot: CD10 Runtime environments",
+          "summary": "2nd slot: CD10 Runtime environments",
           "tasks": [
-            "Learn · CD notes from PYQ mistakes, with the agent — 1h #compiler-design"
+            "Learn · CD10 Runtime environments and the whole compiler (2nd slot) — 1.5h #compiler-design"
           ]
         },
         {
           "date": "2026-11-20",
-          "label": "20 Nov · 2nd slot: CD sectional, 20 questions",
-          "summary": "2nd slot: CD sectional, 20 questions",
+          "label": "20 Nov · 2nd slot: CD stage test, 20 questions",
+          "summary": "2nd slot: CD stage test, 20 questions",
           "tasks": [
-            "Mock · CD sectional, 20 questions — 1h #compiler-design",
-            "Analyse · CD sectional, triaged — 1h #compiler-design"
+            "Mock · Test cd-stage (20 questions) — 1h #compiler-design",
+            "Analyse · Test cd-stage, triaged — 1h #compiler-design"
           ]
         }
       ],
-      "note": "Main block follows brain/syllabus/ item by item (npm run syllabus). 2nd slot (2h): finish Compiler Design, 11–20 Nov. From 21 Nov the whole day goes to Data Structures."
+      "note": "Main block follows brain/syllabus/ item by item (npm run syllabus). 2nd slot (2h): Compiler Design, also from the syllabus (Part 5: CD01–CD06 seen, quick checks; CD07–CD10 new), 11–20 Nov. The remaining lectures are optional. From 21 Nov the whole day goes to Data Structures."
     },
     {
       "title": "Algorithms",

@@ -22,6 +22,9 @@ import {
   itemHistory,
   KIND_NAME,
   nextStep,
+  TRACK_NAME,
+  TRACKS,
+  trackOfUnit,
   planTest,
   retestId,
   scoreOf,
@@ -30,6 +33,7 @@ import {
   type Next,
   type Pyq,
   type State,
+  type Track,
 } from "../src/lib/syllabus/syllabus";
 
 const repo = process.env.REPO_PATH || join(import.meta.dirname, "..");
@@ -38,7 +42,7 @@ const today = dayKey(new Date());
 
 const HELP = `npm run syllabus -- <command>
 
-  next                  the exact next step (the default)
+  next [main|second]    the exact next step on each track, or on one (the default)
   done <item> [item…]   tick items, after the student answered their check correctly. Commits and pushes
   unit <unit>           one whole unit with what is done, like D07
   status                every unit and test, and pace against the target dates
@@ -67,13 +71,19 @@ const conceptName = (id: string) => state.concepts?.find((c) => c.id === id)?.na
 /** What the student already has for this item, and what must stay out of every example and question. */
 function printOrder(item: Item): void {
   const compiled = compileConcepts(state.concepts ?? []);
-  const { teacher, position } = teachingOrder(state.catalog, state.sequence);
+  const order = teachingOrder(state.catalog, state.sequence);
+  const { teacher, position } = order;
   const here = position.get(item.id) ?? 0;
+  const mine = (t: Item) => order.track.get(t.id) === order.track.get(item.id);
   const uses = usesOf(item, state.pyqs, compiled).filter((c) => !item.teaches.includes(c));
-  const before = uses.map((c) => ({ c, t: teacher.get(c) })).filter(({ t }) => t).sort((a, b) => position.get(b.t!.id)! - position.get(a.t!.id)!).slice(0, 8);
+  const before = uses
+    .map((c) => ({ c, t: teacher.get(c) }))
+    .filter(({ t }) => t && mine(t))
+    .sort((a, b) => position.get(b.t!.id)! - position.get(a.t!.id)!)
+    .slice(0, 8);
   if (before.length) console.log(`\nBuilds on: ${before.map(({ c, t }) => `${conceptName(c)} (${t!.id})`).join(", ")}. If the student wobbles on one, go back to that item first.`);
   const part = state.catalog.units.get(item.unit)?.part;
-  const later = [...teacher.entries()].filter(([c, t]) => position.get(t.id)! > here && !item.teaches.includes(c));
+  const later = [...teacher.entries()].filter(([c, t]) => mine(t) && position.get(t.id)! > here && !item.teaches.includes(c));
   const samePart = later.filter(([, t]) => state.catalog.units.get(t.unit)?.part === part).map(([c]) => conceptName(c));
   const laterParts = [...new Set(later.map(([, t]) => state.catalog.units.get(t.unit)?.part).filter((x) => x && x !== part))];
   if (samePart.length || laterParts.length) {
@@ -159,6 +169,15 @@ Then show the student the tick lines it prints.`);
   }
 }
 
+/** The next step on each track that has one: the main block first, then the 2nd slot. */
+function printBoth(): void {
+  const tracks = TRACKS.filter((t) => state.sequence.steps.some((s) => (s.track ?? "main") === t));
+  for (const [i, t] of tracks.entries()) {
+    if (tracks.length > 1) console.log(`${i ? "\n" : ""}════ ${TRACK_NAME[t].toUpperCase()} ════`);
+    printNext(nextStep(state, t));
+  }
+}
+
 function progressJson(done: Record<string, string>, seen: string[]): string {
   const sorted = Object.entries(done).sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true }));
   const body = sorted.map(([k, v]) => `    ${JSON.stringify(k)}: ${JSON.stringify(v)}`).join(",\n");
@@ -226,7 +245,7 @@ function markDone(ids: string[]): void {
   printTicks(ids, done);
   pushProgress(ids);
   state.progress = { done, seen };
-  printNext(nextStep(state));
+  printNext(nextStep(state, trackOfUnit(state.sequence, state.catalog.items.get(ids.at(-1)!)!.unit)));
 }
 
 function showUnit(id: string | undefined): void {
@@ -265,9 +284,8 @@ function status(): void {
   const history = itemHistory(state);
   const patterns = items.filter((i) => i.kind === "Q");
   console.log(`\nPYQ patterns tested so far: ${patterns.filter((i) => history.has(i.id)).length} of ${patterns.length}.`);
-  const next = nextStep(state);
   console.log();
-  printNext(next);
+  printBoth();
 }
 
 function weak(): void {
@@ -373,7 +391,9 @@ Link: ${p.url ?? "none, search the title"}`);
 const [command = "next", ...args] = process.argv.slice(2);
 switch (command) {
   case "next":
-    printNext(nextStep(state));
+    if (args[0] && !TRACKS.includes(args[0] as Track)) fail(`Which track? ${TRACKS.join(" or ")}`);
+    if (args[0]) printNext(nextStep(state, args[0] as Track));
+    else printBoth();
     break;
   case "done":
     markDone(args);
