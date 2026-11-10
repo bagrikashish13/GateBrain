@@ -1,125 +1,285 @@
 # General Aptitude Master Roadmap · 15/15 Target
 
-**Target:** 13–15 / 15 marks in GATE 2027 General Aptitude (under 18 minutes).  
-**Commitment:** Exactly 1 hour per day (Zero disruption to technical subjects).  
+**Target:** 13–15 / 15 marks in GATE 2027 General Aptitude (under 18 minutes).
+**Commitment:** Exactly 1 hour per day (zero disruption to technical subjects).
 **Structure:**
-- **Phase 1 (28 Oct – 9 Dec · 34 study days; Block 2 shifted to 10 Nov after C sprint):** 100% complete syllabus coverage across every single micro-topic (Untimed accuracy + Concept notes).
-- **Phase 2 (10 Dec – 31 Dec · 22 Days):** Full Sectional Mocks (10 Qs timed) every 2 days + Error Log + Speed drills.
-- **Phase 3 (1 Jan – 31 Jan · 31 Days):** Exam Mode (GA inside full-length mocks, 1-markers < 1 min, 2-markers < 2 min).
+- **Phase 1 (28 Oct – 9 Dec · 34 study days; Block 2 shifted to 10 Nov after the C sprint):** every topic of the official syllabus, each with its real GATE CS PYQs (untimed accuracy + concept notes).
+- **Phase 2 (10 Dec – 31 Dec · 22 days):** a timed 10-question GA set every 2 days + error log + speed drills.
+- **Phase 3 (1 Jan – 31 Jan · 31 days):** exam mode (GA inside the full-length mocks; 1-markers under 1 min, 2-markers under 2 min).
 
 ---
 
-## The Daily 1-Hour Protocol (Phase 1: 28 Oct – 4 Dec)
+## What GATE actually asks (CS papers 2014–2026, upgraded 10 Nov 2026)
+
+Official GATE 2027 GA syllabus (IIT Madras): verbal (grammar, vocabulary in context, reading, narrative sequencing); quantitative (data interpretation incl. 2D/3D plots and maps; ratios, percentages, powers, exponents, logarithms, permutations and combinations, series; mensuration and geometry; elementary statistics and probability); analytical (deduction and induction, analogy, numerical relations and reasoning); spatial (translation, rotation, scaling, mirroring, assembling and grouping, paper folding, cutting, patterns in 2D and 3D).
+
+| Section | Marks a paper since 2014 | Since 2021 | Topics that carry it |
+|---|---|---|---|
+| Quantitative | 7.1 | 6.5 | probability 1.1, data interpretation 1.2, geometry and mensuration 1.1, numbers and logs 1.0, functions and graphs 0.5, ratio 0.4, profit 0.4 |
+| Analytical | 2.3 | 3.1 | logical reasoning 1.3, statements and conclusions, puzzles, codes, directions |
+| Verbal | 4.5 | 2.9 | most appropriate word 0.8, word pairs, passage inference, sentence ordering; pure grammar about 0.3 |
+| Spatial | 1.0 | 2.4 | paper folding 0.7, 2D patterns 0.5, rotation, 3D views and cuts |
+
+The audit that reshaped Days 5–34 (the dates and the 1h slot did not change):
+- Probability and counting (Days 13–17 of the old plan) had dropped out of the plan files. Back in, early.
+- Simple and compound interest, mixtures, time and work, and speed and distance had five days but almost no GATE CS question since 2014, and they aren't in the official wording. Compound growth now sits in percentages and mixtures in averages; work and speed get one short day near the end.
+- Spatial (2.4 marks since 2021) and logical reasoning (1.3) moved earlier, so a slip can't squeeze them out.
+- Added what the syllabus names but the plan lacked: graphs of functions, contour plots and maps, sets and Venn diagrams, 2D and 3D patterns, assembling pieces.
+- The verbal stream starts on Day 5 (it began on Day 15) and follows what GATE asks: blanks, word pairs, inference, ordering, with grammar inside them.
+- Every day lists its real PYQs: all 268 GA questions of the CS papers 2010–2026 have a place.
+
+---
+
+## How to run a day (for the agent)
 
 | Block | Duration | What happens |
 |---|---|---|
-| **Verbal Stream** | 15 mins | Grammar Rules (learn rule $\to$ solve 5 quick questions) / PYQ check (Root sets R1–R14 handled on-demand in chat) |
-| **Core Micro-Topic** | 35 mins | Today's Quant / Analytical / Spatial micro-topic: Concept & shortcut formulas (10m) $\to$ 5–8 PYQs solved step-by-step (25m) |
-| **Speed & Number Sense** | 10 mins | Mental shortcuts (fractions, multipliers, tables, squares, GATE virtual calculator drill) |
+| **Core micro-topic** | 35 min | The idea and shortcut in small steps (10m), then she solves the day's PYQs herself, newest first (25m). Older ones (in brackets) only if time is left |
+| **Verbal stream** | 15 min | The day's verbal point in two lines, then its PYQs |
+| **Speed and number sense** | 10 min | The drill named for the day; vocabulary root sets (R1–R14, notes in `general-aptitude/01-verbal`) on demand |
+
+- **PYQs:** `npm run syllabus -- pyq <id>` prints any PYQ listed here, with its answer key. `2026s2-ga6` is GATE CSE 2026 Set 2, GA question 6; before 2014 GA was questions 56–65 of the paper, so `2010-62`. Texts from 2022 onward may lose symbols: open the GATE Overflow link or ask her to read them out. Never write a PYQ from memory.
+- **Order:** nothing is used before it is taught: percentages, ratio and averages come before data interpretation; counting before probability; sets and Venn diagrams before syllogisms; geometry before mensuration; averages before statistics.
+- **The daily GA mock** (`ga-daily-<date>`, AGENTS.md 2.9) uses only days already done and never re-skins a PYQ listed here (`check:tests` compares).
+- **Notes:** a slip or a trap goes into `brain/notes/general-aptitude/` (section `01-verbal` or `02-quantitative`), short, in her words.
 
 ---
 
-## Phase 1 · Day-by-Day Micro-Topic Breakdown (28 Oct – 4 Dec)
+## Phase 1 · Day by day (28 Oct – 9 Dec)
 
-### Block 1 · Foundations & Number Sense (28 Oct – 4 Nov · 4 Days)
+### Block 1 · Foundations and number sense (28 Oct – 5 Nov · 4 days, done)
 
-| Day & Date | Core Micro-Topic (35m) | Verbal Stream (15m) | Speed Drill (10m) |
+| Day & Date | Core micro-topic | Verbal | Speed drill |
 |---|---|---|---|
-| **Day 1 · Wed 28 Oct** | Divisibility rules (2, 3, 4, 5, 7, 8, 9, 11), prime factorization, factors count/sum, HCF & LCM word problems | — | Tables 11–20 & Squares 1–25 patterns |
-| **Day 2 · Thu 29 Oct** | Fraction-to-percentage table (1/2 to 1/20), decimal conversions, multiplier method ($1 \pm r/100$), base-n systems | — | Fraction $\leftrightarrow$ % instant recall |
-| **Day 3 · Tue 3 Nov** | Remainders (basic theorems), unit digit patterns, cyclicity, powers, laws of exponents, surds simplification | — | Cyclicity & Units digit shortcuts |
-| **Day 4 · Wed 4 Nov** | Logarithms (3 fundamental laws, base change, digit counting) + Linear & Quadratic equations (roots, discriminant) | — | GATE Virtual Calculator shortcuts & memory keys |
+| **Day 1 · Wed 28 Oct** | Divisibility rules, prime factorisation, factor count and sum, HCF and LCM | Root set R1 | Tables 11–20, squares 1–25 |
+| **Day 2 · Thu 29 Oct** | Fraction ↔ percentage table, multiplier method, base-n systems | Root set R2 | Fraction ↔ % recall |
+| **Day 3 · Tue 3 Nov** | Remainders, unit digits, cyclicity, powers and surds | Root set R3 | Unit-digit cycles |
+| **Day 4 · Thu 5 Nov** | Logarithms (laws, change of base, digit counting); linear and quadratic equations | — | Calculator memory keys |
 
-### Block 2 · Commercial & Core Arithmetic (10 Nov – 17 Nov · 8 Days)
+Their PYQs come back on Days 27–29 (numbers, logs, equations), once more topics are in.
 
-| Day & Date | Core Micro-Topic (35m) | Verbal Stream (15m) | Speed Drill (10m) |
-|---|---|---|---|
-| **Day 5 · Tue 10 Nov** | Percentages: successive percentage change, net multiplier, depreciation/population formulas | — | Multiplier conversion drills |
-| **Day 6 · Wed 11 Nov** | Profit, Loss, Discount, Marked Price & dishonest shopkeeper problems | — | Profit/loss multiplier shortcuts |
-| **Day 7 · Thu 12 Nov** | Simple Interest & Compound Interest (annual, half-yearly, difference between CI and SI for 2 & 3 years) | — | $(1 + r)^n$ approximation vs calculator |
-| **Day 8 · Fri 13 Nov** | Ratio, Proportion, Direct & Inverse Variations, Partnership profit shares | — | Cross-multiplication ratio shortcuts |
-| **Day 9 · Sat 14 Nov** | Averages, Weighted Averages & Age word problems (translating words into clean linear equations) | — | Deviation method for fast averages |
-| **Day 10 · Sun 15 Nov** | Mixtures & Solutions: The Alligation cross rule, repeated liquid replacement formula | — | Alligation ratio grid drill |
-| **Day 11 · Mon 16 Nov** | Time and Work: LCM efficiency method, work & wages, Pipes and Cisterns (negative work/leaks) | — | Inverse efficiency calculations |
-| **Day 12 · Tue 17 Nov** | Speed, Time & Distance: Average speed, Relative speed, Trains, Boats & Streams, Circular tracks | — | km/h $\leftrightarrow$ m/s ($\times \frac{5}{18}$) & relative speed |
+### Block 2 · The arithmetic GATE asks (10 – 13 Nov)
 
-### Block 3 · Progressions, Counting & Statistics (18 Nov – 23 Nov · 6 Days)
+**Day 5 · Tue 10 Nov · Percentages**
+- Core: successive change and net multipliers, percent vs percentage points, growth over several years (compound growth is repeated percentage change), fractions of a whole.
+- PYQs: 2024s1-ga4, 2018-ga6, 2014s3-ga8, 2014s1-ga8
+- Verbal V1 · Tenses and conditionals: 2017s1-ga1, 2014s3-ga2, 2014s2-ga2 (2013-59)
+- Speed: multiplier conversions (1.2 × 0.9 …)
 
-| Day & Date | Core Micro-Topic (35m) | Verbal Stream (15m) | Speed Drill (10m) |
-|---|---|---|---|
-| **Day 13 · Wed 18 Nov** | Progressions: Arithmetic (AP), Geometric (GP), infinite GP sum, special series ($\sum n, \sum n^2, \sum n^3$) | — | Fast series sum formulas |
-| **Day 14 · Thu 19 Nov** | Permutations & Combinations I: Fundamental counting principle, arrangements, word anagrams with repetitions | — | Factorials $1!$ to $8!$ recall |
-| **Day 15 · Fri 20 Nov** | Permutations & Combinations II: Selections under restrictions, circular permutations, identical distribution | Grammar G1: Articles (*a, an, the*, zero article rules) | Small $^nC_r$ calculations without pen |
-| **Day 16 · Sat 21 Nov** | Probability I: Classical probability (coins, dice, cards, balls in urns), addition rule $P(A \cup B)$ | Grammar G2: Subject–Verb Agreement I (basic, collective nouns, compound subjects) | Complement probability shortcuts |
-| **Day 17 · Sun 22 Nov** | Probability II: Conditional probability $P(A \mid B)$, independent events, complement rule ("at least one") | Grammar G3: Subject–Verb Agreement II (*either/neither, each, one of, the number vs a number*) | "At least one" $\to 1 - P(\text{none})$ |
-| **Day 18 · Mon 23 Nov** | Elementary Statistics: Mean, Median, Mode, Range, Variance, and Standard Deviation | Grammar G4: Tenses I (simple, continuous, perfect timeline map) | Variance & SD formula flashcards |
+**Day 6 · Wed 11 Nov · Profit, loss and cost**
+- Core: cost price, selling price, marked price and discount; profit percentages on cost; cost functions (fixed + variable cost, break-even); sharing a cost.
+- PYQs: 2024s2-ga7, 2021s1-ga7, 2019-ga4 (2012-56, 2011-63)
+- Verbal V2 · Articles, determiners and comparatives: 2025s1-ga1, 2021s2-ga1, 2016s2-ga1, 2015s1-ga1
+- Speed: profit and discount multipliers
 
-### Block 4 · Geometry, Mensuration & Coordinate Geometry (24 Nov – 28 Nov · 5 Days)
+**Day 7 · Thu 12 Nov · Ratio, proportion and variation**
+- Core: ratios and their scaling, adding to a ratio, direct, inverse and joint variation, exponential decrease, mixed percent-and-ratio statements.
+- PYQs: 2024s1-ga2, 2021s2-ga8, 2021s1-ga1, 2018-ga8, 2016s1-ga10
+- Verbal V3 · Fill in the blank I (grammar decides): 2023-ga1, 2019-ga1, 2018-ga1, 2014s2-ga1
+- Speed: cross-multiplication
 
-| Day & Date | Core Micro-Topic (35m) | Verbal Stream (15m) | Speed Drill (10m) |
-|---|---|---|---|
-| **Day 19 · Tue 24 Nov** | Geometry I: Angles, Parallel lines & transversals, Triangles (similarity, congruence, Pythagoras, medians/altitudes) | Grammar G5: Tenses II (sequence of tenses, 0/1st/2nd/3rd conditionals) | Pythagorean triplets (3-4-5, 5-12-13, 7-24-25, 8-15-17) |
-| **Day 20 · Wed 25 Nov** | Geometry II: Circles (tangents, intersecting chords, cyclic quadrilaterals) & Regular Polygons (interior/exterior angles) | Grammar G6: Prepositions I (time: *at/in/on*, place, movement/direction) | Polygon angle formulas $((n-2) \times 180^\circ / n)$ |
-| **Day 21 · Thu 26 Nov** | Mensuration 2D: Perimeters, Areas of quadrilaterals, circles, sectors, and shaded region subtraction | Grammar G7: Prepositions II (fixed: *comply with, abide by, averse to, abstain from...*) | Area scaling ratio ($A_1/A_2 = (L_1/L_2)^2$) |
-| **Day 22 · Fri 27 Nov** | Mensuration 3D: Surface areas & Volumes (Cube, Cuboid, Cylinder, Cone, Sphere, Hemisphere), Melting & Recasting | Grammar G8: Conjunctions & Correlatives (*not only... but also, neither... nor, scarcely... when*) | Volume scaling ratio ($V_1/V_2 = (L_1/L_2)^3$) |
-| **Day 23 · Sat 28 Nov** | Coordinate Geometry & Graphs: Lines ($y = mx + c$), slopes, intercepts, distance/midpoint, 2D inequality plots & regions | Grammar G9: Pronouns (cases, *who vs whom*, reflexive pronouns, ambiguity) | Line slope from 2 points in 5 seconds |
+**Day 8 · Fri 13 Nov · Averages and weighted averages**
+- Core: averages and the deviation method, correcting a wrong average, the average of an arithmetic list, weighted averages, mixtures as weighted averages (alligation, repeated replacement).
+- PYQs: 2025s1-ga3, 2014s2-ga4 (2011-65)
+- Verbal V4 · Word pairs I (analogies): 2025s2-ga2, 2023-ga2, 2021s2-ga5, 2021s1-ga5
+- Speed: deviation method
 
-### Block 5 · Data Interpretation (29 Nov – 1 Dec · 3 Days)
+### Block 3 · Counting and probability (14 – 17 Nov)
 
-| Day & Date | Core Micro-Topic (35m) | Verbal Stream (15m) | Speed Drill (10m) |
-|---|---|---|---|
-| **Day 24 · Sun 29 Nov** | Data Interpretation I: Tables & Bar Charts (rapid percentage growth, ratio comparisons) | Grammar G10: Adjectives & Adverbs (degrees of comparison, *elder/older, farther/further*) | Fast fractional comparison without division |
-| **Day 25 · Mon 30 Nov** | Data Interpretation II: Pie Charts (converting degrees to percentage, single & double pie charts) & Line Graphs | Grammar G11: Modals & Auxiliaries (*must, should, ought to, can/could, may/might*) | Degree to % conversion ($36^\circ = 10\%$) |
-| **Day 26 · Tue 1 Dec** | Data Interpretation III: Combined charts (Bar + Line, Table + Pie) & 2D/3D grids | Grammar G12: Verb patterns (Gerunds vs Infinitives) | Estimation & approximation for DI options |
+**Day 9 · Sat 14 Nov · Counting I**
+- Core: the multiplication rule, permutations and combinations, repetition allowed or not, choosing with restrictions, counting rectangles in a grid, assigning distinct items.
+- PYQs: 2025s1-ga10, 2024s2-ga2, 2017s1-ga9, 2016s2-ga9 (2010-65)
+- Verbal V5 · Reading I (what a passage states vs implies): 2025s1-ga6, 2022-ga6, 2017s1-ga6
+- Speed: factorials to 8! and small nCr
 
-### Block 6 · Analytical Reasoning (2 Dec – 5 Dec · 4 Days)
+**Day 10 · Sun 15 Nov · Counting II: sets and Venn diagrams**
+- Core: two and three sets, inclusion–exclusion, "only", "neither" and "exactly two", the largest and smallest possible overlap.
+- PYQs: 2024s2-ga3, 2019-ga9, 2019-ga7, 2016s2-ga6 (2010-59)
+- Verbal V6 · Synonyms, antonyms, odd one out: 2026s2-ga1, 2026s1-ga1, 2017s2-ga1, 2016s2-ga3, 2014s3-ga3 (2013-56, 2012-58, 2011-56, 2011-60, 2010-57)
+- Speed: set up a three-set Venn in 20 seconds
 
-| Day & Date | Core Micro-Topic (35m) | Verbal Stream (15m) | Speed Drill (10m) |
-|---|---|---|---|
-| **Day 27 · Wed 2 Dec** | Syllogisms & Statements-Conclusions (the standard 3-circle Venn diagram method) | Grammar G13: Active & Passive Voice + Parallelism in sentences | Venn diagram minimum overlap drill |
-| **Day 28 · Thu 3 Dec** | Critical Reasoning: If-then implications, Contrapositive ($p \to q \equiv \neg q \to \neg p$), Truth-tellers and Liars | Grammar G14: Mixed sentence error spotting (all grammar rules combined) | Contrapositive equivalence flash check |
-| **Day 29 · Fri 4 Dec** | Seating Arrangements (Linear row, Circular facing in/out) & Ordering/Ranking/Comparison puzzles | Verbal V1: Reading Comprehension I (Central theme, stated vs implied details) | Left/Right orientation in circular grids |
-| **Day 30 · Sat 5 Dec** | Blood Relations (family tree generation method) & Direction Sense Tests (turns, shadows, Pythagoras distance) | Verbal V2: Reading Comprehension II (Author tone, inference traps) | Direction turn mapping (Clockwise/Anti-clockwise) |
+**Day 11 · Mon 16 Nov · Probability I**
+- Core: equally likely outcomes, two dice and non-standard dice, balls and socks drawn without replacement, the complement ("at least one"), digits that avoid a set.
+- PYQs: 2026s1-ga10, 2026s2-ga10, 2025s1-ga8, 2022-ga8, 2017s2-ga5, 2017s1-ga5, 2015s1-ga3
+- Verbal V7 · Fill in the blank II (vocabulary decides): 2025s2-ga1, 2025s1-ga2, 2022-ga1, 2019-ga2, 2014s1-ga2
+- Speed: complement shortcuts
 
-### Block 7 · Spatial Aptitude & Abstract Reasoning (6 Dec – 9 Dec · 4 Days)
+**Day 12 · Tue 17 Nov · Probability II**
+- Core: independent events, repeated trials (exactly k successes), conditional probability, two-stage choices and Bayes' rule.
+- PYQs: 2026s2-ga3, 2021s1-ga8, 2018-ga10, 2015s1-ga10 (2012-63)
+- Verbal V8 · Agreement, pronouns and error spotting: 2021s1-ga3, 2016s1-ga1, 2015s2-ga10, 2014s3-ga1 (2013-60, 2012-59)
+- Speed: binomial terms on the calculator
 
-| Day & Date | Core Micro-Topic (35m) | Verbal Stream (15m) | Speed Drill (10m) |
-|---|---|---|---|
-| **Day 31 · Sun 6 Dec** | Clocks & Calendars (angle between hands, leap years, odd days) + Coding-Decoding & Letter/Number Analogies | Verbal V3: Narrative Sequencing / Para-jumbles (mandatory pairs, pronoun anchors) | Clock angle formula $|\frac{60H - 11M}{2}|$ |
-| **Day 32 · Mon 7 Dec** | Spatial I: 2D & 3D Transformations (Translation, Rotation by $90^\circ/180^\circ$, Scaling, Mirror & Water images) | Verbal V4: Confusable words (*affect/effect, principal/principle, discrete/discreet...*) | Mental rotation of asymmetrical shapes |
-| **Day 33 · Tue 8 Dec** | **Spatial II: Cubes, Dice & Nets** (Standard/ordinary dice rules, opposite faces from multiple views, painted $n \times n \times n$ cube formulas, unfolding & folding 2D nets into 3D cubes) | Verbal V5: High-yield idioms & phrasal verbs in GATE context | Painted cube formula recall ($8$, $12(n-2)$, $6(n-2)^2$, $(n-2)^3$) |
-| **Day 34 · Wed 9 Dec** | Spatial III: Paper folding, paper cutting, hole punching, assembling/grouping shapes, top/front/side views, figure counting | Verbal V6: Mixed Verbal PYQ Speed Blitz (10 questions in 8 minutes) | Unfolding symmetry tracking |
+### Block 4 · Spatial aptitude (18 – 21 Nov)
+
+**Day 13 · Wed 18 Nov · Spatial I: transformations**
+- Core: rotation by 90° and 180°, mirror lines and symmetry, translation and scaling, letters and words under rotation or reflection.
+- PYQs: 2024s1-ga10, 2023-ga10, 2022-ga5
+- Verbal V9 · Word pairs II and order of intensity: 2024s1-ga1, 2024s2-ga1, 2020-ga3, 2019-ga5, 2015s3-ga4, 2015s1-ga5 (2013-57, 2010-60)
+- Speed: mental rotation of letters
+
+**Day 14 · Thu 19 Nov · Spatial II: paper folding and cutting**
+- Core: folding along lines of symmetry, holes and cuts unfolded, layers after n folds, a net folded into a cube.
+- PYQs: 2025s1-ga9, 2025s2-ga4, 2024s1-ga9, 2021s2-ga2, 2021s1-ga4
+- Verbal V10 · Reading II (inference and hidden assumptions): 2021s1-ga10, 2021s2-ga6, 2020-ga4, 2020-ga6
+- Speed: fold-and-punch mapping
+
+**Day 15 · Fri 20 Nov · Spatial III: 2D patterns and assembling**
+- Core: tiling with given pieces, cutting a shape into parts, convex polygons, dividing a plot into equal shapes, the missing tile in a panel, the piece that completes a jigsaw.
+- PYQs: 2026s1-ga2, 2026s2-ga2, 2026s2-ga7, 2022-ga10, 2021s2-ga7, 2021s1-ga2
+- Verbal V11 · Idioms and phrase meaning: 2016s2-ga2, 2015s1-ga2, 2015s1-ga7, 2014s1-ga1, 2014s1-ga3
+- Speed: count the tiles
+
+**Day 16 · Sat 21 Nov · Spatial IV: 3D**
+- Core: front and top views of a structure, cutting a cube into equal pieces, the surface of a solid seen from outside, blocks removed from a cube, painted cubes.
+- PYQs: 2026s1-ga7, 2024s2-ga9, 2023-ga5, 2016s1-ga5
+- Verbal V12 · Fill in the blank III (collocation and context): 2018-ga2, 2017s1-ga2, 2016s1-ga3, 2015s3-ga3
+- Speed: painted-cube formulas (8, 12(n−2), 6(n−2)², (n−2)³)
+
+### Block 5 · Analytical reasoning (22 – 25 Nov)
+
+**Day 17 · Sun 22 Nov · Logical reasoning I: statements and conclusions**
+- Core: "based only on the statement", if–then and its contrapositive, syllogisms drawn as Venn diagrams, which conclusions follow.
+- PYQs: 2026s1-ga5, 2026s2-ga5, 2025s2-ga6, 2022-ga4, 2021s1-ga9, 2016s2-ga8
+- Verbal V13 · Reading III (main idea, what can be inferred): 2016s2-ga7, 2015s3-ga9, 2014s2-ga6, 2014s1-ga6
+- Speed: contrapositive flash check
+
+**Day 18 · Mon 23 Nov · Logical reasoning II: puzzles**
+- Core: ordering from comparisons, rankings, truth and lies, boxes with wrong labels, choosing members under conditions, reasoning about counting statements.
+- PYQs: 2026s1-ga9, 2026s1-ga6, 2021s2-ga10, 2017s2-ga7, 2016s1-ga8, 2015s3-ga7 (2010-61)
+- Verbal V14 · Word meaning and usage: 2020-ga2, 2016s1-ga2, 2015s2-ga2, 2015s2-ga4, 2014s2-ga3
+- Speed: elimination grids
+
+**Day 19 · Tue 24 Nov · Arrangements, relations and directions**
+- Core: linear and circular seating, square tables, buildings in a row, requests and allocations, family relations, directions on a map.
+- PYQs: 2025s1-ga5, 2025s1-ga4, 2019-ga10, 2017s2-ga3, 2017s1-ga7, 2017s1-ga3, 2015s2-ga7 (2010-62)
+- Verbal V15 · Verb forms and sentence completion: 2020-ga1, 2017s2-ga2, 2015s3-ga2, 2015s2-ga1
+- Speed: left and right around a circle
+
+**Day 20 · Wed 25 Nov · Codes, analogies and number patterns**
+- Core: letter shifts and codes, word codes, analogies, number sequences and letter series, the odd one out, grids and arrays with a rule.
+- PYQs: 2026s2-ga6, 2026s2-ga9, 2025s2-ga7, 2024s2-ga10, 2024s2-ga5, 2020-ga7, 2016s1-ga4, 2016s2-ga4, 2015s3-ga1
+- Verbal V16 · Reading IV (what must be true): 2019-ga8, 2017s2-ga6, 2016s1-ga7, 2015s3-ga6
+- Speed: alphabet positions (A = 1 … Z = 26, and backwards)
+
+### Block 6 · Data interpretation (26 – 28 Nov)
+
+**Day 21 · Thu 26 Nov · DI I: tables**
+- Core: growth rates, shares and ratios from a table, averages across rows, estimating instead of dividing.
+- PYQs: 2025s2-ga8, 2016s1-ga6, 2015s1-ga6, 2014s3-ga5, 2014s1-ga9 (2011-62)
+- Verbal V17 · Sentence ordering and narrative sequencing: 2024s2-ga6, 2023-ga8
+- Speed: percentage change without a full division
+
+**Day 22 · Fri 27 Nov · DI II: bar and line graphs**
+- Core: single and twin bars, profit from revenue and cost, ratios plotted over years.
+- PYQs: 2021s2-ga9, 2020-ga10, 2015s3-ga10, 2014s3-ga9, 2014s2-ga9
+- Verbal V18 · Fill in the blank IV (texts with several blanks): 2024s1-ga6 (2012-57, 2012-60, 2011-58, 2011-59, 2010-56, 2010-58)
+- Speed: reading ratios off a plot
+
+**Day 23 · Sat 28 Nov · DI III: pie charts, maps and contour plots**
+- Core: degrees ↔ percent, comparing two pies, maps and river or road networks, cheapest routes, contour lines (height, pressure) and what they say.
+- PYQs: 2026s2-ga8, 2025s2-ga10, 2024s1-ga8, 2024s2-ga8, 2020-ga5, 2017s1-ga10, 2017s2-ga10, 2015s1-ga9
+- Verbal V19 · Reading V (passages with numbers and claims): 2023-ga6, 2023-ga4, 2022-ga7
+- Speed: 36° = 10%
+
+### Block 7 · Geometry and mensuration (29 Nov – 1 Dec)
+
+**Day 24 · Sun 29 Nov · Geometry I: lines and triangles**
+- Core: angles and parallel lines, triangle angle sums, angle bisectors, similar triangles and Pythagoras, triangles counted in a figure, areas between parallel lines.
+- PYQs: 2025s1-ga7, 2022-ga9, 2018-ga9, 2015s2-ga8
+- Verbal V20 · Statement sufficiency and courses of action: 2015s1-ga4, 2015s2-ga5, 2015s1-ga8
+- Speed: Pythagorean triples
+
+**Day 25 · Mon 30 Nov · Geometry II: quadrilaterals and circles**
+- Core: squares and rectangles inside each other, circles on a square's diagonal, annular rings, shaded areas.
+- PYQs: 2025s2-ga9, 2020-ga8, 2018-ga3
+- Verbal V21 · Reading VI (long passages, for speed): 2014s2-ga7, 2014s3-ga7, 2014s3-ga6 (2013-63, 2011-61, 2010-63)
+- Speed: area scaling (square of the ratio)
+
+**Day 26 · Tue 1 Dec · Mensuration in 3D**
+- Core: cubes and cuboids (diagonals and angles), cylinders rolled from sheets, volumes, a point inside a tetrahedron.
+- PYQs: 2024s1-ga7, 2021s2-ga3, 2021s1-ga6, 2014s1-ga10
+- Verbal V22 · Verbal reasoning with people and claims: 2019-ga6, 2014s1-ga7 (2012-61)
+- Speed: volume scaling (cube of the ratio)
+
+### Block 8 · Numbers, functions and series (2 – 6 Dec)
+
+**Day 27 · Wed 2 Dec · Numbers I: powers, logs and bases**
+- Core: laws of exponents and logs applied, perfect powers, digit counts, numbers in other bases (Days 1–4 put to work).
+- PYQs: 2024s1-ga5, 2024s2-ga4, 2018-ga7, 2017s2-ga8, 2017s1-ga4, 2014s3-ga10, 2014s1-ga4 (2011-57)
+- Verbal: mixed set (below)
+- Speed: powers of 2 to 2^16; log 2, log 3, log 5
+
+**Day 28 · Thu 3 Dec · Numbers II: divisibility and integer problems**
+- Core: LCM with remainders, primes, divisibility of a digit pattern, integer word problems (tournaments, credits, marks), functions defined on numbers.
+- PYQs: 2026s1-ga3, 2026s1-ga4, 2026s1-ga8, 2025s2-ga5, 2025s2-ga3, 2018-ga4, 2017s2-ga4 (2013-62)
+- Verbal: mixed set
+- Speed: divisibility tests
+
+**Day 29 · Fri 4 Dec · Functions I: equations and expressions**
+- Core: quadratics (sum and product of roots, sign of the roots), absolute value, max and min of expressions, polynomials and the factor theorem.
+- PYQs: 2022-ga3, 2021s2-ga4, 2017s1-ga8, 2016s2-ga5, 2016s1-ga9, 2015s2-ga9, 2014s2-ga8, 2014s1-ga5
+- Verbal: mixed set
+- Speed: sum and product of roots
+
+**Day 30 · Sat 5 Dec · Functions II: graphs and plots**
+- Core: a line through two points, |x|-shaped graphs, shifts and reflections, reading a function off a plot, roots from a sketch, perpendicular lines and the region they cut off, a maximum from a shape.
+- PYQs: 2023-ga7, 2023-ga9, 2022-ga2, 2020-ga9, 2017s2-ga9, 2016s2-ga10, 2015s3-ga8, 2015s3-ga5 (2012-62)
+- Verbal: mixed set
+- Speed: slope from two points
+
+**Day 31 · Sun 6 Dec · Statistics and series**
+- Core: mean, median, mode, range and standard deviation, and what shifting or scaling every entry does; arithmetic and geometric progressions, telescoping sums, missing terms.
+- PYQs: 2024s1-ga3, 2023-ga3, 2018-ga5, 2015s2-ga6, 2014s2-ga5, 2014s3-ga4 (2013-58, 2013-61, 2012-64, 2012-65)
+- Verbal: mixed set
+- Speed: Σn, Σn², Σn³
+
+### Block 9 · Light topics and the bridge to Phase 2 (7 – 9 Dec)
+
+**Day 32 · Mon 7 Dec · Rates, clocks and calendars (light: rare in GATE CS)**
+- Core: time and work, speed and relative speed, average speed over parts of a journey, the angle between clock hands.
+- PYQs: 2019-ga3, 2014s2-ga10 (2013-64, 2013-65, 2011-64, 2010-64)
+- Verbal: mixed set
+- Speed: km/h ↔ m/s; clock angle |30H − 5.5M|
+
+**Day 33 · Tue 8 Dec · Weakest topics**
+- Core: the three weakest topics from the GA mocks so far: re-solve the PYQs she missed, then two fresh questions each.
+- Verbal: the verbal PYQs she missed.
+- Speed: virtual-calculator speed run
+
+**Day 34 · Wed 9 Dec · First timed set**
+- A full 10-question GA set in 20 minutes (agent-written, GATE mix: 5 one-mark, 5 two-mark, including spatial and logic), then its analysis. Phase 2 starts tomorrow.
+
+**Verbal on Days 27–33 (mixed sets):** four fresh questions a day written by the agent in the GATE patterns above (most appropriate word, word pairs, inference, ordering), weighted to whatever she missed, plus any verbal PYQ not yet done.
 
 ---
 
-## Phase 2 · December (Sectional Mocks, Speed & Weak Drill)
+## Phase 2 · December (timed sets, speed and weak drills)
 
-**Goal:** Transform theoretical knowledge into 13–15/15 exam speed.  
-**Routine:** One 10-Question Timed GA Sectional Mock every 2 days.
+**Goal:** turn knowledge into 13–15/15 at exam speed.
+**Routine:** one 10-question timed GA set every 2 days.
 
-- **Mocks Schedule:**
-  - 15 Full GA Sectional Mocks:
-    - 6 Mocks using official CSE GA papers (2021–2026).
-    - 6 Mocks using official ECE/EE/ME/IN papers (2021–2026).
-    - 3 Agent-curated tough/trap mocks.
-- **Between Mock Days (Weak Area Days):**
-  - 30 mins: Targeted drill on the lowest scoring topic from the previous test's error log.
-  - 15 mins: Re-quiz missed vocabulary roots and grammar rules.
-  - 15 mins: Virtual calculator speed run.
-- **Timer Ladder:**
-  - Dec 5 – Dec 15: 25 minutes limit.
-  - Dec 16 – Dec 31: 22 minutes limit.
+- **The sets (15):** the CS papers' GA questions (2010–2026) are all solved in Phase 1, so they would be repeats. Use unseen ones instead:
+  - 12 GA sections from other GATE papers, 2021–2026 (EC, EE, ME, CE, IN, DA): the GA syllabus is the same for every paper.
+  - 3 agent-written tough sets on her weakest topics.
+- **Between set days (weak-area days):**
+  - 30 mins: targeted drill on the lowest-scoring topic in the error log.
+  - 15 mins: verbal misses and vocabulary.
+  - 15 mins: virtual-calculator speed run.
+- **Timer ladder:**
+  - 10 – 20 Dec: 25 minutes.
+  - 21 – 31 Dec: 22 minutes.
 
 ---
 
-## Phase 3 · January (Exam Mode & Full-Length Integration)
+## Phase 3 · January (exam mode and full-length integration)
 
-**Goal:** Solve GA first inside the 3-hour exam in under 18 minutes with 100% accuracy.
+**Goal:** solve GA first inside the 3-hour exam, in under 18 minutes, with 100% accuracy.
 
-- **Speed Standards:**
-  - 1-mark questions: $< 1$ minute.
-  - 2-mark questions: $< 2$ minutes.
-  - Full section: $< 18$ minutes.
-- **Full Mock Days:** GA is solved as Section 1 inside every 3-hour full mock.
-- **Non-Mock Days:** 15-minute speed sets (10 questions rapid fire) + 1-page formula review.
-- **Last Week (25–31 Jan):** Zero new questions. Only the Formula Sheet, Grammar Rules Sheet, and Root Word Deck.
+- **Speed standards:**
+  - 1-mark questions: under 1 minute.
+  - 2-mark questions: under 2 minutes.
+  - Full section: under 18 minutes.
+- **Full mock days:** GA is solved as section 1 inside every 3-hour full mock.
+- **Non-mock days:** 15-minute speed sets (10 questions, rapid fire) + a one-page formula review.
+- **Last week (25–31 Jan):** no new questions. Only the formula sheet, the verbal error log and the root word deck.
