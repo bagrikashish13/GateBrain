@@ -9,4 +9,5 @@ Updated Tue 10 Nov 2026.
 - Tests now need difficulty tags and real-PYQ calibration; check:tests fails re-skins (FORMATS.md).
 - Revision is the gap: 14 due, OS weak notes 4–5 days overdue. Clear it first each day.
 - Plan files written to 16 Nov. Re-syncing 17–20 Nov: cut about 2h of main block for the CD slot.
+- App redesigned 10 Nov: every tab folds; Syllabus and Today show both tracks' next step.
 - Goal she named 10 Nov: 50+ marks. She is tense; each Sunday tell her how many mock-block days are left.
