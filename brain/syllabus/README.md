@@ -1,6 +1,6 @@
-# Syllabus: every subject still to learn
+# Syllabus: every technical subject
 
-C, Complexity, Data Structures, Algorithms, Compiler Design, Digital Logic, COA, Computer Networks, Discrete and Engineering Mathematics. (OS, DBMS and TOC were finished before this syllabus existed; General Aptitude has its own sprint in `brain/ga-roadmap.md`.)
+To learn: C, Complexity, Data Structures, Algorithms, Compiler Design, Digital Logic, COA, Computer Networks, Discrete and Engineering Mathematics. To practise: OS, DBMS and TOC, finished before this syllabus existed, on untimed tracks of their own (see Anytime below). General Aptitude has its own sprint in `brain/ga-roadmap.md`.
 
 **This is the only syllabus for these subjects. Teach from it, in its order, every time, without being asked.** The student should never have to remind you, and you should never plan these subjects from memory.
 
@@ -13,12 +13,13 @@ npm run syllabus
 
 Do exactly what it prints. It knows what has been taught, what comes next, what must not be used yet, and when a test is due. Everything below explains why, and how to do each step well.
 
-**Two tracks run side by side**, each in its own strict order with its own tests (`track` in `sequence.json`):
+**Five tracks run side by side**, each in its own strict order with its own tests (`track` in `sequence.json`):
 
 - **Main block (4–5h a day):** C, Complexity, Data Structures, Algorithms, then Digital Logic, COA, Computer Networks (Parts 1–4, 6, 7, 8).
 - **2nd slot (2h a day):** Compiler Design (Part 5; units CD01–CD06 were studied in lectures, so their items are *seen*: one hard check each), then Maths (Parts 9 and 10, interleaved in one order).
+- **Anytime (no dates):** Operating Systems, Databases, Theory of Computation (Parts 11, 12, 13), one track each, practised only when she asks.
 
-`npm run syllabus` prints the next step of each track; `npm run syllabus -- next second` only the 2nd slot. A test due on one track never holds the other. The order check works within a track (a parse tree's "leaf" in Compiler Design is not the Data Structures tree).
+`npm run syllabus` prints the next step of the two dated tracks and one line per Anytime track; `npm run syllabus -- next second` only the 2nd slot, `-- next os` (or `dbms`, `toc`) one Anytime subject. A test due on one track never holds another. The order check works within a track (a parse tree's "leaf" in Compiler Design is not the Data Structures tree).
 
 | Command | What it does |
 |---|---|
@@ -51,12 +52,15 @@ The student must never meet an idea before its lesson. This is checked, not hope
 
 **When you teach,** the command prints NOT TAUGHT YET at every step. Never use anything on that list in an explanation, an example or a question, not even in passing. Write your own examples with only what the student has. If the student asks about something from the list, answer in a line and say which unit covers it. It also prints "Builds on": if the student wobbles on one of those, go back to that item before continuing.
 
-**When you write a test,** `check-test` fails any question that uses a concept taught after the test. Questions on syllabus subjects in a daily mock follow the same rule: only what is ticked.
+**When you write a test,** `check-test` fails any question that uses a concept taught after the test. Questions on syllabus subjects in a daily mock follow the same rule: only what is ticked. The exception is OS, DBMS and TOC: she finished them before the syllabus, so a daily mock may use all of them; the rule binds only their Anytime practice and its tests.
+
+**OS, DBMS and TOC also put the heaviest topics first:** memory and virtual memory (2.5 marks a paper), then CPU scheduling (1.6) and synchronization (1.1), after processes; transactions (1.7) right after the relational model and keys, then algebra, dependencies and normal forms (1.6), SQL (1.3); TOC is one chain whose heaviest part (regular languages, 3.2) comes first anyway.
 
 ## What it covers, and how we know
 
 - **Official scope:** GATE 2027 CS syllabus from IIT Madras ([PDF](https://gate2027.iitm.ac.in/static/doc/GATE2027_Syllabus/CS_GATE2027_Syllabus.pdf)), quoted at the top of each part. Topics the 2027 wording dropped (disks in COA; UDP, ARP, DHCP, ICMP, email, FTP, framing and bridges in Networks; assemblers and register allocation in Compiler Design) are legacy lines.
-- **Every PYQ:** 2448 questions from 1987 to 2026 (GATE CS, GATE IT 2004–2008, the DS&AI papers and sample paper), each assigned to exactly the pattern it tests. Source: GATE Overflow's public books (2022, 2026 and 2027 editions, merged by paper, year, set and question; links from the PDFs). A few PYQs GATE Overflow files under one subject are taught where the 2027 syllabus puts them (memory chips under COA, not Digital Logic).
+- **Every PYQ:** 3383 questions from 1987 to 2026 (GATE CS, GATE IT 2004–2008, the DS&AI papers and sample paper), each assigned to exactly the pattern it tests. Source: GATE Overflow's public books (2022, 2026 and 2027 editions, merged by paper, year, set and question; links from the PDFs). A few PYQs GATE Overflow files under one subject are taught where the 2027 syllabus puts them (memory chips under COA, not Digital Logic); a few others stay where GATE Overflow filed them as legacy lines, marked as another subject's material (interrupt and DMA hardware under OS, a state machine's next-state equation under TOC). P and NP questions sit in one TOC legacy line: they are outside the 2027 syllabus.
+- **General Aptitude PYQs** are not here: `brain/ga-roadmap.md` lists all 268 of the CS papers (2010–2026) day by day, and `npm run syllabus -- pyq 2026s2-ga6` prints any of them.
 - **The proof is mechanical:** `pyq-index.jsonl` lists every PYQ, and `npm run check:syllabus` fails if any PYQ is not assigned to a syllabus item, or if a unit has no test. `npm test` runs the same check. The repo is public, so it stores ids and links only, never question text.
 
 | Part | File | Track | Units | Items | PYQs | Hours |
@@ -71,8 +75,11 @@ The student must never meet an idea before its lesson. This is checked, not hope
 | Computer Networks | `8-computer-networks.md` | main | CN01–CN09 | 80 | 225 | 18.5 |
 | Discrete Mathematics | `9-discrete-mathematics.md` | 2nd slot | CM, SR, GT, AL, LG | 92 | 386 | 23 |
 | Engineering Mathematics | `10-engineering-mathematics.md` | 2nd slot | LA, PR, CA | 65 | 296 | 17 |
+| Operating Systems | `11-operating-systems.md` | Anytime | OS01–OS11 | 167 | 343 | 21.5 |
+| Databases | `12-databases.md` | Anytime | DB01–DB09 | 118 | 299 | 19.5 |
+| Theory of Computation | `13-theory-of-computation.md` | Anytime | TC01–TC11 | 104 | 293 | 20 |
 
-48 tests sit between the units: unit tests, stage tests, two sectionals for C/DS/Algo, one for Maths, and the two DSA grand tests.
+63 tests sit between the units: unit tests, stage tests, two sectionals for C/DS/Algo, one for Maths, the two DSA grand tests, and four unit tests and a stage test for each Anytime subject.
 
 Each unit is a topic, each `###` a subtopic, each line one minor topic with one idea. The kinds:
 
@@ -108,6 +115,17 @@ Rules that keep this honest:
 **Finishing a unit:** write its notes in the folder on the unit's `notes:` line (shape in AGENTS.md 2.1), from what the student actually found hard, not a summary of the item list. The command refuses to continue without them. They enter revision by themselves.
 
 **Stopping for the day:** `done` has already pushed the ticks. Write the 2.8 checkpoint with the next item id, commit and push.
+
+## Anytime: OS, DBMS, TOC
+
+She finished these subjects before the syllabus existed and asked to practise them, PYQ by PYQ, whenever she is free, without them entering the timetable.
+
+- **No dates, no plan.** Their steps have no target dates, they never appear in the day's plan, the roadmap or the Today tab, and their hours don't count in "hours left". Start one only when she asks ("let's do some OS"): `npm run syllabus -- next os` (or `dbms`, `toc`) and follow it. Each subject keeps its own order and its own tests, so she can switch between them freely.
+- **Concept lines (T, N) are seen:** one hard check each, GATE level; right means `done`, wrong means teach just that, from her notes in the unit's folder.
+- **PYQ patterns (Q) are the practice:** she solves the listed PYQs herself, one at a time, newest first, before any method is shown. Tick when the last one is right without a hint; if she misses one, teach the gap, then she redoes it.
+- **Order:** the same rule as everywhere. Nothing in an explanation or a question may use what the command lists as NOT TAUGHT YET for that subject.
+- **Tests:** after every few units and a stage test at the end of each subject, like the others. She takes them when she likes and they never replace the daily mock; analyse each the same day it is taken (a mock is never left unanalysed). No new practice in that subject until it is analysed; the other tracks carry on.
+- **Notes:** a unit's notes go in its `notes:` folder, which already holds her OS, DBMS and TOC notes; add what she found hard to the right note.
 
 ## Tests
 
