@@ -1,6 +1,6 @@
-// The syllabus for C, Data Structures and Algorithms, for agents: `npm run syllabus -- <command>`
-// (AGENTS.md rule 12, brain/syllabus/README.md). It says exactly what to teach or test next, refuses to
-// let items be skipped, and checks tests against their blueprint. The student never runs it.
+// The syllabus, for agents: `npm run syllabus -- <command>` (AGENTS.md rule 12, brain/syllabus/README.md).
+// It says exactly what to teach or test next on each track, refuses to let items be skipped, and checks
+// tests against their blueprint. The student never runs it.
 process.env.TZ ||= "Asia/Kolkata";
 
 import { execFileSync } from "node:child_process";
@@ -18,12 +18,15 @@ import {
   checkDone,
   daysBehind,
   drill,
+  isAnytime,
   isUnitStep,
   itemHistory,
   KIND_NAME,
   nextStep,
+  oneLine,
   TRACK_NAME,
   TRACKS,
+  trackOf,
   trackOfUnit,
   planTest,
   retestId,
@@ -42,7 +45,8 @@ const today = dayKey(new Date());
 
 const HELP = `npm run syllabus -- <command>
 
-  next [main|second]    the exact next step on each track, or on one (the default)
+  next [track]          the exact next step on the dated tracks (the default), or on one track:
+                        main, second, or the untimed os, dbms, toc (practised only when she asks)
   done <item> [item…]   tick items, after the student answered their check correctly. Commits and pushes
   unit <unit>           one whole unit with what is done, like D07
   status                every unit and test, and pace against the target dates
@@ -61,7 +65,8 @@ const words = (day: string) => new Date(`${day}T00:00:00Z`).toLocaleDateString("
 const pct = (x: number) => `${Math.round(x * 100)}%`;
 const marksText = (p: Pyq) => [p.marks ? `${p.marks}m` : null, p.type === "DESC" ? "descriptive" : p.type].filter(Boolean).join(" ");
 
-function pace(by: string): string {
+function pace(by: string | null): string {
+  if (!by) return "no date: practised whenever she likes";
   const late = daysBehind(today, by);
   return late ? `target ${words(by)}, ${late} day${late > 1 ? "s" : ""} behind` : `target ${words(by)}, on time`;
 }
@@ -132,9 +137,15 @@ function printNext(n: Next): void {
       printOrder(n.item);
       const after = n.pending.slice(1, 4);
       if (after.length) console.log(`\nThen, in this order:\n${after.map((i) => `  ${i.id} [${KIND_NAME[i.kind]}] ${i.text}`).join("\n")}`);
-      const how = SEEN().has(n.item.id)
-        ? "How: the student met this before the syllabus existed. Ask one hard check question first. Right means tick it and move on. Wrong means teach it in small steps, then check again."
-        : "How: one small step per reply, ending in one question (AGENTS.md rule 8). Teach only what this item says.";
+      const anytime = isAnytime(trackOfUnit(state.sequence, n.unit.id));
+      const how =
+        anytime && n.item.kind === "Q"
+          ? `How: practice. She finished this subject before the syllabus, so she solves these PYQs herself, one at a time, newest first, before you show any method. Tick when she gets the last one right without a hint. If she misses one, find the gap, teach just that from her notes (brain/notes/${n.unit.notes}/), then she redoes it.`
+          : anytime && n.item.kind === "L"
+            ? "How: old style. Say what it is in a line, she does the one PYQ listed, quickly."
+            : SEEN().has(n.item.id)
+              ? `How: the student met this before the syllabus existed. Ask one hard check question first. Right means tick it and move on. Wrong means teach it in small steps${anytime ? ` from her notes (brain/notes/${n.unit.notes}/)` : ""}, then check again.`
+              : "How: one small step per reply, ending in one question (AGENTS.md rule 8). Teach only what this item says.";
       console.log(`
 ${how}
 When the student has answered correctly, run: npm run syllabus -- done ${n.item.id}
@@ -169,13 +180,22 @@ Then show the student the tick lines it prints.`);
   }
 }
 
-/** The next step on each track that has one: the main block first, then the 2nd slot. */
+/**
+ * The next step on each dated track (the main block, then the 2nd slot), then one line for each untimed
+ * track: those are practised only when the student asks, so they never crowd the day.
+ */
 function printBoth(): void {
-  const tracks = TRACKS.filter((t) => state.sequence.steps.some((s) => (s.track ?? "main") === t));
-  for (const [i, t] of tracks.entries()) {
+  const tracks = TRACKS.filter((t) => state.sequence.steps.some((s) => trackOf(s) === t));
+  const dated = tracks.filter((t) => !isAnytime(t));
+  for (const [i, t] of dated.entries()) {
     if (tracks.length > 1) console.log(`${i ? "\n" : ""}════ ${TRACK_NAME[t].toUpperCase()} ════`);
     printNext(nextStep(state, t));
   }
+  const anytime = tracks.filter(isAnytime);
+  if (!anytime.length) return;
+  console.log(`\n════ ANYTIME (no dates, never in the day's plan: only when she asks to practise one) ════`);
+  for (const t of anytime) console.log(`${TRACK_NAME[t]}: ${oneLine(nextStep(state, t))}.`);
+  console.log(`Full next step for one: npm run syllabus -- next ${anytime.join(" | ")}`);
 }
 
 function progressJson(done: Record<string, string>, seen: string[]): string {
@@ -271,14 +291,14 @@ function status(): void {
       const unit = state.catalog.units.get(step.unit);
       if (!unit) continue;
       const left = unit.items.filter((i) => !state.progress.done[i.id]).length;
-      console.log(`${left ? (left === unit.items.length ? "  " : "→ ") : "x "}${unit.id} ${unit.title.padEnd(58)} ${left ? `${left} left`.padEnd(8) : "done    "} by ${words(step.by)}`);
+      console.log(`${left ? (left === unit.items.length ? "  " : "→ ") : "x "}${unit.id} ${unit.title.padEnd(58)} ${left ? `${left} left`.padEnd(8) : "done    "} ${step.by ? `by ${words(step.by)}` : "anytime"}`);
       continue;
     }
     for (const id of [step.test, retestId(step.test)]) {
       const a = state.tests.get(id);
       if (!a && id !== step.test) continue;
       const score = a?.first ? `${pct(scoreOf(a.first))}${a.first.analysis === null ? ", not analysed" : ""}` : a?.test ? "written, not taken" : "not written";
-      console.log(`  ◆ ${id.padEnd(16)} ${step.kind.padEnd(10)} ${score.padEnd(24)} by ${words(step.by)}`);
+      console.log(`  ◆ ${id.padEnd(16)} ${step.kind.padEnd(10)} ${score.padEnd(24)} ${step.by ? `by ${words(step.by)}` : "anytime"}`);
     }
   }
   const history = itemHistory(state);
@@ -338,18 +358,20 @@ async function book(name: BookName): Promise<Book | null> {
 const solid = (s: string) => s.replace(/\s+/g, "").length;
 
 /** The 2022 books keep the math as text (questions up to 2021); the 2027 books have everything up to 2026. */
-async function findPyq(p: Pyq): Promise<{ text: string; answer: string | null } | null> {
+async function findPyq(p: Pick<Pyq, "id" | "year">): Promise<{ text: string; answer: string | null; title: string; url: string | null } | null> {
   const order: BookName[] = p.year <= 2021 ? ["old", "old1", "old3", "new", "new1", "new3"] : ["new", "new1", "new3"];
   let found: BookEntry | null = null;
   let answer: string | null = null;
+  let url: string | null = null;
   for (const name of order) {
     const b = await book(name);
     const hit = b?.entries.find((e) => e.id === p.id);
     if (!b || !hit) continue;
     if (!found || solid(hit.text) > solid(found.text)) found = hit;
     answer ??= answerKey(b, hit);
+    url ??= hit.url;
   }
-  return found ? { text: found.text, answer } : null;
+  return found ? { text: found.text, answer, title: found.title, url } : null;
 }
 
 /** The "Answer Keys" table after the question's chapter, looked up by its section number (2.1.4). */
@@ -370,7 +392,17 @@ async function showPyq(ids: string[]): Promise<void> {
   for (const id of ids) {
     const p = state.pyqs.get(id);
     if (!p) {
-      console.log(`Unknown PYQ ${id}.`);
+      // Not a syllabus PYQ (General Aptitude, cited by brain/ga-roadmap.md, like 2026s2-ga6): straight from the books.
+      const year = Number(/(\d{4})/.exec(id)?.[1] ?? 0);
+      const found = year ? await findPyq({ id, year } as Pyq) : null;
+      if (!found) {
+        console.log(`Unknown PYQ ${id}.`);
+        continue;
+      }
+      console.log(`\n=== ${found.title} · not in the syllabus index (General Aptitude or another paper)\nLink: ${found.url ?? "none, search the title"}`);
+      console.log(found.text);
+      console.log(`Answer key: ${found.answer ?? "not in the book"}`);
+      if (year > 2021) console.log(`Note: symbols and numbers may be missing from this text. Do not guess them: search the title on gateoverflow.in or ask the student to read them out.`);
       continue;
     }
     const where = [...state.catalog.items.values()].filter((i) => i.pyqs.includes(id)).map((i) => i.id);
@@ -391,7 +423,7 @@ Link: ${p.url ?? "none, search the title"}`);
 const [command = "next", ...args] = process.argv.slice(2);
 switch (command) {
   case "next":
-    if (args[0] && !TRACKS.includes(args[0] as Track)) fail(`Which track? ${TRACKS.join(" or ")}`);
+    if (args[0] && !TRACKS.includes(args[0] as Track)) fail(`Which track? ${TRACKS.join(", ")}`);
     if (args[0]) printNext(nextStep(state, args[0] as Track));
     else printBoth();
     break;

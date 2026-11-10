@@ -6,8 +6,10 @@ export type PyqRef = { id: string; paper: "CS" | "IT" | "DA"; year: number; set:
 export type BookEntry = PyqRef & { section: string; topic: string; text: string; tags: string[]; line: number; url: string | null };
 
 // "Question: 01,ii" and "Question: 01-iv" are sub-parts of an old composite question; "Question: 14, ISRO2016-74"
-// (comma and a space) is the same question in another exam.
-const TITLE = /GATE\s+(CSE?|IT|DA|DS&AI)\s+(\d{4})\s*(?:\|?\s*Set\s*(\d+))?\s*\|\s*Question:\s*([0-9A-Za-z.-]+(?:,(?:[ivxlc]+|[a-z])\b)?)/;
+// (comma and a space) is the same question in another exam. "| GA | Question: 6" is a General Aptitude
+// question (numbered on its own since 2014, so its id gets "ga": 2026s2-ga6). The books write those four
+// ways: "| GA | Question: 6", "| GA Question: 6", "| Question: GA-6" and "| Question: GA06".
+const TITLE = /GATE\s+(CSE?|IT|DA|DS&AI)\s+(\d{4})\s*(?:\|?\s*Set\s*(\d+))?\s*(?:\|\s*(GA)\s*)?\|\s*(GA\s+)?Question:\s*(GA[-.\s]?)?([0-9A-Za-z.-]+(?:,(?:[ivxlc]+|[a-z])\b)?)/;
 
 /** "GATE CSE 2016 | Set 1 | Question: 25" → { id: "2016s1-25", … }, the ids brain/syllabus/ uses. */
 export function pyqRef(title: string): PyqRef | null {
@@ -16,11 +18,12 @@ export function pyqRef(title: string): PyqRef | null {
   const paper = m[1].startsWith("CS") ? "CS" : m[1] === "IT" ? "IT" : "DA";
   const year = Number(m[2]);
   const set = m[3] ? Number(m[3]) : null;
-  const q = m[4];
+  const ga = m[4] || m[5] || m[6] ? "ga" : "";
+  const q = ga && /^\d+$/.test(m[7]) ? String(Number(m[7])) : m[7];
   const s = set ? `s${set}` : "";
-  const id = paper === "CS" ? `${year}${s}-${q.replace(/[-,]/g, ".")}` : `${paper}${year}${s}-${q}`;
+  const id = paper === "CS" ? `${year}${s}-${ga}${q.replace(/[-,]/g, ".")}` : `${paper}${year}${s}-${ga}${q}`;
   const name = paper === "CS" ? "GATE CSE" : paper === "IT" ? "GATE IT" : "GATE DS&AI";
-  return { id, paper, year, set, q, title: `${name} ${year}${set ? ` Set ${set}` : ""} | Question: ${q}` };
+  return { id, paper, year, set, q: `${ga}${q}`, title: `${name} ${year}${set ? ` Set ${set}` : ""} | ${ga ? "GA " : ""}Question: ${q}` };
 }
 
 const HEADING = /^\s*(\d+\.\d+\.\d+)\s+(.+?):\s+(GATE\s.+?)\s*(?:\btop\b.*)?$/;

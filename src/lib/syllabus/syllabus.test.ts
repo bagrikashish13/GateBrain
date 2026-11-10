@@ -309,13 +309,24 @@ hours: 1
     const bad: Sequence = { ...seq, steps: [...seq.steps, { test: "k2", kind: "unit", covers: ["D01"], by: "2026-11-03", track: "second" }] };
     expect(validate(cat, PYQS, bad, { done: {} }).join("\n")).toContain("on the other track");
   });
+
+  it("wants dates on the dated tracks and none on the untimed ones", () => {
+    const anytime: Sequence = { ...seq, steps: seq.steps.map((st) => (st.track === "second" ? { ...st, by: undefined, track: "os" as const } : st)) };
+    expect(validate(cat, PYQS, anytime, { done: {} })).toEqual([]);
+    expect(nextStep(two({ sequence: anytime }), "os")).toMatchObject({ kind: "teach", by: null });
+    const dated: Sequence = { ...anytime, steps: anytime.steps.map((st) => (st.track === "os" ? { ...st, by: "2026-11-05" } : st)) };
+    expect(validate(cat, PYQS, dated, { done: {} }).join("\n")).toContain('the OS track has no dates; remove "by"');
+    const undated: Sequence = { ...seq, steps: seq.steps.map((st, i) => (i === 0 ? { ...st, by: undefined } : st)) };
+    expect(validate(cat, PYQS, undated, { done: {} }).join("\n")).toContain('D01: needs a target date ("by")');
+  });
 });
 
 describe("daysBehind", () => {
-  it("counts whole days past the target", () => {
+  it("counts whole days past the target, and none without a target", () => {
     expect(daysBehind("2026-11-06", "2026-11-06")).toBe(0);
     expect(daysBehind("2026-11-01", "2026-11-06")).toBe(0);
     expect(daysBehind("2026-11-09", "2026-11-06")).toBe(3);
+    expect(daysBehind("2026-11-09", null)).toBe(0);
   });
 });
 

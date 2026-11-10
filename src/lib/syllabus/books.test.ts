@@ -13,6 +13,17 @@ describe("pyqRef", () => {
     expect(pyqRef("GATE CSE 2017 Set 2 | Question: 55")?.id).toBe("2017s2-55");
     expect(pyqRef("ISRO 2016 | Question: 74")).toBeNull();
   });
+  it("keeps General Aptitude questions apart from the technical ones with the same number", () => {
+    expect(pyqRef("GATE CSE 2026 | Set 2 | GA | Question: 6")).toMatchObject({ id: "2026s2-ga6", set: 2, q: "ga6", title: "GATE CSE 2026 Set 2 | GA Question: 6" });
+    expect(pyqRef("GATE CSE 2019 | GA | Question: 10")?.id).toBe("2019-ga10");
+    expect(pyqRef("GATE DS&AI 2024 | GA | Question: 3")?.id).toBe("DA2024-ga3");
+    // the same question as the 2022 and 2026 books title it
+    expect(pyqRef("GATE CSE 2015 Set 2 | Question: GA-7")?.id).toBe("2015s2-ga7");
+    expect(pyqRef("GATE CSE 2016 Set 1 | Question: GA04")?.id).toBe("2016s1-ga4");
+    expect(pyqRef("GATE CSE 2017 Set 1 | GA Question: 3")?.id).toBe("2017s1-ga3");
+    expect(pyqRef("GATE CSE 2016 | Set 2 | GA | Question: 04")?.id).toBe("2016s2-ga4");
+    expect(pyqRef("GATE CSE 2010 | Question: 62")?.id).toBe("2010-62"); // before 2014 GA was Q56–65 of the paper
+  });
 });
 
 const BOOK = `2.1                                               Application Layer Protocols (13)

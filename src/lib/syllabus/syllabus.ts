@@ -2,9 +2,9 @@ import { slugOf } from "@/lib/brain/names";
 import type { Test } from "@/lib/tests/format";
 import type { Result } from "@/lib/tests/result";
 import { compileConcepts, conceptsIn, orderErrors, teachingOrder, type Concept } from "./order";
-import { trackOf, TRACKS, type Track } from "./tracks";
+import { isAnytime, trackOf, TRACK_NAME, TRACKS, type Track } from "./tracks";
 
-export { trackOf, TRACK_NAME, TRACKS, type Track } from "./tracks";
+export { ANYTIME, ANYTIME_NAME, isAnytime, trackOf, TRACK_NAME, TRACKS, type Track } from "./tracks";
 
 // The C + Data Structures + Algorithms syllabus in brain/syllabus/ (pure: no fs). The Markdown files say
 // what to teach and in which order, sequence.json where the tests fall, progress.json what is done, and
@@ -43,8 +43,9 @@ export type Blueprint = {
   pass: number; // fraction of the marks
   earlierMax: number; // questions allowed from units before this test's own
 };
-export type UnitStep = { unit: string; by: string; track?: Track };
-export type TestStep = { test: string; kind: string; covers: string[]; by: string; track?: Track };
+// `by`: the target date. The untimed tracks (ANYTIME) have none.
+export type UnitStep = { unit: string; by?: string; track?: Track };
+export type TestStep = { test: string; kind: string; covers: string[]; by?: string; track?: Track };
 export type Step = UnitStep | TestStep;
 export type Sequence = { blueprints: Record<string, Blueprint>; steps: Step[] };
 // done: ticked, with the day. seen: met before this syllabus existed, so one right answer earns the tick.
@@ -159,8 +160,13 @@ export function validate(catalog: Catalog, pyqs: Map<string, Pyq>, sequence: Seq
     const track = trackOf(step);
     const name = isUnitStep(step) ? step.unit : step.test;
     if (!TRACKS.includes(track)) out.push(`${name}: unknown track "${track}".`);
-    if (step.by < (lastBy[track] ?? "")) out.push(`${name}: its target date ${step.by} is before the previous step's ${lastBy[track]} on the same track.`);
-    lastBy[track] = step.by;
+    else if (isAnytime(track)) {
+      if (step.by) out.push(`${name}: the ${TRACK_NAME[track]} track has no dates; remove "by".`);
+    } else if (!step.by) out.push(`${name}: needs a target date ("by").`);
+    else {
+      if (step.by < (lastBy[track] ?? "")) out.push(`${name}: its target date ${step.by} is before the previous step's ${lastBy[track]} on the same track.`);
+      lastBy[track] = step.by;
+    }
     if (isUnitStep(step)) {
       if (!catalog.units.has(step.unit)) out.push(`sequence: unknown unit ${step.unit}.`);
       if (placed.has(step.unit)) out.push(`sequence: ${step.unit} appears twice.`);
@@ -246,8 +252,8 @@ export function itemHistory(s: State): Map<string, ("correct" | "wrong" | "unatt
 // ---- The next step: the heart of it
 
 export type Next =
-  | { kind: "teach"; unit: Unit; item: Item; pending: Item[]; by: string }
-  | { kind: "notes"; unit: Unit; by: string }
+  | { kind: "teach"; unit: Unit; item: Item; pending: Item[]; by: string | null }
+  | { kind: "notes"; unit: Unit; by: string | null }
   | { kind: "write-test"; step: TestStep; id: string; retest: boolean }
   | { kind: "take-test"; step: TestStep; id: string; title: string }
   | { kind: "analyse-test"; step: TestStep; id: string; attempt: string; score: number }
@@ -262,8 +268,8 @@ export function nextStep(s: State, track: Track = "main"): Next {
       const unit = s.catalog.units.get(step.unit);
       if (!unit) continue;
       const pending = unit.items.filter((i) => !s.progress.done[i.id]);
-      if (pending.length) return { kind: "teach", unit, item: pending[0], pending, by: step.by };
-      if (!s.hasNotes(unit.notes)) return { kind: "notes", unit, by: step.by };
+      if (pending.length) return { kind: "teach", unit, item: pending[0], pending, by: step.by ?? null };
+      if (!s.hasNotes(unit.notes)) return { kind: "notes", unit, by: step.by ?? null };
       continue;
     }
     const held = testGate(s, step, step.test, false);
@@ -437,8 +443,9 @@ export function auditTest(s: State, id: string, test: Test): { errors: string[];
 
 // ---- Pace
 
-/** Whole days today is past a step's target (0 when on time). */
-export function daysBehind(today: string, by: string): number {
+/** Whole days today is past a step's target (0 when on time, or when the step has no date). */
+export function daysBehind(today: string, by: string | null | undefined): number {
+  if (!by) return 0;
   return Math.max(0, Math.round((Date.parse(`${today}T00:00:00Z`) - Date.parse(`${by}T00:00:00Z`)) / 86_400_000));
 }
 

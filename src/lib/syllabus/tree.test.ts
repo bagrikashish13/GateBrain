@@ -161,6 +161,43 @@ hours: 1
   });
 });
 
+describe("an untimed (Anytime) track", () => {
+  // OS practised whenever the student likes: no dates, so never late, and not in "hours left".
+  const md = `${MD}
+# Part 11 · Operating Systems
+
+## OS01 · Processes
+notes: os/01-processes-threads
+hours: 3
+
+- OS01.1 T What a process is.
+- OS01.2 Q State transitions. PYQ: 2020-1
+`;
+  const seq: Sequence = {
+    ...SEQ,
+    steps: [...SEQ.steps, { unit: "OS01", track: "os" }, { test: "os-ut-01", kind: "unit", covers: ["OS01"], track: "os" }],
+  };
+  const any = (over: Partial<State> = {}) => state({ catalog: buildCatalog(parseSyllabus("x.md", md, [])), sequence: seq, ...over });
+
+  it("marks the track, never makes it late, and keeps its hours out of hours left", () => {
+    const t = buildTree(any(), "2027-01-30");
+    const os = t.tracks.find((x) => x.track === "os")!;
+    expect(os).toMatchObject({ name: "OS", anytime: true, total: 2, hoursLeft: 3 });
+    expect(t.tracks.find((x) => x.track === "main")!.anytime).toBe(false);
+    const unit = t.parts.find((p) => p.track === "os")!.steps[0] as TreeUnit;
+    expect(unit).toMatchObject({ by: null, late: 0 });
+    expect(os.next.kind === "teach" && os.next.late).toBe(0);
+    expect(t.hoursLeft).toBe(4); // the main block's two units only
+    const test = t.parts.find((p) => p.track === "os")!.steps[1] as TreeTest;
+    expect(test).toMatchObject({ id: "os-ut-01", by: null });
+  });
+
+  it("goes its own way: the main block's test never holds it", () => {
+    const t = buildTree(any({ progress: { done: { "P01.1": "d", "P01.2": "d" } } }), "2026-11-01");
+    expect(t.tracks.map((x) => nextLine(x.next))).toEqual(["Unit test t1", "OS01.1, Processes"]);
+  });
+});
+
 describe("the real brain/syllabus", () => {
   it("builds a tree with no gaps", () => {
     const { state: real } = loadSyllabus("brain");

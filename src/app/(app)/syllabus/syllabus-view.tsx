@@ -8,7 +8,7 @@ import { cn } from "cn";
 import { Fold } from "@/components/fold";
 import { Progress } from "@/components/progress";
 import { SubjectMarker } from "@/components/subject-marker";
-import type { NextView, SyllabusTree, TrackView, TreeItem, TreePart, TreeTest, TreeUnit } from "@/lib/syllabus/tree";
+import { GRAND_PART, type NextView, type SyllabusTree, type TrackView, type TreeItem, type TreePart, type TreeTest, type TreeUnit } from "@/lib/syllabus/tree";
 import { syncAction } from "../actions";
 
 const EASE = [0.2, 0.7, 0.2, 1] as const;
@@ -75,10 +75,18 @@ const toggleIn = (set: Dispatch<SetStateAction<Set<string>>>, id: string) =>
     return n;
   });
 
+/** The tracks shown together: each dated track on its own, the untimed ones (OS, DBMS, TOC) as one "Anytime" group. */
+type Group = { key: string; name: string; anytime: boolean; tracks: TrackView[] };
+function groupsOf(tree: SyllabusTree): Group[] {
+  const dated = tree.tracks.filter((t) => !t.anytime).map((t) => ({ key: t.track, name: t.name, anytime: false, tracks: [t] }));
+  const anytime = tree.tracks.filter((t) => t.anytime);
+  return anytime.length ? [...dated, { key: "anytime", name: "Anytime", anytime: true, tracks: anytime }] : dated;
+}
+
 /**
- * Everything to study, in teaching order, on its two tracks. On top, what comes next on each track; then
- * every subject as one folded row (what's in it opens on a tap). The map is the whole syllabus at once, one
- * square per topic and one diamond per test, filling in mint; new ticks since the last visit pop in, in order.
+ * Everything to study, in teaching order, on its tracks. On top, what comes next on each track; then every
+ * subject as one folded row (what's in it opens on a tap). The map is the whole syllabus at once, one square
+ * per topic and one diamond per test, filling in mint; new ticks since the last visit pop in, in order.
  * Ticks are earned with the agent (npm run syllabus -- done), so nothing here can be ticked by hand.
  */
 export function SyllabusView({ tree, colours }: { tree: SyllabusTree; colours: Record<string, string> }) {
@@ -145,6 +153,8 @@ export function SyllabusView({ tree, colours }: { tree: SyllabusTree; colours: R
   );
   const togglePart = useCallback((id: string) => toggleIn(setOpenParts, id), []);
   const toggleUnit = useCallback((id: string) => toggleIn(setOpenUnits, id), []);
+  const groups = useMemo(() => groupsOf(tree), [tree]);
+  const trackOfPart = (p: TreePart) => tree.tracks.find((t) => t.track === p.track)!;
 
   return (
     <div className="grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,430px)_minmax(0,1fr)] lg:items-start lg:gap-x-12">
@@ -191,9 +201,13 @@ export function SyllabusView({ tree, colours }: { tree: SyllabusTree; colours: R
         </AnimatePresence>
 
         <div className="grid grid-cols-1 gap-2">
-          {tree.tracks.map((t) => (
-            <NextCard key={t.track} track={t} spot={spotOf(tree, t)} onReveal={reveal} />
-          ))}
+          {groups.map((g) =>
+            g.anytime ? (
+              <AnytimeCard key={g.key} tracks={g.tracks} tree={tree} colours={colours} onReveal={reveal} />
+            ) : (
+              <NextCard key={g.key} track={g.tracks[0]} spot={spotOf(tree, g.tracks[0])} onReveal={reveal} />
+            ),
+          )}
         </div>
         <Stats tree={tree} />
         <Fold
@@ -207,39 +221,42 @@ export function SyllabusView({ tree, colours }: { tree: SyllabusTree; colours: R
           }
           bodyClassName="grid grid-cols-1 gap-5 pt-1 pb-4"
         >
-          <Wall tree={tree} colours={colours} fresh={fresh} still={still} onPick={pickUnit} />
+          <Wall tree={tree} groups={groups} colours={colours} fresh={fresh} still={still} onPick={pickUnit} />
           <Proof tree={tree} />
         </Fold>
       </div>
 
       <div className="grid min-w-0 grid-cols-1 gap-7">
-        {tree.tracks.map((t) => (
-          <section key={t.track} aria-label={t.name} className="grid grid-cols-1 gap-2">
+        {groups.map((g) => (
+          <section key={g.key} aria-label={g.name} className="grid grid-cols-1 gap-2">
             <h2 className="flex items-baseline gap-2.5">
-              <span className="font-display text-[19px] leading-none font-bold">{t.name}</span>
+              <span className="font-display text-[19px] leading-none font-bold">{g.name}</span>
               <span className="num text-[13px] text-muted-foreground">
-                <span className="font-semibold text-fg">{t.done}</span>/{t.total}
+                <span className="font-semibold text-fg">{g.tracks.reduce((n, t) => n + t.done, 0)}</span>/{g.tracks.reduce((n, t) => n + t.total, 0)}
               </span>
-              <span className="label num ml-auto">{t.hoursLeft}h left</span>
+              <span className="label num ml-auto">{g.anytime ? "No dates" : `${g.tracks[0].hoursLeft}h left`}</span>
             </h2>
             <ol className="grid grid-cols-1 border-t border-line">
               {tree.parts
-                .filter((p) => p.track === t.track)
-                .map((p) => (
-                  <PartRow
-                    key={partKey(p)}
-                    part={p}
-                    colour={p.subject ? (colours[p.subject] ?? null) : null}
-                    now={p.current ? nowLine(t.next) : null}
-                    late={p.current && t.next.kind === "teach" ? t.next.late : 0}
-                    open={openParts.has(partKey(p))}
-                    onToggle={togglePart}
-                    openUnits={openUnits}
-                    onToggleUnit={toggleUnit}
-                    fresh={freshSet}
-                    still={still}
-                  />
-                ))}
+                .filter((p) => g.tracks.some((t) => t.track === p.track))
+                .map((p) => {
+                  const t = trackOfPart(p);
+                  return (
+                    <PartRow
+                      key={partKey(p)}
+                      part={p}
+                      colour={p.subject ? (colours[p.subject] ?? null) : null}
+                      now={p.current ? nowLine(t.next) : null}
+                      late={p.current && t.next.kind === "teach" ? t.next.late : 0}
+                      open={openParts.has(partKey(p))}
+                      onToggle={togglePart}
+                      openUnits={openUnits}
+                      onToggleUnit={toggleUnit}
+                      fresh={freshSet}
+                      still={still}
+                    />
+                  );
+                })}
             </ol>
           </section>
         ))}
@@ -364,6 +381,37 @@ function NextCard({ track, spot, onReveal }: { track: TrackView; spot: Spot | nu
   );
 }
 
+/** The untimed tracks in one card: one row each, the subject and where it stands; a tap opens it below. */
+function AnytimeCard({ tracks, tree, colours, onReveal }: { tracks: TrackView[]; tree: SyllabusTree; colours: Record<string, string>; onReveal: (spot: Spot) => void }) {
+  const style = { "--cut": "14px", "--cut-edge": "var(--line-2)", "--cut-fill": "var(--raised)" } as CSSProperties;
+  return (
+    <div className="cut grid grid-cols-1 px-4 pt-3 pb-1.5" style={style}>
+      <span className="flex items-baseline justify-between gap-3 text-[12px] text-faint">
+        <span className="font-semibold text-muted-foreground">Anytime</span>
+        <span>No dates</span>
+      </span>
+      <ul className="grid grid-cols-1">
+        {tracks.map((t) => {
+          const part = tree.parts.find((p) => p.track === t.track && p.title !== GRAND_PART);
+          const spot = spotOf(tree, t);
+          return (
+            <li key={t.track}>
+              <button type="button" onClick={() => spot && onReveal(spot)} className="flex min-h-11 w-full items-center gap-2.5 text-left">
+                <SubjectMarker colour={part?.subject ? (colours[part.subject] ?? null) : null} />
+                <span className="w-11 flex-none text-[13.5px] font-semibold">{t.name}</span>
+                <span className="min-w-0 flex-1 truncate text-[13px] text-muted-foreground">{nowLine(t.next) ?? "All taught, all tested"}</span>
+                <span className={cn("num flex-none text-[12.5px]", t.done === t.total ? "font-semibold text-mint" : "text-faint")}>
+                  {t.done}/{t.total}
+                </span>
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+}
+
 function Stats({ tree }: { tree: SyllabusTree }) {
   const cells: { label: string; value: ReactNode; on?: boolean; sub?: string }[] = [
     { label: "Today", value: tree.today, on: tree.today > 0, sub: tree.streak > 1 ? `${tree.streak} days in a row` : undefined },
@@ -402,15 +450,15 @@ function Stats({ tree }: { tree: SyllabusTree }) {
 
 /* ---------- The map ---------- */
 
-function Wall({ tree, colours, fresh, still, onPick }: { tree: SyllabusTree; colours: Record<string, string>; fresh: string[]; still: boolean; onPick: (unit: string) => void }) {
+function Wall({ tree, groups, colours, fresh, still, onPick }: { tree: SyllabusTree; groups: Group[]; colours: Record<string, string>; fresh: string[]; still: boolean; onPick: (unit: string) => void }) {
   const order = useMemo(() => new Map(fresh.map((id, i) => [id, i])), [fresh]);
   return (
     <section aria-label={`${tree.done} of ${tree.total} topics ticked`} className="grid grid-cols-1 gap-5">
-      {tree.tracks.map((t) => (
-        <div key={t.track} className="grid grid-cols-1 gap-3">
-          <span className="label">{t.name}</span>
+      {groups.map((g) => (
+        <div key={g.key} className="grid grid-cols-1 gap-3">
+          <span className="label">{g.name}</span>
           {tree.parts
-            .filter((p) => p.track === t.track)
+            .filter((p) => g.tracks.some((t) => t.track === p.track))
             .map((part) => (
               <div key={partKey(part)} className="grid grid-cols-1 gap-1.5">
                 <div className="flex items-center gap-2 text-[12.5px]">
@@ -574,7 +622,7 @@ function PartRow({
             {tests.length > 0 && <span>{tests.length === 1 ? "1 test" : `${tests.length} tests`}</span>}
             {part.hours > 0 && (
               <span>
-                {Math.ceil(part.hoursLeft)}h left of {part.hours}h
+                {Math.ceil(part.hoursLeft * 2) / 2}h left of {part.hours}h
               </span>
             )}
           </p>
@@ -641,7 +689,7 @@ function UnitBody({ unit, fresh, still }: { unit: TreeUnit; fresh: Set<string>; 
     <div className="grid grid-cols-1 gap-4 pt-1 pb-4">
       <p className="label num flex flex-wrap gap-x-3">
         <span>{unit.hours}h</span>
-        <span>By {shortDay(unit.by)}</span>
+        {unit.by && <span>By {shortDay(unit.by)}</span>}
         {unit.late > 0 && <span className="text-alert">{behind(unit.late)}</span>}
         {unit.notesDue && <span className="text-fg">Notes to write</span>}
       </p>
@@ -713,7 +761,7 @@ function TickBox({ item, isFresh, still }: { item: TreeItem; isFresh: boolean; s
 function TestRow({ test }: { test: TreeTest }) {
   const below = test.state === "below";
   const status = {
-    later: `By ${shortDay(test.by)}`,
+    later: test.by ? `By ${shortDay(test.by)}` : `After ${test.covers.at(-1)}`,
     write: "Due now",
     take: "Ready to take",
     analyse: "Analyse it",

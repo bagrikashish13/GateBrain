@@ -1,10 +1,12 @@
 import { addDayKey } from "@/lib/time";
 import { orderCoverage, orderErrors } from "./order";
 import { daysBehind, drill, isUnitStep, nextStep, retestId, scoreOf, subjectOf, type ItemKind, type Next, type State } from "./syllabus";
-import { TRACK_NAME, TRACKS, trackOf, type Track } from "./tracks";
+import { isAnytime, TRACK_NAME, TRACKS, trackOf, type Track } from "./tracks";
 
-// What the Syllabus tab shows (pure, serialisable): everything to study in teaching order, on its two
-// tracks, what is ticked, what comes next on each track, and the proof that nothing is missing or out of order.
+// What the Syllabus tab shows (pure, serialisable): everything to study in teaching order, on its tracks,
+// what is ticked, what comes next on each track, and the proof that nothing is missing or out of order.
+// The untimed tracks (OS, DBMS, TOC) have no dates, so nothing on them is ever late, and their hours
+// don't count in "hours left", which is about the dated plan.
 
 export type ItemState = "done" | "next" | "todo";
 export type TreeItem = { id: string; kind: ItemKind; text: string; subtopic: string | null; state: ItemState; seen: boolean; doneOn: string | null; pyqs: number };
@@ -13,7 +15,7 @@ export type TreeUnit = {
   id: string;
   title: string;
   hours: number;
-  by: string;
+  by: string | null;
   late: number;
   total: number;
   done: number;
@@ -29,7 +31,7 @@ export type TreeTest = {
   questions: number;
   minutes: number;
   pass: number;
-  by: string;
+  by: string | null;
   state: TestState;
   score: number | null;
   retestScore: number | null;
@@ -53,7 +55,8 @@ export type NextView =
   | { kind: "notes"; unit: string; unitTitle: string }
   | { kind: "test"; state: "write" | "take" | "analyse" | "reteach"; id: string; label: string; score: number | null }
   | { kind: "finished" };
-export type TrackView = { track: Track; name: string; total: number; done: number; hoursLeft: number; next: NextView };
+/** `anytime`: an untimed track (no dates, not in the day's plan). */
+export type TrackView = { track: Track; name: string; anytime: boolean; total: number; done: number; hoursLeft: number; next: NextView };
 export type SyllabusTree = {
   /** Every part, track by track (the main block first), each track's grand tests last. */
   parts: TreePart[];
@@ -61,6 +64,7 @@ export type SyllabusTree = {
   tracks: TrackView[];
   total: number;
   done: number;
+  /** On the dated tracks only. */
   hoursLeft: number;
   pyqs: { indexed: number; covered: number; toSolve: number; solved: number };
   tests: { total: number; taken: number };
@@ -131,7 +135,7 @@ export function buildTree(s: State, today: string): SyllabusTree {
         id: unit.id,
         title: unit.title,
         hours: unit.hours,
-        by: step.by,
+        by: step.by ?? null,
         late: doneCount < items.length ? daysBehind(today, step.by) : 0,
         total: items.length,
         done: doneCount,
@@ -159,7 +163,7 @@ export function buildTree(s: State, today: string): SyllabusTree {
       questions: blueprint?.questions ?? 0,
       minutes: blueprint?.minutes ?? 0,
       pass: blueprint?.pass ?? 0,
-      by: step.by,
+      by: step.by ?? null,
       state,
       score,
       retestScore: re?.first ? scoreOf(re.first) : null,
@@ -197,6 +201,7 @@ export function buildTree(s: State, today: string): SyllabusTree {
     return {
       track: t,
       name: TRACK_NAME[t],
+      anytime: isAnytime(t),
       total: sum(mine.map((p) => p.total)),
       done: sum(mine.map((p) => p.done)),
       hoursLeft: Math.ceil(sum(mine.map((p) => p.hoursLeft))),
@@ -209,7 +214,7 @@ export function buildTree(s: State, today: string): SyllabusTree {
     tracks,
     total: allItems.length,
     done: allItems.filter((i) => i.state === "done").length,
-    hoursLeft: Math.ceil(sum(list.map((p) => p.hoursLeft))),
+    hoursLeft: Math.ceil(sum(list.filter((p) => !isAnytime(p.track)).map((p) => p.hoursLeft))),
     pyqs: { indexed: s.pyqs.size, covered: covered.size, toSolve: toSolve.size, solved: solved.size },
     tests: { total: testCount, taken },
     today: days.filter((d) => d === today).length,
