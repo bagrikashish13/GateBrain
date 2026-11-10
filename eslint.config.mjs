@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Per-device scratch (git-ignored): caches and throwaway scripts.
+    ".runtime/**",
   ]),
 ]);
 

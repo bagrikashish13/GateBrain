@@ -4,10 +4,13 @@
 process.env.TZ ||= "Asia/Kolkata";
 
 import { execFileSync } from "node:child_process";
-import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { dayKey } from "../src/lib/time";
 import { parseTest } from "../src/lib/tests/format";
+import { qualityErrors } from "../src/lib/tests/quality";
+import { parseBook, type BookEntry } from "../src/lib/syllabus/books";
+import { bookText, type BookName } from "./pyq-books";
 import { loadSyllabus } from "../src/lib/syllabus/load";
 import { compileConcepts, orderCoverage, teachingOrder, usesOf } from "../src/lib/syllabus/order";
 import {
@@ -279,7 +282,10 @@ function checkTest(id: string | undefined): void {
   if (!existsSync(file)) return fail(`No brain/tests/${id}.md yet.`);
   const parsed = parseTest(id, readFileSync(file, "utf8"));
   if (!parsed.ok) return fail(parsed.errors.join("\n"));
-  const { errors: bad, warnings } = auditTest(state, id, parsed.test);
+  const audit = auditTest(state, id, parsed.test);
+  const warnings = audit.warnings;
+  const indexed = new Set([...state.catalog.units.values()].map((u) => u.notes.split("/")[0]));
+  const bad = [...audit.errors, ...qualityErrors(parsed.test, new Set(state.pyqs.keys()), indexed)];
   for (const w of warnings) console.log(`  warning: ${w}`);
   for (const e of bad) console.log(`  error: ${e}`);
   console.log(bad.length ? `✗ ${id} does not match its blueprint.` : `✓ ${id} matches its blueprint.`);
@@ -298,71 +304,47 @@ function checkAll(): void {
   process.exit(all.length ? 1 : 0);
 }
 
-// ---- Real PYQ text: fetched once per device from GATE Overflow's public PDFs into .runtime/ (git-ignored).
-// The repo is public, so it only stores ids and links, never the text.
+// ---- Real PYQ text: fetched once per device from GATE Overflow's public PDFs into .runtime/ (git-ignored),
+// by scripts/pyq-books.ts. The repo is public, so it only stores ids and links, never the text.
 
-const BOOKS = {
-  old: "https://github.com/GATEOverflow/GO-PDFs/releases/download/gatecse-2022-vol1%2C2/Volume-2.pdf", // math survives as text, 1987–2021
-  new: "https://github.com/GATEOverflow/GO-PDFs/releases/download/gatecse-2027/filter1_volume2.pdf", // everything up to 2026, math is missing from the text
-};
-const PDFTOTEXT = ["pdftotext", "C:\\Program Files\\Git\\mingw64\\bin\\pdftotext.exe", "/mingw64/bin/pdftotext", "/usr/bin/pdftotext"];
-
-async function bookText(which: keyof typeof BOOKS): Promise<string | null> {
-  const dir = join(repo, ".runtime", "pyq-cache");
-  const txt = join(dir, `${which}.txt`);
-  if (existsSync(txt) && statSync(txt).size > 0) return readFileSync(txt, "utf8");
-  mkdirSync(dir, { recursive: true });
-  const pdf = join(dir, `${which}.pdf`);
-  if (!existsSync(pdf)) {
-    console.error(`Downloading GATE Overflow's book (once per device): ${BOOKS[which]}`);
-    const res = await fetch(BOOKS[which]);
-    if (!res.ok) return null;
-    writeFileSync(pdf, Buffer.from(await res.arrayBuffer()));
+type Book = { lines: string[]; entries: BookEntry[] };
+const loaded = new Map<BookName, Book | null>();
+async function book(name: BookName): Promise<Book | null> {
+  if (!loaded.has(name)) {
+    const text = await bookText(repo, name);
+    loaded.set(name, text ? { lines: text.split(/\r?\n/), entries: parseBook(text) } : null);
   }
-  for (const tool of PDFTOTEXT) {
-    try {
-      execFileSync(tool, ["-layout", pdf, txt], { stdio: "ignore" });
-      return readFileSync(txt, "utf8");
-    } catch {
-      // try the next location
-    }
+  return loaded.get(name)!;
+}
+
+const solid = (s: string) => s.replace(/\s+/g, "").length;
+
+/** The 2022 books keep the math as text (questions up to 2021); the 2027 books have everything up to 2026. */
+async function findPyq(p: Pyq): Promise<{ text: string; answer: string | null } | null> {
+  const order: BookName[] = p.year <= 2021 ? ["old", "old1", "old3", "new", "new1", "new3"] : ["new", "new1", "new3"];
+  let found: BookEntry | null = null;
+  let answer: string | null = null;
+  for (const name of order) {
+    const b = await book(name);
+    const hit = b?.entries.find((e) => e.id === p.id);
+    if (!b || !hit) continue;
+    if (!found || solid(hit.text) > solid(found.text)) found = hit;
+    answer ??= answerKey(b, hit);
+  }
+  return found ? { text: found.text, answer } : null;
+}
+
+/** The "Answer Keys" table after the question's chapter, looked up by its section number (2.1.4). */
+function answerKey(b: Book, e: BookEntry): string | null {
+  const keys = b.lines.findIndex((l, i) => i > e.line && l.trim().startsWith("Answer Keys"));
+  if (keys < 0) return null;
+  const section = e.section.replace(/\./g, "\\.");
+  const key = new RegExp(`(?:^|\\s)${section}\\s+(\\S+)`);
+  for (const l of b.lines.slice(keys, keys + 250)) {
+    const m = key.exec(l);
+    if (m) return m[1] === "N/A" ? null : m[1];
   }
   return null;
-}
-
-function headingPattern(p: Pyq): RegExp {
-  const paper = p.paper === "CS" ? "GATE (?:CSE?|CS)" : p.paper === "IT" ? "GATE IT" : "GATE (?:DA|DS&AI)";
-  const set = p.set ? `\\s*\\|?\\s*Set\\s*${p.set}` : "";
-  const q = p.q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  return new RegExp(`^\\s*(\\d+\\.\\d+\\.\\d+)\\s+.*${paper}\\s+${p.year}${set}\\s*\\|\\s*Question:\\s*${q}(?![0-9A-Za-z.])`);
-}
-
-function findInBook(book: string, p: Pyq): { text: string; answer: string | null } | null {
-  const lines = book.split(/\r?\n/);
-  const pattern = headingPattern(p);
-  const at = lines.findIndex((l) => pattern.test(l));
-  if (at < 0) return null;
-  const section = pattern.exec(lines[at])![1];
-  const body: string[] = [];
-  for (let i = at + 1; i < lines.length; i++) {
-    const t = lines[i].trim();
-    if (t === "Answer" || t.startsWith("Answer key") || t.startsWith("Answers:") || /^\d+\.\d+\.\d+\s+.*(GATE|Question:)/.test(t)) break;
-    const noise = !t || t.includes("Copyright GATE Overflow") || /^\d+\s+.*\(\d+\)\s*$/.test(t) || /^gate[a-z0-9-]*(\s+[a-z0-9.+#-]+)+$/.test(t);
-    if (!noise) body.push(lines[i].trimEnd());
-  }
-  let answer: string | null = null;
-  const keys = lines.findIndex((l, i) => i > at && l.trim() === "Answer Keys");
-  if (keys > 0) {
-    const key = new RegExp(`(?:^|\\s)${section.replace(/\./g, "\\.")}\\s+(\\S+)`);
-    for (const l of lines.slice(keys, keys + 200)) {
-      const m = key.exec(l);
-      if (m) {
-        answer = m[1];
-        break;
-      }
-    }
-  }
-  return { text: body.join("\n").trim(), answer };
 }
 
 async function showPyq(ids: string[]): Promise<void> {
@@ -374,19 +356,13 @@ async function showPyq(ids: string[]): Promise<void> {
       continue;
     }
     const where = [...state.catalog.items.values()].filter((i) => i.pyqs.includes(id)).map((i) => i.id);
-    console.log(`\n=== ${p.title} [${marksText(p)}] · syllabus ${where.join(", ")}\nLink: ${p.url ?? "none, search the title"}`);
-    let found: { text: string; answer: string | null } | null = null;
-    const order: (keyof typeof BOOKS)[] = p.year <= 2021 ? ["old", "new"] : ["new"];
-    let answer: string | null = null;
-    for (const which of order) {
-      const book = await bookText(which);
-      const hit = book ? findInBook(book, p) : null;
-      if (hit && !found) found = hit;
-      if (hit?.answer && hit.answer !== "N/A") answer ??= hit.answer;
-    }
+    console.log(`
+=== ${p.title} [${marksText(p)}] · syllabus ${where.join(", ")}
+Link: ${p.url ?? "none, search the title"}`);
+    const found = await findPyq(p);
     if (found) {
       console.log(found.text);
-      console.log(`Answer key: ${answer ?? "not in the book"}`);
+      console.log(`Answer key: ${found.answer ?? "not in the book"}`);
       if (p.year > 2021) console.log(`Note: symbols and numbers may be missing from this text. Do not guess them: open the link above or ask the student to read them out.`);
     } else {
       console.log(`Text not available on this device (needs pdftotext). Open the link above; never write a PYQ from memory.`);

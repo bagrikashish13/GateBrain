@@ -110,8 +110,11 @@ The order is in `sequence.json`, 25 tests in all. Minutes follow the real paper'
 1. `npm run syllabus -- test <id>`: the blueprint, plus the patterns to cover in priority order. Weak items from earlier tests come first.
 2. Read the PYQs of those patterns with `pyq`.
 3. Write it following AGENTS.md 2.2.1: real GATE level, mix about 30% easy, 50% medium, 20% hard, no repeats, full solutions. Every question also gets `syllabus: <item id>`, and `subject` and `topic` from that item's unit. Format: `brain/FORMATS.md`.
+   - Every question gets `difficulty: easy | medium | hard`, judged against the item's real PYQs. A 10-question test has at least 2 hard and at most 4 easy.
+   - Every hard question gets `pyq: <id>`: the real PYQ you read and matched in difficulty (`npm run syllabus -- pyq <id>`). As hard as it, never a copy of it.
+   - **Never a PYQ the student solved while learning with new names or numbers.** A question on an item's pattern must use a setup that PYQ didn't (another structure, another program, another thing asked). The checker catches structural copies; a copied trick in different code it can't, so that one is on you.
 4. Verify every answer. **Run C code with a compiler, and check tree, heap, hash and graph answers with a small script.** Wrong answer keys are the worst bug here.
-5. `npm run check:tests -- <id>` and `npm run syllabus -- check-test <id>`. Fix every error. Commit and push.
+5. `npm run check:tests -- <id>` and `npm run syllabus -- check-test <id>`. Fix every error, including every repeat or re-skin. Commit and push.
 
 ### What makes it feel like the real paper
 
@@ -130,6 +133,7 @@ Not GATE: pure recall, trivia, puzzles, anything needing a particular book's con
 
 - **Pass:** carry on. The first attempt is the one that counts.
 - **Below the pass mark:** the command lists the items missed. Re-teach only those, then write one retest (`<id>-r2`, a fresh 10-question test on those items).
+- **A retest is new setups for the same concepts, never a re-skin.** The first retests (c-ut-02-r2, c-ut-03-r2) were mostly the first test's questions with new names: four and three questions 86–100% alike, scored 80% and 100%, and told us nothing. Different program, different structure, different thing asked; same difficulty mix (at least 2 hard). `check:tests` fails a retest question 60% or more alike to one in the test it retests.
 - **After the retest, carry on whatever the score.** Anything still weak stays on the list and goes first in the next test, so nothing is lost and the plan cannot stall. Tell the student honestly where they stand.
 
 ## Tracing templates

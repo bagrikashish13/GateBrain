@@ -15,6 +15,8 @@ import { slugOf } from "@/lib/brain/names";
 //   topic: deadlock         the notes section it belongs to (folder name without its number)
 //   answer: B               MCQ: B · MSQ: A, C · NAT: 42 or 2.40 to 2.60
 //   syllabus: D07.5         optional: the brain/syllabus/ item it tests (required in syllabus tests)
+//   difficulty: hard        easy | medium | hard (required in new tests; the checker enforces the mix)
+//   pyq: 2019-23            the real PYQ(s) a hard question is modelled on (required on hard questions)
 //
 //   Question text (Markdown, math, code, images).
 //
@@ -43,13 +45,18 @@ export type Question = {
   answer: Answer;
   solution: string | null;
   syllabus?: string[]; // items of brain/syllabus/ this question tests ("D07.5"); never sent to the browser
+  difficulty?: Difficulty; // never sent to the browser
+  pyq?: string[]; // real PYQs it is modelled on ("2019-23"); never sent to the browser
 };
+export const DIFFICULTIES = ["easy", "medium", "hard"] as const;
+export type Difficulty = (typeof DIFFICULTIES)[number];
 export type Test = {
   id: string;
   title: string;
   duration: number; // minutes
   created: string | null;
   description: string | null;
+  level: "gate" | "tougher"; // "tougher" only when he asks for a harder paper (AGENTS.md 2.2.1)
   questions: Question[];
   totalMarks: number;
 };
@@ -61,7 +68,7 @@ const SOLUTION = /^###\s+(?:Solution|Explanation)\s*$/i;
 const OPTION = /^\(([A-D])\)\s?(.*)$/;
 const META = /^([a-z_]+)\s*:\s*(.*?)\s*$/i;
 const FENCE = /^\s*(```|~~~)/;
-const META_KEYS = new Set(["type", "marks", "negative", "subject", "topic", "answer", "section", "syllabus"]);
+const META_KEYS = new Set(["type", "marks", "negative", "subject", "topic", "answer", "section", "syllabus", "difficulty", "pyq"]);
 const NUMBER = /^-?\d+(?:\.\d+)?$/;
 
 /** GATE's default negative marking: a third of the marks for an MCQ, nothing for MSQ and NAT. */
@@ -96,6 +103,8 @@ export function parseTest(id: string, raw: string): ParseResult {
   const duration = Number(data.duration);
   if (!Number.isFinite(duration) || duration <= 0) errors.push("Frontmatter: duration must be the time limit in minutes, like `duration: 60`.");
   const created = data.created instanceof Date ? data.created.toISOString().slice(0, 10) : typeof data.created === "string" ? data.created : null;
+  const level = data.level === undefined || data.level === "gate" ? "gate" : data.level === "tougher" ? "tougher" : null;
+  if (!level) errors.push("Frontmatter: level must be gate (the default) or tougher.");
 
   const blocks = splitQuestions(body);
   if (!blocks.length) errors.push("No questions: each one starts with a `## Q1` heading.");
@@ -120,6 +129,7 @@ export function parseTest(id: string, raw: string): ParseResult {
       duration,
       created,
       description: typeof data.description === "string" ? data.description : null,
+      level: level ?? "gate",
       questions,
       totalMarks: questions.reduce((s, q) => s + q.marks, 0),
     },
@@ -216,6 +226,9 @@ function parseQuestion(n: number, lines: string[], error: (m: string) => void, w
     else answer = { kind: "NAT", ...range };
   }
 
+  const difficulty = meta.difficulty?.trim().toLowerCase();
+  if (difficulty !== undefined && !(DIFFICULTIES as readonly string[]).includes(difficulty)) error("difficulty must be easy, medium or hard.");
+
   const section = meta.section?.trim() || (subject === "general-aptitude" ? "General Aptitude" : "Technical");
   if (!answer || !text || !Number.isFinite(marks) || marks <= 0 || !subject) return null;
   return {
@@ -231,6 +244,8 @@ function parseQuestion(n: number, lines: string[], error: (m: string) => void, w
     answer,
     solution,
     ...(meta.syllabus?.trim() ? { syllabus: meta.syllabus.split(",").map((x) => x.trim()).filter(Boolean) } : {}),
+    ...(difficulty && (DIFFICULTIES as readonly string[]).includes(difficulty) ? { difficulty: difficulty as Difficulty } : {}),
+    ...(meta.pyq?.trim() ? { pyq: meta.pyq.split(",").map((x) => x.trim()).filter(Boolean) } : {}),
   };
 }
 

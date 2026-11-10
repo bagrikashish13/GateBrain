@@ -118,15 +118,15 @@ Without that word, never drift harder or easier than GATE.
   counts as a repeat, since he may remember the answer. The same *concept* is fine with a genuinely new
   question: different setup, different numbers, different thing asked.
 - Write original questions modelled on PYQs, not copied PYQs. Verbatim PYQs only when he asks for a PYQ paper.
-- `npm run check:tests` compares every question against all earlier tests: **"repeats" is an error, rewrite
-  that question; "is close to" is a warning, rewrite unless it truly asks something different.**
+- `npm run check:tests` compares every question with all earlier tests and real PYQs, through renamed
+  names and numbers: **"repeats"/"re-skins" is an error, rewrite it; "is close to" is a warning.**
 
 **4. Every answer verified.** Solve each question yourself, independently of how you wrote it; for MSQ check
 every option; for NAT give a range when rounding can differ (`2.60 to 2.70`). The `### Solution` shows the full
 working and says why each wrong option is wrong. Wrong answer keys are the worst possible bug here.
 
-**5. Before you commit:** check:tests passes with no repeats; level, difficulty mix and type mix match the
-request; every question has a topic (except General Aptitude) and a solution. In your reply, list the topics
+**5. Before you commit:** check:tests passes; every question has `difficulty:` (hard ones `pyq:`, FORMATS.md),
+a topic (except General Aptitude) and a solution. In your reply, list the topics
 covered and the difficulty mix in one or two lines.
 
 ### 2.3 Results (written by the app)

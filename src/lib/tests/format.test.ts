@@ -39,6 +39,54 @@ Four.
     expect(r.test.questions[0].text).toBe("How many?");
   });
 
+  it("reads difficulty, the PYQs a question is modelled on, and the paper's level", () => {
+    const raw = `---
+title: T
+duration: 3
+level: tougher
+---
+
+## Q1
+type: NAT
+marks: 2
+subject: os
+topic: deadlock
+answer: 4
+difficulty: Hard
+pyq: 2019-23, 2016s1-25
+
+How many?
+
+### Solution
+Four.
+`;
+    const r = parseTest("t", raw);
+    if (!r.ok) throw new Error(r.errors.join(", "));
+    expect(r.test.level).toBe("tougher");
+    expect(r.test.questions[0]).toMatchObject({ difficulty: "hard", pyq: ["2019-23", "2016s1-25"], text: "How many?" });
+  });
+
+  it("refuses an unknown difficulty or level", () => {
+    const raw = `---
+title: T
+duration: 3
+level: insane
+---
+
+## Q1
+type: NAT
+marks: 1
+subject: os
+answer: 4
+difficulty: tricky
+
+How many?
+`;
+    const r = parseTest("t", raw);
+    expect(r.ok).toBe(false);
+    if (!r.ok) expect(r.errors.join(" ")).toMatch(/level must be gate[\s\S]*difficulty must be easy/);
+  });
+
   it("splits question text, options and solution", () => {
     const r = parseTest("sample", SAMPLE);
     if (!r.ok) throw new Error();

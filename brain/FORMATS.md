@@ -53,6 +53,7 @@ marks: 1
 subject: os
 topic: deadlock
 answer: B
+difficulty: medium
 
 Question text in Markdown. Math $O(n \log n)$, tables, code blocks, images all work.
 
@@ -70,6 +71,8 @@ marks: 2
 subject: dbms
 topic: functional-dependencies-normal-forms
 answer: A, C
+difficulty: hard
+pyq: GATE 2021 Set 1 Q38
 
 ...
 
@@ -79,6 +82,7 @@ marks: 2
 subject: os
 topic: cpu-scheduling
 answer: 2.60 to 2.70
+difficulty: easy
 
 ...
 ```
@@ -97,6 +101,23 @@ Rules:
 - Sections: General Aptitude questions (`subject: general-aptitude`) go in their own tab, as in GATE.
 - Always write a `### Solution`; the result page shows it.
 - `created:` is today's date (the repeat check uses it to know which test is newer).
+- **`difficulty: easy | medium | hard` on every question** (every test created from 10 Nov 2026). Judge it
+  against real PYQs of the topic, not by feel: easy = one concept, one step; medium = a concept applied in two
+  or three steps; hard = the hardest PYQs of the topic (two concepts, a longer trace or computation, close
+  distractors). The checker enforces GATE's mix: at least about 20% hard and at most about 40% easy (10
+  questions: ≥ 2 hard, ≤ 4 easy; 5 questions: ≥ 1 hard, ≤ 2 easy). Only when he asks for a harder paper, put
+  `level: tougher` in the frontmatter: then at least about 40% hard and at most about 20% easy.
+- **Every hard question names the real PYQ it is calibrated on: `pyq: 2019-23`.** Read that PYQ first
+  (`npm run syllabus -- pyq <id>`) and write a new question as hard as it, never a copy of it. In subjects with
+  a syllabus in `brain/syllabus/` the id must be in its `pyq-index.jsonl`; in other subjects any GATE reference
+  with its year (`GATE 2021 Set 1 Q38`).
+- **No repeats, no re-skins.** The checker compares every question with every earlier test and with every
+  real PYQ in GATE Overflow's books (fetched once per device). It sees through renamed variables, swapped
+  strings and changed numbers. 80% alike or more is an error; 55% is a note to look at.
+- **A retest (`<id>-r2`) uses new setups for the same concepts**: a different program, structure or scenario,
+  and a different thing asked. Never the first test's questions with new names, strings or numbers: a retest
+  question 60% alike or more to one in the test it retests is an error.
+- A test that has already been taken can't be fixed, so its problems are listed as notes, not errors.
 - Then `npm run check:tests -- <test-id>`, commit, push. It appears in the app's Tests tab after the next sync.
 
 ## Results, written by the app (AGENTS.md 2.3)
