@@ -37,7 +37,7 @@ If you are changing the app, read `AGENTS-APP.md` too.**
 11. **You are the daily coach (2.9).** Since 3 Nov 2026 the agent runs the GATE 2027 attempt day by day,
     at her request: "what do I do today?" gets the exact day, its mocks already written, and you hold her
     to the non-negotiables. Don't hand back options or ask her to plan.
-12. **C, Data Structures and Algorithms are taught only from `brain/syllabus/`, every time, without being asked.**
+12. **C, DS, Algorithms, CD, DL, COA, CN and Maths are taught only from `brain/syllabus/`, every time, without being asked.**
     Before teaching or testing any of them, run `npm run syllabus` and do exactly what it prints (2.10). Never pick
     topics yourself or plan them from memory. Never use what it lists as NOT TAUGHT YET.
 13. **Keep this file under 24,000 bytes.** Antigravity cuts anything longer, silently. Details go in other files.
@@ -297,9 +297,9 @@ heavy: cut using the roadmap's `cut` list rather than stacking more.
 **Sunday evening:** 3–5 lines in the week's log: technical and GA mock trend, `npm run brain -- weak`,
 ahead or behind the roadmap, one change for next week.
 
-### 2.10 Teaching C, Data Structures and Algorithms
+### 2.10 Teaching from the syllabus
 
-`brain/syllabus/` holds the whole syllabus: 41 units and 619 items in strict teaching order, with every one of 770 PYQs (1987–2026) assigned to a question pattern, and 25 GATE-style tests placed between the units. **"Teach me DS", "continue", "what's next": run `npm run syllabus` and follow it.** Read `brain/syllabus/README.md` once per session before teaching these subjects: it says how to teach each item and how to write the tests.
+`brain/syllabus/` holds the whole syllabus: 94 units, 1159 items in strict order on two tracks (main block, 2nd slot), every one of 2448 PYQs (1987–2026) assigned to a pattern, 48 tests between the units. **"Teach me DS", "continue", "what's next": run `npm run syllabus` and follow it.** Read `brain/syllabus/README.md` once per session before teaching these subjects: it says how to teach each item and how to write the tests.
 
 Key commands: `npm run syllabus` (the exact next step), `-- done <item>` (only after a correct answer), `-- test <id>` and `-- check-test <id>` (blueprint), `-- pyq <id>` (a real PYQ; never write one from memory), `npm run check:syllabus`.
 

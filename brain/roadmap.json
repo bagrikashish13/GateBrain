@@ -382,14 +382,14 @@
         "State minimisation and ASM charts"
       ],
       "days": [
-        "8 Dec · Number systems, 2's complement, overflow, fixed point",
-        "9 Dec · IEEE 754; Boolean algebra",
-        "10 Dec · K-maps, prime implicants, tabular method",
-        "11 Dec · Combinational: MUX, decoders, adders, carry-lookahead",
-        "12 Dec · Sequential: flip-flops, conversions, counters",
-        "13 Dec · DL PYQs (light: dsa-grand-01 is today)"
+        "8 Dec · DL01 Number systems, DL02 Signed integers and binary arithmetic",
+        "9 Dec · DL03 Fixed and floating point (IEEE 754), test dl-ut-01",
+        "10 Dec · DL04 Boolean algebra, DL05 Minimisation, test dl-ut-02",
+        "11 Dec · DL06 Combinational circuits",
+        "12 Dec · DL07 Sequential circuits, test dl-ut-03",
+        "13 Dec · Light: DSA grand test 1"
       ],
-      "note": "2nd slot (2h): Maths starts, with logic."
+      "note": "Follows brain/syllabus/ Part 6 (npm run syllabus, main block). Stage test dl-stage on 14 Dec. 2nd slot (2h): Maths starts, with linear algebra."
     },
     {
       "title": "Computer Organization & Architecture",
@@ -426,15 +426,17 @@
         "Device-level I/O details"
       ],
       "days": [
-        "14–15 Dec · Instruction formats, addressing modes",
-        "16 Dec · ALU, datapath, hardwired vs microprogrammed control",
-        "17–19 Dec · Memory hierarchy, cache mapping, AMAT, write policies, interleaving",
-        "20 Dec · Light: dsa-grand-02",
-        "21–23 Dec · Pipelining: speedup, stalls, hazards, branch penalty",
-        "24 Dec · I/O: interrupts, DMA",
-        "25 Dec · COA PYQs and notes"
+        "14 Dec · DL stage test, then CO01 Cache mapping",
+        "15 Dec · CO01 Cache mapping",
+        "16–17 Dec · CO02 Cache performance, test coa-ut-01",
+        "18 Dec · CO03 Instructions and addressing modes",
+        "19 Dec · CO04 Datapath and control, test coa-ut-02",
+        "20 Dec · Light: DSA grand test 2",
+        "21–22 Dec · CO05 Pipelining",
+        "23–24 Dec · CO06 Input and output, CO07 Memory interfacing, test coa-ut-03",
+        "25 Dec · COA stage test"
       ],
-      "note": "2nd slot (2h): Maths, sets and relations, then counting."
+      "note": "Follows brain/syllabus/ Part 7 (npm run syllabus, main block): cache first, the heaviest topic. 2nd slot (2h): Maths, probability then sets, relations and functions, then graph theory."
     },
     {
       "title": "Computer Networks",
@@ -474,21 +476,23 @@
         "Header field trivia, port numbers"
       ],
       "days": [
-        "26 Dec · Layering, switching, delay and throughput numericals",
+        "26 Dec · CN01 Layers, switching and delay",
         "27 Dec · Light Sunday: sectional on finished subjects",
-        "28 Dec · Error detection, CRC; MAC: CSMA/CD, Ethernet",
-        "29 Dec · Sliding window: stop-and-wait, GBN, SR",
-        "30–31 Dec · IPv4: CIDR, subnetting, fragmentation, NAT",
-        "1 Jan · Routing: distance vector, link state",
-        "2 Jan · TCP: flow control, sequence numbers",
+        "28 Dec · CN02 IPv4 addressing and forwarding",
+        "29 Dec · CN03 Datagrams, fragmentation and NAT, test cn-ut-01",
+        "30 Dec · CN04 Stop-and-wait and sliding windows",
+        "31 Dec · CN05 TCP",
+        "1 Jan · CN06 Congestion control, test cn-ut-02",
+        "2 Jan · CN07 Routing",
         "3 Jan · Full-length 00: 3-hour stamina run on finished subjects",
-        "4 Jan · TCP congestion control; socket API, DNS, HTTP",
-        "5–6 Jan · CN PYQs and notes"
+        "4 Jan · CN08 Data link: error detection, medium access, Ethernet",
+        "5 Jan · CN09 DNS and HTTP, test cn-ut-03",
+        "6 Jan · CN stage test"
       ],
-      "note": "The 2027 syllabus is smaller than older CN courses: skip lectures on the dropped protocols. 2nd slot (2h): Maths, linear algebra, then probability."
+      "note": "Follows brain/syllabus/ Part 8 (npm run syllabus, main block), on the trimmed 2027 syllabus: skip lectures on UDP, ARP, DHCP, ICMP, email and FTP. 2nd slot (2h): Maths, posets, groups and combinatorics, then calculus and logic."
     },
     {
-      "title": "Maths, the scoring parts",
+      "title": "Maths: Discrete and Engineering",
       "short": "Maths",
       "subject": "discrete-maths",
       "start": "2027-01-07",
@@ -496,42 +500,49 @@
       "marks": "10–13",
       "focus": [
         {
-          "text": "Propositional and first-order logic: equivalence, validity, English to quantifiers",
+          "text": "Probability: conditional, Bayes, expectation; binomial, Poisson, uniform, exponential, normal",
           "top": true
         },
         {
-          "text": "Linear algebra: rank, determinant, eigenvalue shortcuts, when a system has solutions",
+          "text": "Linear algebra: eigenvalues, rank, systems of equations, determinants, LU",
           "top": true
         },
         {
-          "text": "Probability: conditional, Bayes, expectation; binomial, Poisson, uniform, normal, exponential",
+          "text": "Graph theory: degrees, connectivity, colouring, planarity, matching",
           "top": true
         },
         {
-          "text": "Sets, relations, functions: counting relations, equivalence relations, posets and lattices"
+          "text": "Sets, relations, functions; posets, lattices, groups"
         },
         {
-          "text": "Graph theory: degree sum, connectivity, matching, colouring, planarity"
+          "text": "Calculus: limits, continuity, maxima and minima, definite integrals"
         },
         {
-          "text": "Counting: permutations, combinations, pigeonhole, inclusion–exclusion, recurrences"
+          "text": "Counting, recurrences, generating functions"
+        },
+        {
+          "text": "Propositional and first-order logic"
         }
       ],
       "skip": [
-        "Calculus, unless ahead (about 1–2 marks)",
-        "Groups and generating functions beyond the PYQ patterns",
-        "Statistics beyond mean, median, mode, standard deviation"
+        "DS&AI-paper extras (Bayesian networks, chi-square, SVD, projections)",
+        "Proofs by induction and other descriptive old questions"
       ],
       "days": [
-        "8–12 Dec · 2nd slot: propositional and first-order logic",
-        "14–18 Dec · 2nd slot: sets, relations, functions, posets, lattices, groups",
-        "19–23 Dec · 2nd slot: counting, pigeonhole, inclusion–exclusion, recurrences",
-        "24–28 Dec · 2nd slot: graph theory",
-        "29 Dec–1 Jan · 2nd slot: linear algebra",
-        "2–6 Jan · 2nd slot: probability and statistics",
-        "7–8 Jan · Full days: mixed Maths PYQs, weak spots; calculus only if ahead"
+        "8–10 Dec · 2nd slot: LA01–LA03 linear algebra",
+        "11 Dec · 2nd slot: test ma-ut-01",
+        "12 Dec · 2nd slot: CM01 counting",
+        "14–16 Dec · 2nd slot: PR01–PR03 probability",
+        "17 Dec · 2nd slot: test ma-ut-02",
+        "18–21 Dec · 2nd slot: SR01–SR03 sets, relations, functions, test ma-ut-03",
+        "22–24 Dec · 2nd slot: GT01–GT03 graph theory, test ma-ut-04",
+        "26–29 Dec · 2nd slot: AL01–AL02 posets, lattices, groups; CM02 recurrences and generating functions; test ma-ut-05",
+        "30–31 Dec · 2nd slot: CA01–CA02 calculus",
+        "2–5 Jan · 2nd slot: LG01–LG02 logic, test ma-ut-06",
+        "7 Jan · Maths sectional (30 questions), then weak spots",
+        "8 Jan · Buffer for any block that ran late"
       ],
-      "note": "Taught in the 2h second slot from 8 Dec, so it never piles up at the end. These two days are also the buffer for any block that ran late."
+      "note": "Follows brain/syllabus/ Parts 9 and 10 (npm run syllabus, 2nd slot), in the priority order from the papers. Taught 2h a day from 8 Dec, so it never piles up at the end."
     },
     {
       "title": "Full mocks, analysis and revision",
@@ -632,7 +643,7 @@
   ],
   "cut": [
     "The skip list of every block",
-    "Maths: calculus stays out; then groups and generating functions; keep logic, sets and relations, linear algebra, probability",
+    "The end of each part's order first (it is ordered by weight): logic before calculus before the rest of combinatorics in Maths",
     "Mock block: shrink from four weeks to three (start 16 Jan) before dropping any subject"
   ],
   "keep": "Daily revision, same-day analysis, the Sunday sectional, at least 10 full-length mocks"

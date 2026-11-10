@@ -1,4 +1,6 @@
-# Syllabus: C, Complexity, Data Structures, Algorithms
+# Syllabus: every subject still to learn
+
+C, Complexity, Data Structures, Algorithms, Compiler Design, Digital Logic, COA, Computer Networks, Discrete and Engineering Mathematics. (OS, DBMS and TOC were finished before this syllabus existed; General Aptitude has its own sprint in `brain/ga-roadmap.md`.)
 
 **This is the only syllabus for these subjects. Teach from it, in its order, every time, without being asked.** The student should never have to remind you, and you should never plan these subjects from memory.
 
@@ -13,8 +15,8 @@ Do exactly what it prints. It knows what has been taught, what comes next, what 
 
 **Two tracks run side by side**, each in its own strict order with its own tests (`track` in `sequence.json`):
 
-- **Main block:** C, Complexity, Data Structures, Algorithms (Parts 1–4).
-- **2nd slot:** Compiler Design (Part 5, `5-compiler-design.md`; units CD01–CD06 were studied in lectures, so their items are *seen*: one hard check each).
+- **Main block (4–5h a day):** C, Complexity, Data Structures, Algorithms, then Digital Logic, COA, Computer Networks (Parts 1–4, 6, 7, 8).
+- **2nd slot (2h a day):** Compiler Design (Part 5; units CD01–CD06 were studied in lectures, so their items are *seen*: one hard check each), then Maths (Parts 9 and 10, interleaved in one order).
 
 `npm run syllabus` prints the next step of each track; `npm run syllabus -- next second` only the 2nd slot. A test due on one track never holds the other. The order check works within a track (a parse tree's "leaf" in Compiler Design is not the Data Structures tree).
 
@@ -45,22 +47,32 @@ The student must never meet an idea before its lesson. This is checked, not hope
 
 **Why the parts are in this order:** C comes first because everything else is written in it. Complexity and searching come next because every data structure is costed in those terms, and lists, heaps and trees are compared with binary search. Data Structures come before Algorithms because sorting uses heaps and graph algorithms use queues, stacks and union-find. Inside C: operators before control flow, control flow before functions, pointers before strings, and all of those before recursion, because the recursion PYQs use them.
 
+**The later parts put the heaviest topics first, as far as prerequisites allow** (weights are marks a paper from the CS papers since 2021): Digital Logic before COA (COA uses adders, decoders and 2's complement); inside COA, cache (2.7) before instructions and pipelines (1.8); inside Networks, IPv4 addressing (1.6) right after layers and delay. Maths runs probability 3.2, graph theory 2.8, linear algebra 2.7, sets and algebra 2.4, calculus 1.5, combinatorics 1.3, logic 0.8: so linear algebra, then counting (probability is built on it), probability, sets, relations and functions, graph theory, algebra, the rest of combinatorics, calculus, logic. If time runs short, the end of each part is what to drop.
+
 **When you teach,** the command prints NOT TAUGHT YET at every step. Never use anything on that list in an explanation, an example or a question, not even in passing. Write your own examples with only what the student has. If the student asks about something from the list, answer in a line and say which unit covers it. It also prints "Builds on": if the student wobbles on one of those, go back to that item before continuing.
 
-**When you write a test,** `check-test` fails any question that uses a concept taught after the test. Questions on C, DS or Algorithms in a daily mock follow the same rule: only what is ticked.
+**When you write a test,** `check-test` fails any question that uses a concept taught after the test. Questions on syllabus subjects in a daily mock follow the same rule: only what is ticked.
 
 ## What it covers, and how we know
 
-- **Official scope:** GATE 2027 CS syllabus from IIT Madras ([PDF](https://gate2027.iitm.ac.in/static/doc/GATE2027_Syllabus/CS_GATE2027_Syllabus.pdf)), Sections 4 and 5, quoted at the top of each part.
-- **Every PYQ:** 770 questions from 1987 to 2026: GATE CS 674, GATE IT 2004–2008 74, GATE DA and the DS&AI sample paper 22. Source: GATE Overflow's public books (2022, 2026 and 2027 editions, merged by paper, year, set and question). 33 of the 770 are filed under Compiler Design or TOC (parameter passing, scoping, activation records, expression evaluation, P vs NP) but test the same skills.
+- **Official scope:** GATE 2027 CS syllabus from IIT Madras ([PDF](https://gate2027.iitm.ac.in/static/doc/GATE2027_Syllabus/CS_GATE2027_Syllabus.pdf)), quoted at the top of each part. Topics the 2027 wording dropped (disks in COA; UDP, ARP, DHCP, ICMP, email, FTP, framing and bridges in Networks; assemblers and register allocation in Compiler Design) are legacy lines.
+- **Every PYQ:** 2448 questions from 1987 to 2026 (GATE CS, GATE IT 2004–2008, the DS&AI papers and sample paper), each assigned to exactly the pattern it tests. Source: GATE Overflow's public books (2022, 2026 and 2027 editions, merged by paper, year, set and question; links from the PDFs). A few PYQs GATE Overflow files under one subject are taught where the 2027 syllabus puts them (memory chips under COA, not Digital Logic).
 - **The proof is mechanical:** `pyq-index.jsonl` lists every PYQ, and `npm run check:syllabus` fails if any PYQ is not assigned to a syllabus item, or if a unit has no test. `npm test` runs the same check. The repo is public, so it stores ids and links only, never question text.
 
-| Part | File | Units | Hours |
-|---|---|---|---|
-| Programming in C | `1-programming-in-c.md` | P01–P13 | 33.5 |
-| Complexity and searching | `2-complexity-and-searching.md` | X01–X04 | 12 |
-| Data Structures (with hashing) | `3-data-structures.md` | D01–D11 | 37.5 |
-| Algorithms | `4-algorithms.md` | A01–A13 | 38 |
+| Part | File | Track | Units | Items | PYQs | Hours |
+|---|---|---|---|---|---|---|
+| Programming in C | `1-programming-in-c.md` | main | P01–P13 | 188 | 205 | 33.5 |
+| Complexity and searching | `2-complexity-and-searching.md` | main | X01–X04 | 57 | 91 | 12 |
+| Data Structures (with hashing) | `3-data-structures.md` | main | D01–D11 | 203 | 255 | 37.5 |
+| Algorithms | `4-algorithms.md` | main | A01–A13 | 171 | 220 | 38 |
+| Compiler Design | `5-compiler-design.md` | 2nd slot | CD01–CD10 | 121 | 208 | 18.5 |
+| Digital Logic | `6-digital-logic.md` | main | DL01–DL07 | 100 | 306 | 14 |
+| Computer Organization and Architecture | `7-computer-organization.md` | main | CO01–CO07 | 82 | 257 | 14 |
+| Computer Networks | `8-computer-networks.md` | main | CN01–CN09 | 80 | 225 | 18.5 |
+| Discrete Mathematics | `9-discrete-mathematics.md` | 2nd slot | CM, SR, GT, AL, LG | 92 | 386 | 23 |
+| Engineering Mathematics | `10-engineering-mathematics.md` | 2nd slot | LA, PR, CA | 65 | 296 | 17 |
+
+48 tests sit between the units: unit tests, stage tests, two sectionals for C/DS/Algo, one for Maths, and the two DSA grand tests.
 
 Each unit is a topic, each `###` a subtopic, each line one minor topic with one idea. The kinds:
 
