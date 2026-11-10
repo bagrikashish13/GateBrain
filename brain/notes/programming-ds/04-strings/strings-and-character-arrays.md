@@ -43,6 +43,10 @@ In C, a string is a `char` array ending with `\0`. `char s[] = "abc"` is a writa
   - `char s[4] = "GATE";` fills all 4 allocated bytes without room for `'\0'`. Calling `strlen(s)` or `printf("%s", s)` reads out of bounds into stack garbage.
 - **`strcpy` overlapping memory:**
   - Calling `strcpy(s + 1, s)` has undefined behavior because source and destination overlap, propagating characters infinitely.
+- **Letter Distance Math:**
+  - Subtracting characters `'R' - 'N'` gives coordinate distance / steps ($18 - 14 = 4$), NOT the number of letters between them.
+- **`argv` 0-based Indexing:**
+  - `argv[i][j]` is 0-based for both argument and character: in `"three"`, `[0]='t'`, `[1]='h'`, `[2]='r'`. `*argv[i]` dereferences index 0 (`argv[i][0]`).
 
 ## Example: GATE CSE 2025 Set 2
 ```c
