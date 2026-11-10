@@ -122,7 +122,7 @@ hours: 2
 - DL06.10 Q Gray code and code converters. PYQ: 2006-40
 
 ### Analysing circuits
-- DL06.11 T Analyse a circuit block by block from the inputs (gates, decoders, multiplexers, adders), then simplify. With propagation delays, an output can glitch while signals race along paths of different length.
+- DL06.11 T Analyse a circuit block by block from the inputs (gates, decoders, multiplexers, adders), then simplify. With gate delays, an output can glitch while signals race along paths of different length.
 - DL06.12 Q The output function of a combinational circuit; what changes once gates have delays. PYQ: 2025s2-21, 2024s1-18, 2013-5, 2011-13, 2010-31, IT2008-9, IT2007-45, 2006-35, IT2006-36, 2005-15, IT2005-43, IT2005-10, 2003-47, 2002-7, 1997-5.5, 1996-5, 1996-2.22, 1996-2.21, 1994-1.8, 1993-6.1, 1991-5.a, 1990-3.i
 - DL06.13 Q Which building blocks (multiplexers, half adders, XOR gates with constants) can implement every function. PYQ: 1999-2.9, 1993-9, 1992-02.ii
 
