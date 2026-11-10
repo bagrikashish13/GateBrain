@@ -36,7 +36,7 @@ export function DayView({ data }: { data: TodayData }) {
         <DatePicker date={selected} years={years} slipped={slipped} onChange={(d) => inRange(d) && setSelected(d)} />
       </div>
 
-      {/* Phone: one column (timer, tests, revision, tasks). Laptop: timer and revision on the left,
+      {/* Phone: one column (timer, tests, tasks, revision). Laptop: timer and revision on the left,
           tests and tasks on the right. The columns dissolve on a phone, so `order` sets the stack. */}
       <div className="grid gap-4 lg:grid-cols-2 lg:items-start lg:gap-x-8">
         <div className="contents lg:grid lg:gap-4">
@@ -56,7 +56,7 @@ export function DayView({ data }: { data: TodayData }) {
               </motion.div>
             )}
           </AnimatePresence>
-          <Appear key={`rev-${selected}`} still={still} className="order-3">
+          <Appear key={`rev-${selected}`} still={still} className="order-4">
             <RevisionCard date={selected} today={today} revision={data.revision} subjects={data.subjects} />
           </Appear>
         </div>
@@ -66,7 +66,7 @@ export function DayView({ data }: { data: TodayData }) {
               <TestsCard tests={data.tests} />
             </Appear>
           )}
-          <Appear key={`tasks-${selected}`} still={still} className="order-4">
+          <Appear key={`tasks-${selected}`} still={still} className="order-3">
             <TasksCard date={selected} today={today} tasks={plans[selected] ?? []} subjects={data.subjects} />
           </Appear>
         </div>

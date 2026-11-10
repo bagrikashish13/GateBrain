@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { marksTop, parseRoadmap, phaseDays, position, rangeLabel, type Phase } from "./format";
+import { daySpan, marksTop, parseRoadmap, phaseDays, position, rangeLabel, type Phase } from "./format";
 import { cut, leg, lengthOf, link, links, pathOf, walkLeg, walked } from "./path";
 
 const phase = (start: string, end: string, title = "Block"): Record<string, unknown> => ({ title, start, end, focus: [{ text: "x", top: true }, { text: "" }] });
@@ -110,5 +110,25 @@ describe("path", () => {
     expect(walked(legs, 1, 0)).toHaveLength(1);
     expect(walked(legs, 1, 0.5)).toHaveLength(2);
     expect(walked(legs, 2, 0.5)).toHaveLength(2);
+  });
+});
+
+describe("daySpan", () => {
+  const block = { start: "2026-11-28", end: "2026-12-07" };
+  const at = (label: string, b = block) => daySpan({ date: null, label }, b);
+  it("reads the date at the start of a label", () => {
+    expect(at("8 Dec · DL01 Number systems")).toEqual({ from: "2026-12-08", to: "2026-12-08" });
+    expect(at("16–17 Dec · CO02 Cache performance")).toEqual({ from: "2026-12-16", to: "2026-12-17" });
+    expect(at("30 Nov–3 Dec · A07 traversals")).toEqual({ from: "2026-11-30", to: "2026-12-03" });
+    expect(at("13 and 20 Dec · Grand tests")).toEqual({ from: "2026-12-13", to: "2026-12-20" });
+  });
+  it("picks the year nearest the block, across new year", () => {
+    expect(at("2–5 Jan · Logic", { start: "2026-12-26", end: "2027-01-06" })).toEqual({ from: "2027-01-02", to: "2027-01-05" });
+    expect(at("8–10 Dec · Linear algebra", { start: "2027-01-07", end: "2027-01-08" })).toEqual({ from: "2026-12-08", to: "2026-12-10" });
+  });
+  it("prefers the entry's own date, and gives up on anything else", () => {
+    expect(daySpan({ date: "2026-11-11", label: "11 Nov · CD01" }, block)).toEqual({ from: "2026-11-11", to: "2026-11-11" });
+    expect(at("Weak patterns from the sectional")).toBeNull();
+    expect(at("Light: DSA grand test")).toBeNull();
   });
 });

@@ -4,16 +4,39 @@ import { useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type Re
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Check, ChevronDown, Flag, Hourglass, RotateCcw } from "lucide-react";
 import { cn } from "cn";
+import { Fold } from "@/components/fold";
 import { Progress } from "@/components/progress";
 import { SubjectMarker } from "@/components/subject-marker";
-import { marksTop, phaseDays, position, rangeLabel, type Phase, type Position, type Roadmap, type Status } from "@/lib/roadmap/format";
+import { daySpan, marksTop, phaseDays, position, rangeLabel, type DaySpan, type Phase, type PhaseDay, type Position, type Roadmap, type Status } from "@/lib/roadmap/format";
 import { leg, pathOf, walked, type Pt } from "@/lib/roadmap/path";
-import { daysBetween } from "@/lib/time";
+import { addDayKey, daysBetween } from "@/lib/time";
 
 type Subjects = Record<string, { short: string; colour: string }>;
 type Props = { roadmap: Roadmap; today: string; examDate: string | null; examDays: number | null; subjects: Subjects };
 
 const EASE = [0.2, 0.7, 0.2, 1] as const;
+const SHOWN_DAYS = 4;
+
+/* ---------- A block's day-by-day entries, with the days each covers ---------- */
+
+type Dated = { day: PhaseDay; span: DaySpan | null; i: number };
+const datedDays = (phase: Phase): Dated[] => phase.days.map((day, i) => ({ day, span: daySpan(day, phase), i }));
+/** Soonest first (the 2nd slot's days fall in among the main block's); entries without a date last. */
+const soonest = (xs: Dated[]) => [...xs].sort((a, b) => (a.span && b.span ? a.span.from.localeCompare(b.span.from) || a.i - b.i : a.span ? -1 : b.span ? 1 : a.i - b.i));
+const covers = (d: Dated, day: string) => !!d.span && d.span.from <= day && day <= d.span.to;
+const dayHead = (d: Dated) => (d.day.label.includes("·") ? d.day.label.split("·")[0].trim() : d.span ? rangeLabel(d.span.from, d.span.to) : null);
+const dayText = (d: Dated) => d.day.summary ?? (d.day.label.includes("·") ? d.day.label.replace(/^[^·]*·\s*/, "") : d.day.label);
+const lectures = (d: Dated, short = false) => (d.day.lectures ? (short ? `${d.day.lectures} lecs · ` : `${d.day.lectures} lectures: `) : "");
+
+/** What a block has on today (both tracks: at most two lines), or else its next entry. */
+function lookAhead(phase: Phase, today: string): { when: string; d: Dated }[] {
+  const all = datedDays(phase);
+  const now = soonest(all.filter((d) => covers(d, today))).slice(0, 2);
+  if (now.length) return now.map((d) => ({ when: "Today", d }));
+  const next = soonest(all.filter((d) => d.span && d.span.from > today))[0];
+  if (!next?.span) return [];
+  return [{ when: daysBetween(today, next.span.from) === 1 ? "Tomorrow" : rangeLabel(next.span.from, next.span.from), d: next }];
+}
 
 /**
  * The roadmap (brain/roadmap.json): where today sits, the daily routine, then every block as a node
@@ -45,36 +68,16 @@ export function RoadmapView({ roadmap, today, examDate, examDays, subjects }: Pr
                 {pos.daysLeftInBlock} {pos.daysLeftInBlock === 1 ? "day" : "days"} left
               </span>
             </p>
-            {(() => {
-              const todayDay = now.days.find((d) => d.date === today);
-              if (todayDay) {
-                return (
-                  <p className="flex items-center gap-2 text-[12.5px] text-muted-foreground">
-                    <span className="font-semibold text-mint">Today</span>
-                    <span>·</span>
-                    <span className="truncate text-fg">
-                      {todayDay.lectures ? `${todayDay.lectures} lectures: ` : ""}
-                      {todayDay.summary ?? todayDay.label}
-                    </span>
-                  </p>
-                );
-              }
-              const nextDay = now.days.find((d) => d.date && d.date > today);
-              if (nextDay) {
-                const isTomorrow = daysBetween(today, nextDay.date!) === 1;
-                return (
-                  <p className="flex items-center gap-2 text-[12.5px] text-muted-foreground">
-                    <span className="font-semibold text-mint">{isTomorrow ? "Tomorrow" : rangeLabel(nextDay.date!, nextDay.date!)}</span>
-                    <span>·</span>
-                    <span className="truncate text-fg">
-                      {nextDay.lectures ? `${nextDay.lectures} lectures: ` : ""}
-                      {nextDay.summary ?? nextDay.label}
-                    </span>
-                  </p>
-                );
-              }
-              return null;
-            })()}
+            {lookAhead(now, today).map(({ when, d }) => (
+              <p key={d.i} className="flex min-w-0 items-center gap-2 text-[12.5px] text-muted-foreground">
+                <span className="flex-none font-semibold text-mint">{when}</span>
+                <span>·</span>
+                <span className="truncate text-fg">
+                  {lectures(d)}
+                  {dayText(d)}
+                </span>
+              </p>
+            ))}
           </div>
         )}
         <div className="grid gap-1.5">
@@ -89,47 +92,49 @@ export function RoadmapView({ roadmap, today, examDate, examDays, subjects }: Pr
         </div>
       </header>
 
-      {/* Phone: one column. Laptop: the map on the left, the routine, marks and cut list beside it.
-          The side column dissolves on a phone, so `order` keeps the stack. */}
-      <div className="grid gap-7 lg:grid-cols-[minmax(0,640px)_minmax(0,1fr)] lg:items-start lg:gap-x-12">
-        <div className="contents lg:sticky lg:top-8 lg:col-start-2 lg:row-start-1 lg:grid lg:gap-7">
-          {roadmap.daily.length > 0 && (
-            <section aria-label="Every day" className="order-1 grid gap-2">
-              <h2 className="label">Every day</h2>
-              <ul className="grid grid-cols-2 gap-px border border-line bg-line">
-                {roadmap.daily.map((d) => (
-                  <li key={d.title} className="grid content-start gap-1 bg-void p-3">
-                    <span className="font-mono text-[11px] text-faint">{d.time}</span>
-                    <span className="text-[13px] leading-snug font-medium">{d.title}</span>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
-
-          {roadmap.weightage.length > 0 && <Weightage roadmap={roadmap} pos={pos} subjects={subjects} />}
-
-          {roadmap.cut.length > 0 && (
-            <section aria-label="If behind" className="order-4 grid gap-2">
-              <h2 className="label">If behind, cut in this order</h2>
-              <ol className="grid gap-2.5 border-t border-line pt-3">
-                {roadmap.cut.map((c, i) => (
-                  <li key={c} className="flex gap-3 text-[13.5px] leading-snug text-muted-foreground">
-                    <span className="num w-3 flex-none text-faint">{i + 1}</span>
-                    {c}
-                  </li>
-                ))}
-              </ol>
-              {roadmap.keep && (
-                <p className="mt-1 flex gap-3 border-t border-line pt-3 text-[13px] leading-snug">
-                  <span className="flex-none font-semibold text-alert">Never cut</span>
-                  <span className="text-muted-foreground">{roadmap.keep}</span>
-                </p>
-              )}
-            </section>
-          )}
-        </div>
-        <div className="order-2 min-w-0 lg:col-start-1 lg:row-start-1">
+      {/* Phone: the routine, marks and cut list folded under the header, then the map. Laptop: the map on
+          the left, the folds beside it. */}
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,640px)_minmax(0,1fr)] lg:items-start lg:gap-x-12">
+        {(roadmap.daily.length > 0 || roadmap.weightage.length > 0 || roadmap.cut.length > 0) && (
+          <div className="grid border-t border-line lg:sticky lg:top-8 lg:col-start-2 lg:row-start-1">
+            {roadmap.daily.length > 0 && (
+              <Fold title={<span className="text-[15px] font-semibold">Every day</span>} bodyClassName="pb-4">
+                <ul className="grid grid-cols-2 gap-px border border-line bg-line">
+                  {roadmap.daily.map((d) => (
+                    <li key={d.title} className="grid content-start gap-1 bg-void p-3">
+                      <span className="font-mono text-[11px] text-faint">{d.time}</span>
+                      <span className="text-[13px] leading-snug font-medium">{d.title}</span>
+                    </li>
+                  ))}
+                </ul>
+              </Fold>
+            )}
+            {roadmap.weightage.length > 0 && (
+              <Fold title={<span className="text-[15px] font-semibold">Marks per paper</span>} bodyClassName="pb-3">
+                <Weightage roadmap={roadmap} pos={pos} subjects={subjects} />
+              </Fold>
+            )}
+            {roadmap.cut.length > 0 && (
+              <Fold title={<span className="text-[15px] font-semibold">If behind, cut in this order</span>} bodyClassName="grid gap-3 pb-4">
+                <ol className="grid gap-2.5">
+                  {roadmap.cut.map((c, i) => (
+                    <li key={c} className="flex gap-3 text-[13.5px] leading-snug text-muted-foreground">
+                      <span className="num w-3 flex-none text-faint">{i + 1}</span>
+                      {c}
+                    </li>
+                  ))}
+                </ol>
+                {roadmap.keep && (
+                  <p className="flex gap-3 border-t border-line pt-3 text-[13px] leading-snug">
+                    <span className="flex-none font-semibold text-alert">Never cut</span>
+                    <span className="text-muted-foreground">{roadmap.keep}</span>
+                  </p>
+                )}
+              </Fold>
+            )}
+          </div>
+        )}
+        <div className="min-w-0 lg:col-start-1 lg:row-start-1">
           <ZigZag roadmap={roadmap} pos={pos} today={today} examDate={examDate} examDays={examDays} subjects={subjects} />
         </div>
       </div>
@@ -279,8 +284,7 @@ function ZigZag({ roadmap, pos, today, examDate, examDays, subjects }: Omit<Prop
           }
           const p = phases[row.i];
           const isNow = pos.status[row.i] === "now";
-          const todayInPhase = isNow ? p.days.find((d) => d.date === today) : null;
-          const nextInPhase = isNow && !todayInPhase ? p.days.find((d) => d.date && d.date > today) : null;
+          const ahead = isNow ? lookAhead(p, today) : [];
           return (
             <li key={`${p.start}-${p.title}`} className="grid gap-3">
               <Line side={side} still={still}>
@@ -299,16 +303,12 @@ function ZigZag({ roadmap, pos, today, examDate, examDays, subjects }: Omit<Prop
                     {p.marks && <span className="text-muted-foreground">· {p.marks} marks</span>}
                     <ChevronDown className={cn("size-4 stroke-[1.75] text-faint transition-transform duration-300", open.has(row.i) && "rotate-180")} aria-hidden />
                   </span>
-                  {todayInPhase && (
-                    <span className="text-[12px] font-medium text-mint">
-                      Today: {todayInPhase.lectures ? `${todayInPhase.lectures} lecs · ` : ""}{todayInPhase.summary ?? todayInPhase.label}
+                  {ahead.map(({ when, d }) => (
+                    <span key={d.i} className="text-[12px] font-medium text-mint">
+                      {when}: {lectures(d, true)}
+                      {dayText(d)}
                     </span>
-                  )}
-                  {nextInPhase && (
-                    <span className="text-[12px] font-medium text-mint">
-                      {daysBetween(today, nextInPhase.date!) === 1 ? "Tomorrow" : rangeLabel(nextInPhase.date!, nextInPhase.date!)}: {nextInPhase.lectures ? `${nextInPhase.lectures} lecs · ` : ""}{nextInPhase.summary ?? nextInPhase.label}
-                    </span>
-                  )}
+                  ))}
                 </Info>
               </Line>
               <AnimatePresence initial={false}>
@@ -413,11 +413,16 @@ function StatusText({ status, phase, today, pos }: { status: Status; phase: Phas
 }
 
 function Details({ phase, today, side, still, panelRef }: { phase: Phase; today: string; side: "left" | "right"; still: boolean; panelRef: (el: HTMLElement | null) => void }) {
+  const [all, setAll] = useState(false);
   const item = (i: number) => ({
     initial: still ? false : { opacity: 0, x: -8 },
     animate: { opacity: 1, x: 0 },
     transition: { duration: 0.25, delay: still ? 0 : 0.08 + i * 0.04 },
   });
+  const dated = datedDays(phase);
+  const list = all ? soonest(dated) : soonest(dated.filter((d) => !d.span || d.span.to >= today)).slice(0, SHOWN_DAYS);
+  const tomorrow = addDayKey(today, 1);
+  const lectureTotal = phase.days.reduce((s, d) => s + (d.lectures ?? 0), 0);
   return (
     <motion.div
       ref={panelRef}
@@ -428,73 +433,65 @@ function Details({ phase, today, side, still, panelRef }: { phase: Phase; today:
       transition={{ duration: 0.3, ease: EASE }}
     >
       <div className="cut grid gap-4 px-4 pt-4 pb-[18px]" style={{ "--cut": "12px", "--cut-fill": "var(--panel)" } as CSSProperties}>
-        {phase.days.length > 0 && (
+        {dated.length > 0 && (
           <div className="grid gap-2">
             <div className="flex items-center justify-between">
               <h3 className="label">Day by day</h3>
-              <span className="font-mono text-[11px] text-faint">
-                {(() => {
-                  const total = phase.days.filter((d) => typeof d.lectures === "number").reduce((s, d) => s + (d.lectures ?? 0), 0);
-                  return total > 0 ? `${total} lectures scheduled` : "";
-                })()}
-              </span>
+              {lectureTotal > 0 && <span className="font-mono text-[11px] text-faint">{lectureTotal} lectures scheduled</span>}
             </div>
-            <ul className="grid gap-1.5 border border-line bg-void p-2.5">
-              {phase.days.map((d, i) => {
-                const isToday = d.date === today;
-                const isPast = d.date ? d.date < today : false;
-                const isTomorrow = d.date ? daysBetween(today, d.date) === 1 : false;
-                return (
-                  <li
-                    key={d.label + i}
-                    className={cn(
-                      "flex items-start justify-between gap-2 border-b border-line/50 pb-2 pt-1 last:border-none last:pb-0",
-                      isToday ? "font-medium text-mint" : isPast ? "text-faint opacity-60" : "text-fg",
-                    )}
-                  >
-                    <div className="grid min-w-0 gap-0.5">
-                      <div className="flex items-center gap-2">
-                        <span className={cn("font-mono text-[11.5px] font-semibold", isToday ? "text-mint" : isPast ? "text-faint" : "text-fg")}>
-                          {d.date ? rangeLabel(d.date, d.date) : d.label.split("·")[0].trim()}
-                        </span>
-                        {isToday && (
-                          <span className="border border-mint/40 bg-mint/15 px-1 py-px font-sans text-[9.5px] font-semibold uppercase tracking-wider text-mint">
-                            Today
-                          </span>
+            {list.length > 0 && (
+              <ul className="grid gap-1.5 border border-line bg-void p-2.5">
+                {list.map((d) => {
+                  const isToday = covers(d, today);
+                  const isPast = !!d.span && d.span.to < today;
+                  const isTomorrow = !isToday && d.span?.from === tomorrow;
+                  const head = dayHead(d);
+                  return (
+                    <li
+                      key={d.i}
+                      className={cn(
+                        "flex items-start justify-between gap-2 border-b border-line/50 pt-1 pb-2 last:border-none last:pb-0",
+                        isToday ? "font-medium text-mint" : isPast ? "text-faint opacity-60" : "text-fg",
+                      )}
+                    >
+                      <div className="grid min-w-0 gap-0.5">
+                        {head && (
+                          <div className="flex items-center gap-2">
+                            <span className={cn("font-mono text-[11.5px] font-semibold", isToday ? "text-mint" : isPast ? "text-faint" : "text-fg")}>{head}</span>
+                            {isToday && <span className="border border-mint/40 bg-mint/15 px-1 py-px font-sans text-[9.5px] font-semibold tracking-wider text-mint uppercase">Today</span>}
+                            {isTomorrow && (
+                              <span className="border border-line-2 bg-raised px-1 py-px font-sans text-[9.5px] font-medium tracking-wider text-muted-foreground uppercase">Tomorrow</span>
+                            )}
+                            {isPast && <span className="font-mono text-[10px] text-faint">done</span>}
+                          </div>
                         )}
-                        {isTomorrow && (
-                          <span className="border border-line-2 bg-raised px-1 py-px font-sans text-[9.5px] font-medium uppercase tracking-wider text-muted-foreground">
-                            Tomorrow
-                          </span>
-                        )}
-                        {isPast && (
-                          <span className="font-mono text-[10px] text-faint">
-                            done
-                          </span>
-                        )}
+                        <span className={cn("text-[12.5px] leading-snug", isPast ? "text-faint" : isToday ? "font-medium text-fg" : "text-muted-foreground")}>{dayText(d)}</span>
                       </div>
-                      <span className={cn("text-[12.5px] leading-snug", isPast ? "text-faint" : isToday ? "font-medium text-fg" : "text-muted-foreground")}>
-                        {d.summary ?? (d.date ? d.label.replace(/^.*?·\s*/, "") : d.label)}
-                      </span>
-                    </div>
-                    {typeof d.lectures === "number" && (
-                      <span
-                        className={cn(
-                          "flex-none border px-1.5 py-0.5 font-mono text-[11px]",
-                          isToday ? "border-mint font-semibold text-mint" : "border-line text-faint",
-                        )}
-                      >
-                        {d.lectures} lec{d.lectures === 1 ? "" : "s"}
-                      </span>
-                    )}
-                  </li>
-                );
-              })}
-            </ul>
+                      {typeof d.day.lectures === "number" && (
+                        <span className={cn("flex-none border px-1.5 py-0.5 font-mono text-[11px]", isToday ? "border-mint font-semibold text-mint" : "border-line text-faint")}>
+                          {d.day.lectures} lec{d.day.lectures === 1 ? "" : "s"}
+                        </span>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+            {(all || list.length < dated.length) && (
+              <button
+                type="button"
+                onClick={() => setAll((x) => !x)}
+                aria-expanded={all}
+                className="flex min-h-10 w-fit items-center gap-2 text-[12.5px] text-muted-foreground transition-colors hover:text-fg"
+              >
+                {all ? "Show fewer" : `Show all ${dated.length}`}
+                <ChevronDown className={cn("size-4 stroke-[1.75] text-faint transition-transform", all && "rotate-180")} aria-hidden />
+              </button>
+            )}
           </div>
         )}
         {phase.focus.length > 0 && (
-          <div className={cn("grid gap-2.5", phase.days.length > 0 && "border-t border-line pt-3.5")}>
+          <div className={cn("grid gap-2.5", dated.length > 0 && "border-t border-line pt-3.5")}>
             <h3 className="label">Do first</h3>
             <ul className="grid gap-2.5">
               {phase.focus.map((f, i) => (
@@ -535,8 +532,7 @@ function Weightage({ roadmap, pos, subjects }: { roadmap: Roadmap; pos: Position
   const covered = new Set([...roadmap.done, ...roadmap.phases.filter((_, i) => pos.status[i] === "done").map((p) => p.subject)]);
   const max = Math.max(...roadmap.weightage.map((w) => marksTop(w.marks)), 1);
   return (
-    <section aria-label="Marks per paper" className="order-3 grid gap-2">
-      <h2 className="label">Marks per paper</h2>
+    <section aria-label="Marks per paper">
       <ul className="grid border-t border-line">
         {roadmap.weightage.map((w, i) => {
           const done = covered.has(w.subject);

@@ -163,3 +163,38 @@ export function rangeLabel(start: string, end: string): string {
   if (start === end) return `${sd} ${MONTHS[sm - 1]}`;
   return sm === em ? `${sd}–${ed} ${MONTHS[em - 1]}` : `${sd} ${MONTHS[sm - 1]} – ${ed} ${MONTHS[em - 1]}`;
 }
+
+export type DaySpan = { from: string; to: string };
+const DAY_HEAD = /^(\d{1,2})(?:\s+([A-Z][a-z]{2}))?(?:\s*(?:–|-|and)\s*(\d{1,2})\s+([A-Z][a-z]{2}))?$/;
+const pad = (n: number) => String(n).padStart(2, "0");
+
+/**
+ * The days a day-by-day entry covers: its date, or the "8 Dec", "16–17 Dec", "30 Nov–3 Dec" or
+ * "13 and 20 Dec" before the "·" in its label, in the year that puts it nearest its block. Null when
+ * the label starts with neither.
+ */
+export function daySpan(day: Pick<PhaseDay, "date" | "label">, block: Pick<Phase, "start" | "end">): DaySpan | null {
+  if (day.date) return { from: day.date, to: day.date };
+  const m = DAY_HEAD.exec(day.label.split("·")[0].trim());
+  if (!m) return null;
+  const [, d1, m1, d2, m2] = m;
+  const first = MONTHS.indexOf(m1 ?? m2 ?? "");
+  const last = MONTHS.indexOf(m2 ?? m1 ?? "");
+  if (first < 0 || last < 0) return null;
+  const y0 = Number(block.start.slice(0, 4));
+  const y1 = Number(block.end.slice(0, 4));
+  const nearest = (d: number, month: number): string | null => {
+    let best: string | null = null;
+    let gap = Infinity;
+    for (const y of new Set([y0 - 1, y0, y1, y1 + 1])) {
+      const iso = `${y}-${pad(month + 1)}-${pad(d)}`;
+      if (!isDay(iso)) continue;
+      const g = iso < block.start ? daysBetween(iso, block.start) : iso > block.end ? daysBetween(block.end, iso) : 0;
+      if (g < gap) [best, gap] = [iso, g];
+    }
+    return best;
+  };
+  const from = nearest(Number(d1), first);
+  const to = d2 ? nearest(Number(d2), last) : from;
+  return from && to && from <= to ? { from, to } : null;
+}

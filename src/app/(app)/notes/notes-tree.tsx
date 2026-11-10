@@ -34,9 +34,10 @@ export function NotesTree({ tree }: { tree: TreeFolder[] }) {
 
   const open = useMemo(() => {
     if (touched) return touched;
-    // Default: every subject and section that has notes is open.
+    // Default: the subjects folded, so the page opens as one short list; inside a subject, every
+    // section with notes is already open, so a note is two taps away at most.
     const withNotes = (fs: TreeFolder[]): string[] => fs.filter((f) => f.count > 0).flatMap((f) => [f.path, ...withNotes(f.folders)]);
-    let base: string[] = withNotes(tree);
+    let base: string[] = tree.flatMap((s) => withNotes(s.folders));
     try {
       if (saved) base = JSON.parse(saved) as string[];
     } catch {

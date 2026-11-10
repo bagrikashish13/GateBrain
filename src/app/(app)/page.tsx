@@ -6,6 +6,7 @@ import { planDays } from "@/lib/plan/store";
 import { todayRevision } from "@/lib/revision/store";
 import { daysToExam, getSettings } from "@/lib/settings";
 import { getSyllabusTree } from "@/lib/syllabus/store";
+import { nextLine } from "@/lib/syllabus/tree";
 import { allInProgress, getTest, listResults, listTests } from "@/lib/tests/store";
 import { addDays, dayKey } from "@/lib/time";
 import { DayView } from "./_today/day-view";
@@ -57,7 +58,10 @@ async function Today() {
         done: loaded.tree.done,
         total: loaded.tree.total,
         today: loaded.tree.today,
-        next: loaded.tree.next.kind === "teach" ? `${loaded.tree.next.item.id}, ${loaded.tree.next.unitTitle}` : loaded.tree.next.kind === "test" ? loaded.tree.next.id : loaded.tree.next.kind === "notes" ? `notes for ${loaded.tree.next.unit}` : null,
+        next: loaded.tree.tracks.flatMap((t) => {
+          const text = nextLine(t.next);
+          return text ? [{ track: t.name, text }] : [];
+        }),
       }
     : null;
 

@@ -4,6 +4,7 @@ import { Suspense, type ReactNode } from "react";
 import { ChevronRight, Crosshair, Play } from "lucide-react";
 import { cn } from "cn";
 import { AllDone, Progress, RollingCount } from "@/components/progress";
+import { Fold } from "@/components/fold";
 import { SubjectMarker } from "@/components/subject-marker";
 import { buttonVariants } from "@/components/ui/button";
 import { requireSession } from "@/lib/auth/session";
@@ -21,7 +22,7 @@ export const metadata: Metadata = { title: "Revise · GateBrain" };
 
 export default function RevisePage() {
   return (
-    <main className="mx-auto grid w-full max-w-[430px] grid-cols-1 content-start gap-5 px-4 pt-5 pb-8 md:max-w-[720px] lg:max-w-[1120px] lg:px-8 lg:pt-8">
+    <main className="mx-auto grid w-full max-w-[430px] grid-cols-1 content-start gap-5 overflow-x-clip px-4 pt-5 pb-8 md:max-w-[720px] lg:max-w-[1120px] lg:px-8 lg:pt-8">
       <Suspense
         fallback={
           <>
@@ -58,6 +59,34 @@ async function Revise() {
   const comingGroups = bySubject(coming, (i) => i.note.subject, order);
   const tomorrow = rev.forecast[0]?.count ?? 0;
 
+  const weakRow = (t: (typeof weak)[number]) => {
+    const s = subjectOf(t.subject, subjects);
+    const folder = t.topic ? sectionFolder(t.subject, t.topic) : null;
+    const count = notes.filter((n) => n.subject === t.subject && n.section && slugOf(n.section) === t.topic).length;
+    return (
+      <li key={`${t.subject}/${t.topic}`} className="flex min-h-12 items-center gap-2.5 border-b border-line py-2">
+        <SubjectMarker colour={s.colour} />
+        <span className="grid min-w-0 flex-1 gap-0.5">
+          <span className="truncate text-[14px]">{prettyName(t.topic ?? "")}</span>
+          <span className="text-[12px] text-faint">
+            {s.short} · {t.correct}/{t.questions} right
+          </span>
+        </span>
+        <span className="num w-11 text-right text-[14px] font-semibold text-alert">{pct(t.strength)}</span>
+        {count > 0 ? (
+          <Link href={`/revise/session?topic=${encodeURIComponent(`${t.subject}/${t.topic}`)}`} className="flex h-8 flex-none items-center gap-1.5 border border-line-2 px-2.5 text-[12.5px] font-medium transition-colors hover:border-act">
+            <Play className="size-3 fill-current stroke-[1.75]" aria-hidden />
+            {count}
+          </Link>
+        ) : (
+          <Link href={folderHref(folder ? `${t.subject}/${folder}` : t.subject)} className="flex h-8 flex-none items-center px-2.5 text-[12.5px] text-faint hover:text-fg">
+            No notes
+          </Link>
+        )}
+      </li>
+    );
+  };
+
   return (
     <>
       <header className="grid gap-1.5">
@@ -93,11 +122,11 @@ async function Revise() {
               <p className="text-[13px] text-faint">{rev.notes ? "Nothing due today." : "No notes yet."}</p>
             ) : (
               <div className="grid border-t border-line">
-                {todayGroups.map((g) => {
+                {todayGroups.map((g, i) => {
                   const s = subjectOf(g.subject, subjects);
                   const left = g.rows.filter((r) => r.kind === "due").length;
                   return (
-                    <SubjectGroup key={g.subject} name={s.name} colour={s.colour} open count={`${g.rows.length - left}/${g.rows.length}`} done={left === 0}>
+                    <SubjectGroup key={g.subject} name={s.name} colour={s.colour} open={i === 0} count={`${g.rows.length - left}/${g.rows.length}`} done={left === 0}>
                       {g.rows.map((r) =>
                         r.kind === "due" ? (
                           <NoteRow
@@ -157,35 +186,18 @@ async function Revise() {
               Weak topics from mocks
             </h2>
             {weak.length ? (
-              <ul className="grid border-t border-line">
-                {weak.map((t) => {
-                  const s = subjectOf(t.subject, subjects);
-                  const folder = t.topic ? sectionFolder(t.subject, t.topic) : null;
-                  const count = notes.filter((n) => n.subject === t.subject && n.section && slugOf(n.section) === t.topic).length;
-                  return (
-                    <li key={`${t.subject}/${t.topic}`} className="flex min-h-12 items-center gap-2.5 border-b border-line py-2">
-                      <SubjectMarker colour={s.colour} />
-                      <span className="grid min-w-0 flex-1 gap-0.5">
-                        <span className="truncate text-[14px]">{prettyName(t.topic ?? "")}</span>
-                        <span className="text-[12px] text-faint">
-                          {s.short} · {t.correct}/{t.questions} right
-                        </span>
-                      </span>
-                      <span className="num w-11 text-right text-[14px] font-semibold text-alert">{pct(t.strength)}</span>
-                      {count > 0 ? (
-                        <Link href={`/revise/session?topic=${encodeURIComponent(`${t.subject}/${t.topic}`)}`} className="flex h-8 flex-none items-center gap-1.5 border border-line-2 px-2.5 text-[12.5px] font-medium transition-colors hover:border-act">
-                          <Play className="size-3 fill-current stroke-[1.75]" aria-hidden />
-                          {count}
-                        </Link>
-                      ) : (
-                        <Link href={folderHref(folder ? `${t.subject}/${folder}` : t.subject)} className="flex h-8 flex-none items-center px-2.5 text-[12.5px] text-faint hover:text-fg">
-                          No notes
-                        </Link>
-                      )}
-                    </li>
-                  );
-                })}
-              </ul>
+              <div className="grid">
+                <ul className="grid border-t border-line">{weak.slice(0, 3).map(weakRow)}</ul>
+                {weak.length > 3 && (
+                  <Fold
+                    className="border-t border-line"
+                    title={<span className="text-[14px] font-medium text-muted-foreground">All weak topics</span>}
+                    meta={<span className="num flex-none text-[13px] text-faint">{weak.length - 3} more</span>}
+                  >
+                    <ul className="grid border-t border-line">{weak.slice(3).map(weakRow)}</ul>
+                  </Fold>
+                )}
+              </div>
             ) : (
               <p className="text-[13px] text-faint">None right now.</p>
             )}

@@ -3,7 +3,7 @@ import { parseTest } from "@/lib/tests/format";
 import type { Result } from "@/lib/tests/result";
 import { loadSyllabus } from "./load";
 import { buildCatalog, parseSyllabus, type Attempted, type Blueprint, type Pyq, type Sequence, type State } from "./syllabus";
-import { buildTree, streakOf, type TreeTest, type TreeUnit } from "./tree";
+import { buildTree, nextLine, streakOf, type TreeTest, type TreeUnit } from "./tree";
 
 const MD = `# Part 1 · Programming in C
 
@@ -66,8 +66,10 @@ describe("buildTree", () => {
     const t = buildTree(state(), "2026-11-01");
     expect(t.done).toBe(0);
     expect(t.total).toBe(4);
-    expect(t.parts.map((p) => p.title)).toEqual(["Programming in C", "Full-length tests"]);
-    expect(t.next.kind === "teach" && t.next.item.id).toBe("P01.1");
+    expect(t.parts.map((p) => p.title)).toEqual(["Programming in C", "Grand tests"]);
+    expect(t.tracks.map((x) => x.track)).toEqual(["main"]);
+    expect(t.tracks[0].next.kind === "teach" && t.tracks[0].next.item.id).toBe("P01.1");
+    expect(t.parts[0].current).toBe(true);
     expect(firstUnit(state()).items[0].state).toBe("next");
     expect(firstUnit(state()).state).toBe("now");
     expect(t.hoursLeft).toBe(4);
@@ -81,7 +83,7 @@ describe("buildTree", () => {
     expect(t.done).toBe(2);
     expect(t.today).toBe(2);
     expect(t.hoursLeft).toBe(2);
-    expect(t.next.kind === "teach" && t.next.item.id).toBe("P02.1");
+    expect(t.tracks[0].next.kind === "teach" && t.tracks[0].next.item.id).toBe("P02.1");
   });
 
   it("keeps seen items unticked and flags them", () => {
@@ -112,6 +114,50 @@ describe("buildTree", () => {
   it("says when a unit is behind its date", () => {
     expect(firstUnit(state(), "2026-11-04").late).toBe(3);
     expect(firstUnit(state({ progress: { done: { "P01.1": "d", "P01.2": "d" } } }), "2026-11-04").late).toBe(0);
+  });
+});
+
+describe("two tracks", () => {
+  // Part 5 on the 2nd slot, with its own unit test; the main block keeps Part 1 and the grand test.
+  const md = `${MD}
+# Part 5 · Compiler Design
+
+## KD01 · Parsing
+notes: compiler-design/02-parsing
+hours: 1
+
+- KD01.1 T What a grammar is.
+- KD01.2 T When a grammar is ambiguous.
+`;
+  const seq: Sequence = {
+    ...SEQ,
+    steps: [...SEQ.steps, { unit: "KD01", by: "2026-11-01", track: "second" }, { test: "k1", kind: "unit", covers: ["KD01"], by: "2026-11-02", track: "second" }],
+  };
+  const two = (over: Partial<State> = {}) => state({ catalog: buildCatalog(parseSyllabus("x.md", md, [])), sequence: seq, ...over });
+
+  it("lists each track's parts together, grand tests last on theirs", () => {
+    const t = buildTree(two(), "2026-11-01");
+    expect(t.parts.map((p) => `${p.track}:${p.title}`)).toEqual(["main:Programming in C", "main:Grand tests", "second:Compiler Design"]);
+    expect(t.tracks.map((x) => [x.name, x.done, x.total])).toEqual([
+      ["Main block", 0, 4],
+      ["2nd slot", 0, 2],
+    ]);
+  });
+
+  it("gives each track its own next item and current part", () => {
+    const t = buildTree(two({ progress: { done: { "P01.1": "d", "P01.2": "d" } } }), "2026-11-01");
+    const [main, second] = t.tracks;
+    expect(main.next).toMatchObject({ kind: "test", state: "write", id: "t1" });
+    expect(second.next.kind === "teach" && second.next.item.id).toBe("KD01.1");
+    expect(t.parts.filter((p) => p.current).map((p) => p.title)).toEqual(["Programming in C", "Compiler Design"]);
+    const kd = t.parts[2].steps[0] as TreeUnit;
+    expect(kd.items.map((i) => i.state)).toEqual(["next", "todo"]);
+    expect(kd.state).toBe("now");
+  });
+
+  it("says what comes next in one line", () => {
+    const t = buildTree(two({ progress: { done: { "P01.1": "d", "P01.2": "d" } } }), "2026-11-01");
+    expect(t.tracks.map((x) => nextLine(x.next))).toEqual(["Unit test t1", "KD01.1, Parsing"]);
   });
 });
 
