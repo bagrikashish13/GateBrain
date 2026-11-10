@@ -260,7 +260,7 @@ morning) gets the day, not options. Full roadmap in `brain/roadmap.json`; GA in 
      at least 2 from the most recently finished block. The day after a block ends: a 20-question sectional on it.
    - `ga-daily-<YYYY-MM-DD>`: 5 GA questions (~12 min) on sprint topics covered so far. From 5 Dec (GA phase
      2): 10 questions, timed per `ga-roadmap.md`.
-   - From 17 Jan (Revise block): full-length 65-question mocks on the roadmap's days instead of the daily one.
+   - From 9 Jan (Mocks block): full-length 65-question mocks on the roadmap's days instead of the daily one.
 4. **The brief:** a numbered list in order with times, one line each, the first step called out ("Start
    with 1, tell me when it's done"). Mention anything carried over from yesterday.
 

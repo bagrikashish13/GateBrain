@@ -7,23 +7,31 @@
   "daily": [
     {
       "time": "30m",
-      "title": "Revise due notes, with the agent"
+      "title": "Revise due notes, with the agent (first, every day)"
     },
     {
       "time": "1h",
-      "title": "General Aptitude sprint day"
+      "title": "General Aptitude sprint day (to 9 Dec, then a timed GA set)"
     },
     {
       "time": "4–5h",
-      "title": "Current block + its PYQs"
+      "title": "Main block: current subject + its PYQs"
     },
     {
-      "time": "1.5h",
-      "title": "Daily technical mock + its analysis"
+      "time": "2h",
+      "title": "2nd slot: CD to 20 Nov, Maths from 8 Dec"
+    },
+    {
+      "time": "1h",
+      "title": "The day's test (syllabus test, or the daily mock) + analysis"
     },
     {
       "time": "30m",
       "title": "Daily GA mock + its analysis"
+    },
+    {
+      "time": "Sun",
+      "title": "20-question sectional on finished subjects, lighter main block"
     }
   ],
   "phases": [
@@ -32,8 +40,8 @@
       "short": "CD",
       "subject": "compiler-design",
       "start": "2026-10-16",
-      "end": "2026-11-16",
-      "marks": "4–8",
+      "end": "2026-11-06",
+      "marks": "5–8",
       "focus": [
         {
           "text": "LR family: LR(0) items, SLR vs LALR vs CLR, SR/RR conflicts, counting states",
@@ -177,107 +185,17 @@
           "tasks": [
             "Learn · CD Ch-01 Lec 10: LR Parser — 2.5h #compiler-design"
           ]
-        },
-        {
-          "date": "2026-11-07",
-          "label": "7 Nov · 1 lecture: Ch-01 Lec 11 (Practice on TDP and BUP)",
-          "lectures": 1,
-          "summary": "Ch-01 Lec 11 (Practice)",
-          "tasks": [
-            "Learn · CD Ch-01 Lec 11: Practice on TDP and BUP — 2.5h #compiler-design"
-          ]
-        },
-        {
-          "date": "2026-11-08",
-          "label": "8 Nov · 1 lecture: Ch-02 Lec 01 (SDT)",
-          "lectures": 1,
-          "summary": "Ch-02 Lec 01 (SDT)",
-          "tasks": [
-            "Learn · CD Ch-02 Lec 01: Syntax Directed Translation — 2h #compiler-design"
-          ]
-        },
-        {
-          "date": "2026-11-09",
-          "label": "9 Nov · 1 lecture: Ch-02 Lec 02 (SDT)",
-          "lectures": 1,
-          "summary": "Ch-02 Lec 02 (SDT)",
-          "tasks": [
-            "Learn · CD Ch-02 Lec 02: Syntax Directed Translation — 2h #compiler-design"
-          ]
-        },
-        {
-          "date": "2026-11-10",
-          "label": "10 Nov · 1 lecture: Ch-02 Lec 03 (SDT)",
-          "lectures": 1,
-          "summary": "Ch-02 Lec 03 (SDT)",
-          "tasks": [
-            "Learn · CD Ch-02 Lec 03: Syntax Directed Translation — 2h #compiler-design"
-          ]
-        },
-        {
-          "date": "2026-11-11",
-          "label": "11 Nov · 1 lecture: Ch-02 Lec 04 (SDT)",
-          "lectures": 1,
-          "summary": "Ch-02 Lec 04 (SDT)",
-          "tasks": [
-            "Learn · CD Ch-02 Lec 04: Syntax Directed Translation — 2h #compiler-design"
-          ]
-        },
-        {
-          "date": "2026-11-12",
-          "label": "12 Nov · 1 lecture: Ch-03 Lec 01 (ICG & Optimization)",
-          "lectures": 1,
-          "summary": "Ch-03 Lec 01 (ICG & Optimization)",
-          "tasks": [
-            "Learn · CD Ch-03 Lec 01: Intermediate Code & Optimization — 2h #compiler-design"
-          ]
-        },
-        {
-          "date": "2026-11-13",
-          "label": "13 Nov · 1 lecture: Ch-03 Lec 02 (ICG & Optimization)",
-          "lectures": 1,
-          "summary": "Ch-03 Lec 02 (ICG & Optimization)",
-          "tasks": [
-            "Learn · CD Ch-03 Lec 02: Intermediate Code & Optimization — 2.5h #compiler-design"
-          ]
-        },
-        {
-          "date": "2026-11-14",
-          "label": "14 Nov · 1 lecture: Ch-03 Lec 03 (ICG & Optimization)",
-          "lectures": 1,
-          "summary": "Ch-03 Lec 03 (ICG & Optimization)",
-          "tasks": [
-            "Learn · CD Ch-03 Lec 03: Intermediate Code & Optimization — 2h #compiler-design"
-          ]
-        },
-        {
-          "date": "2026-11-15",
-          "label": "15 Nov · 1 lecture: Ch-03 Lec 04 (ICG & Optimization)",
-          "lectures": 1,
-          "summary": "Ch-03 Lec 04 (ICG & Optimization)",
-          "tasks": [
-            "Learn · CD Ch-03 Lec 04: Intermediate Code & Optimization — 2.5h #compiler-design"
-          ]
-        },
-        {
-          "date": "2026-11-16",
-          "label": "16 Nov · CD PYQs: parsing, LR tables, SDT, ICG, optimization",
-          "summary": "CD PYQs: parsing, LR tables, SDT, ICG, optimization",
-          "tasks": [
-            "PYQ · CD Parsing and LR tables — 3h #compiler-design",
-            "PYQ · CD SDT, ICG and Optimization — 3h #compiler-design",
-            "Learn · CD notes from PYQ mistakes, with the agent — 45m #compiler-design"
-          ]
         }
-      ]
+      ],
+      "note": "Done: Ch-01 (Lec 01–11) and Ch-02 Lec 01–03. The rest (Ch-02 Lec 04, Ch-03 Lec 01–04, PYQs) runs in the 2h second slot, 11–19 Nov, inside the PDS block; CD sectional on 20 Nov."
     },
     {
       "title": "Programming & Data Structures",
       "short": "PDS",
       "subject": "programming-ds",
-      "start": "2026-11-17",
+      "start": "2026-11-07",
       "end": "2026-11-27",
-      "marks": "7–12",
+      "marks": "8–11",
       "focus": [
         {
           "text": "C output tracing: recursion, pointers, arrays, static and scope",
@@ -305,13 +223,92 @@
         "Anything not in brain/syllabus/ (B-trees are in DBMS; no red-black trees, segment trees or tries)"
       ],
       "days": [
-        "6–15 Nov · C: P01–P13, alongside CD at first, tests c-ut-01 to c-ut-05, c-stage",
+        "7–9 Nov · C P01–P08 done, 3 days ahead of the syllabus dates",
+        "10–15 Nov · C P09–P13, tests c-ut-03-r2, c-ut-04, c-ut-05, c-stage",
         "15–18 Nov · Complexity and searching: X01–X04, tests cx-ut-01, cx-stage",
         "18–21 Nov · D01 arrays, D02 lists, D03 stacks, D04 queues, tests ds-ut-01, ds-stage-01",
         "21–25 Nov · D05–D09 trees, BSTs, AVL, heaps, tests ds-ut-02, ds-ut-03, ds-stage-02",
-        "25–27 Nov · D10 hashing, D11 graphs, test ds-ut-04, sectional pds-sectional"
+        "25–27 Nov · D10 hashing, D11 graphs, test ds-ut-04, sectional pds-sectional",
+        {
+          "date": "2026-11-11",
+          "label": "11 Nov · 2nd slot: CD Ch-02 Lec 04 (SDT)",
+          "lectures": 1,
+          "summary": "2nd slot: CD Ch-02 Lec 04 (SDT)",
+          "tasks": [
+            "Learn · CD Ch-02 Lec 04: Syntax Directed Translation — 2h #compiler-design"
+          ]
+        },
+        {
+          "date": "2026-11-12",
+          "label": "12 Nov · 2nd slot: CD Ch-03 Lec 01 (ICG)",
+          "lectures": 1,
+          "summary": "2nd slot: CD Ch-03 Lec 01 (ICG)",
+          "tasks": [
+            "Learn · CD Ch-03 Lec 01: Intermediate Code & Optimization — 2h #compiler-design"
+          ]
+        },
+        {
+          "date": "2026-11-13",
+          "label": "13 Nov · 2nd slot: CD Ch-03 Lec 02 (ICG & optimisation)",
+          "lectures": 1,
+          "summary": "2nd slot: CD Ch-03 Lec 02 (ICG & optimisation)",
+          "tasks": [
+            "Learn · CD Ch-03 Lec 02: Intermediate Code & Optimization — 2.5h #compiler-design"
+          ]
+        },
+        {
+          "date": "2026-11-14",
+          "label": "14 Nov · 2nd slot: CD Ch-03 Lec 03 (optimisation)",
+          "lectures": 1,
+          "summary": "2nd slot: CD Ch-03 Lec 03 (optimisation)",
+          "tasks": [
+            "Learn · CD Ch-03 Lec 03: Intermediate Code & Optimization — 2h #compiler-design"
+          ]
+        },
+        {
+          "date": "2026-11-16",
+          "label": "16 Nov · 2nd slot: CD Ch-03 Lec 04 (data-flow analysis)",
+          "lectures": 1,
+          "summary": "2nd slot: CD Ch-03 Lec 04 (data-flow analysis)",
+          "tasks": [
+            "Learn · CD Ch-03 Lec 04: Intermediate Code & Optimization — 2.5h #compiler-design"
+          ]
+        },
+        {
+          "date": "2026-11-17",
+          "label": "17 Nov · 2nd slot: CD PYQs, parsing and LR tables",
+          "summary": "2nd slot: CD PYQs, parsing and LR tables",
+          "tasks": [
+            "PYQ · CD Parsing and LR tables — 2h #compiler-design"
+          ]
+        },
+        {
+          "date": "2026-11-18",
+          "label": "18 Nov · 2nd slot: CD PYQs, SDT, ICG, optimisation",
+          "summary": "2nd slot: CD PYQs, SDT, ICG, optimisation",
+          "tasks": [
+            "PYQ · CD SDT, ICG and Optimization — 2h #compiler-design"
+          ]
+        },
+        {
+          "date": "2026-11-19",
+          "label": "19 Nov · 2nd slot: CD notes from PYQ mistakes",
+          "summary": "2nd slot: CD notes from PYQ mistakes",
+          "tasks": [
+            "Learn · CD notes from PYQ mistakes, with the agent — 1h #compiler-design"
+          ]
+        },
+        {
+          "date": "2026-11-20",
+          "label": "20 Nov · 2nd slot: CD sectional, 20 questions",
+          "summary": "2nd slot: CD sectional, 20 questions",
+          "tasks": [
+            "Mock · CD sectional, 20 questions — 1h #compiler-design",
+            "Analyse · CD sectional, triaged — 1h #compiler-design"
+          ]
+        }
       ],
-      "note": "Follows brain/syllabus/ item by item (npm run syllabus). Complexity and searching come before Data Structures, because every structure is costed in those terms."
+      "note": "Main block follows brain/syllabus/ item by item (npm run syllabus). 2nd slot (2h): finish Compiler Design, 11–20 Nov. From 21 Nov the whole day goes to Data Structures."
     },
     {
       "title": "Algorithms",
@@ -319,7 +316,7 @@
       "subject": "algorithms",
       "start": "2026-11-28",
       "end": "2026-12-07",
-      "marks": "5–10",
+      "marks": "6–8",
       "focus": [
         {
           "text": "BFS and DFS: valid orders, edge types, timings, trees, topological sort",
@@ -354,22 +351,22 @@
         "7 Dec · Weak patterns from the sectional",
         "13 and 20 Dec · Grand tests dsa-grand-01, dsa-grand-02"
       ],
-      "note": "Follows brain/syllabus/ item by item (npm run syllabus). Asymptotics, recurrences and searching were done before Data Structures. Dijkstra and Bellman-Ford come back in CN routing."
+      "note": "Follows brain/syllabus/ item by item (npm run syllabus). Asymptotics, recurrences and searching were done before Data Structures. Dijkstra and Bellman-Ford come back in CN routing. 2nd slot: free, so DSA gets the full day."
     },
     {
       "title": "Digital Logic",
       "short": "DL",
       "subject": "digital-logic",
       "start": "2026-12-08",
-      "end": "2026-12-14",
-      "marks": "4–6",
+      "end": "2026-12-13",
+      "marks": "5–6",
       "focus": [
         {
           "text": "Number representation: 2's complement range and overflow, IEEE 754 single precision",
           "top": true
         },
         {
-          "text": "K-maps: minimal SOP, prime and essential prime implicants, don't-cares",
+          "text": "Minimisation: K-maps, prime and essential prime implicants, don't-cares, tabular method",
           "top": true
         },
         {
@@ -386,14 +383,22 @@
         "Hazards in combinational circuits",
         "State minimisation and ASM charts"
       ],
-      "days": []
+      "days": [
+        "8 Dec · Number systems, 2's complement, overflow, fixed point",
+        "9 Dec · IEEE 754; Boolean algebra",
+        "10 Dec · K-maps, prime implicants, tabular method",
+        "11 Dec · Combinational: MUX, decoders, adders, carry-lookahead",
+        "12 Dec · Sequential: flip-flops, conversions, counters",
+        "13 Dec · DL PYQs (light: dsa-grand-01 is today)"
+      ],
+      "note": "2nd slot (2h): Maths starts, with logic."
     },
     {
       "title": "Computer Organization & Architecture",
       "short": "COA",
       "subject": "coa",
-      "start": "2026-12-15",
-      "end": "2026-12-28",
+      "start": "2026-12-14",
+      "end": "2026-12-25",
       "marks": "8–12",
       "focus": [
         {
@@ -408,28 +413,41 @@
           "text": "Instruction formats and addressing modes (opcode bit counting)"
         },
         {
+          "text": "Control unit: hardwired vs microprogrammed, control-word size"
+        },
+        {
           "text": "I/O: interrupts, DMA burst vs cycle stealing, % of CPU time"
         },
         {
-          "text": "Main memory and interleaving"
+          "text": "Memory interfacing and interleaving"
         }
       ],
       "skip": [
-        "Microprogrammed control beyond control-word size",
+        "Secondary storage and disks (dropped from the 2027 syllabus)",
+        "Microprogramming beyond control-word size",
         "Device-level I/O details"
       ],
-      "days": []
+      "days": [
+        "14–15 Dec · Instruction formats, addressing modes",
+        "16 Dec · ALU, datapath, hardwired vs microprogrammed control",
+        "17–19 Dec · Memory hierarchy, cache mapping, AMAT, write policies, interleaving",
+        "20 Dec · Light: dsa-grand-02",
+        "21–23 Dec · Pipelining: speedup, stalls, hazards, branch penalty",
+        "24 Dec · I/O: interrupts, DMA",
+        "25 Dec · COA PYQs and notes"
+      ],
+      "note": "2nd slot (2h): Maths, sets and relations, then counting."
     },
     {
       "title": "Computer Networks",
       "short": "CN",
       "subject": "computer-networks",
-      "start": "2026-12-29",
-      "end": "2027-01-11",
-      "marks": "7–10",
+      "start": "2026-12-26",
+      "end": "2027-01-06",
+      "marks": "8–9",
       "focus": [
         {
-          "text": "IPv4, CIDR, subnetting, longest prefix match",
+          "text": "IPv4: CIDR, subnetting, longest prefix match, fragmentation, NAT",
           "top": true
         },
         {
@@ -437,28 +455,47 @@
           "top": true
         },
         {
-          "text": "Sliding window: stop-and-wait, Go-Back-N, Selective Repeat efficiency and sequence bits"
+          "text": "Sliding window: stop-and-wait, Go-Back-N, Selective Repeat efficiency and sequence bits",
+          "top": true
         },
         {
-          "text": "Data link: CRC, CSMA/CD minimum frame size, Ethernet"
+          "text": "Data link: error detection (CRC), CSMA/CD minimum frame size, Ethernet"
         },
         {
-          "text": "Routing: distance vector, link state; IP fragmentation; ARP, DHCP, ICMP, NAT"
+          "text": "Switching and performance: transmission and propagation delay, throughput"
+        },
+        {
+          "text": "Routing: distance vector (count to infinity), link state"
+        },
+        {
+          "text": "Layering, socket API, DNS and HTTP (light)"
         }
       ],
       "skip": [
-        "Application-layer trivia (port numbers, header fields)",
-        "Socket API details"
+        "Not in the 2027 syllabus: UDP, ARP, DHCP, ICMP, SMTP, FTP, email",
+        "Header field trivia, port numbers"
       ],
-      "days": []
+      "days": [
+        "26 Dec · Layering, switching, delay and throughput numericals",
+        "27 Dec · Light Sunday: sectional on finished subjects",
+        "28 Dec · Error detection, CRC; MAC: CSMA/CD, Ethernet",
+        "29 Dec · Sliding window: stop-and-wait, GBN, SR",
+        "30–31 Dec · IPv4: CIDR, subnetting, fragmentation, NAT",
+        "1 Jan · Routing: distance vector, link state",
+        "2 Jan · TCP: flow control, sequence numbers",
+        "3 Jan · Full-length 00: 3-hour stamina run on finished subjects",
+        "4 Jan · TCP congestion control; socket API, DNS, HTTP",
+        "5–6 Jan · CN PYQs and notes"
+      ],
+      "note": "The 2027 syllabus is smaller than older CN courses: skip lectures on the dropped protocols. 2nd slot (2h): Maths, linear algebra, then probability."
     },
     {
       "title": "Maths, the scoring parts",
       "short": "Maths",
       "subject": "discrete-maths",
-      "start": "2027-01-12",
-      "end": "2027-01-22",
-      "marks": "13–16",
+      "start": "2027-01-07",
+      "end": "2027-01-08",
+      "marks": "10–13",
       "focus": [
         {
           "text": "Propositional and first-order logic: equivalence, validity, English to quantifiers",
@@ -469,74 +506,79 @@
           "top": true
         },
         {
-          "text": "Sets, relations, functions: counting relations, equivalence relations, posets"
+          "text": "Probability: conditional, Bayes, expectation; binomial, Poisson, uniform, normal, exponential",
+          "top": true
         },
         {
-          "text": "Graph theory: degree sum, connectivity, planar graphs, colouring, matching"
+          "text": "Sets, relations, functions: counting relations, equivalence relations, posets and lattices"
         },
         {
-          "text": "Probability: conditional, Bayes, expectation; binomial, Poisson, uniform"
+          "text": "Graph theory: degree sum, connectivity, matching, colouring, planarity"
         },
         {
-          "text": "Counting: permutations, combinations, pigeonhole, inclusion–exclusion"
+          "text": "Counting: permutations, combinations, pigeonhole, inclusion–exclusion, recurrences"
         }
       ],
       "skip": [
-        "Calculus: limits, maxima, integrals",
-        "Groups, monoids, lattices beyond definitions",
-        "Generating functions, hard recurrences",
-        "Statistics beyond mean, median, variance"
+        "Calculus, unless ahead (about 1–2 marks)",
+        "Groups and generating functions beyond the PYQ patterns",
+        "Statistics beyond mean, median, mode, standard deviation"
       ],
       "days": [
-        "12–13 Jan · Logic",
-        "14–15 Jan · Sets, relations, functions",
-        "16–17 Jan · Graph theory, counting",
-        "18–19 Jan · Linear algebra",
-        "20–21 Jan · Probability",
-        "22 Jan · Mixed maths PYQs"
+        "8–12 Dec · 2nd slot: propositional and first-order logic",
+        "14–18 Dec · 2nd slot: sets, relations, functions, posets, lattices, groups",
+        "19–23 Dec · 2nd slot: counting, pigeonhole, inclusion–exclusion, recurrences",
+        "24–28 Dec · 2nd slot: graph theory",
+        "29 Dec–1 Jan · 2nd slot: linear algebra",
+        "2–6 Jan · 2nd slot: probability and statistics",
+        "7–8 Jan · Full days: mixed Maths PYQs, weak spots; calculus only if ahead"
       ],
-      "note": "Aim for 8–10 of these marks. The skipped parts cost about 3–5."
+      "note": "Taught in the 2h second slot from 8 Dec, so it never piles up at the end. These two days are also the buffer for any block that ran late."
     },
     {
-      "title": "Revision and full mocks",
-      "short": "Revise",
+      "title": "Full mocks, analysis and revision",
+      "short": "Mocks",
       "subject": null,
-      "start": "2027-01-23",
-      "end": "2027-01-27",
+      "start": "2027-01-09",
+      "end": "2027-02-01",
       "focus": [
         {
-          "text": "Full-length mock (65 Qs, 3 h) every Mon, Wed, Fri at exam time",
+          "text": "Full-length mock (65 Qs, 3 h) every other day, 9 Jan to 31 Jan: 12 mocks",
           "top": true
         },
         {
-          "text": "Morning after: analyse, fix notes, re-solve PYQs of topics under 60%"
+          "text": "Same-day analysis, triaged; a note from every mistake"
         },
         {
-          "text": "Other days: revise subjects, heaviest first (PDS, COA, OS, CN, TOC)"
+          "text": "Days between: revise subjects, weakest first; re-solve PYQs of topics under 60%"
         },
         {
-          "text": "A block that ran late uses this buffer first"
+          "text": "GA inside the full-lengths: 1-markers under 1 min, 2-markers under 2 min"
+        },
+        {
+          "text": "A block that ran late takes its days from here, never from the final days"
         }
       ],
       "skip": [],
-      "days": []
+      "days": [],
+      "note": "If the CS paper lands on 13 or 14 Feb, this block gets another week."
     },
     {
-      "title": "Final week",
+      "title": "Final days",
       "short": "Final",
       "subject": null,
-      "start": "2027-01-28",
-      "end": "2027-01-31",
+      "start": "2027-02-02",
+      "end": "2027-02-05",
       "focus": [
         {
-          "text": "Last two full-length mocks: 25 and 28 Jan",
+          "text": "Formula sheets and GATE traps only, no new topics",
           "top": true
         },
         {
-          "text": "Formula sheets and GATE traps only, no new topics"
+          "text": "2 Feb: last half-length warm-up; 3–4 Feb light revision"
         },
         {
-          "text": "31 Jan: light revision, sleep early, check admit card and centre"
+          "text": "5 Feb: rest, admit card, centre route, sleep early"
         }
       ],
       "skip": [],
@@ -551,23 +593,23 @@
     {
       "subject": "discrete-maths",
       "label": "Maths",
-      "marks": "13–16"
-    },
-    {
-      "subject": "programming-ds",
-      "marks": "7–12"
+      "marks": "10–13"
     },
     {
       "subject": "coa",
       "marks": "8–12"
     },
     {
+      "subject": "programming-ds",
+      "marks": "8–11"
+    },
+    {
       "subject": "os",
-      "marks": "8–10"
+      "marks": "7–10"
     },
     {
       "subject": "computer-networks",
-      "marks": "7–10"
+      "marks": "8–9"
     },
     {
       "subject": "toc",
@@ -575,25 +617,25 @@
     },
     {
       "subject": "algorithms",
-      "marks": "5–10"
-    },
-    {
-      "subject": "dbms",
       "marks": "6–8"
     },
     {
+      "subject": "dbms",
+      "marks": "5–8"
+    },
+    {
       "subject": "compiler-design",
-      "marks": "4–8"
+      "marks": "5–8"
     },
     {
       "subject": "digital-logic",
-      "marks": "4–6"
+      "marks": "5–6"
     }
   ],
   "cut": [
     "The skip list of every block",
-    "Maths: drop counting and graph theory, keep logic, linear algebra, probability",
-    "Revision days, at most 7: keep two weeks of full mocks"
+    "Maths: calculus stays out; then groups and generating functions; keep logic, sets and relations, linear algebra, probability",
+    "Mock block: shrink from four weeks to three (start 16 Jan) before dropping any subject"
   ],
-  "keep": "Daily technical mock, final week"
+  "keep": "Daily revision, same-day analysis, the Sunday sectional, at least 10 full-length mocks"
 }
