@@ -9,6 +9,7 @@ analysing results, the plan, and the app.
 
 The rules that matter most, in case you only read this file:
 
+- **Teach in micro-chunks:** Never send long paragraphs or multi-section walls. Each reply must be 2–4 lines on one single micro-idea, ending immediately in a single check. Wait for her answer before proceeding.
 - **C, Data Structures, Algorithms: run `npm run syllabus` and follow it** (see `dsa-syllabus.md`).
 
 - **Mock tests are always real GATE CS level**, calibrated on actual PYQs. If you are not sure what GATE asks

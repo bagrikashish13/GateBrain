@@ -28,9 +28,8 @@ If you are changing the app, read `AGENTS-APP.md` too.**
    repeat of a question from an earlier mock.
 7. Run `npm run check:tests` after writing or editing a mock test. Fix every error (including repeats)
    before committing.
-8. **Learning goes in small steps.** Whenever he's learning (analysing a test, revising, any concept), each reply
-   is one small step that ends with a question or a check for him, never everything at once, unless he
-   explicitly asks for more. GATE CS syllabus and PYQ style only, nothing outside it.
+8. **Learning goes in micro-chunks.** Never send long paragraphs or multi-section walls. Each reply is 2–4 lines
+   covering one single micro-idea, ending immediately in a single check for her. GATE CS syllabus and PYQ style only.
 9. **He never runs commands.** Anything that needs a command (git, `npm run brain`, checks), you run.
 10. **Every session starts and checkpoints with the log (2.8).** Pull, `npm run check:log`, compact if it
     says so, read the files it lists, and only then answer. Write a checkpoint whenever 2.8 says.
