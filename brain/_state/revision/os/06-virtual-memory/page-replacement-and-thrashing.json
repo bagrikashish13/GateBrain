@@ -1,16 +1,16 @@
 {
   "note": "os/06-virtual-memory/page-replacement-and-thrashing.md",
   "card": {
-    "due": "2026-11-05T11:41:33.273Z",
-    "stability": 9.1903,
-    "difficulty": 5.1023,
-    "elapsed_days": 4,
-    "scheduled_days": 9,
+    "due": "2026-11-13T12:10:08.956Z",
+    "stability": 1.4273,
+    "difficulty": 8.3754,
+    "elapsed_days": 16,
+    "scheduled_days": 1,
     "learning_steps": 0,
-    "reps": 2,
-    "lapses": 0,
+    "reps": 3,
+    "lapses": 1,
     "state": 2,
-    "last_review": "2026-10-27T11:41:33.273Z"
+    "last_review": "2026-11-12T12:10:08.956Z"
   },
   "log": [
     {
@@ -20,6 +20,10 @@
     {
       "at": "2026-10-27T11:41:33.273Z",
       "rating": "gotit"
+    },
+    {
+      "at": "2026-11-12T12:10:08.956Z",
+      "rating": "forgot"
     }
   ]
 }
