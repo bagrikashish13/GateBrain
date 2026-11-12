@@ -1,16 +1,16 @@
 {
   "note": "os/05-memory-management/inverted-page-table.md",
   "card": {
-    "due": "2026-11-09T08:33:58.293Z",
-    "stability": 13.8269,
-    "difficulty": 2.1112,
-    "elapsed_days": 3,
-    "scheduled_days": 14,
+    "due": "2026-12-27T12:06:54.374Z",
+    "stability": 63.2008,
+    "difficulty": 2.1043,
+    "elapsed_days": 17,
+    "scheduled_days": 45,
     "learning_steps": 0,
-    "reps": 2,
+    "reps": 3,
     "lapses": 0,
     "state": 2,
-    "last_review": "2026-10-26T08:33:58.293Z"
+    "last_review": "2026-11-12T12:06:54.374Z"
   },
   "log": [
     {
@@ -19,6 +19,10 @@
     },
     {
       "at": "2026-10-26T08:33:58.293Z",
+      "rating": "gotit"
+    },
+    {
+      "at": "2026-11-12T12:06:54.374Z",
       "rating": "gotit"
     }
   ]
