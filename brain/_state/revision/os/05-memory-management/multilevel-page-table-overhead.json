@@ -1,16 +1,16 @@
 {
   "note": "os/05-memory-management/multilevel-page-table-overhead.md",
   "card": {
-    "due": "2026-11-05T11:41:24.298Z",
-    "stability": 9.1903,
-    "difficulty": 5.1023,
-    "elapsed_days": 4,
-    "scheduled_days": 9,
+    "due": "2026-12-09T10:30:58.448Z",
+    "stability": 26.763,
+    "difficulty": 6.7339,
+    "elapsed_days": 16,
+    "scheduled_days": 27,
     "learning_steps": 0,
-    "reps": 2,
+    "reps": 3,
     "lapses": 0,
     "state": 2,
-    "last_review": "2026-10-27T11:41:24.298Z"
+    "last_review": "2026-11-12T10:30:58.448Z"
   },
   "log": [
     {
@@ -20,6 +20,10 @@
     {
       "at": "2026-10-27T11:41:24.298Z",
       "rating": "gotit"
+    },
+    {
+      "at": "2026-11-12T10:30:58.448Z",
+      "rating": "fuzzy"
     }
   ]
 }
