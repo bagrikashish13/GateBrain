@@ -1,0 +1,21 @@
+{
+  "note": "programming-ds/01-control-flow/control-flow-statements.md",
+  "card": {
+    "due": "2026-11-20T13:19:30.978Z",
+    "stability": 8.2956,
+    "difficulty": 1,
+    "elapsed_days": 0,
+    "scheduled_days": 8,
+    "learning_steps": 0,
+    "reps": 1,
+    "lapses": 0,
+    "state": 2,
+    "last_review": "2026-11-12T13:19:30.978Z"
+  },
+  "log": [
+    {
+      "at": "2026-11-12T13:19:30.978Z",
+      "rating": "easy"
+    }
+  ]
+}
