@@ -17,10 +17,13 @@ C is strictly pass-by-value; reference modification requires passing pointers (`
 - **Static Variables in Recursion:**
   - A `static` variable inside a recursive function is **allocated only once** and shared across all recursive invocations.
   - Changes made to the static variable accumulate and remain intact across both winding and unwinding phases.
-- **Recursion Tracing:**
+- **Recursion Tracing & Shortcuts:**
   - **Winding phase:** Code before the recursive call; executes top-down on descent ($n, n-1, \dots$).
   - **Unwinding phase:** Code after the recursive call; executes bottom-up as frames return ($1, 2, \dots, n$).
-  - **Tree recursion:** Functions with multiple recursive calls branch into a call tree, evaluated via in-order/pre-order traversal.
+  - **Bottom-Up Tabulation (The Anti-Tree Shortcut):** Never draw sprawling call trees for branching recursion (`f(n-1) + 2*f(n-2)` or nested loops). Build a 1-line or 2D scratch table starting from base cases ($f(0), f(1), f(2)\dots$).
+  - **Call Counting Recurrence:** Total calls $C(n) = 1 + \sum C(\text{children})$ with $C(\text{base}) = 1$. Total invocations $\ne$ peak stack depth!
+  - **Tail Recursion:** If the recursive call is the very last operation with zero pending work, compiler reuses the stack frame as an iterative loop ($O(1)$ space).
+  - **Mutual Recursion:** When functions call each other, maintain a separate column per function to trace alternating frames.
 
 ---
 
@@ -47,8 +50,22 @@ x = 0 -> 1 -> 2 ...
 - **Unwinding output order:**
   - *Confusion:* Expecting statements after the recursive call to print in descending order ($3, 2, 1$).
   - *The click:* Calls dive to the base case first. Then, as each stack frame pops off (LIFO), lines after the recursive call execute, producing reverse order ($1, 2, 3$).
+- **Abnormal Termination vs Infinite Loop:**
+  - *Confusion:* Assuming any non-halting recursive code is just an "infinite loop".
+  - *The click:* If a function calls itself infinitely without returning (like `f(val--)`), stack frames keep piling up until memory runs out $\implies$ **Stack Overflow $\implies$ Abnormal Termination (OS crash/SIGSEGV)**. An **Infinite Loop** occurs when a loop spins forever with constant, bounded stack space (calls return and pop cleanly).
+- **Branching Recursion Expansion Overwhelm:**
+  - *Confusion:* Drawing huge call trees for problems like `fun(5)` with nested loops or 2D transitions (`f(x, y)`), leading to lost branches and arithmetic slips.
+  - *The click:* Work **bottom-up**! A 1-line or 2D table computed from $0, 1, 2\dots$ turns a 40-node tree into 30 seconds of simple addition.
 
 ## GATE traps
+- **The Postfix Recursion Trap (`f(val--)`):**
+  - Passing `val--` evaluates to the *current* (old) value of `val` before decrementing. So `f(3)` calls `f(3)` indefinitely $\implies$ Stack Overflow $\implies$ **Abnormal Termination**. (Use `val - 1` or `--val` instead).
+- **Stepping Over the Base Case:**
+  - If base case is `if (n == 0)` and step is `f(n - 2)`, odd inputs ($5 \to 3 \to 1 \to -1 \dots$) skip $0$ entirely and run into negative infinity. It terminates ONLY for non-negative even integers.
+- **Total Invocations $\ne$ Stack Depth:**
+  - Total calls is the sum of all nodes ever visited. Stack depth (auxiliary space) is only the **maximum active chain of frames alive at any single instant**. When a frame returns, it pops and its memory is reused.
+- **Side Effects in Mutual Recursion (`fun1(++n)`):**
+  - Pre-increment `++n` in an argument expression modifies `n` *before* the call. When that frame wakes up during unwinding, it sees the permanently updated `n`.
 - **Missing Prototype Implicit `int` Conflict:**
   - In C, calling a function before its prototype or definition causes the compiler to assume an implicit return type of `int`. If the function is later defined below returning `double` or `float`, it triggers a **conflicting types compile error**.
 - **Unspecified Argument Evaluation Order:**
