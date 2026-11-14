@@ -17,6 +17,14 @@ C is strictly pass-by-value; reference modification requires passing pointers (`
 - **Static Variables in Recursion:**
   - A `static` variable inside a recursive function is **allocated only once** and shared across all recursive invocations.
   - Changes made to the static variable accumulate and remain intact across both winding and unwinding phases.
+- **Parameter Passing Mechanisms (Other Languages / GATE Pseudo-code):**
+  - **Call by Value:** Callee receives local copies. Caller unaffected.
+  - **Call by Reference:** Parameter is an **alias (direct memory reference)** for the caller's variable. Changes affect caller in real time. Aliasing happens when two parameters bind to the same variable (`f(a, a)`).
+  - **Call by Value-Result (Copy-Restore):** Copy-in at call $\rightarrow$ compute on private local variables $\rightarrow$ copy-out back to caller's arguments at return (left-to-right).
+  - **Call by Name:** Argument expression is literally substituted into the function body and **re-evaluated in caller's context every single time it is accessed**.
+- **Scoping & Runtime Links:**
+  - **Static (Lexical) Scoping:** Non-local variable resolves to enclosing scope where function was **written**. **Access Link (Static Link)** points to the activation record of the static parent procedure.
+  - **Dynamic Scoping:** Non-local variable resolves to most recent active caller on the **call stack**. **Control Link (Dynamic Link)** points to caller's activation record.
 - **Recursion Tracing & Shortcuts:**
   - **Winding phase:** Code before the recursive call; executes top-down on descent ($n, n-1, \dots$).
   - **Unwinding phase:** Code after the recursive call; executes bottom-up as frames return ($1, 2, \dots, n$).
@@ -56,6 +64,12 @@ x = 0 -> 1 -> 2 ...
 - **Branching Recursion Expansion Overwhelm:**
   - *Confusion:* Drawing huge call trees for problems like `fun(5)` with nested loops or 2D transitions (`f(x, y)`), leading to lost branches and arithmetic slips.
   - *The click:* Work **bottom-up**! A 1-line or 2D table computed from $0, 1, 2\dots$ turns a 40-node tree into 30 seconds of simple addition.
+- **Aliasing in Call by Reference:**
+  - *Confusion:* Assuming a global variable and a parameter binding to it can hold different values during execution.
+  - *The click:* In `procedure f(x, y)` called via `f(i, j)`, `x` IS `i`. If `x = 10` executes, `i` becomes 10 immediately! Any later statement `y = y + i` reads 10, not the previous global value.
+- **Call by Name Expression Re-evaluation:**
+  - *Confusion:* Evaluating `k + 10` once when `f(k + 10)` is called.
+  - *The click:* Call by Name is textual macro substitution. If `k` changes inside the function body *before* `x` is read, `x` uses the *new* value of `k`!
 
 ## GATE traps
 - **The Postfix Recursion Trap (`f(val--)`):**
