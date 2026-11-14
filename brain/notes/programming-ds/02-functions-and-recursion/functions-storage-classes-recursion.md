@@ -64,6 +64,9 @@ x = 0 -> 1 -> 2 ...
 - **Branching Recursion Expansion Overwhelm:**
   - *Confusion:* Drawing huge call trees for problems like `fun(5)` with nested loops or 2D transitions (`f(x, y)`), leading to lost branches and arithmetic slips.
   - *The click:* Work **bottom-up**! A 1-line or 2D table computed from $0, 1, 2\dots$ turns a 40-node tree into 30 seconds of simple addition.
+- **Accumulator Initialization in Recursive Loop Tabulation:**
+  - *Confusion:* In `ans = 1; for (j=1; j<n; j++) ans += ...`, tabulating only the sum of loop terms and forgetting to add the initial `ans = 1`.
+  - *The click:* Always write down the initial value of the accumulator *before* evaluating loop iterations: `ans(n) = initial_val + sum_of_terms`. A slip at $n = 2$ cascades and ruins all subsequent terms.
 - **Aliasing in Call by Reference:**
   - *Confusion:* Assuming a global variable and a parameter binding to it can hold different values during execution.
   - *The click:* In `procedure f(x, y)` called via `f(i, j)`, `x` IS `i`. If `x = 10` executes, `i` becomes 10 immediately! Any later statement `y = y + i` reads 10, not the previous global value.
@@ -74,6 +77,8 @@ x = 0 -> 1 -> 2 ...
 ## GATE traps
 - **The Postfix Recursion Trap (`f(val--)`):**
   - Passing `val--` evaluates to the *current* (old) value of `val` before decrementing. So `f(3)` calls `f(3)` indefinitely $\implies$ Stack Overflow $\implies$ **Abnormal Termination**. (Use `val - 1` or `--val` instead).
+- **Accumulator Initial Value in Recurrences:**
+  - In functions like `int ans = 1; for (...) ans += ...`, the initial accumulator must be included. Missing `ans = 1` turns $n=2$ from 4 into 3, wrecking all higher values.
 - **Stepping Over the Base Case:**
   - If base case is `if (n == 0)` and step is `f(n - 2)`, odd inputs ($5 \to 3 \to 1 \to -1 \dots$) skip $0$ entirely and run into negative infinity. It terminates ONLY for non-negative even integers.
 - **Total Invocations $\ne$ Stack Depth:**
