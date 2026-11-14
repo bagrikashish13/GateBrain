@@ -86,6 +86,8 @@ x = 0 -> 1 -> 2 ...
   - When calculating the largest $n$ fitting in stack memory, the base-case invocation is an active frame on the stack. Total frames is $\frac{n - \text{base}}{\text{step}} + 1$. Never omit the $+1$.
 - **Stepping Over the Base Case:**
   - If base case is `if (n == 0)` and step is `f(n - 2)`, odd inputs ($5 \to 3 \to 1 \to -1 \dots$) skip $0$ entirely and run into negative infinity. It terminates ONLY for non-negative even integers.
+- **Integer Division Base-Case Reachability (`n / 2`):**
+  - Integer division strictly truncates toward zero: $\lfloor 3/2 \rfloor = 1$ and $\lfloor 2/2 \rfloor = 1$. Therefore, both even and odd positive integers are guaranteed to reach base case `n == 1`.
 - **Total Invocations $\ne$ Stack Depth:**
   - Total calls is the sum of all nodes ever visited. Stack depth (auxiliary space) is only the **maximum active chain of frames alive at any single instant**. When a frame returns, it pops and its memory is reused.
 - **Side Effects in Mutual Recursion (`fun1(++n)`):**
