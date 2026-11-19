@@ -1,7 +1,6 @@
 {
   "done": [
     "os",
-    "dbms",
     "toc"
   ],
   "daily": [
@@ -10,24 +9,28 @@
       "title": "Revise due notes, with the agent (first, every day)"
     },
     {
-      "time": "1h",
-      "title": "General Aptitude sprint day (to 9 Dec, then a timed GA set)"
-    },
-    {
       "time": "4–5h",
       "title": "Main block: current subject + its PYQs"
     },
     {
-      "time": "2h",
-      "title": "2nd slot: CD to 20 Nov, Maths from 8 Dec"
+      "time": "1.5h",
+      "title": "2nd block · Aptitude (30 days, to 19 Dec)"
     },
     {
-      "time": "1h",
-      "title": "The day's test (syllabus test, or the daily mock) + analysis"
+      "time": "40m",
+      "title": "2nd block · Compiler Design (1h after 19 Dec, to 1 Jan)"
+    },
+    {
+      "time": "50m",
+      "title": "2nd block · DBMS (1.5h after 19 Dec, to 2 Jan)"
     },
     {
       "time": "30m",
-      "title": "Daily GA mock + its analysis"
+      "title": "Daily mock: OS + TOC + every finished subject"
+    },
+    {
+      "time": "1h",
+      "title": "Its analysis, triaged"
     },
     {
       "time": "Sun",
@@ -187,14 +190,14 @@
           ]
         }
       ],
-      "note": "Done in lectures: Ch-01 (Lec 01–11) and Ch-02 Lec 01–03. From 11 Nov the rest runs from the syllabus (Part 5, npm run syllabus, 2nd slot) inside the PDS block; CD stage test on 20 Nov."
+      "note": "Done in lectures: Ch-01 (Lec 01–11) and Ch-02 Lec 01–03. Rebuilt from zero on 19 Nov 2026: Compiler Design now runs in the 2nd block (Part 5), every day to 1 Jan."
     },
     {
       "title": "Programming & Data Structures",
       "short": "PDS",
       "subject": "programming-ds",
       "start": "2026-11-07",
-      "end": "2026-11-27",
+      "end": "2026-12-02",
       "marks": "8–11",
       "focus": [
         {
@@ -223,97 +226,30 @@
         "Anything not in brain/syllabus/ (B-trees are in DBMS; no red-black trees, segment trees or tries)"
       ],
       "days": [
-        "7–9 Nov · C P01–P08 done, 3 days ahead of the syllabus dates",
-        "10–15 Nov · C P09–P13, tests c-ut-03-r2, c-ut-04, c-ut-05, c-stage",
-        "15–18 Nov · Complexity and searching: X01–X04, tests cx-ut-01, cx-stage",
-        "18–21 Nov · D01 arrays, D02 lists, D03 stacks, D04 queues, tests ds-ut-01, ds-stage-01",
-        "21–25 Nov · D05–D09 trees, BSTs, AVL, heaps, tests ds-ut-02, ds-ut-03, ds-stage-02",
-        "25–27 Nov · D10 hashing, D11 graphs, test ds-ut-04, sectional pds-sectional",
-        {
-          "date": "2026-11-11",
-          "label": "11 Nov · 2nd slot: CD01–CD02, quick checks (seen)",
-          "summary": "2nd slot: CD01–CD02, quick checks (seen)",
-          "tasks": [
-            "Learn · CD01–CD02 from the syllabus, one hard check per item (2nd slot) — 2h #compiler-design"
-          ]
-        },
-        {
-          "date": "2026-11-12",
-          "label": "12 Nov · 2nd slot: CD03 and test cd-ut-01",
-          "summary": "2nd slot: CD03 and test cd-ut-01",
-          "tasks": [
-            "Learn · CD03 FIRST, FOLLOW and LL(1), quick checks (2nd slot) — 1h #compiler-design",
-            "Mock · Test cd-ut-01 (10 questions) + triaged analysis — 1h #compiler-design"
-          ]
-        },
-        {
-          "date": "2026-11-13",
-          "label": "13 Nov · 2nd slot: CD04–CD05, quick checks (seen)",
-          "summary": "2nd slot: CD04–CD05, quick checks (seen)",
-          "tasks": [
-            "Learn · CD04–CD05 LR parsing, quick checks (2nd slot) — 2h #compiler-design"
-          ]
-        },
-        {
-          "date": "2026-11-14",
-          "label": "14 Nov · 2nd slot: CD06 and test cd-ut-02",
-          "summary": "2nd slot: CD06 and test cd-ut-02",
-          "tasks": [
-            "Learn · CD06 Syntax-directed translation, quick checks (2nd slot) — 1h #compiler-design",
-            "Mock · Test cd-ut-02 (10 questions) + triaged analysis — 1h #compiler-design"
-          ]
-        },
-        {
-          "date": "2026-11-16",
-          "label": "16 Nov · 2nd slot: CD07 Intermediate code (new)",
-          "summary": "2nd slot: CD07 Intermediate code (new)",
-          "tasks": [
-            "Learn · CD07 Intermediate code, from the syllabus (2nd slot) — 2h #compiler-design"
-          ]
-        },
-        {
-          "date": "2026-11-17",
-          "label": "17 Nov · 2nd slot: CD08 Basic blocks and local optimisation (new)",
-          "summary": "2nd slot: CD08 Basic blocks and local optimisation (new)",
-          "tasks": [
-            "Learn · CD08 Basic blocks and local optimisation (2nd slot) — 2h #compiler-design"
-          ]
-        },
-        {
-          "date": "2026-11-18",
-          "label": "18 Nov · 2nd slot: CD09 Data-flow analysis and test cd-ut-03",
-          "summary": "2nd slot: CD09 Data-flow analysis and test cd-ut-03",
-          "tasks": [
-            "Learn · CD09 Data-flow analysis (2nd slot) — 1h #compiler-design",
-            "Mock · Test cd-ut-03 (10 questions) + triaged analysis — 1h #compiler-design"
-          ]
-        },
-        {
-          "date": "2026-11-19",
-          "label": "19 Nov · 2nd slot: CD10 Runtime environments",
-          "summary": "2nd slot: CD10 Runtime environments",
-          "tasks": [
-            "Learn · CD10 Runtime environments and the whole compiler (2nd slot) — 1.5h #compiler-design"
-          ]
-        },
-        {
-          "date": "2026-11-20",
-          "label": "20 Nov · 2nd slot: CD stage test, 20 questions",
-          "summary": "2nd slot: CD stage test, 20 questions",
-          "tasks": [
-            "Mock · Test cd-stage (20 questions) — 1h #compiler-design",
-            "Analyse · Test cd-stage, triaged — 1h #compiler-design"
-          ]
-        }
+        "7–14 Nov · C P01–P12 done, tests c-ut-01 to c-ut-05",
+        "19 Nov · Rebase: main block shifted 5 days; analyse c-ut-05-r2, then P13",
+        "20 Nov · P13 Reasoning about programs, test c-stage",
+        "21 Nov · X01 Asymptotic notation, X02 Complexity of code, test cx-ut-01 · 2nd block: GA01, DB01",
+        "22 Nov · X03 Recurrences · 2nd block: GA02",
+        "23 Nov · X04 Searching, test cx-stage, D01 Arrays and address calculation · 2nd block: ga-ut-01",
+        "24 Nov · D02 Linked lists, test ds-ut-01 · 2nd block: GA03, CD01, DB02",
+        "25 Nov · D03 Stacks · 2nd block: GA04, dbms-ut-01",
+        "26 Nov · D04 Queues, test ds-stage-01 · 2nd block: ga-ut-02",
+        "27 Nov · D05 Binary trees: structure and counting",
+        "28 Nov · D06 Tree traversals and tree code, test ds-ut-02 · 2nd block: GA05, CD02, DB03",
+        "29 Nov · D07 Binary search trees, D08 AVL and other balanced trees, test ds-ut-03 · 2nd block: cd-ut-01",
+        "30 Nov · D09 Binary heaps and priority queues, test ds-stage-02 · 2nd block: GA06, ga-ut-03",
+        "1 Dec · D10 Hashing, D11 Graphs: representation and vocabulary, test ds-ut-04 · 2nd block: DB04",
+        "2 Dec · test pds-sectional, A01 Elementary sorts · 2nd block: GA07"
       ],
-      "note": "Main block follows brain/syllabus/ item by item (npm run syllabus). 2nd slot (2h): Compiler Design, also from the syllabus (Part 5: CD01–CD06 seen, quick checks; CD07–CD10 new), 11–20 Nov. The remaining lectures are optional. From 21 Nov the whole day goes to Data Structures."
+      "note": "Main block follows brain/syllabus/ item by item (npm run syllabus). 2nd block every day (from 20 Nov): Aptitude (to 19 Dec), Compiler Design (to 1 Jan) and DBMS (to 2 Jan), each from brain/syllabus/."
     },
     {
       "title": "Algorithms",
       "short": "Algo",
       "subject": "algorithms",
-      "start": "2026-11-28",
-      "end": "2026-12-07",
+      "start": "2026-12-03",
+      "end": "2026-12-11",
       "marks": "6–8",
       "focus": [
         {
@@ -343,20 +279,24 @@
         "Formal correctness proofs"
       ],
       "days": [
-        "27–30 Nov · A01–A06 sorting, divide and conquer, tests algo-ut-01, algo-ut-02, algo-stage-01",
-        "30 Nov–3 Dec · A07 traversals, A08 greedy, A09 MST, A10 shortest paths, tests algo-ut-03, algo-ut-04, algo-stage-02",
-        "3–6 Dec · A11 and A12 dynamic programming, A13 design, test algo-ut-05, sectional algo-sectional",
-        "7 Dec · Weak patterns from the sectional",
-        "13 and 20 Dec · Grand tests dsa-grand-01, dsa-grand-02"
+        "3 Dec · A02 Divide and conquer: the pattern, test algo-ut-01, A03 Merge sort · 2nd block: CD03, dbms-ut-02",
+        "4 Dec · A04 Quick sort, A05 Selection and more divide and conquer, test algo-ut-02 · 2nd block: GA08, ga-ut-04",
+        "5 Dec · A06 Heap sort, non-comparison sorts, lower bounds, test algo-stage-01",
+        "6 Dec · A07 Graph traversals: BFS, DFS, topological sort, components, test algo-ut-03, A08 Greedy · 2nd block: GA09, DB05",
+        "7 Dec · A09 Minimum spanning trees, test algo-ut-04 · 2nd block: GA10, CD04",
+        "8 Dec · A10 Shortest paths: Dijkstra and DAGs, test algo-stage-02 · 2nd block: GA11",
+        "9 Dec · A11 Dynamic programming · 2nd block: ga-ut-05, cd-ut-02, DB06",
+        "10 Dec · A12 Dynamic programming on graphs, test algo-ut-05, A13 Design reasoning and off-syllabus awareness · 2nd block: dbms-ut-03",
+        "11 Dec · test algo-sectional · 2nd block: GA12"
       ],
-      "note": "Follows brain/syllabus/ item by item (npm run syllabus). Asymptotics, recurrences and searching were done before Data Structures. Dijkstra and Bellman-Ford come back in CN routing. 2nd slot: free, so DSA gets the full day."
+      "note": "Follows brain/syllabus/ item by item (npm run syllabus). Asymptotics, recurrences and searching were done before Data Structures. Dijkstra and Bellman-Ford come back in CN routing. 2nd block every day (from 20 Nov): Aptitude (to 19 Dec), Compiler Design (to 1 Jan) and DBMS (to 2 Jan), each from brain/syllabus/."
     },
     {
       "title": "Digital Logic",
       "short": "DL",
       "subject": "digital-logic",
-      "start": "2026-12-08",
-      "end": "2026-12-13",
+      "start": "2026-12-12",
+      "end": "2026-12-19",
       "marks": "5–6",
       "focus": [
         {
@@ -382,21 +322,23 @@
         "State minimisation and ASM charts"
       ],
       "days": [
-        "8 Dec · DL01 Number systems, DL02 Signed integers and binary arithmetic",
-        "9 Dec · DL03 Fixed and floating point (IEEE 754), test dl-ut-01",
-        "10 Dec · DL04 Boolean algebra, DL05 Minimisation, test dl-ut-02",
-        "11 Dec · DL06 Combinational circuits",
-        "12 Dec · DL07 Sequential circuits, test dl-ut-03",
-        "13 Dec · Light: DSA grand test 1"
+        "12 Dec · 2nd block: GA13",
+        "13 Dec · DL01 Number systems, DL02 Signed integers and binary arithmetic · 2nd block: CD05",
+        "14 Dec · DL03 Fixed and floating point, test dl-ut-01 · 2nd block: GA14, ga-ut-06, DB07",
+        "15 Dec · DL04 Boolean algebra, DL05 Canonical forms and minimisation, test dl-ut-02",
+        "16 Dec · DL06 Combinational circuits · 2nd block: GA15, DB08",
+        "17 Dec · DL07 Sequential circuits, test dl-ut-03 · 2nd block: ga-ut-07, dbms-ut-04",
+        "18 Dec · test dsa-grand-01 · 2nd block: ga-stage, CD06",
+        "19 Dec · test dl-stage · 2nd block: cd-ut-03"
       ],
-      "note": "Follows brain/syllabus/ Part 6 (npm run syllabus, main block). Stage test dl-stage on 14 Dec. 2nd slot (2h): Maths starts, with linear algebra."
+      "note": "Follows brain/syllabus/ Part 6 (npm run syllabus, main block). Stage test dl-stage on 19 Dec. 2nd block every day (from 20 Nov): Aptitude (to 19 Dec), Compiler Design (to 1 Jan) and DBMS (to 2 Jan), each from brain/syllabus/."
     },
     {
       "title": "Computer Organization & Architecture",
       "short": "COA",
       "subject": "coa",
-      "start": "2026-12-14",
-      "end": "2026-12-25",
+      "start": "2026-12-20",
+      "end": "2026-12-30",
       "marks": "8–12",
       "focus": [
         {
@@ -426,24 +368,25 @@
         "Device-level I/O details"
       ],
       "days": [
-        "14 Dec · DL stage test, then CO01 Cache mapping",
-        "15 Dec · CO01 Cache mapping",
-        "16–17 Dec · CO02 Cache performance, test coa-ut-01",
-        "18 Dec · CO03 Instructions and addressing modes",
-        "19 Dec · CO04 Datapath and control, test coa-ut-02",
-        "20 Dec · Light: DSA grand test 2",
-        "21–22 Dec · CO05 Pipelining",
-        "23–24 Dec · CO06 Input and output, CO07 Memory interfacing, test coa-ut-03",
-        "25 Dec · COA stage test"
+        "20 Dec · CO01 Cache mapping · 2nd block: DB09",
+        "22 Dec · CO02 Cache performance, test coa-ut-01 · 2nd block: CD07, DB10, dbms-ut-05",
+        "23 Dec · CO03 Instructions and addressing modes",
+        "24 Dec · CO04 Datapath and control unit, test coa-ut-02 · 2nd block: CD08, cd-ut-04, DB11",
+        "25 Dec · test dsa-grand-02",
+        "26 Dec · 2nd block: DB12",
+        "27 Dec · CO05 Pipelining · 2nd block: CD09, dbms-ut-06",
+        "28 Dec · 2nd block: DB13",
+        "29 Dec · CO06 Input and output, CO07 Main memory and interfacing, test coa-ut-03 · 2nd block: CD10",
+        "30 Dec · test coa-stage · 2nd block: CD11, DB14"
       ],
-      "note": "Follows brain/syllabus/ Part 7 (npm run syllabus, main block): cache first, the heaviest topic. 2nd slot (2h): Maths, probability then sets, relations and functions, then graph theory."
+      "note": "Follows brain/syllabus/ Part 7 (npm run syllabus, main block): cache first, the heaviest topic. 2nd block every day (from 20 Nov): Aptitude (to 19 Dec), Compiler Design (to 1 Jan) and DBMS (to 2 Jan), each from brain/syllabus/."
     },
     {
       "title": "Computer Networks",
       "short": "CN",
       "subject": "computer-networks",
-      "start": "2026-12-26",
-      "end": "2027-01-06",
+      "start": "2026-12-31",
+      "end": "2027-01-11",
       "marks": "8–9",
       "focus": [
         {
@@ -476,79 +419,25 @@
         "Header field trivia, port numbers"
       ],
       "days": [
-        "26 Dec · CN01 Layers, switching and delay",
-        "27 Dec · Light Sunday: sectional on finished subjects",
-        "28 Dec · CN02 IPv4 addressing and forwarding",
-        "29 Dec · CN03 Datagrams, fragmentation and NAT, test cn-ut-01",
-        "30 Dec · CN04 Stop-and-wait and sliding windows",
-        "31 Dec · CN05 TCP",
-        "1 Jan · CN06 Congestion control, test cn-ut-02",
-        "2 Jan · CN07 Routing",
-        "3 Jan · Full-length 00: 3-hour stamina run on finished subjects",
-        "4 Jan · CN08 Data link: error detection, medium access, Ethernet",
-        "5 Jan · CN09 DNS and HTTP, test cn-ut-03",
-        "6 Jan · CN stage test"
+        "31 Dec · CN01 Layers, switching and delay · 2nd block: cd-ut-05, DB15",
+        "1 Jan · 2nd block: cd-stage, dbms-ut-07",
+        "2 Jan · CN02 IPv4 addressing and forwarding · 2nd block: dbms-stage",
+        "3 Jan · CN03 IPv4 datagrams, fragmentation and NAT, test cn-ut-01",
+        "4 Jan · CN04 Reliable delivery: stop-and-wait and sliding windows",
+        "5 Jan · CN05 TCP",
+        "6 Jan · CN06 TCP congestion control, test cn-ut-02",
+        "7 Jan · CN07 Routing",
+        "9 Jan · CN08 Data link: errors, medium access, Ethernet",
+        "10 Jan · CN09 DNS and HTTP, test cn-ut-03",
+        "11 Jan · test cn-stage"
       ],
-      "note": "Follows brain/syllabus/ Part 8 (npm run syllabus, main block), on the trimmed 2027 syllabus: skip lectures on UDP, ARP, DHCP, ICMP, email and FTP. 2nd slot (2h): Maths, posets, groups and combinatorics, then calculus and logic."
-    },
-    {
-      "title": "Maths: Discrete and Engineering",
-      "short": "Maths",
-      "subject": "discrete-maths",
-      "start": "2027-01-07",
-      "end": "2027-01-08",
-      "marks": "10–13",
-      "focus": [
-        {
-          "text": "Probability: conditional, Bayes, expectation; binomial, Poisson, uniform, exponential, normal",
-          "top": true
-        },
-        {
-          "text": "Linear algebra: eigenvalues, rank, systems of equations, determinants, LU",
-          "top": true
-        },
-        {
-          "text": "Graph theory: degrees, connectivity, colouring, planarity, matching",
-          "top": true
-        },
-        {
-          "text": "Sets, relations, functions; posets, lattices, groups"
-        },
-        {
-          "text": "Calculus: limits, continuity, maxima and minima, definite integrals"
-        },
-        {
-          "text": "Counting, recurrences, generating functions"
-        },
-        {
-          "text": "Propositional and first-order logic"
-        }
-      ],
-      "skip": [
-        "DS&AI-paper extras (Bayesian networks, chi-square, SVD, projections)",
-        "Proofs by induction and other descriptive old questions"
-      ],
-      "days": [
-        "8–10 Dec · 2nd slot: LA01–LA03 linear algebra",
-        "11 Dec · 2nd slot: test ma-ut-01",
-        "12 Dec · 2nd slot: CM01 counting",
-        "14–16 Dec · 2nd slot: PR01–PR03 probability",
-        "17 Dec · 2nd slot: test ma-ut-02",
-        "18–21 Dec · 2nd slot: SR01–SR03 sets, relations, functions, test ma-ut-03",
-        "22–24 Dec · 2nd slot: GT01–GT03 graph theory, test ma-ut-04",
-        "26–29 Dec · 2nd slot: AL01–AL02 posets, lattices, groups; CM02 recurrences and generating functions; test ma-ut-05",
-        "30–31 Dec · 2nd slot: CA01–CA02 calculus",
-        "2–5 Jan · 2nd slot: LG01–LG02 logic, test ma-ut-06",
-        "7 Jan · Maths sectional (30 questions), then weak spots",
-        "8 Jan · Buffer for any block that ran late"
-      ],
-      "note": "Follows brain/syllabus/ Parts 9 and 10 (npm run syllabus, 2nd slot), in the priority order from the papers. Taught 2h a day from 8 Dec, so it never piles up at the end."
+      "note": "Follows brain/syllabus/ Part 8 (npm run syllabus, main block), on the trimmed 2027 syllabus: skip lectures on UDP, ARP, DHCP, ICMP, email and FTP. 2nd block every day (from 20 Nov): Aptitude (to 19 Dec), Compiler Design (to 1 Jan) and DBMS (to 2 Jan), each from brain/syllabus/."
     },
     {
       "title": "Full mocks, analysis and revision",
       "short": "Mocks",
       "subject": null,
-      "start": "2027-01-09",
+      "start": "2027-01-12",
       "end": "2027-02-01",
       "focus": [
         {
@@ -570,7 +459,7 @@
       ],
       "skip": [],
       "days": [],
-      "note": "If the CS paper lands on 13 or 14 Feb, this block gets another week."
+      "note": "Starts once the main block ends (12 Jan after the 19 Nov rebase). If the CS paper lands on 13 or 14 Feb, this block gets another week."
     },
     {
       "title": "Final days",
@@ -642,9 +531,10 @@
     }
   ],
   "cut": [
+    "Maths first: it is Last, started only after the 2nd block, and may be dropped",
     "The skip list of every block",
-    "The end of each part's order first (it is ordered by weight): logic before calculus before the rest of combinatorics in Maths",
-    "Mock block: shrink from four weeks to three (start 16 Jan) before dropping any subject"
+    "The end of each part's order first (it is ordered by weight)",
+    "Mock block: shrink from three weeks to two and a half (start 16 Jan) before dropping any subject"
   ],
   "keep": "Daily revision, same-day analysis, the Sunday sectional, at least 10 full-length mocks"
 }

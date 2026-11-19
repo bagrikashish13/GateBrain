@@ -1,292 +1,3284 @@
 [
-  {"id": "printf", "name": "printf", "code": ["\\bprintf\\b"], "words": []},
-  {"id": "char", "name": "char as a small integer", "code": ["\\bchar\\b"], "words": ["\\bASCII\\b"]},
-  {"id": "getchar", "name": "getchar and putchar", "code": ["\\b(getchar|putchar)\\b"], "words": []},
-  {"id": "sizeof", "name": "sizeof", "code": ["\\bsizeof\\b"], "words": []},
-  {"id": "unsigned", "name": "signed and unsigned", "code": ["\\bunsigned\\b", "\\b\\d+[uU]\\b"], "words": ["\\bunsigned\\b"]},
-  {"id": "float", "name": "float and double", "code": ["\\b(float|double)\\b"], "words": []},
-  {"id": "twos", "name": "2's complement", "code": [], "words": ["\\b2's complement\\b", "\\btwo's complement\\b"]},
-  {"id": "hex", "name": "hex and octal literals", "code": ["\\b0[xX][0-9a-fA-F]+\\b"], "words": []},
-  {"id": "intdiv", "name": "integer division", "code": [], "words": ["\\binteger division\\b"]},
-  {"id": "precedence", "name": "precedence and associativity", "code": [], "words": ["\\bprecedence\\b", "\\bassociativ"]},
-  {"id": "conversion", "name": "implicit conversions", "code": [], "words": ["\\bimplicit(ly)? conver", "\\busual arithmetic\\b", "\\bpromotion\\b", "\\bmixed expressions?\\b"]},
-  {"id": "cast", "name": "casts", "code": ["\\(\\s*(unsigned\\s+)?(int|float|double|char|long|short|void)\\s*\\*{0,2}\\s*\\)\\s*[\\w(*&]"], "words": ["\\bcasts?\\b", "\\btypecast"]},
-  {"id": "compound", "name": "compound assignment", "code": ["[+\\-*/%]=(?!=)", "<<=|>>=|&=|\\|=|\\^="], "words": []},
-  {"id": "incdec", "name": "++ and --", "code": ["\\+\\+"], "words": ["\\b(pre|post).?(increment|decrement)"]},
-  {"id": "relational", "name": "relational operators", "code": ["<=|>=|==|!="], "words": []},
-  {"id": "logical", "name": "logical operators and short-circuit", "code": ["&&|\\|\\|"], "words": ["\\bshort.circuit"]},
-  {"id": "bitwise", "name": "bitwise operators", "code": ["<<|>>", "~\\s*\\w", "\\w\\s*&\\s*\\w", "\\w\\s*\\|\\s*\\w"], "words": ["\\bbitwise\\b"]},
-  {"id": "ternary", "name": "ternary operator", "code": ["\\?[^?:;{}]{1,40}:(?!=)"], "words": ["\\bternary\\b(?! tree)", "\\bconditional operator\\b"]},
-  {"id": "if", "name": "if-else", "code": ["\\bif\\s*\\("], "words": ["\\bif-else\\b", "\\bdangling else\\b"]},
-  {"id": "switch", "name": "switch", "code": ["\\bswitch\\s*\\("], "words": ["\\bfall.through\\b"]},
-  {"id": "break", "name": "break and continue", "code": ["\\b(break|continue)\\s*;"], "words": []},
-  {"id": "while", "name": "while loops", "code": ["\\bwhile\\s*\\("], "words": ["\\bloops?\\b", "\\biterations?\\b"]},
-  {"id": "for", "name": "for loops", "code": ["\\bfor\\s*\\("], "words": []},
-  {"id": "dowhile", "name": "do-while", "code": ["\\bdo\\s*\\{"], "words": ["\\bdo-while\\b"]},
-  {"id": "function", "name": "functions", "code": ["\\b(int|void|char|float|double|long|unsigned)\\s+\\*{0,2}\\s*(?!main\\b)[a-zA-Z_]\\w*\\s*\\([^;{)]*\\)\\s*\\{"], "words": ["\\bfunctions?\\b", "\\bprocedures?\\b", "\\bprototypes?\\b"]},
-  {"id": "scope", "name": "scope and shadowing", "code": [], "words": ["\\bshadow", "\\bglobal variables?\\b", "\\blocal variables?\\b", "\\bscope\\b", "\\blifetime\\b"]},
-  {"id": "static", "name": "static variables", "code": ["\\bstatic\\b"], "words": []},
-  {"id": "storage", "name": "auto, register, extern", "code": ["\\b(register|extern)\\b"], "words": ["\\bstorage class"]},
-  {"id": "memory", "name": "memory layout and activation records", "code": [], "words": ["\\bactivation records?\\b", "\\bstack frames?\\b", "\\bdata segment\\b", "\\bBSS\\b"]},
-  {"id": "array", "name": "1D arrays", "code": ["\\b[a-zA-Z_]\\w*\\s*\\[[^\\]]{0,20}\\]"], "words": ["\\barrays?\\b"]},
-  {"id": "pointer", "name": "pointers, & and *", "code": ["\\b(int|char|float|double|void|long|struct\\s+\\w+)\\s*\\*+\\s*\\w", "[=(,;{]\\s*\\*\\s?[a-zA-Z_(]", "[=(,]\\s*&\\s*[a-zA-Z_]"], "words": ["\\bpointers?\\b", "\\bdereferenc", "\\baddress of\\b"]},
-  {"id": "scanf", "name": "scanf", "code": ["\\bscanf\\b"], "words": []},
-  {"id": "nullptr", "name": "NULL, void *, wild and dangling pointers", "code": ["\\bNULL\\b", "\\bvoid\\s*\\*"], "words": ["\\bdangling pointers?\\b", "\\bwild pointers?\\b"]},
-  {"id": "ptrptr", "name": "pointer to pointer", "code": ["\\*\\*\\s*[a-zA-Z_]\\w*"], "words": ["\\bdouble pointers?\\b", "\\bpointers? to (a )?pointers?\\b"]},
-  {"id": "endian", "name": "endianness", "code": [], "words": ["\\bendian"]},
-  {"id": "array2d", "name": "2D arrays", "code": ["\\b[a-zA-Z_]\\w*\\s*\\[[^\\]]{0,20}\\]\\s*\\["], "words": ["\\btwo.dimensional\\b", "\\b2D\\b", "\\bmatri(x|ces)\\b", "\\brow.major\\b", "\\bcolumn.major\\b"]},
-  {"id": "ptrarray", "name": "pointer to array, array of pointers", "code": ["\\(\\s*\\*\\s*\\w+\\s*\\)\\s*\\[", "\\b(int|char|float|double|void|long)\\s*\\*\\s*\\w+\\s*\\[[^\\]]*\\]\\s*[;=,)]"], "words": ["\\barrays? of pointers\\b", "\\bpointer to (an? )?array\\b"]},
-  {"id": "funcptr", "name": "function pointers", "code": ["\\(\\s*\\*\\s*\\w+\\s*\\)\\s*\\("], "words": ["\\bfunction pointers?\\b"]},
-  {"id": "typedef", "name": "typedef", "code": ["\\btypedef\\b"], "words": []},
-  {"id": "string", "name": "strings", "code": ["%s", "\\\\0", "\\bchar\\s*\\*\\s*\\w+\\s*=\\s*\\\"", "\\bchar\\s+\\w+\\s*\\[[^\\]]*\\]\\s*=\\s*\\\""], "words": ["\\bcharacter arrays?\\b"]},
-  {"id": "strlib", "name": "strlen, strcpy, strcmp", "code": ["\\bstr(len|cpy|cat|cmp)\\b"], "words": []},
-  {"id": "argv", "name": "command line arguments", "code": ["\\bargv\\b"], "words": []},
-  {"id": "recursion", "name": "recursion", "code": [], "words": ["\\brecursi(on|ve|vely)\\b", "\\bwinding\\b", "\\bbase case\\b"]},
-  {"id": "memo", "name": "memoisation", "code": [], "words": ["\\bmemoi[sz]"]},
-  {"id": "passing", "name": "call by reference, name, value-result", "code": [], "words": ["\\bcall.by.(reference|name|value.result)\\b", "\\bpass(ed)?.by.(reference|name|value.result)\\b", "\\bvalue.result\\b"]},
-  {"id": "dynscope", "name": "static and dynamic scoping", "code": [], "words": ["\\b(static|dynamic|lexical)(ally)? scop"]},
-  {"id": "struct", "name": "structures", "code": ["\\bstruct\\b", "->"], "words": []},
-  {"id": "union", "name": "unions", "code": ["\\bunion\\s+\\w*\\s*\\{"], "words": []},
-  {"id": "bitfield", "name": "bit-fields", "code": ["\\b\\w+\\s*:\\s*\\d+\\s*;"], "words": ["\\bbit.fields?\\b"]},
-  {"id": "malloc", "name": "dynamic memory", "code": ["\\b(malloc|calloc|realloc|free)\\s*\\("], "words": ["\\bmalloc\\b", "\\bmemory leak"]},
-  {"id": "macro", "name": "macros", "code": ["#\\s*define"], "words": ["\\bmacros?\\b"]},
-  {"id": "condcomp", "name": "conditional compilation", "code": ["#\\s*(ifdef|ifndef|if)\\b"], "words": []},
-  {"id": "const", "name": "const", "code": ["\\bconst\\b"], "words": []},
-  {"id": "invariant", "name": "loop invariants", "code": [], "words": ["\\binvariants?\\b"]},
-  {"id": "goto", "name": "goto", "code": ["\\bgoto\\b"], "words": []},
-  {"id": "bigo", "name": "O, Omega, Theta", "code": ["\\bO\\s*\\(", "Θ", "Ω", "θ", "Ο"], "words": ["\\basymptotic", "\\bcomplexity\\b", "\\bbig.?oh?\\b"]},
-  {"id": "recurrence", "name": "recurrence relations", "code": ["\\bT\\s*\\(\\s*n\\s*\\)\\s*="], "words": ["\\brecurrences?\\b", "\\bmaster theorem\\b"]},
-  {"id": "linsearch", "name": "linear search", "code": [], "words": ["\\blinear search\\b", "\\bsequential search\\b"]},
-  {"id": "binsearch", "name": "binary search", "code": [], "words": ["\\bbinary search\\b(?! tree)"]},
-  {"id": "adt", "name": "abstract data types", "code": [], "words": ["\\babstract data type", "\\bADTs?\\b"]},
-  {"id": "list", "name": "linked lists", "code": [], "words": ["\\blinked lists?\\b", "\\bsingly\\b", "\\bdoubly\\b"]},
-  {"id": "stack", "name": "stacks", "code": [], "words": ["\\bpush\\b", "\\bpop\\b", "\\bLIFO\\b", "\\bstack permutation", "\\bstacks\\b", "\\busing a stack\\b", "\\bstack operations?\\b"]},
-  {"id": "catalan", "name": "Catalan numbers", "code": [], "words": ["\\bcatalan\\b"]},
-  {"id": "queue", "name": "queues", "code": [], "words": ["\\bqueues?\\b", "\\benqueue", "\\bdequeue", "\\bFIFO\\b"]},
-  {"id": "deque", "name": "deques", "code": [], "words": ["\\bdeque\\b", "\\b(input|output).restricted\\b"]},
-  {"id": "pq", "name": "priority queues", "code": [], "words": ["\\bpriority queues?\\b"]},
-  {"id": "amortised", "name": "amortised cost", "code": [], "words": ["\\bamorti[sz]ed\\b"]},
-  {"id": "tree", "name": "binary trees", "code": [], "words": ["\\bbinary trees?\\b", "\\bleaf\\b", "\\bsubtrees?\\b", "\\b(k|n|m)-ary\\b", "\\brooted tree", "\\bnumber of leaves\\b"]},
-  {"id": "traversal", "name": "tree traversals", "code": [], "words": ["\\bin-?order\\b", "\\bpre-?order\\b", "\\bpost-?order\\b", "\\blevel.order\\b"]},
-  {"id": "bst", "name": "binary search trees", "code": [], "words": ["\\bbinary search trees?\\b", "\\bBSTs?\\b"]},
-  {"id": "avl", "name": "AVL trees", "code": [], "words": ["\\bAVL\\b", "\\bheight.balanced\\b", "\\bbalance factor"]},
-  {"id": "heap", "name": "binary heaps", "code": [], "words": ["\\b(max|min|binary|d-ary|3-ary|ternary)[- ]?heaps?\\b", "\\bheapify\\b", "\\bbuild-?heap\\b", "\\ba heap\\b", "\\bheaps\\b"]},
-  {"id": "hash", "name": "hashing", "code": [], "words": ["\\bhash", "\\blinear probing\\b", "\\bopen addressing\\b"]},
-  {"id": "graph", "name": "graphs", "code": [], "words": ["\\bgraphs?\\b", "\\badjacency\\b", "\\bDAGs?\\b"]},
-  {"id": "spanning", "name": "spanning trees, the definition", "code": [], "words": ["\\bspanning trees?\\b"]},
-  {"id": "shortest", "name": "shortest paths, the definition", "code": [], "words": ["\\bshortest.path", "\\bshortest distance"]},
-  {"id": "inversions", "name": "inversions", "code": [], "words": ["\\binversions?\\b"]},
-  {"id": "bubble", "name": "bubble sort", "code": [], "words": ["\\bbubble.?sort"]},
-  {"id": "selsort", "name": "selection sort", "code": [], "words": ["\\bselection.?sort"]},
-  {"id": "inssort", "name": "insertion sort", "code": [], "words": ["\\binsertion.?sort"]},
-  {"id": "dnc", "name": "divide and conquer", "code": [], "words": ["\\bdivide.(and|&).conquer\\b"]},
-  {"id": "mergesort", "name": "merge sort", "code": [], "words": ["\\bmerge.?sort"]},
-  {"id": "quicksort", "name": "quick sort and partition", "code": [], "words": ["\\bquick.?sort", "\\bpartition(ing)? (algorithm|procedure|routine|step)"]},
-  {"id": "median", "name": "selection and median of medians", "code": [], "words": ["\\bmedian of medians\\b", "\\bquickselect\\b"]},
-  {"id": "heapsort", "name": "heap sort", "code": [], "words": ["\\bheap.?sort"]},
-  {"id": "sortbound", "name": "comparison sort lower bound", "code": [], "words": ["\\bdecision tree"]},
-  {"id": "radix", "name": "counting and radix sort", "code": [], "words": ["\\bradix\\b", "\\bcounting.sort\\b", "\\bbucket.sort\\b"]},
-  {"id": "bfs", "name": "BFS", "code": [], "words": ["\\bBFS\\b", "\\bbreadth.first\\b"]},
-  {"id": "dfs", "name": "DFS", "code": [], "words": ["\\bDFS\\b", "\\bdepth.first\\b"]},
-  {"id": "articulation", "name": "articulation points and bridges", "code": [], "words": ["\\barticulation\\b", "\\bcut.vertex\\b", "\\bcut.vertices\\b"]},
-  {"id": "toposort", "name": "topological sort", "code": [], "words": ["\\btopological"]},
-  {"id": "scc", "name": "strongly connected components", "code": [], "words": ["\\bstrongly connected\\b", "\\bSCCs?\\b"]},
-  {"id": "greedy", "name": "greedy method", "code": [], "words": ["\\bgreedy\\b"]},
-  {"id": "huffman", "name": "Huffman coding", "code": [], "words": ["\\bhuffman\\b"]},
-  {"id": "mst", "name": "minimum spanning trees", "code": [], "words": ["\\bminimum spanning\\b", "\\bMSTs?\\b"]},
-  {"id": "unionfind", "name": "union-find", "code": [], "words": ["\\bunion.find\\b", "\\bdisjoint.sets?\\b"]},
-  {"id": "kruskal", "name": "Kruskal's algorithm", "code": [], "words": ["\\bkruskal"]},
-  {"id": "prim", "name": "Prim's algorithm", "code": [], "words": ["\\bprim'?s\\b"]},
-  {"id": "relax", "name": "edge relaxation", "code": [], "words": ["\\brelax(ation|ing|ed)?\\b"]},
-  {"id": "dijkstra", "name": "Dijkstra's algorithm", "code": [], "words": ["\\bdijkstra"]},
-  {"id": "dp", "name": "dynamic programming", "code": [], "words": ["\\bdynamic programming\\b", "\\bDP\\b"]},
-  {"id": "bellman", "name": "Bellman-Ford", "code": [], "words": ["\\bbellman"]},
-  {"id": "floyd", "name": "Floyd-Warshall", "code": [], "words": ["\\bfloyd", "\\bwarshall"]},
-  {"id": "radix-notation", "name": "numbers in any radix", "code": [], "words": ["\\bradix[- ]?(\\d+|r|x|b)\\b", "\\bbase[- ](\\d+|r|x|y)\\b"]},
-  {"id": "sign-magnitude", "name": "sign-magnitude and 1's complement", "code": [], "words": ["\\bsign.magnitude\\b", "\\b1'?s complement\\b", "\\bones'? complement\\b"]},
-  {"id": "booth", "name": "Booth's multiplication", "code": [], "words": ["\\bbooth'?s?\\b"]},
-  {"id": "ieee754", "name": "IEEE 754 floating point", "code": ["\\bIEEE\\b"], "words": ["\\bsingle.precision\\b", "\\bmantissa\\b", "\\bbiased exponent\\b"]},
-  {"id": "boolean-algebra", "name": "Boolean algebra", "code": [], "words": ["\\bboolean (algebra|expressions?|functions?|variables?|operat)"]},
-  {"id": "functional-completeness", "name": "functional completeness", "code": [], "words": ["\\bfunctionally complete\\b", "\\buniversal gates?\\b"]},
-  {"id": "minterm", "name": "minterms, maxterms, SOP and POS", "code": ["\\bSOP\\b", "\\bPOS\\b"], "words": ["\\bminterms?\\b", "\\bmin-terms?\\b", "\\bmaxterms?\\b", "\\bsum.of.products?\\b", "\\bproduct.of.sums?\\b"]},
-  {"id": "kmap", "name": "Karnaugh maps", "code": [], "words": ["\\bkarnaugh\\b", "\\bK.maps?\\b", "\\bdon'?t.cares?\\b"]},
-  {"id": "prime-implicant", "name": "prime and essential prime implicants", "code": [], "words": ["\\bprime implicants?\\b", "\\bimplicants?\\b", "\\bQuine"]},
-  {"id": "mux", "name": "multiplexers", "code": ["\\bMUX\\b"], "words": ["\\bmultiplexers?\\b"]},
-  {"id": "decoder", "name": "decoders and encoders", "code": [], "words": ["\\bdecoders?\\b", "\\bencoders?\\b"]},
-  {"id": "adder", "name": "adders", "code": [], "words": ["\\badders?\\b", "\\bcarry.look.?ahead\\b"]},
-  {"id": "flip-flop", "name": "latches and flip-flops", "code": [], "words": ["\\bflip.flops?\\b", "\\blatch(es)?\\b"]},
-  {"id": "counter-circuit", "name": "counters", "code": [], "words": ["\\b(ripple|synchronous|asynchronous|johnson|ring|up|down|binary|saturating|modulo|decade|up/down)[- ]counters?\\b", "\\bmod.?\\d+ counter", "\\bmod.?N counter", "\\b\\d+.bit counter"]},
-  {"id": "shift-register", "name": "shift registers", "code": ["\\bLFSR\\b"], "words": ["\\bshift registers?\\b"]},
-  {"id": "seq-machine", "name": "sequential machines and state diagrams", "code": [], "words": ["\\bmealy\\b", "\\bmoore machine", "\\bfinite state machines?\\b", "\\bstate diagram\\b", "\\bsequential (circuit|machine)s?\\b"]},
-  {"id": "cache", "name": "cache memory", "code": [], "words": ["\\bcaches?\\b"]},
-  {"id": "cache-mapping", "name": "direct, associative and set-associative mapping", "code": [], "words": ["\\bdirect.mapped\\b", "\\bdirect mapping\\b", "\\bset.associative\\b", "\\bfully associative\\b", "\\b\\d+-way\\b", "\\btag (bits|field|directory)\\b"]},
-  {"id": "write-policy", "name": "write-through and write-back", "code": [], "words": ["\\bwrite.back\\b", "\\bwrite.through\\b", "\\bdirty bit"]},
-  {"id": "amat", "name": "hit ratio and average access time", "code": [], "words": ["\\bhit (ratio|rate)\\b", "\\bmiss (ratio|rate|penalty)\\b", "\\baverage (memory )?access time\\b"]},
-  {"id": "cpi", "name": "CPI and execution time", "code": ["\\bCPI\\b", "\\bMIPS\\b"], "words": ["\\bcycles per instruction\\b"]},
-  {"id": "instruction-format", "name": "instruction formats and opcodes", "code": [], "words": ["\\bopcodes?\\b", "\\binstruction formats?\\b", "\\bexpanding op"]},
-  {"id": "addressing-mode", "name": "addressing modes", "code": [], "words": ["\\baddressing modes?\\b", "\\beffective address\\b", "\\bauto.?(increment|decrement)\\b"]},
-  {"id": "pipeline", "name": "instruction pipelining", "code": [], "words": ["(?<!non-)\\bpipelin", "\\bpipe stages?\\b"]},
-  {"id": "hazard", "name": "pipeline hazards and forwarding", "code": [], "words": ["\\b(data|control|structural|pipeline) hazards?\\b", "\\boperand forwarding\\b", "\\bdata forwarding\\b", "\\bbypassing\\b"]},
-  {"id": "datapath", "name": "datapath and micro-operations", "code": [], "words": ["\\bdata ?path\\b", "\\bmicro.?operations?\\b"]},
-  {"id": "microprogram", "name": "hardwired and microprogrammed control", "code": [], "words": ["\\bmicro.?program", "\\bmicro.?instructions?\\b", "\\bcontrol (memory|word|store)\\b", "\\bhardwired\\b"]},
-  {"id": "interrupt", "name": "interrupts and exceptions", "code": [], "words": ["\\binterrupts?\\b", "\\bexceptions?\\b", "\\bdaisy.chain"]},
-  {"id": "io-modes", "name": "polling and DMA", "code": ["\\bDMA\\b"], "words": ["\\bpolling\\b", "\\bpolled\\b", "\\bcycle stealing\\b"]},
-  {"id": "memory-interfacing", "name": "memory chips, decoding and interleaving", "code": ["\\bDRAM\\b"], "words": ["\\bchip select\\b", "\\binterleav", "\\bRAM chips?\\b", "\\bmemory (banks?|modules?)\\b"]},
-  {"id": "layering", "name": "protocol layers", "code": ["\\bOSI\\b"], "words": ["\\b(transport|network|data.link|application|physical) layers?\\b", "\\bTCP/IP (model|stack|suite|protocol suite)\\b"]},
-  {"id": "link-delay", "name": "transmission and propagation delay", "code": ["\\bRTT\\b"], "words": ["\\btransmission (delay|time)\\b", "(?<!total )\\bpropagation (time|speed)\\b", "\\bround.trip (time|delay)\\b", "\\bbandwidth.delay\\b"]},
-  {"id": "switching", "name": "circuit, packet and virtual-circuit switching", "code": [], "words": ["\\bcircuit.switch", "\\bpacket.switch", "\\bstore.and.forward\\b", "\\bvirtual circuits?\\b"]},
-  {"id": "ip-address", "name": "IPv4 addresses, CIDR and subnets", "code": ["\\bCIDR\\b", "\\b\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\b"], "words": ["\\bIP address(es)?\\b", "\\bsubnets?\\b", "\\bsubnet masks?\\b", "\\bnet ?masks?\\b"]},
-  {"id": "forwarding", "name": "forwarding and longest prefix match", "code": [], "words": ["\\blongest prefix\\b", "\\bforwarding tables?\\b", "\\brouting tables?\\b"]},
-  {"id": "ip-header", "name": "the IPv4 header", "code": ["\\bTTL\\b"], "words": ["\\bIP (header|datagram|packet)s?\\b", "\\btime.to.live\\b"]},
-  {"id": "fragmentation", "name": "IP fragmentation", "code": ["\\bMTU\\b"], "words": ["\\bfragmentation\\b", "\\bfragments\\b", "\\bfragment offset\\b"]},
-  {"id": "nat", "name": "network address translation", "code": ["\\bNAT\\b"], "words": ["\\bnetwork address translation\\b"]},
-  {"id": "arq", "name": "stop-and-wait and sliding-window protocols", "code": ["\\bARQ\\b"], "words": ["\\bstop.and.wait\\b", "\\bgo.back.n\\b", "\\bselective (repeat|reject)\\b", "\\bsliding window (protocol|flow)", "\\bpiggyback"]},
-  {"id": "tcp", "name": "TCP connections and sequence numbers", "code": ["\\bSYN\\b"], "words": ["\\bthree.way handshake\\b", "\\b3.way handshake\\b", "\\bTCP (connection|segment|session|sender|receiver|client|server)s?\\b"]},
-  {"id": "socket", "name": "the socket API", "code": [], "words": ["\\bsockets?\\b"]},
-  {"id": "congestion", "name": "TCP congestion control", "code": ["\\bAIMD\\b"], "words": ["\\bcongestion (window|control|avoidance)\\b", "\\bslow.start\\b"]},
-  {"id": "dv-routing", "name": "distance vector and link state routing", "code": ["\\bRIP\\b", "\\bOSPF\\b", "\\bBGP\\b"], "words": ["\\bdistance.vector\\b", "\\blink.state\\b", "\\bcount.to.infinity\\b"]},
-  {"id": "error-detection", "name": "parity, CRC and Hamming codes", "code": ["\\bCRC\\b"], "words": ["\\bcyclic redundancy\\b", "\\bhamming (code|distance)", "\\bparity\\b", "\\bgenerator polynomial\\b"]},
-  {"id": "mac", "name": "medium access: ALOHA and CSMA/CD", "code": ["\\bCSMA\\b"], "words": ["\\baloha\\b", "\\bmedium access\\b", "\\bcollision (domain|detection)\\b"]},
-  {"id": "ethernet", "name": "Ethernet and switches", "code": [], "words": ["\\bethernet\\b", "\\bMAC address"]},
-  {"id": "dns-http", "name": "DNS and HTTP", "code": ["\\bDNS\\b", "\\bHTTP\\b", "\\bURL\\b"], "words": ["\\bweb (browser|page)s?\\b", "\\bdomain names?\\b"]},
-  {"id": "phases", "name": "the phases of a compiler", "code": [], "words": ["\\blexical analy[sz]", "\\bsyntax analy[sz]", "\\bsemantic analy[sz]", "\\bfront.end\\b", "\\bback.end\\b"]},
-  {"id": "ir", "name": "intermediate code", "code": [], "words": ["\\bintermediate (code|representations?|form)\\b"]},
-  {"id": "token", "name": "tokens and lexemes", "code": [], "words": ["\\btokens?\\b", "\\blexemes?\\b"]},
-  {"id": "longest-match", "name": "longest match in a lexer", "code": [], "words": ["\\blongest (possible )?match", "\\bmaximal munch"]},
-  {"id": "derivation", "name": "derivations and parse trees", "code": [], "words": ["\\b(leftmost|rightmost) derivations?\\b", "\\bsentential forms?\\b", "\\bparse trees?\\b"]},
-  {"id": "top-down", "name": "top-down and bottom-up parsing", "code": [], "words": ["\\btop.down\\b", "\\bbottom.up pars", "\\bpredictive pars", "\\brecursive.descent"]},
-  {"id": "ambiguity", "name": "ambiguous grammars", "code": [], "words": ["\\bambiguous\\b", "\\bambiguity\\b"]},
-  {"id": "left-recursion", "name": "left recursion and left factoring", "code": [], "words": ["\\bleft.recursi", "\\bleft.factor"]},
-  {"id": "first-set", "name": "FIRST sets", "code": ["\\bFIRST\\b"], "words": []},
-  {"id": "follow-set", "name": "FOLLOW sets", "code": ["\\bFOLLOW\\b"], "words": []},
-  {"id": "ll1", "name": "LL(1) parsing tables", "code": ["\\bLL\\s*\\(\\s*[1k]\\s*\\)"], "words": []},
-  {"id": "handle", "name": "handles and viable prefixes", "code": [], "words": ["\\bhandles?\\b", "\\bviable prefix"]},
-  {"id": "lr0-items", "name": "LR(0) items, CLOSURE and GOTO", "code": ["\\bLR\\s*\\(\\s*0\\s*\\)", "\\bCLOSURE\\b", "\\bGOTO\\b"], "words": ["\\bcanonical collection"]},
-  {"id": "slr", "name": "SLR(1) parsing", "code": ["\\bSLR\\b"], "words": []},
-  {"id": "lr1-items", "name": "LR(1) items and canonical LR", "code": ["\\bLR\\s*\\(\\s*1\\s*\\)", "\\bCLR\\b"], "words": ["\\bcanonical LR\\b"]},
-  {"id": "lalr", "name": "LALR(1) parsing", "code": ["\\bLALR\\b"], "words": []},
-  {"id": "sdd", "name": "syntax-directed definitions and attributes", "code": ["\\bSDD\\b", "\\bSDTS?\\b"], "words": ["\\bsyntax.directed", "\\bsemantic (rules?|actions?)\\b", "\\battribute grammars?\\b", "\\bsynthesi[sz]ed\\b", "\\binherited attribute"]},
-  {"id": "attributed", "name": "S-attributed and L-attributed definitions", "code": [], "words": ["\\b[LS].attributed\\b"]},
-  {"id": "translation-scheme", "name": "translation schemes with embedded actions", "code": ["\\{\\s*print\\b"], "words": ["\\btranslation schemes?\\b"]},
-  {"id": "tac", "name": "three-address code, quadruples and triples", "code": [], "words": ["\\bthree.address code", "\\bquadruples?\\b", "\\btriples?\\b"]},
-  {"id": "ssa", "name": "static single assignment form", "code": ["\\bSSA\\b"], "words": ["\\bstatic single assignment"]},
-  {"id": "expr-dag", "name": "the DAG of a basic block", "code": ["\\bDAG\\b"], "words": ["\\bdirected acyclic graph"]},
-  {"id": "backpatching", "name": "backpatching", "code": [], "words": ["\\bbackpatch"]},
-  {"id": "basic-block", "name": "basic blocks and control-flow graphs", "code": [], "words": ["\\bbasic blocks?\\b", "\\bcontrol.flow.graphs?\\b", "\\bflow graphs?\\b"]},
-  {"id": "local-opt", "name": "local and loop optimisations", "code": [], "words": ["\\bconstant folding", "\\bcopy propagation", "\\bcommon sub.?expressions?", "\\bdead.code", "\\bstrength reduction", "\\bloop.invariant", "\\bcode motion", "\\binduction variables?"]},
-  {"id": "liveness", "name": "liveness analysis", "code": [], "words": ["\\blive variables?\\b", "\\bliveness\\b", "\\blive (at|on)\\b"]},
-  {"id": "forward-flow", "name": "forward data-flow analyses", "code": [], "words": ["\\bavailable expressions?\\b", "\\breaching definitions?\\b", "\\bdata.flow analys"]},
-  {"id": "matrix-algebra", "name": "matrix algebra", "code": [], "words": ["\\bmatri(x|ces)\\b"]},
-  {"id": "determinant", "name": "determinants", "code": [], "words": ["\\bdeterminants?\\b"]},
-  {"id": "matrix-rank", "name": "rank of a matrix", "code": [], "words": ["\\brank\\b"]},
-  {"id": "linear-system", "name": "systems of linear equations", "code": [], "words": ["\\bsystems? of (linear )?(simultaneous )?equations\\b", "\\bnon.trivial solutions?\\b", "\\blinear equations\\b"]},
-  {"id": "lu", "name": "LU decomposition", "code": ["\\bLU\\b"], "words": ["\\bgaussian elimination\\b"]},
-  {"id": "vector-space", "name": "vector spaces, independence and dimension", "code": [], "words": ["\\bsubspaces?\\b", "\\blinearly (in)?dependent\\b", "\\bvector spaces?\\b", "\\bnull space\\b", "\\bnullity\\b"]},
-  {"id": "eigen", "name": "eigenvalues and eigenvectors", "code": [], "words": ["\\beigen"]},
-  {"id": "probability", "name": "probability of events", "code": [], "words": ["\\bprobabilit"]},
-  {"id": "conditional", "name": "conditional probability and independence", "code": [], "words": ["\\bconditional probabilit", "\\bindependent events?\\b", "\\bmutually exclusive\\b", "\\bgiven that\\b"]},
-  {"id": "bayes", "name": "Bayes' theorem", "code": [], "words": ["\\bbayes"]},
-  {"id": "random-variable", "name": "random variables, expectation and variance", "code": [], "words": ["\\brandom variables?\\b", "\\bexpectation\\b", "\\bexpected (value|number)\\b", "\\bvariance\\b", "\\bstandard deviation\\b"]},
-  {"id": "distribution", "name": "the standard distributions", "code": ["\\bPDF\\b", "\\bCDF\\b"], "words": ["\\b(binomial|poisson|exponential|normal|uniform|gaussian|bernoulli)(ly)? (distribut|random)", "\\bdensity function\\b", "\\bdistribution function\\b", "\\buniformly distributed\\b"]},
-  {"id": "integration", "name": "integration", "code": [], "words": ["\\bintegrat(e|ed|es|ion|ing)\\b", "\\b(definite|indefinite) integrals?\\b", "\\bintegral of\\b", "\\bthe integral\\b"]},
-  {"id": "limit", "name": "limits", "code": ["\\blim\\b"], "words": ["\\blimits?\\b"]},
-  {"id": "continuity", "name": "continuity and differentiability", "code": [], "words": ["\\bcontinuous (at|on|in|everywhere|function)", "\\bcontinuity\\b", "\\bdifferentiab"]},
-  {"id": "derivative", "name": "derivatives, maxima and minima", "code": [], "words": ["\\bderivatives?\\b", "\\bmaxima\\b", "\\bminima\\b", "\\blocal (maxim|minim)", "\\bextrem(a|um)\\b"]},
-  {"id": "counting", "name": "permutations and combinations", "code": [], "words": ["\\bpermutations?\\b", "\\bbinomial coefficients?\\b", "\\bnumber of ways\\b"]},
-  {"id": "inclusion-exclusion", "name": "inclusion–exclusion and derangements", "code": [], "words": ["\\binclusion.exclusion\\b", "\\bderangements?\\b"]},
-  {"id": "set-ops", "name": "sets, power sets and cardinality", "code": [], "words": ["\\bpower ?sets?\\b", "\\bsymmetric difference\\b", "\\bcardinality\\b", "\\buncountabl"]},
-  {"id": "relation", "name": "relations and their properties", "code": [], "words": ["\\b(reflexive|irreflexive|symmetric|antisymmetric|asymmetric|transitive) (relations?|closure)\\b", "\\bequivalence (relations?|classes?)\\b", "\\bbinary relations?\\b"]},
-  {"id": "function-kinds", "name": "one-to-one, onto and bijective functions", "code": [], "words": ["\\bonto (functions?|mappings?|maps?)\\b", "\\bone.to.one\\b", "\\binjecti", "\\bsurjecti", "\\bbijecti"]},
-  {"id": "graph-basics", "name": "degrees, special graphs and isomorphism", "code": [], "words": ["\\bdegree sequence\\b", "\\bregular graph", "\\bcomplete (bipartite )?graph", "\\bbipartite\\b", "\\bisomorphi", "\\bself.complementary\\b"]},
-  {"id": "connectivity-gt", "name": "components, Euler circuits and spanning-tree counts", "code": [], "words": ["\\beuler(ian)? (circuit|path|trail|tour)", "\\bhamiltonian\\b", "\\bline graph\\b", "\\bnumber of spanning trees\\b"]},
-  {"id": "planarity", "name": "planar graphs and Euler's formula", "code": [], "words": ["\\bplanar\\b", "\\beuler.s formula\\b"]},
-  {"id": "colouring", "name": "graph colouring", "code": [], "words": ["\\bchromatic\\b", "\\b(vertex|edge|proper) colou?ring\\b", "\\bcolou?rable\\b"]},
-  {"id": "matching", "name": "matchings, vertex covers and independent sets", "code": [], "words": ["\\b(perfect|maximum|maximal) matchings?\\b", "\\bnumber of matchings\\b", "\\bvertex covers?\\b", "(?<!linearly )\\bindependent sets?\\b"]},
-  {"id": "poset", "name": "partial orders and Hasse diagrams", "code": [], "words": ["\\bpartial(ly)? order", "\\bposets?\\b", "\\bhasse\\b", "\\btotal orders?\\b"]},
-  {"id": "lattice", "name": "lattices", "code": [], "words": ["\\blattices?\\b"]},
-  {"id": "group", "name": "semigroups, monoids and groups", "code": [], "words": ["\\b(abelian|cyclic|finite) groups?\\b", "\\bsubgroups?\\b", "\\bgroup of order\\b", "\\bmonoids?\\b", "\\bsemi.?groups?\\b", "\\bidentity element\\b"]},
-  {"id": "gen-function", "name": "generating functions", "code": [], "words": ["\\bgenerating functions?\\b"]},
-  {"id": "prop-logic", "name": "propositional logic", "code": [], "words": ["\\btautolog", "\\bpropositional (logic|formula|calculus|variable|statement)", "\\blogically equivalent\\b", "\\bwell.formed formula", "\\bcontrapositive\\b", "\\bmodus ponens\\b"]},
-  {"id": "fol", "name": "first-order logic", "code": [], "words": ["\\bfirst.order (logic|formula|predicate|sentence)", "\\bpredicate (logic|calculus|formula)", "\\bquantifi"]},
-  {"id": "process-state", "name": "process states and transitions", "code": [], "words": ["\\bready state", "\\bready queue", "\\brunning state", "\\bblocked state", "\\bwaiting state", "\\bstate transition", "\\bready to (running|waiting)", "\\brunning to (ready|waiting|blocked)"]},
-  {"id": "preemption", "name": "preemptive and non-preemptive scheduling", "code": [], "words": ["\\bpre-?empt", "\\bnon-?pre-?empt"]},
-  {"id": "kernel-mode", "name": "kernel mode, user mode and system calls", "code": [], "words": ["\\bkernel mode", "\\buser mode", "\\bprivileged", "\\bsystem calls?\\b", "\\bsoftware interrupt", "\\btrap(s|ped)?\\b"]},
-  {"id": "context-switch", "name": "context switches", "code": [], "words": ["\\bcontext.switch"]},
-  {"id": "logical-address", "name": "logical and physical addresses", "code": [], "words": ["\\blogical address", "\\bvirtual address", "\\bphysical address"]},
-  {"id": "fit-policy", "name": "first, best and worst fit", "code": [], "words": ["\\bbest.fit", "\\bfirst.fit", "\\bworst.fit", "\\bnext.fit"]},
-  {"id": "paging", "name": "pages, frames and page tables", "code": [], "words": ["\\bpage tables?\\b", "\\bpage frames?\\b", "\\bpage size\\b", "\\bpaging\\b", "\\bpage table entr", "\\bframe number"]},
-  {"id": "segmentation", "name": "segmentation", "code": [], "words": ["\\bsegmentation\\b", "\\bsegmented\\b", "\\bsegment tables?"]},
-  {"id": "multilevel-paging", "name": "multilevel page tables", "code": [], "words": ["\\bmulti.?level (page|paging)", "\\b(two|three|four|2|3|4).level (page|paging|tree)", "\\bhierarchical paging", "\\b(outer|inner|second.level|first.level) page tables?", "\\bpage directory"]},
-  {"id": "tlb", "name": "the TLB", "code": ["\\bTLB\\b", "\\bT LB\\b"], "words": ["\\btranslation look.?aside"]},
-  {"id": "page-fault", "name": "demand paging and page faults", "code": [], "words": ["\\bpage faults?\\b", "\\bdemand.pag", "\\bswap space", "\\bswapped (out|in)\\b"]},
-  {"id": "page-replacement", "name": "page replacement policies", "code": ["\\bLRU\\b"], "words": ["\\bleast recently used", "\\bpage replacement", "\\bBelady", "\\boptimal (page )?replacement", "\\bFIFO (page )?replacement"]},
-  {"id": "thrashing", "name": "thrashing and working sets", "code": [], "words": ["\\bthrashing", "\\bworking.set"]},
-  {"id": "scheduling", "name": "CPU scheduling algorithms and criteria", "code": ["\\bSJF\\b", "\\bSRTF?\\b", "\\bFCFS\\b", "\\bHRRN\\b"], "words": ["\\bturn.?around time", "\\bwaiting time", "\\bround.robin", "\\btime quantum", "\\btime.slice", "\\bshortest (job|remaining)", "\\bfirst.come.first.serve", "\\bstarvation", "\\bstarve", "\\bresponse ratio"]},
-  {"id": "thread", "name": "threads", "code": [], "words": ["\\bthreads?\\b", "\\bmulti.?threaded"]},
-  {"id": "fork", "name": "fork()", "code": ["\\bfork\\s*\\("], "words": []},
-  {"id": "race", "name": "race conditions", "code": [], "words": ["\\brace condition"]},
-  {"id": "critical-section", "name": "critical sections and their requirements", "code": [], "words": ["\\bcritical sections?\\b", "\\bmutual exclusion", "\\bbounded waiting", "\\bcritical region"]},
-  {"id": "deadlock", "name": "deadlock", "code": [], "words": ["\\bdead.?lock"]},
-  {"id": "atomic-instr", "name": "test-and-set and other atomic instructions", "code": ["\\bTSL\\b", "\\bTSET\\b"], "words": ["\\btest.and.set", "\\bfetch.and", "\\bcompare.and.swap", "\\bswap instruction"]},
-  {"id": "semaphore", "name": "semaphores", "code": ["\\b[PV]\\s*\\(\\s*[A-Za-z_]\\w*\\s*\\)"], "words": ["\\bsemaphores?\\b", "\\bmutex(es)?\\b"]},
-  {"id": "producer-consumer", "name": "the producer-consumer problem", "code": [], "words": ["\\bproducers?\\b", "\\bconsumers?\\b", "\\bbounded.buffer"]},
-  {"id": "readers-writers", "name": "the readers-writers problem", "code": [], "words": ["\\breaders?.(and )?writers?", "\\breader.writer"]},
-  {"id": "dining", "name": "the dining philosophers", "code": [], "words": ["\\bdining philosoph"]},
-  {"id": "barrier", "name": "barriers", "code": [], "words": ["\\bbarrier"]},
-  {"id": "monitor", "name": "monitors and condition variables", "code": [], "words": ["\\bmonitors?\\b", "\\bcondition variables?"]},
-  {"id": "deadlock-conditions", "name": "the four deadlock conditions", "code": [], "words": ["\\bcircular wait", "\\bhold and wait", "\\bno preemption"]},
-  {"id": "rag", "name": "resource allocation graphs", "code": [], "words": ["\\bresource allocation graph", "\\bwait.for graph", "\\bclaim edges?", "\\bassignment edges?"]},
-  {"id": "bankers", "name": "the banker's algorithm and safe states", "code": [], "words": ["\\bbanker", "\\bsafe (state|sequence)", "\\bunsafe state"]},
-  {"id": "disk-geometry", "name": "disk structure and access time", "code": ["\\bRPM\\b", "\\brpm\\b"], "words": ["\\bcylinders?\\b", "\\bsectors?\\b", "\\bplatters?\\b", "\\brecording surfaces?", "\\bseek time", "\\brotational"]},
-  {"id": "disk-scheduling", "name": "disk scheduling", "code": ["\\bSSTF\\b", "\\bC-?SCAN\\b", "\\bSCAN\\b", "\\bC-?LOOK\\b", "\\bLOOK\\b"], "words": ["\\bshortest seek", "\\belevator"]},
-  {"id": "file-allocation", "name": "file allocation methods", "code": ["\\bFAT\\b"], "words": ["\\blinked allocation", "\\bindexed allocation", "\\bfile allocation table", "\\bindex block"]},
-  {"id": "inode", "name": "inodes and indirect blocks", "code": [], "words": ["\\bi-?nodes?\\b", "\\bindex node", "\\bindirect (block|pointer|address)", "\\bdoubly indirect", "\\bdirect (block )?(pointers|addresses)"]},
-  {"id": "rel-model", "name": "relations, schemas and instances", "code": [], "words": ["\\barity\\b", "\\bdegree of (a|the) relation"]},
-  {"id": "keys", "name": "superkeys, candidate keys and primary keys", "code": [], "words": ["\\bsuper ?keys?\\b", "\\bcandidate keys?\\b", "\\bprimary keys?\\b", "\\bprime attributes?\\b"]},
-  {"id": "null", "name": "null values", "code": [], "words": ["\\bnulls?\\b"]},
-  {"id": "foreign-key", "name": "foreign keys and referential integrity", "code": [], "words": ["\\bforeign keys?\\b", "\\breferential integrity", "\\bon.delete\\b"]},
-  {"id": "transaction", "name": "transactions and the ACID properties", "code": ["\\bACID\\b"], "words": ["\\btransactions?\\b", "\\batomicity\\b", "\\bdurability\\b"]},
-  {"id": "schedule", "name": "schedules and conflicting operations", "code": [], "words": ["\\bschedules?\\b"]},
-  {"id": "conflict-serial", "name": "conflict serializability and precedence graphs", "code": [], "words": ["\\bconflict.serializ", "\\bconflict.equivalent", "\\bprecedence graph", "\\bserializab"]},
-  {"id": "recoverable", "name": "recoverable, cascadeless and strict schedules", "code": [], "words": ["\\brecoverab", "\\bcascadeless", "\\bcascading (abort|roll)"]},
-  {"id": "two-phase-locking", "name": "locks and two-phase locking", "code": ["\\b2PL\\b"], "words": ["\\btwo.phase locking", "\\b2.phase locking", "\\bshared locks?", "\\bexclusive locks?"]},
-  {"id": "timestamp", "name": "timestamp ordering, wait-die and wound-wait", "code": [], "words": ["\\btime.?stamps?", "\\bwait.die", "\\bwound.wait", "\\bThomas"]},
-  {"id": "log-recovery", "name": "logs, checkpoints and recovery", "code": [], "words": ["\\bcheckpoint", "\\bundo\\b", "\\bredo\\b"]},
-  {"id": "rel-algebra", "name": "the relational algebra operators", "code": [], "words": ["\\brelational algebra", "\\bprojection\\b", "\\bcartesian product", "\\bcross product"]},
-  {"id": "join", "name": "joins", "code": [], "words": ["\\bjoins?\\b", "\\bjoined\\b"]},
-  {"id": "fd", "name": "functional dependencies", "code": [], "words": ["\\bfunctional(ly)? dependen", "\\bfunctionally determin", "\\bArmstrong"]},
-  {"id": "closure", "name": "attribute closure, F+ and minimal covers", "code": ["\\bF\\s*\\+"], "words": ["\\battribute closure", "\\bclosure of (a|the) set of (attributes|functional)", "\\bminimal cover", "\\bcanonical cover", "\\birreducible"]},
-  {"id": "normal-form", "name": "normal forms", "code": ["\\b[1-5]NF\\b", "\\bBCNF\\b"], "words": ["\\bnormal forms?\\b", "\\bnormali[sz]", "\\bBoyce"]},
-  {"id": "lossless", "name": "lossless and dependency-preserving decomposition", "code": [], "words": ["\\blossless", "\\blossy\\b", "\\bdependency.preserv", "\\bdecompos(ed|ition)? (of|into)\\b", "\\bdecomposed\\b"]},
-  {"id": "sql", "name": "SQL queries", "code": ["\\bSELECT\\b", "\\bSQL\\b"], "words": []},
-  {"id": "sql-aggregate", "name": "aggregates, GROUP BY and HAVING", "code": ["\\bGROUP BY\\b", "\\bHAVING\\b", "\\b(COUNT|SUM|AVG|MAX|MIN)\\s*\\("], "words": ["\\bgroup by\\b", "\\bhaving\\b", "\\b(count|sum|avg|max|min)\\s*\\("]},
-  {"id": "subquery", "name": "nested and correlated subqueries", "code": ["\\bEXISTS\\b", "\\bNOT IN\\b", "\\b(ALL|ANY|SOME)\\s*\\("], "words": ["\\bsub.?quer", "\\bnested quer", "\\bcorrelated", "\\(\\s*select\\b", "\\bin\\s*\\(\\s*select", "\\bexists\\b"]},
-  {"id": "three-valued", "name": "SQL's three-valued logic", "code": [], "words": ["\\bunknown\\b", "\\bthree.valued"]},
-  {"id": "trc", "name": "tuple and domain relational calculus", "code": [], "words": ["\\btuple (relational )?calculus", "\\bdomain (relational )?calculus", "\\brelational calculus", "\\bcalculus expression"]},
-  {"id": "file-org", "name": "records, blocks and file organisation", "code": [], "words": ["\\bblocking factor", "\\bdisk blocks?\\b", "\\bblock size\\b", "\\bheap file", "\\bsorted file", "\\bordered file"]},
-  {"id": "index", "name": "primary, clustering and secondary indexes", "code": [], "words": ["\\bindex(es|ing|ed)?\\b", "\\bclustered\\b", "\\bclustering\\b", "\\bdense\\b", "\\bsparse\\b"]},
-  {"id": "btree", "name": "B-trees", "code": [], "words": ["\\bB.?-?trees?\\b", "\\b2-3-4 tree"]},
-  {"id": "bplus", "name": "B+ trees", "code": [], "words": ["\\bB\\s*\\+\\s*-?\\s*trees?"]},
-  {"id": "er-model", "name": "the ER model", "code": ["\\bE/?R\\b"], "words": ["\\bentity sets?\\b", "\\bentity types?\\b", "\\bentities\\b", "\\bentity.relationship", "\\bweak entit", "\\bmany.to.many", "\\bone.to.many", "\\bmany.to.one", "\\bparticipation\\b"]},
-  {"id": "language-ops", "name": "strings, languages and their operations", "code": [], "words": ["\\bKleene"]},
-  {"id": "dfa", "name": "DFAs", "code": ["\\bDFAs?\\b", "\\bFSAs?\\b", "\\bFSMs?\\b"], "words": ["\\bdeterministic finite", "\\bfinite.(state )?automat", "\\bfinite.state machines?"]},
-  {"id": "regular-lang", "name": "regular languages", "code": [], "words": ["\\bregular (languages?|sets?)\\b", "\\bis regular\\b", "\\bnot regular\\b", "\\bnon.?regular\\b"]},
-  {"id": "complement", "name": "complements of languages", "code": [], "words": ["\\bcomplement"]},
-  {"id": "transducer", "name": "Mealy and Moore machines", "code": [], "words": ["\\bMealy", "\\bMoore\\b"]},
-  {"id": "nfa", "name": "NFAs and ε-moves", "code": ["\\bNFAs?\\b", "\\bNDFAs?\\b", "\\bNFSA\\b"], "words": ["\\bnon.?deterministic finite", "\\bε.?(moves?|transitions?)", "\\bepsilon.(moves?|transitions?)"]},
-  {"id": "regex", "name": "regular expressions", "code": [], "words": ["\\bregular expressions?\\b"]},
-  {"id": "regular-grammar", "name": "regular grammars", "code": [], "words": ["\\bregular grammars?\\b", "\\bright.linear", "\\bleft.linear"]},
-  {"id": "minimal-dfa", "name": "minimal DFAs", "code": [], "words": ["\\bminimal\\b", "\\bminimum (possible )?(number of )?states", "\\bminimum.state", "\\bminimi[sz]", "\\bsmallest (number of states|finite automat)", "\\bdistinguishable", "\\bMyhill", "\\bNerode"]},
-  {"id": "lang-closure", "name": "closure properties of language classes", "code": [], "words": ["\\bclosed under", "\\bclosure propert", "\\bproduct automat"]},
-  {"id": "pumping", "name": "pumping lemmas", "code": [], "words": ["\\bpumping"]},
-  {"id": "cfg", "name": "context-free grammars", "code": ["\\bCFGs?\\b"], "words": ["\\bcontext.free grammars?"]},
-  {"id": "cfl", "name": "context-free languages", "code": ["\\bCFLs?\\b"], "words": ["\\bcontext.free\\b"]},
-  {"id": "pda", "name": "pushdown automata", "code": ["\\b[ND]?PDAs?\\b"], "words": ["\\bpush.?down automat"]},
-  {"id": "dpda", "name": "deterministic PDAs and DCFLs", "code": ["\\bDPDAs?\\b", "\\bDCFLs?\\b"], "words": ["\\bdeterministic (context.free|push.?down|CFL)"]},
-  {"id": "tm", "name": "Turing machines", "code": ["\\bTMs?\\b"], "words": ["\\bTuring"]},
-  {"id": "re", "name": "recursive and recursively enumerable languages", "code": [], "words": ["\\brecursively enumerable", "\\brecursive\\b", "\\bTuring.recogni[sz]", "\\bsemi.?decidable", "\\bdecidable\\b"]},
-  {"id": "countable", "name": "countable and uncountable sets", "code": [], "words": ["\\bcountabl", "\\buncountabl"]},
-  {"id": "undecidability", "name": "undecidability", "code": [], "words": ["\\bundecidab", "\\bhalting problem", "\\bRice"]},
-  {"id": "reduction", "name": "reductions", "code": [], "words": ["\\breducib", "\\breduction", "\\breduces to\\b", "\\bmany.one"]},
-  {"id": "csl", "name": "context-sensitive languages and the Chomsky hierarchy", "code": ["\\bCSLs?\\b"], "words": ["\\bcontext.sensitive", "\\btype.?[0-3] (language|grammar)", "\\bChomsky hierarchy", "\\bunrestricted grammar"]}
+ {
+  "id": "printf",
+  "name": "printf",
+  "code": [
+   "\\bprintf\\b"
+  ],
+  "words": []
+ },
+ {
+  "id": "char",
+  "name": "char as a small integer",
+  "code": [
+   "\\bchar\\b"
+  ],
+  "words": [
+   "\\bASCII\\b"
+  ]
+ },
+ {
+  "id": "getchar",
+  "name": "getchar and putchar",
+  "code": [
+   "\\b(getchar|putchar)\\b"
+  ],
+  "words": []
+ },
+ {
+  "id": "sizeof",
+  "name": "sizeof",
+  "code": [
+   "\\bsizeof\\b"
+  ],
+  "words": []
+ },
+ {
+  "id": "unsigned",
+  "name": "signed and unsigned",
+  "code": [
+   "\\bunsigned\\b",
+   "\\b\\d+[uU]\\b"
+  ],
+  "words": [
+   "\\bunsigned\\b"
+  ]
+ },
+ {
+  "id": "float",
+  "name": "float and double",
+  "code": [
+   "\\b(float|double)\\b"
+  ],
+  "words": []
+ },
+ {
+  "id": "twos",
+  "name": "2's complement",
+  "code": [],
+  "words": [
+   "\\b2's complement\\b",
+   "\\btwo's complement\\b"
+  ]
+ },
+ {
+  "id": "hex",
+  "name": "hex and octal literals",
+  "code": [
+   "\\b0[xX][0-9a-fA-F]+\\b"
+  ],
+  "words": []
+ },
+ {
+  "id": "intdiv",
+  "name": "integer division",
+  "code": [],
+  "words": [
+   "\\binteger division\\b"
+  ]
+ },
+ {
+  "id": "precedence",
+  "name": "precedence and associativity",
+  "code": [],
+  "words": [
+   "\\bprecedence\\b",
+   "\\bassociativ"
+  ]
+ },
+ {
+  "id": "conversion",
+  "name": "implicit conversions",
+  "code": [],
+  "words": [
+   "\\bimplicit(ly)? conver",
+   "\\busual arithmetic\\b",
+   "\\bpromotion\\b",
+   "\\bmixed expressions?\\b"
+  ]
+ },
+ {
+  "id": "cast",
+  "name": "casts",
+  "code": [
+   "\\(\\s*(unsigned\\s+)?(int|float|double|char|long|short|void)\\s*\\*{0,2}\\s*\\)\\s*[\\w(*&]"
+  ],
+  "words": [
+   "\\bcasts?\\b",
+   "\\btypecast"
+  ]
+ },
+ {
+  "id": "compound",
+  "name": "compound assignment",
+  "code": [
+   "[+\\-*/%]=(?!=)",
+   "<<=|>>=|&=|\\|=|\\^="
+  ],
+  "words": []
+ },
+ {
+  "id": "incdec",
+  "name": "++ and --",
+  "code": [
+   "\\+\\+"
+  ],
+  "words": [
+   "\\b(pre|post).?(increment|decrement)"
+  ]
+ },
+ {
+  "id": "relational",
+  "name": "relational operators",
+  "code": [
+   "<=|>=|==|!="
+  ],
+  "words": []
+ },
+ {
+  "id": "logical",
+  "name": "logical operators and short-circuit",
+  "code": [
+   "&&|\\|\\|"
+  ],
+  "words": [
+   "\\bshort.circuit"
+  ]
+ },
+ {
+  "id": "bitwise",
+  "name": "bitwise operators",
+  "code": [
+   "<<|>>",
+   "~\\s*\\w",
+   "\\w\\s*&\\s*\\w",
+   "\\w\\s*\\|\\s*\\w"
+  ],
+  "words": [
+   "\\bbitwise\\b"
+  ]
+ },
+ {
+  "id": "ternary",
+  "name": "ternary operator",
+  "code": [
+   "\\?[^?:;{}]{1,40}:(?!=)"
+  ],
+  "words": [
+   "\\bternary\\b(?! tree)",
+   "\\bconditional operator\\b"
+  ]
+ },
+ {
+  "id": "if",
+  "name": "if-else",
+  "code": [
+   "\\bif\\s*\\("
+  ],
+  "words": [
+   "\\bif-else\\b",
+   "\\bdangling else\\b"
+  ]
+ },
+ {
+  "id": "switch",
+  "name": "switch",
+  "code": [
+   "\\bswitch\\s*\\("
+  ],
+  "words": [
+   "\\bfall.through\\b"
+  ]
+ },
+ {
+  "id": "break",
+  "name": "break and continue",
+  "code": [
+   "\\b(break|continue)\\s*;"
+  ],
+  "words": []
+ },
+ {
+  "id": "while",
+  "name": "while loops",
+  "code": [
+   "\\bwhile\\s*\\("
+  ],
+  "words": [
+   "\\bloops?\\b",
+   "\\biterations?\\b"
+  ]
+ },
+ {
+  "id": "for",
+  "name": "for loops",
+  "code": [
+   "\\bfor\\s*\\("
+  ],
+  "words": []
+ },
+ {
+  "id": "dowhile",
+  "name": "do-while",
+  "code": [
+   "\\bdo\\s*\\{"
+  ],
+  "words": [
+   "\\bdo-while\\b"
+  ]
+ },
+ {
+  "id": "function",
+  "name": "functions",
+  "code": [
+   "\\b(int|void|char|float|double|long|unsigned)\\s+\\*{0,2}\\s*(?!main\\b)[a-zA-Z_]\\w*\\s*\\([^;{)]*\\)\\s*\\{"
+  ],
+  "words": [
+   "\\bfunctions?\\b",
+   "\\bprocedures?\\b",
+   "\\bprototypes?\\b"
+  ]
+ },
+ {
+  "id": "scope",
+  "name": "scope and shadowing",
+  "code": [],
+  "words": [
+   "\\bshadow",
+   "\\bglobal variables?\\b",
+   "\\blocal variables?\\b",
+   "\\bscope\\b",
+   "\\blifetime\\b"
+  ]
+ },
+ {
+  "id": "static",
+  "name": "static variables",
+  "code": [
+   "\\bstatic\\b"
+  ],
+  "words": []
+ },
+ {
+  "id": "storage",
+  "name": "auto, register, extern",
+  "code": [
+   "\\b(register|extern)\\b"
+  ],
+  "words": [
+   "\\bstorage class"
+  ]
+ },
+ {
+  "id": "memory",
+  "name": "memory layout and activation records",
+  "code": [],
+  "words": [
+   "\\bactivation records?\\b",
+   "\\bstack frames?\\b",
+   "\\bdata segment\\b",
+   "\\bBSS\\b"
+  ]
+ },
+ {
+  "id": "array",
+  "name": "1D arrays",
+  "code": [
+   "\\b[a-zA-Z_]\\w*\\s*\\[[^\\]]{0,20}\\]"
+  ],
+  "words": [
+   "\\barrays?\\b"
+  ]
+ },
+ {
+  "id": "pointer",
+  "name": "pointers, & and *",
+  "code": [
+   "\\b(int|char|float|double|void|long|struct\\s+\\w+)\\s*\\*+\\s*\\w",
+   "[=(,;{]\\s*\\*\\s?[a-zA-Z_(]",
+   "[=(,]\\s*&\\s*[a-zA-Z_]"
+  ],
+  "words": [
+   "\\bpointers?\\b",
+   "\\bdereferenc",
+   "\\baddress of\\b"
+  ]
+ },
+ {
+  "id": "scanf",
+  "name": "scanf",
+  "code": [
+   "\\bscanf\\b"
+  ],
+  "words": []
+ },
+ {
+  "id": "nullptr",
+  "name": "NULL, void *, wild and dangling pointers",
+  "code": [
+   "\\bNULL\\b",
+   "\\bvoid\\s*\\*"
+  ],
+  "words": [
+   "\\bdangling pointers?\\b",
+   "\\bwild pointers?\\b"
+  ]
+ },
+ {
+  "id": "ptrptr",
+  "name": "pointer to pointer",
+  "code": [
+   "\\*\\*\\s*[a-zA-Z_]\\w*"
+  ],
+  "words": [
+   "\\bdouble pointers?\\b",
+   "\\bpointers? to (a )?pointers?\\b"
+  ]
+ },
+ {
+  "id": "endian",
+  "name": "endianness",
+  "code": [],
+  "words": [
+   "\\bendian"
+  ]
+ },
+ {
+  "id": "array2d",
+  "name": "2D arrays",
+  "code": [
+   "\\b[a-zA-Z_]\\w*\\s*\\[[^\\]]{0,20}\\]\\s*\\["
+  ],
+  "words": [
+   "\\btwo.dimensional\\b",
+   "\\b2D\\b",
+   "\\bmatri(x|ces)\\b",
+   "\\brow.major\\b",
+   "\\bcolumn.major\\b"
+  ]
+ },
+ {
+  "id": "ptrarray",
+  "name": "pointer to array, array of pointers",
+  "code": [
+   "\\(\\s*\\*\\s*\\w+\\s*\\)\\s*\\[",
+   "\\b(int|char|float|double|void|long)\\s*\\*\\s*\\w+\\s*\\[[^\\]]*\\]\\s*[;=,)]"
+  ],
+  "words": [
+   "\\barrays? of pointers\\b",
+   "\\bpointer to (an? )?array\\b"
+  ]
+ },
+ {
+  "id": "funcptr",
+  "name": "function pointers",
+  "code": [
+   "\\(\\s*\\*\\s*\\w+\\s*\\)\\s*\\("
+  ],
+  "words": [
+   "\\bfunction pointers?\\b"
+  ]
+ },
+ {
+  "id": "typedef",
+  "name": "typedef",
+  "code": [
+   "\\btypedef\\b"
+  ],
+  "words": []
+ },
+ {
+  "id": "string",
+  "name": "strings",
+  "code": [
+   "%s",
+   "\\\\0",
+   "\\bchar\\s*\\*\\s*\\w+\\s*=\\s*\\\"",
+   "\\bchar\\s+\\w+\\s*\\[[^\\]]*\\]\\s*=\\s*\\\""
+  ],
+  "words": [
+   "\\bcharacter arrays?\\b"
+  ]
+ },
+ {
+  "id": "strlib",
+  "name": "strlen, strcpy, strcmp",
+  "code": [
+   "\\bstr(len|cpy|cat|cmp)\\b"
+  ],
+  "words": []
+ },
+ {
+  "id": "argv",
+  "name": "command line arguments",
+  "code": [
+   "\\bargv\\b"
+  ],
+  "words": []
+ },
+ {
+  "id": "recursion",
+  "name": "recursion",
+  "code": [],
+  "words": [
+   "\\brecursi(on|ve|vely)\\b",
+   "\\bwinding\\b",
+   "\\bbase case\\b"
+  ]
+ },
+ {
+  "id": "memo",
+  "name": "memoisation",
+  "code": [],
+  "words": [
+   "\\bmemoi[sz]"
+  ]
+ },
+ {
+  "id": "passing",
+  "name": "call by reference, name, value-result",
+  "code": [],
+  "words": [
+   "\\bcall.by.(reference|name|value.result)\\b",
+   "\\bpass(ed)?.by.(reference|name|value.result)\\b",
+   "\\bvalue.result\\b"
+  ]
+ },
+ {
+  "id": "dynscope",
+  "name": "static and dynamic scoping",
+  "code": [],
+  "words": [
+   "\\b(static|dynamic|lexical)(ally)? scop"
+  ]
+ },
+ {
+  "id": "struct",
+  "name": "structures",
+  "code": [
+   "\\bstruct\\b",
+   "->"
+  ],
+  "words": []
+ },
+ {
+  "id": "union",
+  "name": "unions",
+  "code": [
+   "\\bunion\\s+\\w*\\s*\\{"
+  ],
+  "words": []
+ },
+ {
+  "id": "bitfield",
+  "name": "bit-fields",
+  "code": [
+   "\\b\\w+\\s*:\\s*\\d+\\s*;"
+  ],
+  "words": [
+   "\\bbit.fields?\\b"
+  ]
+ },
+ {
+  "id": "malloc",
+  "name": "dynamic memory",
+  "code": [
+   "\\b(malloc|calloc|realloc|free)\\s*\\("
+  ],
+  "words": [
+   "\\bmalloc\\b",
+   "\\bmemory leak"
+  ]
+ },
+ {
+  "id": "macro",
+  "name": "macros",
+  "code": [
+   "#\\s*define"
+  ],
+  "words": [
+   "\\bmacros?\\b"
+  ]
+ },
+ {
+  "id": "condcomp",
+  "name": "conditional compilation",
+  "code": [
+   "#\\s*(ifdef|ifndef|if)\\b"
+  ],
+  "words": []
+ },
+ {
+  "id": "const",
+  "name": "const",
+  "code": [
+   "\\bconst\\b"
+  ],
+  "words": []
+ },
+ {
+  "id": "invariant",
+  "name": "loop invariants",
+  "code": [],
+  "words": [
+   "\\binvariants?\\b"
+  ]
+ },
+ {
+  "id": "goto",
+  "name": "goto",
+  "code": [
+   "\\bgoto\\b"
+  ],
+  "words": []
+ },
+ {
+  "id": "bigo",
+  "name": "O, Omega, Theta",
+  "code": [
+   "\\bO\\s*\\(",
+   "Θ",
+   "Ω",
+   "θ",
+   "Ο"
+  ],
+  "words": [
+   "\\basymptotic",
+   "\\bcomplexity\\b",
+   "\\bbig.?oh?\\b"
+  ]
+ },
+ {
+  "id": "recurrence",
+  "name": "recurrence relations",
+  "code": [
+   "\\bT\\s*\\(\\s*n\\s*\\)\\s*="
+  ],
+  "words": [
+   "\\brecurrences?\\b",
+   "\\bmaster theorem\\b"
+  ]
+ },
+ {
+  "id": "linsearch",
+  "name": "linear search",
+  "code": [],
+  "words": [
+   "\\blinear search\\b",
+   "\\bsequential search\\b"
+  ]
+ },
+ {
+  "id": "binsearch",
+  "name": "binary search",
+  "code": [],
+  "words": [
+   "\\bbinary search\\b(?! tree)"
+  ]
+ },
+ {
+  "id": "adt",
+  "name": "abstract data types",
+  "code": [],
+  "words": [
+   "\\babstract data type",
+   "\\bADTs?\\b"
+  ]
+ },
+ {
+  "id": "list",
+  "name": "linked lists",
+  "code": [],
+  "words": [
+   "\\blinked lists?\\b",
+   "\\bsingly\\b",
+   "\\bdoubly\\b"
+  ]
+ },
+ {
+  "id": "stack",
+  "name": "stacks",
+  "code": [],
+  "words": [
+   "\\bpush\\b",
+   "\\bpop\\b",
+   "\\bLIFO\\b",
+   "\\bstack permutation",
+   "\\bstacks\\b",
+   "\\busing a stack\\b",
+   "\\bstack operations?\\b"
+  ]
+ },
+ {
+  "id": "catalan",
+  "name": "Catalan numbers",
+  "code": [],
+  "words": [
+   "\\bcatalan\\b"
+  ]
+ },
+ {
+  "id": "queue",
+  "name": "queues",
+  "code": [],
+  "words": [
+   "\\bqueues?\\b",
+   "\\benqueue",
+   "\\bdequeue",
+   "\\bFIFO\\b"
+  ]
+ },
+ {
+  "id": "deque",
+  "name": "deques",
+  "code": [],
+  "words": [
+   "\\bdeque\\b",
+   "\\b(input|output).restricted\\b"
+  ]
+ },
+ {
+  "id": "pq",
+  "name": "priority queues",
+  "code": [],
+  "words": [
+   "\\bpriority queues?\\b"
+  ]
+ },
+ {
+  "id": "amortised",
+  "name": "amortised cost",
+  "code": [],
+  "words": [
+   "\\bamorti[sz]ed\\b"
+  ]
+ },
+ {
+  "id": "tree",
+  "name": "binary trees",
+  "code": [],
+  "words": [
+   "\\bbinary trees?\\b",
+   "\\bleaf\\b",
+   "\\bsubtrees?\\b",
+   "\\b(k|n|m)-ary\\b",
+   "\\brooted tree",
+   "\\bnumber of leaves\\b"
+  ]
+ },
+ {
+  "id": "traversal",
+  "name": "tree traversals",
+  "code": [],
+  "words": [
+   "\\bin-?order\\b",
+   "\\bpre-?order\\b",
+   "\\bpost-?order\\b",
+   "\\blevel.order\\b"
+  ]
+ },
+ {
+  "id": "bst",
+  "name": "binary search trees",
+  "code": [],
+  "words": [
+   "\\bbinary search trees?\\b",
+   "\\bBSTs?\\b"
+  ]
+ },
+ {
+  "id": "avl",
+  "name": "AVL trees",
+  "code": [],
+  "words": [
+   "\\bAVL\\b",
+   "\\bheight.balanced\\b",
+   "\\bbalance factor"
+  ]
+ },
+ {
+  "id": "heap",
+  "name": "binary heaps",
+  "code": [],
+  "words": [
+   "\\b(max|min|binary|d-ary|3-ary|ternary)[- ]?heaps?\\b",
+   "\\bheapify\\b",
+   "\\bbuild-?heap\\b",
+   "\\ba heap\\b",
+   "\\bheaps\\b"
+  ]
+ },
+ {
+  "id": "hash",
+  "name": "hashing",
+  "code": [],
+  "words": [
+   "\\bhash",
+   "\\blinear probing\\b",
+   "\\bopen addressing\\b"
+  ]
+ },
+ {
+  "id": "graph",
+  "name": "graphs",
+  "code": [],
+  "words": [
+   "\\bgraphs?\\b",
+   "\\badjacency\\b",
+   "\\bDAGs?\\b"
+  ]
+ },
+ {
+  "id": "spanning",
+  "name": "spanning trees, the definition",
+  "code": [],
+  "words": [
+   "\\bspanning trees?\\b"
+  ]
+ },
+ {
+  "id": "shortest",
+  "name": "shortest paths, the definition",
+  "code": [],
+  "words": [
+   "\\bshortest.path",
+   "\\bshortest distance"
+  ]
+ },
+ {
+  "id": "inversions",
+  "name": "inversions",
+  "code": [],
+  "words": [
+   "\\binversions?\\b"
+  ]
+ },
+ {
+  "id": "bubble",
+  "name": "bubble sort",
+  "code": [],
+  "words": [
+   "\\bbubble.?sort"
+  ]
+ },
+ {
+  "id": "selsort",
+  "name": "selection sort",
+  "code": [],
+  "words": [
+   "\\bselection.?sort"
+  ]
+ },
+ {
+  "id": "inssort",
+  "name": "insertion sort",
+  "code": [],
+  "words": [
+   "\\binsertion.?sort"
+  ]
+ },
+ {
+  "id": "dnc",
+  "name": "divide and conquer",
+  "code": [],
+  "words": [
+   "\\bdivide.(and|&).conquer\\b"
+  ]
+ },
+ {
+  "id": "mergesort",
+  "name": "merge sort",
+  "code": [],
+  "words": [
+   "\\bmerge.?sort"
+  ]
+ },
+ {
+  "id": "quicksort",
+  "name": "quick sort and partition",
+  "code": [],
+  "words": [
+   "\\bquick.?sort",
+   "\\bpartition(ing)? (algorithm|procedure|routine|step)"
+  ]
+ },
+ {
+  "id": "median",
+  "name": "selection and median of medians",
+  "code": [],
+  "words": [
+   "\\bmedian of medians\\b",
+   "\\bquickselect\\b"
+  ]
+ },
+ {
+  "id": "heapsort",
+  "name": "heap sort",
+  "code": [],
+  "words": [
+   "\\bheap.?sort"
+  ]
+ },
+ {
+  "id": "sortbound",
+  "name": "comparison sort lower bound",
+  "code": [],
+  "words": [
+   "\\bdecision tree"
+  ]
+ },
+ {
+  "id": "radix",
+  "name": "counting and radix sort",
+  "code": [],
+  "words": [
+   "\\bradix\\b",
+   "\\bcounting.sort\\b",
+   "\\bbucket.sort\\b"
+  ]
+ },
+ {
+  "id": "bfs",
+  "name": "BFS",
+  "code": [],
+  "words": [
+   "\\bBFS\\b",
+   "\\bbreadth.first\\b"
+  ]
+ },
+ {
+  "id": "dfs",
+  "name": "DFS",
+  "code": [],
+  "words": [
+   "\\bDFS\\b",
+   "\\bdepth.first\\b"
+  ]
+ },
+ {
+  "id": "articulation",
+  "name": "articulation points and bridges",
+  "code": [],
+  "words": [
+   "\\barticulation\\b",
+   "\\bcut.vertex\\b",
+   "\\bcut.vertices\\b"
+  ]
+ },
+ {
+  "id": "toposort",
+  "name": "topological sort",
+  "code": [],
+  "words": [
+   "\\btopological"
+  ]
+ },
+ {
+  "id": "scc",
+  "name": "strongly connected components",
+  "code": [],
+  "words": [
+   "\\bstrongly connected\\b",
+   "\\bSCCs?\\b"
+  ]
+ },
+ {
+  "id": "greedy",
+  "name": "greedy method",
+  "code": [],
+  "words": [
+   "\\bgreedy\\b"
+  ]
+ },
+ {
+  "id": "huffman",
+  "name": "Huffman coding",
+  "code": [],
+  "words": [
+   "\\bhuffman\\b"
+  ]
+ },
+ {
+  "id": "mst",
+  "name": "minimum spanning trees",
+  "code": [],
+  "words": [
+   "\\bminimum spanning\\b",
+   "\\bMSTs?\\b"
+  ]
+ },
+ {
+  "id": "unionfind",
+  "name": "union-find",
+  "code": [],
+  "words": [
+   "\\bunion.find\\b",
+   "\\bdisjoint.sets?\\b"
+  ]
+ },
+ {
+  "id": "kruskal",
+  "name": "Kruskal's algorithm",
+  "code": [],
+  "words": [
+   "\\bkruskal"
+  ]
+ },
+ {
+  "id": "prim",
+  "name": "Prim's algorithm",
+  "code": [],
+  "words": [
+   "\\bprim'?s\\b"
+  ]
+ },
+ {
+  "id": "relax",
+  "name": "edge relaxation",
+  "code": [],
+  "words": [
+   "\\brelax(ation|ing|ed)?\\b"
+  ]
+ },
+ {
+  "id": "dijkstra",
+  "name": "Dijkstra's algorithm",
+  "code": [],
+  "words": [
+   "\\bdijkstra"
+  ]
+ },
+ {
+  "id": "dp",
+  "name": "dynamic programming",
+  "code": [],
+  "words": [
+   "\\bdynamic programming\\b",
+   "\\bDP\\b"
+  ]
+ },
+ {
+  "id": "bellman",
+  "name": "Bellman-Ford",
+  "code": [],
+  "words": [
+   "\\bbellman"
+  ]
+ },
+ {
+  "id": "floyd",
+  "name": "Floyd-Warshall",
+  "code": [],
+  "words": [
+   "\\bfloyd",
+   "\\bwarshall"
+  ]
+ },
+ {
+  "id": "radix-notation",
+  "name": "numbers in any radix",
+  "code": [],
+  "words": [
+   "\\bradix[- ]?(\\d+|r|x|b)\\b",
+   "\\bbase[- ](\\d+|r|x|y)\\b"
+  ]
+ },
+ {
+  "id": "sign-magnitude",
+  "name": "sign-magnitude and 1's complement",
+  "code": [],
+  "words": [
+   "\\bsign.magnitude\\b",
+   "\\b1'?s complement\\b",
+   "\\bones'? complement\\b"
+  ]
+ },
+ {
+  "id": "booth",
+  "name": "Booth's multiplication",
+  "code": [],
+  "words": [
+   "\\bbooth'?s?\\b"
+  ]
+ },
+ {
+  "id": "ieee754",
+  "name": "IEEE 754 floating point",
+  "code": [
+   "\\bIEEE\\b"
+  ],
+  "words": [
+   "\\bsingle.precision\\b",
+   "\\bmantissa\\b",
+   "\\bbiased exponent\\b"
+  ]
+ },
+ {
+  "id": "boolean-algebra",
+  "name": "Boolean algebra",
+  "code": [],
+  "words": [
+   "\\bboolean (algebra|expressions?|functions?|variables?|operat)"
+  ]
+ },
+ {
+  "id": "functional-completeness",
+  "name": "functional completeness",
+  "code": [],
+  "words": [
+   "\\bfunctionally complete\\b",
+   "\\buniversal gates?\\b"
+  ]
+ },
+ {
+  "id": "minterm",
+  "name": "minterms, maxterms, SOP and POS",
+  "code": [
+   "\\bSOP\\b",
+   "\\bPOS\\b"
+  ],
+  "words": [
+   "\\bminterms?\\b",
+   "\\bmin-terms?\\b",
+   "\\bmaxterms?\\b",
+   "\\bsum.of.products?\\b",
+   "\\bproduct.of.sums?\\b"
+  ]
+ },
+ {
+  "id": "kmap",
+  "name": "Karnaugh maps",
+  "code": [],
+  "words": [
+   "\\bkarnaugh\\b",
+   "\\bK.maps?\\b",
+   "\\bdon'?t.cares?\\b"
+  ]
+ },
+ {
+  "id": "prime-implicant",
+  "name": "prime and essential prime implicants",
+  "code": [],
+  "words": [
+   "\\bprime implicants?\\b",
+   "\\bimplicants?\\b",
+   "\\bQuine"
+  ]
+ },
+ {
+  "id": "mux",
+  "name": "multiplexers",
+  "code": [
+   "\\bMUX\\b"
+  ],
+  "words": [
+   "\\bmultiplexers?\\b"
+  ]
+ },
+ {
+  "id": "decoder",
+  "name": "decoders and encoders",
+  "code": [],
+  "words": [
+   "\\bdecoders?\\b",
+   "\\bencoders?\\b"
+  ]
+ },
+ {
+  "id": "adder",
+  "name": "adders",
+  "code": [],
+  "words": [
+   "\\badders?\\b",
+   "\\bcarry.look.?ahead\\b"
+  ]
+ },
+ {
+  "id": "flip-flop",
+  "name": "latches and flip-flops",
+  "code": [],
+  "words": [
+   "\\bflip.flops?\\b",
+   "\\blatch(es)?\\b"
+  ]
+ },
+ {
+  "id": "counter-circuit",
+  "name": "counters",
+  "code": [],
+  "words": [
+   "\\b(ripple|synchronous|asynchronous|johnson|ring|up|down|binary|saturating|modulo|decade|up/down)[- ]counters?\\b",
+   "\\bmod.?\\d+ counter",
+   "\\bmod.?N counter",
+   "\\b\\d+.bit counter"
+  ]
+ },
+ {
+  "id": "shift-register",
+  "name": "shift registers",
+  "code": [
+   "\\bLFSR\\b"
+  ],
+  "words": [
+   "\\bshift registers?\\b"
+  ]
+ },
+ {
+  "id": "seq-machine",
+  "name": "sequential machines and state diagrams",
+  "code": [],
+  "words": [
+   "\\bmealy\\b",
+   "\\bmoore machine",
+   "\\bfinite state machines?\\b",
+   "\\bstate diagram\\b",
+   "\\bsequential (circuit|machine)s?\\b"
+  ]
+ },
+ {
+  "id": "cache",
+  "name": "cache memory",
+  "code": [],
+  "words": [
+   "\\bcaches?\\b"
+  ]
+ },
+ {
+  "id": "cache-mapping",
+  "name": "direct, associative and set-associative mapping",
+  "code": [],
+  "words": [
+   "\\bdirect.mapped\\b",
+   "\\bdirect mapping\\b",
+   "\\bset.associative\\b",
+   "\\bfully associative\\b",
+   "\\b\\d+-way\\b",
+   "\\btag (bits|field|directory)\\b"
+  ]
+ },
+ {
+  "id": "write-policy",
+  "name": "write-through and write-back",
+  "code": [],
+  "words": [
+   "\\bwrite.back\\b",
+   "\\bwrite.through\\b",
+   "\\bdirty bit"
+  ]
+ },
+ {
+  "id": "amat",
+  "name": "hit ratio and average access time",
+  "code": [],
+  "words": [
+   "\\bhit (ratio|rate)\\b",
+   "\\bmiss (ratio|rate|penalty)\\b",
+   "\\baverage (memory )?access time\\b"
+  ]
+ },
+ {
+  "id": "cpi",
+  "name": "CPI and execution time",
+  "code": [
+   "\\bCPI\\b",
+   "\\bMIPS\\b"
+  ],
+  "words": [
+   "\\bcycles per instruction\\b"
+  ]
+ },
+ {
+  "id": "instruction-format",
+  "name": "instruction formats and opcodes",
+  "code": [],
+  "words": [
+   "\\bopcodes?\\b",
+   "\\binstruction formats?\\b",
+   "\\bexpanding op"
+  ]
+ },
+ {
+  "id": "addressing-mode",
+  "name": "addressing modes",
+  "code": [],
+  "words": [
+   "\\baddressing modes?\\b",
+   "\\beffective address\\b",
+   "\\bauto.?(increment|decrement)\\b"
+  ]
+ },
+ {
+  "id": "pipeline",
+  "name": "instruction pipelining",
+  "code": [],
+  "words": [
+   "(?<!non-)\\bpipelin",
+   "\\bpipe stages?\\b"
+  ]
+ },
+ {
+  "id": "hazard",
+  "name": "pipeline hazards and forwarding",
+  "code": [],
+  "words": [
+   "\\b(data|control|structural|pipeline) hazards?\\b",
+   "\\boperand forwarding\\b",
+   "\\bdata forwarding\\b",
+   "\\bbypassing\\b"
+  ]
+ },
+ {
+  "id": "datapath",
+  "name": "datapath and micro-operations",
+  "code": [],
+  "words": [
+   "\\bdata ?path\\b",
+   "\\bmicro.?operations?\\b"
+  ]
+ },
+ {
+  "id": "microprogram",
+  "name": "hardwired and microprogrammed control",
+  "code": [],
+  "words": [
+   "\\bmicro.?program",
+   "\\bmicro.?instructions?\\b",
+   "\\bcontrol (memory|word|store)\\b",
+   "\\bhardwired\\b"
+  ]
+ },
+ {
+  "id": "interrupt",
+  "name": "interrupts and exceptions",
+  "code": [],
+  "words": [
+   "\\binterrupts?\\b",
+   "\\bexceptions?\\b",
+   "\\bdaisy.chain"
+  ]
+ },
+ {
+  "id": "io-modes",
+  "name": "polling and DMA",
+  "code": [
+   "\\bDMA\\b"
+  ],
+  "words": [
+   "\\bpolling\\b",
+   "\\bpolled\\b",
+   "\\bcycle stealing\\b"
+  ]
+ },
+ {
+  "id": "memory-interfacing",
+  "name": "memory chips, decoding and interleaving",
+  "code": [
+   "\\bDRAM\\b"
+  ],
+  "words": [
+   "\\bchip select\\b",
+   "\\binterleav",
+   "\\bRAM chips?\\b",
+   "\\bmemory (banks?|modules?)\\b"
+  ]
+ },
+ {
+  "id": "layering",
+  "name": "protocol layers",
+  "code": [
+   "\\bOSI\\b"
+  ],
+  "words": [
+   "\\b(transport|network|data.link|application|physical) layers?\\b",
+   "\\bTCP/IP (model|stack|suite|protocol suite)\\b"
+  ]
+ },
+ {
+  "id": "link-delay",
+  "name": "transmission and propagation delay",
+  "code": [
+   "\\bRTT\\b"
+  ],
+  "words": [
+   "\\btransmission (delay|time)\\b",
+   "(?<!total )\\bpropagation (time|speed)\\b",
+   "\\bround.trip (time|delay)\\b",
+   "\\bbandwidth.delay\\b"
+  ]
+ },
+ {
+  "id": "switching",
+  "name": "circuit, packet and virtual-circuit switching",
+  "code": [],
+  "words": [
+   "\\bcircuit.switch",
+   "\\bpacket.switch",
+   "\\bstore.and.forward\\b",
+   "\\bvirtual circuits?\\b"
+  ]
+ },
+ {
+  "id": "ip-address",
+  "name": "IPv4 addresses, CIDR and subnets",
+  "code": [
+   "\\bCIDR\\b",
+   "\\b\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\b"
+  ],
+  "words": [
+   "\\bIP address(es)?\\b",
+   "\\bsubnets?\\b",
+   "\\bsubnet masks?\\b",
+   "\\bnet ?masks?\\b"
+  ]
+ },
+ {
+  "id": "forwarding",
+  "name": "forwarding and longest prefix match",
+  "code": [],
+  "words": [
+   "\\blongest prefix\\b",
+   "\\bforwarding tables?\\b",
+   "\\brouting tables?\\b"
+  ]
+ },
+ {
+  "id": "ip-header",
+  "name": "the IPv4 header",
+  "code": [
+   "\\bTTL\\b"
+  ],
+  "words": [
+   "\\bIP (header|datagram|packet)s?\\b",
+   "\\btime.to.live\\b"
+  ]
+ },
+ {
+  "id": "fragmentation",
+  "name": "IP fragmentation",
+  "code": [
+   "\\bMTU\\b"
+  ],
+  "words": [
+   "\\bfragmentation\\b",
+   "\\bfragments\\b",
+   "\\bfragment offset\\b"
+  ]
+ },
+ {
+  "id": "nat",
+  "name": "network address translation",
+  "code": [
+   "\\bNAT\\b"
+  ],
+  "words": [
+   "\\bnetwork address translation\\b"
+  ]
+ },
+ {
+  "id": "arq",
+  "name": "stop-and-wait and sliding-window protocols",
+  "code": [
+   "\\bARQ\\b"
+  ],
+  "words": [
+   "\\bstop.and.wait\\b",
+   "\\bgo.back.n\\b",
+   "\\bselective (repeat|reject)\\b",
+   "\\bsliding window (protocol|flow)",
+   "\\bpiggyback"
+  ]
+ },
+ {
+  "id": "tcp",
+  "name": "TCP connections and sequence numbers",
+  "code": [
+   "\\bSYN\\b"
+  ],
+  "words": [
+   "\\bthree.way handshake\\b",
+   "\\b3.way handshake\\b",
+   "\\bTCP (connection|segment|session|sender|receiver|client|server)s?\\b"
+  ]
+ },
+ {
+  "id": "socket",
+  "name": "the socket API",
+  "code": [],
+  "words": [
+   "\\bsockets?\\b"
+  ]
+ },
+ {
+  "id": "congestion",
+  "name": "TCP congestion control",
+  "code": [
+   "\\bAIMD\\b"
+  ],
+  "words": [
+   "\\bcongestion (window|control|avoidance)\\b",
+   "\\bslow.start\\b"
+  ]
+ },
+ {
+  "id": "dv-routing",
+  "name": "distance vector and link state routing",
+  "code": [
+   "\\bRIP\\b",
+   "\\bOSPF\\b",
+   "\\bBGP\\b"
+  ],
+  "words": [
+   "\\bdistance.vector\\b",
+   "\\blink.state\\b",
+   "\\bcount.to.infinity\\b"
+  ]
+ },
+ {
+  "id": "error-detection",
+  "name": "parity, CRC and Hamming codes",
+  "code": [
+   "\\bCRC\\b"
+  ],
+  "words": [
+   "\\bcyclic redundancy\\b",
+   "\\bhamming (code|distance)",
+   "\\bparity\\b",
+   "\\bgenerator polynomial\\b"
+  ]
+ },
+ {
+  "id": "mac",
+  "name": "medium access: ALOHA and CSMA/CD",
+  "code": [
+   "\\bCSMA\\b"
+  ],
+  "words": [
+   "\\baloha\\b",
+   "\\bmedium access\\b",
+   "\\bcollision (domain|detection)\\b"
+  ]
+ },
+ {
+  "id": "ethernet",
+  "name": "Ethernet and switches",
+  "code": [],
+  "words": [
+   "\\bethernet\\b",
+   "\\bMAC address"
+  ]
+ },
+ {
+  "id": "dns-http",
+  "name": "DNS and HTTP",
+  "code": [
+   "\\bDNS\\b",
+   "\\bHTTP\\b",
+   "\\bURL\\b"
+  ],
+  "words": [
+   "\\bweb (browser|page)s?\\b",
+   "\\bdomain names?\\b"
+  ]
+ },
+ {
+  "id": "phases",
+  "name": "the phases of a compiler",
+  "code": [],
+  "words": [
+   "\\blexical analy[sz]",
+   "\\bsyntax analy[sz]",
+   "\\bsemantic analy[sz]",
+   "\\bfront.end\\b",
+   "\\bback.end\\b"
+  ]
+ },
+ {
+  "id": "ir",
+  "name": "intermediate code",
+  "code": [],
+  "words": [
+   "\\bintermediate (code|representations?|form)\\b"
+  ]
+ },
+ {
+  "id": "token",
+  "name": "tokens and lexemes",
+  "code": [],
+  "words": [
+   "\\btokens?\\b",
+   "\\blexemes?\\b"
+  ]
+ },
+ {
+  "id": "longest-match",
+  "name": "longest match in a lexer",
+  "code": [],
+  "words": [
+   "\\blongest (possible )?match",
+   "\\bmaximal munch"
+  ]
+ },
+ {
+  "id": "derivation",
+  "name": "derivations and parse trees",
+  "code": [],
+  "words": [
+   "\\b(leftmost|rightmost) derivations?\\b",
+   "\\bsentential forms?\\b",
+   "\\bparse trees?\\b"
+  ]
+ },
+ {
+  "id": "top-down",
+  "name": "top-down and bottom-up parsing",
+  "code": [],
+  "words": [
+   "\\btop.down\\b",
+   "\\bbottom.up pars",
+   "\\bpredictive pars",
+   "\\brecursive.descent"
+  ]
+ },
+ {
+  "id": "ambiguity",
+  "name": "ambiguous grammars",
+  "code": [],
+  "words": [
+   "\\bambiguous\\b",
+   "\\bambiguity\\b"
+  ]
+ },
+ {
+  "id": "left-recursion",
+  "name": "left recursion and left factoring",
+  "code": [],
+  "words": [
+   "\\bleft.recursi",
+   "\\bleft.factor"
+  ]
+ },
+ {
+  "id": "first-set",
+  "name": "FIRST sets",
+  "code": [
+   "\\bFIRST\\b"
+  ],
+  "words": []
+ },
+ {
+  "id": "follow-set",
+  "name": "FOLLOW sets",
+  "code": [
+   "\\bFOLLOW\\b"
+  ],
+  "words": []
+ },
+ {
+  "id": "ll1",
+  "name": "LL(1) parsing tables",
+  "code": [
+   "\\bLL\\s*\\(\\s*[1k]\\s*\\)"
+  ],
+  "words": []
+ },
+ {
+  "id": "handle",
+  "name": "handles and viable prefixes",
+  "code": [],
+  "words": [
+   "\\bhandles?\\b",
+   "\\bviable prefix"
+  ]
+ },
+ {
+  "id": "lr0-items",
+  "name": "LR(0) items, CLOSURE and GOTO",
+  "code": [
+   "\\bLR\\s*\\(\\s*0\\s*\\)",
+   "\\bCLOSURE\\b",
+   "\\bGOTO\\b"
+  ],
+  "words": [
+   "\\bcanonical collection"
+  ]
+ },
+ {
+  "id": "slr",
+  "name": "SLR(1) parsing",
+  "code": [
+   "\\bSLR\\b"
+  ],
+  "words": []
+ },
+ {
+  "id": "lr1-items",
+  "name": "LR(1) items and canonical LR",
+  "code": [
+   "\\bLR\\s*\\(\\s*1\\s*\\)",
+   "\\bCLR\\b"
+  ],
+  "words": [
+   "\\bcanonical LR\\b"
+  ]
+ },
+ {
+  "id": "lalr",
+  "name": "LALR(1) parsing",
+  "code": [
+   "\\bLALR\\b"
+  ],
+  "words": []
+ },
+ {
+  "id": "sdd",
+  "name": "syntax-directed definitions and attributes",
+  "code": [
+   "\\bSDD\\b",
+   "\\bSDTS?\\b"
+  ],
+  "words": [
+   "\\bsyntax.directed",
+   "\\bsemantic (rules?|actions?)\\b",
+   "\\battribute grammars?\\b",
+   "\\bsynthesi[sz]ed\\b",
+   "\\binherited attribute"
+  ]
+ },
+ {
+  "id": "attributed",
+  "name": "S-attributed and L-attributed definitions",
+  "code": [],
+  "words": [
+   "\\b[LS].attributed\\b"
+  ]
+ },
+ {
+  "id": "translation-scheme",
+  "name": "translation schemes with embedded actions",
+  "code": [
+   "\\{\\s*print\\b"
+  ],
+  "words": [
+   "\\btranslation schemes?\\b"
+  ]
+ },
+ {
+  "id": "tac",
+  "name": "three-address code, quadruples and triples",
+  "code": [],
+  "words": [
+   "\\bthree.address code",
+   "\\bquadruples?\\b",
+   "\\btriples?\\b"
+  ]
+ },
+ {
+  "id": "ssa",
+  "name": "static single assignment form",
+  "code": [
+   "\\bSSA\\b"
+  ],
+  "words": [
+   "\\bstatic single assignment"
+  ]
+ },
+ {
+  "id": "expr-dag",
+  "name": "the DAG of a basic block",
+  "code": [
+   "\\bDAG\\b"
+  ],
+  "words": [
+   "\\bdirected acyclic graph"
+  ]
+ },
+ {
+  "id": "backpatching",
+  "name": "backpatching",
+  "code": [],
+  "words": [
+   "\\bbackpatch"
+  ]
+ },
+ {
+  "id": "basic-block",
+  "name": "basic blocks and control-flow graphs",
+  "code": [],
+  "words": [
+   "\\bbasic blocks?\\b",
+   "\\bcontrol.flow.graphs?\\b",
+   "\\bflow graphs?\\b"
+  ]
+ },
+ {
+  "id": "local-opt",
+  "name": "local and loop optimisations",
+  "code": [],
+  "words": [
+   "\\bconstant folding",
+   "\\bcopy propagation",
+   "\\bcommon sub.?expressions?",
+   "\\bdead.code",
+   "\\bstrength reduction",
+   "\\bloop.invariant",
+   "\\bcode motion",
+   "\\binduction variables?"
+  ]
+ },
+ {
+  "id": "liveness",
+  "name": "liveness analysis",
+  "code": [],
+  "words": [
+   "\\blive variables?\\b",
+   "\\bliveness\\b",
+   "\\blive (at|on)\\b"
+  ]
+ },
+ {
+  "id": "forward-flow",
+  "name": "forward data-flow analyses",
+  "code": [],
+  "words": [
+   "\\bavailable expressions?\\b",
+   "\\breaching definitions?\\b",
+   "\\bdata.flow analys"
+  ]
+ },
+ {
+  "id": "matrix-algebra",
+  "name": "matrix algebra",
+  "code": [],
+  "words": [
+   "\\bmatri(x|ces)\\b"
+  ]
+ },
+ {
+  "id": "determinant",
+  "name": "determinants",
+  "code": [],
+  "words": [
+   "\\bdeterminants?\\b"
+  ]
+ },
+ {
+  "id": "matrix-rank",
+  "name": "rank of a matrix",
+  "code": [],
+  "words": [
+   "\\brank\\b"
+  ]
+ },
+ {
+  "id": "linear-system",
+  "name": "systems of linear equations",
+  "code": [],
+  "words": [
+   "\\bsystems? of (linear )?(simultaneous )?equations\\b",
+   "\\bnon.trivial solutions?\\b",
+   "\\blinear equations\\b"
+  ]
+ },
+ {
+  "id": "lu",
+  "name": "LU decomposition",
+  "code": [
+   "\\bLU\\b"
+  ],
+  "words": [
+   "\\bgaussian elimination\\b"
+  ]
+ },
+ {
+  "id": "vector-space",
+  "name": "vector spaces, independence and dimension",
+  "code": [],
+  "words": [
+   "\\bsubspaces?\\b",
+   "\\blinearly (in)?dependent\\b",
+   "\\bvector spaces?\\b",
+   "\\bnull space\\b",
+   "\\bnullity\\b"
+  ]
+ },
+ {
+  "id": "eigen",
+  "name": "eigenvalues and eigenvectors",
+  "code": [],
+  "words": [
+   "\\beigen"
+  ]
+ },
+ {
+  "id": "probability",
+  "name": "probability of events",
+  "code": [],
+  "words": [
+   "\\bprobabilit"
+  ]
+ },
+ {
+  "id": "conditional",
+  "name": "conditional probability and independence",
+  "code": [],
+  "words": [
+   "\\bconditional probabilit",
+   "\\bindependent events?\\b",
+   "\\bmutually exclusive\\b",
+   "\\bgiven that\\b"
+  ]
+ },
+ {
+  "id": "bayes",
+  "name": "Bayes' theorem",
+  "code": [],
+  "words": [
+   "\\bbayes"
+  ]
+ },
+ {
+  "id": "random-variable",
+  "name": "random variables, expectation and variance",
+  "code": [],
+  "words": [
+   "\\brandom variables?\\b",
+   "\\bexpectation\\b",
+   "\\bexpected (value|number)\\b",
+   "\\bvariance\\b",
+   "\\bstandard deviation\\b"
+  ]
+ },
+ {
+  "id": "distribution",
+  "name": "the standard distributions",
+  "code": [
+   "\\bPDF\\b",
+   "\\bCDF\\b"
+  ],
+  "words": [
+   "\\b(binomial|poisson|exponential|normal|uniform|gaussian|bernoulli)(ly)? (distribut|random)",
+   "\\bdensity function\\b",
+   "\\bdistribution function\\b",
+   "\\buniformly distributed\\b"
+  ]
+ },
+ {
+  "id": "integration",
+  "name": "integration",
+  "code": [],
+  "words": [
+   "\\bintegrat(e|ed|es|ion|ing)\\b",
+   "\\b(definite|indefinite) integrals?\\b",
+   "\\bintegral of\\b",
+   "\\bthe integral\\b"
+  ]
+ },
+ {
+  "id": "limit",
+  "name": "limits",
+  "code": [
+   "\\blim\\b"
+  ],
+  "words": [
+   "\\blimits?\\b"
+  ]
+ },
+ {
+  "id": "continuity",
+  "name": "continuity and differentiability",
+  "code": [],
+  "words": [
+   "\\bcontinuous (at|on|in|everywhere|function)",
+   "\\bcontinuity\\b",
+   "\\bdifferentiab"
+  ]
+ },
+ {
+  "id": "derivative",
+  "name": "derivatives, maxima and minima",
+  "code": [],
+  "words": [
+   "\\bderivatives?\\b",
+   "\\bmaxima\\b",
+   "\\bminima\\b",
+   "\\blocal (maxim|minim)",
+   "\\bextrem(a|um)\\b"
+  ]
+ },
+ {
+  "id": "counting",
+  "name": "permutations and combinations",
+  "code": [],
+  "words": [
+   "\\bpermutations?\\b",
+   "\\bbinomial coefficients?\\b",
+   "\\bnumber of ways\\b"
+  ]
+ },
+ {
+  "id": "inclusion-exclusion",
+  "name": "inclusion–exclusion and derangements",
+  "code": [],
+  "words": [
+   "\\binclusion.exclusion\\b",
+   "\\bderangements?\\b"
+  ]
+ },
+ {
+  "id": "set-ops",
+  "name": "sets, power sets and cardinality",
+  "code": [],
+  "words": [
+   "\\bpower ?sets?\\b",
+   "\\bsymmetric difference\\b",
+   "\\bcardinality\\b",
+   "\\buncountabl"
+  ]
+ },
+ {
+  "id": "relation",
+  "name": "relations and their properties",
+  "code": [],
+  "words": [
+   "\\b(reflexive|irreflexive|symmetric|antisymmetric|asymmetric|transitive) (relations?|closure)\\b",
+   "\\bequivalence (relations?|classes?)\\b",
+   "\\bbinary relations?\\b"
+  ]
+ },
+ {
+  "id": "function-kinds",
+  "name": "one-to-one, onto and bijective functions",
+  "code": [],
+  "words": [
+   "\\bonto (functions?|mappings?|maps?)\\b",
+   "\\bone.to.one\\b",
+   "\\binjecti",
+   "\\bsurjecti",
+   "\\bbijecti"
+  ]
+ },
+ {
+  "id": "graph-basics",
+  "name": "degrees, special graphs and isomorphism",
+  "code": [],
+  "words": [
+   "\\bdegree sequence\\b",
+   "\\bregular graph",
+   "\\bcomplete (bipartite )?graph",
+   "\\bbipartite\\b",
+   "\\bisomorphi",
+   "\\bself.complementary\\b"
+  ]
+ },
+ {
+  "id": "connectivity-gt",
+  "name": "components, Euler circuits and spanning-tree counts",
+  "code": [],
+  "words": [
+   "\\beuler(ian)? (circuit|path|trail|tour)",
+   "\\bhamiltonian\\b",
+   "\\bline graph\\b",
+   "\\bnumber of spanning trees\\b"
+  ]
+ },
+ {
+  "id": "planarity",
+  "name": "planar graphs and Euler's formula",
+  "code": [],
+  "words": [
+   "\\bplanar\\b",
+   "\\beuler.s formula\\b"
+  ]
+ },
+ {
+  "id": "colouring",
+  "name": "graph colouring",
+  "code": [],
+  "words": [
+   "\\bchromatic\\b",
+   "\\b(vertex|edge|proper) colou?ring\\b",
+   "\\bcolou?rable\\b"
+  ]
+ },
+ {
+  "id": "matching",
+  "name": "matchings, vertex covers and independent sets",
+  "code": [],
+  "words": [
+   "\\b(perfect|maximum|maximal) matchings?\\b",
+   "\\bnumber of matchings\\b",
+   "\\bvertex covers?\\b",
+   "(?<!linearly )\\bindependent sets?\\b"
+  ]
+ },
+ {
+  "id": "poset",
+  "name": "partial orders and Hasse diagrams",
+  "code": [],
+  "words": [
+   "\\bpartial(ly)? order",
+   "\\bposets?\\b",
+   "\\bhasse\\b",
+   "\\btotal orders?\\b"
+  ]
+ },
+ {
+  "id": "lattice",
+  "name": "lattices",
+  "code": [],
+  "words": [
+   "\\blattices?\\b"
+  ]
+ },
+ {
+  "id": "group",
+  "name": "semigroups, monoids and groups",
+  "code": [],
+  "words": [
+   "\\b(abelian|cyclic|finite) groups?\\b",
+   "\\bsubgroups?\\b",
+   "\\bgroup of order\\b",
+   "\\bmonoids?\\b",
+   "\\bsemi.?groups?\\b",
+   "\\bidentity element\\b"
+  ]
+ },
+ {
+  "id": "gen-function",
+  "name": "generating functions",
+  "code": [],
+  "words": [
+   "\\bgenerating functions?\\b"
+  ]
+ },
+ {
+  "id": "prop-logic",
+  "name": "propositional logic",
+  "code": [],
+  "words": [
+   "\\btautolog",
+   "\\bpropositional (logic|formula|calculus|variable|statement)",
+   "\\blogically equivalent\\b",
+   "\\bwell.formed formula",
+   "\\bcontrapositive\\b",
+   "\\bmodus ponens\\b"
+  ]
+ },
+ {
+  "id": "fol",
+  "name": "first-order logic",
+  "code": [],
+  "words": [
+   "\\bfirst.order (logic|formula|predicate|sentence)",
+   "\\bpredicate (logic|calculus|formula)",
+   "\\bquantifi"
+  ]
+ },
+ {
+  "id": "process-state",
+  "name": "process states and transitions",
+  "code": [],
+  "words": [
+   "\\bready state",
+   "\\bready queue",
+   "\\brunning state",
+   "\\bblocked state",
+   "\\bwaiting state",
+   "\\bstate transition",
+   "\\bready to (running|waiting)",
+   "\\brunning to (ready|waiting|blocked)"
+  ]
+ },
+ {
+  "id": "preemption",
+  "name": "preemptive and non-preemptive scheduling",
+  "code": [],
+  "words": [
+   "\\bpre-?empt",
+   "\\bnon-?pre-?empt"
+  ]
+ },
+ {
+  "id": "kernel-mode",
+  "name": "kernel mode, user mode and system calls",
+  "code": [],
+  "words": [
+   "\\bkernel mode",
+   "\\buser mode",
+   "\\bprivileged",
+   "\\bsystem calls?\\b",
+   "\\bsoftware interrupt",
+   "\\btrap(s|ped)?\\b"
+  ]
+ },
+ {
+  "id": "context-switch",
+  "name": "context switches",
+  "code": [],
+  "words": [
+   "\\bcontext.switch"
+  ]
+ },
+ {
+  "id": "logical-address",
+  "name": "logical and physical addresses",
+  "code": [],
+  "words": [
+   "\\blogical address",
+   "\\bvirtual address",
+   "\\bphysical address"
+  ]
+ },
+ {
+  "id": "fit-policy",
+  "name": "first, best and worst fit",
+  "code": [],
+  "words": [
+   "\\bbest.fit",
+   "\\bfirst.fit",
+   "\\bworst.fit",
+   "\\bnext.fit"
+  ]
+ },
+ {
+  "id": "paging",
+  "name": "pages, frames and page tables",
+  "code": [],
+  "words": [
+   "\\bpage tables?\\b",
+   "\\bpage frames?\\b",
+   "\\bpage size\\b",
+   "\\bpaging\\b",
+   "\\bpage table entr",
+   "\\bframe number"
+  ]
+ },
+ {
+  "id": "segmentation",
+  "name": "segmentation",
+  "code": [],
+  "words": [
+   "\\bsegmentation\\b",
+   "\\bsegmented\\b",
+   "\\bsegment tables?"
+  ]
+ },
+ {
+  "id": "multilevel-paging",
+  "name": "multilevel page tables",
+  "code": [],
+  "words": [
+   "\\bmulti.?level (page|paging)",
+   "\\b(two|three|four|2|3|4).level (page|paging|tree)",
+   "\\bhierarchical paging",
+   "\\b(outer|inner|second.level|first.level) page tables?",
+   "\\bpage directory"
+  ]
+ },
+ {
+  "id": "tlb",
+  "name": "the TLB",
+  "code": [
+   "\\bTLB\\b",
+   "\\bT LB\\b"
+  ],
+  "words": [
+   "\\btranslation look.?aside"
+  ]
+ },
+ {
+  "id": "page-fault",
+  "name": "demand paging and page faults",
+  "code": [],
+  "words": [
+   "\\bpage faults?\\b",
+   "\\bdemand.pag",
+   "\\bswap space",
+   "\\bswapped (out|in)\\b"
+  ]
+ },
+ {
+  "id": "page-replacement",
+  "name": "page replacement policies",
+  "code": [
+   "\\bLRU\\b"
+  ],
+  "words": [
+   "\\bleast recently used",
+   "\\bpage replacement",
+   "\\bBelady",
+   "\\boptimal (page )?replacement",
+   "\\bFIFO (page )?replacement"
+  ]
+ },
+ {
+  "id": "thrashing",
+  "name": "thrashing and working sets",
+  "code": [],
+  "words": [
+   "\\bthrashing",
+   "\\bworking.set"
+  ]
+ },
+ {
+  "id": "scheduling",
+  "name": "CPU scheduling algorithms and criteria",
+  "code": [
+   "\\bSJF\\b",
+   "\\bSRTF?\\b",
+   "\\bFCFS\\b",
+   "\\bHRRN\\b"
+  ],
+  "words": [
+   "\\bturn.?around time",
+   "\\bwaiting time",
+   "\\bround.robin",
+   "\\btime quantum",
+   "\\btime.slice",
+   "\\bshortest (job|remaining)",
+   "\\bfirst.come.first.serve",
+   "\\bstarvation",
+   "\\bstarve",
+   "\\bresponse ratio"
+  ]
+ },
+ {
+  "id": "thread",
+  "name": "threads",
+  "code": [],
+  "words": [
+   "\\bthreads?\\b",
+   "\\bmulti.?threaded"
+  ]
+ },
+ {
+  "id": "fork",
+  "name": "fork()",
+  "code": [
+   "\\bfork\\s*\\("
+  ],
+  "words": []
+ },
+ {
+  "id": "race",
+  "name": "race conditions",
+  "code": [],
+  "words": [
+   "\\brace condition"
+  ]
+ },
+ {
+  "id": "critical-section",
+  "name": "critical sections and their requirements",
+  "code": [],
+  "words": [
+   "\\bcritical sections?\\b",
+   "\\bmutual exclusion",
+   "\\bbounded waiting",
+   "\\bcritical region"
+  ]
+ },
+ {
+  "id": "deadlock",
+  "name": "deadlock",
+  "code": [],
+  "words": [
+   "\\bdead.?lock"
+  ]
+ },
+ {
+  "id": "atomic-instr",
+  "name": "test-and-set and other atomic instructions",
+  "code": [
+   "\\bTSL\\b",
+   "\\bTSET\\b"
+  ],
+  "words": [
+   "\\btest.and.set",
+   "\\bfetch.and",
+   "\\bcompare.and.swap",
+   "\\bswap instruction"
+  ]
+ },
+ {
+  "id": "semaphore",
+  "name": "semaphores",
+  "code": [
+   "\\b[PV]\\s*\\(\\s*[A-Za-z_]\\w*\\s*\\)"
+  ],
+  "words": [
+   "\\bsemaphores?\\b",
+   "\\bmutex(es)?\\b"
+  ]
+ },
+ {
+  "id": "producer-consumer",
+  "name": "the producer-consumer problem",
+  "code": [],
+  "words": [
+   "\\bproducers?\\b",
+   "\\bconsumers?\\b",
+   "\\bbounded.buffer"
+  ]
+ },
+ {
+  "id": "readers-writers",
+  "name": "the readers-writers problem",
+  "code": [],
+  "words": [
+   "\\breaders?.(and )?writers?",
+   "\\breader.writer"
+  ]
+ },
+ {
+  "id": "dining",
+  "name": "the dining philosophers",
+  "code": [],
+  "words": [
+   "\\bdining philosoph"
+  ]
+ },
+ {
+  "id": "barrier",
+  "name": "barriers",
+  "code": [],
+  "words": [
+   "\\bbarrier"
+  ]
+ },
+ {
+  "id": "monitor",
+  "name": "monitors and condition variables",
+  "code": [],
+  "words": [
+   "\\bmonitors?\\b",
+   "\\bcondition variables?"
+  ]
+ },
+ {
+  "id": "deadlock-conditions",
+  "name": "the four deadlock conditions",
+  "code": [],
+  "words": [
+   "\\bcircular wait",
+   "\\bhold and wait",
+   "\\bno preemption"
+  ]
+ },
+ {
+  "id": "rag",
+  "name": "resource allocation graphs",
+  "code": [],
+  "words": [
+   "\\bresource allocation graph",
+   "\\bwait.for graph",
+   "\\bclaim edges?",
+   "\\bassignment edges?"
+  ]
+ },
+ {
+  "id": "bankers",
+  "name": "the banker's algorithm and safe states",
+  "code": [],
+  "words": [
+   "\\bbanker",
+   "\\bsafe (state|sequence)",
+   "\\bunsafe state"
+  ]
+ },
+ {
+  "id": "disk-geometry",
+  "name": "disk structure and access time",
+  "code": [
+   "\\bRPM\\b",
+   "\\brpm\\b"
+  ],
+  "words": [
+   "\\bcylinders?\\b",
+   "\\bsectors?\\b",
+   "\\bplatters?\\b",
+   "\\brecording surfaces?",
+   "\\bseek time",
+   "\\brotational"
+  ]
+ },
+ {
+  "id": "disk-scheduling",
+  "name": "disk scheduling",
+  "code": [
+   "\\bSSTF\\b",
+   "\\bC-?SCAN\\b",
+   "\\bSCAN\\b",
+   "\\bC-?LOOK\\b",
+   "\\bLOOK\\b"
+  ],
+  "words": [
+   "\\bshortest seek",
+   "\\belevator"
+  ]
+ },
+ {
+  "id": "file-allocation",
+  "name": "file allocation methods",
+  "code": [
+   "\\bFAT\\b"
+  ],
+  "words": [
+   "\\blinked allocation",
+   "\\bindexed allocation",
+   "\\bfile allocation table",
+   "\\bindex block"
+  ]
+ },
+ {
+  "id": "inode",
+  "name": "inodes and indirect blocks",
+  "code": [],
+  "words": [
+   "\\bi-?nodes?\\b",
+   "\\bindex node",
+   "\\bindirect (block|pointer|address)",
+   "\\bdoubly indirect",
+   "\\bdirect (block )?(pointers|addresses)"
+  ]
+ },
+ {
+  "id": "rel-model",
+  "name": "relations, schemas and instances",
+  "code": [],
+  "words": [
+   "\\barity\\b",
+   "\\bdegree of (a|the) relation"
+  ]
+ },
+ {
+  "id": "keys",
+  "name": "superkeys, candidate keys and primary keys",
+  "code": [],
+  "words": [
+   "\\bsuper ?keys?\\b",
+   "\\bcandidate keys?\\b",
+   "\\bprimary keys?\\b",
+   "\\bprime attributes?\\b"
+  ]
+ },
+ {
+  "id": "null",
+  "name": "null values",
+  "code": [],
+  "words": [
+   "\\bnulls?\\b"
+  ]
+ },
+ {
+  "id": "foreign-key",
+  "name": "foreign keys and referential integrity",
+  "code": [],
+  "words": [
+   "\\bforeign keys?\\b",
+   "\\breferential integrity",
+   "\\bon.delete\\b"
+  ]
+ },
+ {
+  "id": "transaction",
+  "name": "transactions and the ACID properties",
+  "code": [
+   "\\bACID\\b"
+  ],
+  "words": [
+   "\\btransactions?\\b",
+   "\\batomicity\\b",
+   "\\bdurability\\b"
+  ]
+ },
+ {
+  "id": "schedule",
+  "name": "schedules and conflicting operations",
+  "code": [],
+  "words": [
+   "\\bschedules?\\b"
+  ]
+ },
+ {
+  "id": "conflict-serial",
+  "name": "conflict serializability and precedence graphs",
+  "code": [],
+  "words": [
+   "\\bconflict.serializ",
+   "\\bconflict.equivalent",
+   "\\bprecedence graph",
+   "\\bserializab"
+  ]
+ },
+ {
+  "id": "recoverable",
+  "name": "recoverable, cascadeless and strict schedules",
+  "code": [],
+  "words": [
+   "\\brecoverab",
+   "\\bcascadeless",
+   "\\bcascading (abort|roll)"
+  ]
+ },
+ {
+  "id": "two-phase-locking",
+  "name": "locks and two-phase locking",
+  "code": [
+   "\\b2PL\\b"
+  ],
+  "words": [
+   "\\btwo.phase locking",
+   "\\b2.phase locking",
+   "\\bshared locks?",
+   "\\bexclusive locks?"
+  ]
+ },
+ {
+  "id": "timestamp",
+  "name": "timestamp ordering, wait-die and wound-wait",
+  "code": [],
+  "words": [
+   "\\btime.?stamps?",
+   "\\bwait.die",
+   "\\bwound.wait",
+   "\\bThomas"
+  ]
+ },
+ {
+  "id": "log-recovery",
+  "name": "logs, checkpoints and recovery",
+  "code": [],
+  "words": [
+   "\\bcheckpoint",
+   "\\bundo\\b",
+   "\\bredo\\b"
+  ]
+ },
+ {
+  "id": "rel-algebra",
+  "name": "the relational algebra operators",
+  "code": [],
+  "words": [
+   "\\brelational algebra",
+   "\\bprojection\\b",
+   "\\bcartesian product",
+   "\\bcross product"
+  ]
+ },
+ {
+  "id": "join",
+  "name": "joins",
+  "code": [],
+  "words": [
+   "\\bjoins?\\b",
+   "\\bjoined\\b"
+  ]
+ },
+ {
+  "id": "fd",
+  "name": "functional dependencies",
+  "code": [],
+  "words": [
+   "\\bfunctional(ly)? dependen",
+   "\\bfunctionally determin",
+   "\\bArmstrong"
+  ]
+ },
+ {
+  "id": "closure",
+  "name": "attribute closure, F+ and minimal covers",
+  "code": [
+   "\\bF\\s*\\+"
+  ],
+  "words": [
+   "\\battribute closure",
+   "\\bclosure of (a|the) set of (attributes|functional)",
+   "\\bminimal cover",
+   "\\bcanonical cover",
+   "\\birreducible"
+  ]
+ },
+ {
+  "id": "normal-form",
+  "name": "normal forms",
+  "code": [
+   "\\b[1-5]NF\\b",
+   "\\bBCNF\\b"
+  ],
+  "words": [
+   "\\bnormal forms?\\b",
+   "\\bnormali[sz]",
+   "\\bBoyce"
+  ]
+ },
+ {
+  "id": "lossless",
+  "name": "lossless and dependency-preserving decomposition",
+  "code": [],
+  "words": [
+   "\\blossless",
+   "\\blossy\\b",
+   "\\bdependency.preserv",
+   "\\bdecompos(ed|ition)? (of|into)\\b",
+   "\\bdecomposed\\b"
+  ]
+ },
+ {
+  "id": "sql",
+  "name": "SQL queries",
+  "code": [
+   "\\bSELECT\\b",
+   "\\bSQL\\b"
+  ],
+  "words": []
+ },
+ {
+  "id": "sql-aggregate",
+  "name": "aggregates, GROUP BY and HAVING",
+  "code": [
+   "\\bGROUP BY\\b",
+   "\\bHAVING\\b",
+   "\\b(COUNT|SUM|AVG|MAX|MIN)\\s*\\("
+  ],
+  "words": [
+   "\\bgroup by\\b",
+   "\\bhaving\\b",
+   "\\b(count|sum|avg|max|min)\\s*\\("
+  ]
+ },
+ {
+  "id": "subquery",
+  "name": "nested and correlated subqueries",
+  "code": [
+   "\\bEXISTS\\b",
+   "\\bNOT IN\\b",
+   "\\b(ALL|ANY|SOME)\\s*\\("
+  ],
+  "words": [
+   "\\bsub.?quer",
+   "\\bnested quer",
+   "\\bcorrelated",
+   "\\(\\s*select\\b",
+   "\\bin\\s*\\(\\s*select",
+   "\\bexists\\b"
+  ]
+ },
+ {
+  "id": "three-valued",
+  "name": "SQL's three-valued logic",
+  "code": [],
+  "words": [
+   "\\bunknown\\b",
+   "\\bthree.valued"
+  ]
+ },
+ {
+  "id": "trc",
+  "name": "tuple and domain relational calculus",
+  "code": [],
+  "words": [
+   "\\btuple (relational )?calculus",
+   "\\bdomain (relational )?calculus",
+   "\\brelational calculus",
+   "\\bcalculus expression"
+  ]
+ },
+ {
+  "id": "file-org",
+  "name": "records, blocks and file organisation",
+  "code": [],
+  "words": [
+   "\\bblocking factor",
+   "\\bdisk blocks?\\b",
+   "\\bblock size\\b",
+   "\\bheap file",
+   "\\bsorted file",
+   "\\bordered file"
+  ]
+ },
+ {
+  "id": "index",
+  "name": "primary, clustering and secondary indexes",
+  "code": [],
+  "words": [
+   "\\bindex(es|ing|ed)?\\b",
+   "\\bclustered\\b",
+   "\\bclustering\\b",
+   "\\bdense\\b",
+   "\\bsparse\\b"
+  ]
+ },
+ {
+  "id": "btree",
+  "name": "B-trees",
+  "code": [],
+  "words": [
+   "\\bB.?-?trees?\\b",
+   "\\b2-3-4 tree"
+  ]
+ },
+ {
+  "id": "bplus",
+  "name": "B+ trees",
+  "code": [],
+  "words": [
+   "\\bB\\s*\\+\\s*-?\\s*trees?"
+  ]
+ },
+ {
+  "id": "er-model",
+  "name": "the ER model",
+  "code": [
+   "\\bE/?R\\b"
+  ],
+  "words": [
+   "\\bentity sets?\\b",
+   "\\bentity types?\\b",
+   "\\bentities\\b",
+   "\\bentity.relationship",
+   "\\bweak entit",
+   "\\bmany.to.many",
+   "\\bone.to.many",
+   "\\bmany.to.one",
+   "\\bparticipation\\b"
+  ]
+ },
+ {
+  "id": "language-ops",
+  "name": "strings, languages and their operations",
+  "code": [],
+  "words": [
+   "\\bKleene"
+  ]
+ },
+ {
+  "id": "dfa",
+  "name": "DFAs",
+  "code": [
+   "\\bDFAs?\\b",
+   "\\bFSAs?\\b",
+   "\\bFSMs?\\b"
+  ],
+  "words": [
+   "\\bdeterministic finite",
+   "\\bfinite.(state )?automat",
+   "\\bfinite.state machines?"
+  ]
+ },
+ {
+  "id": "regular-lang",
+  "name": "regular languages",
+  "code": [],
+  "words": [
+   "\\bregular (languages?|sets?)\\b",
+   "\\bis regular\\b",
+   "\\bnot regular\\b",
+   "\\bnon.?regular\\b"
+  ]
+ },
+ {
+  "id": "complement",
+  "name": "complements of languages",
+  "code": [],
+  "words": [
+   "\\bcomplement"
+  ]
+ },
+ {
+  "id": "transducer",
+  "name": "Mealy and Moore machines",
+  "code": [],
+  "words": [
+   "\\bMealy",
+   "\\bMoore\\b"
+  ]
+ },
+ {
+  "id": "nfa",
+  "name": "NFAs and ε-moves",
+  "code": [
+   "\\bNFAs?\\b",
+   "\\bNDFAs?\\b",
+   "\\bNFSA\\b"
+  ],
+  "words": [
+   "\\bnon.?deterministic finite",
+   "\\bε.?(moves?|transitions?)",
+   "\\bepsilon.(moves?|transitions?)"
+  ]
+ },
+ {
+  "id": "regex",
+  "name": "regular expressions",
+  "code": [],
+  "words": [
+   "\\bregular expressions?\\b"
+  ]
+ },
+ {
+  "id": "regular-grammar",
+  "name": "regular grammars",
+  "code": [],
+  "words": [
+   "\\bregular grammars?\\b",
+   "\\bright.linear",
+   "\\bleft.linear"
+  ]
+ },
+ {
+  "id": "minimal-dfa",
+  "name": "minimal DFAs",
+  "code": [],
+  "words": [
+   "\\bminimal\\b",
+   "\\bminimum (possible )?(number of )?states",
+   "\\bminimum.state",
+   "\\bminimi[sz]",
+   "\\bsmallest (number of states|finite automat)",
+   "\\bdistinguishable",
+   "\\bMyhill",
+   "\\bNerode"
+  ]
+ },
+ {
+  "id": "lang-closure",
+  "name": "closure properties of language classes",
+  "code": [],
+  "words": [
+   "\\bclosed under",
+   "\\bclosure propert",
+   "\\bproduct automat"
+  ]
+ },
+ {
+  "id": "pumping",
+  "name": "pumping lemmas",
+  "code": [],
+  "words": [
+   "\\bpumping"
+  ]
+ },
+ {
+  "id": "cfg",
+  "name": "context-free grammars",
+  "code": [
+   "\\bCFGs?\\b"
+  ],
+  "words": [
+   "\\bcontext.free grammars?"
+  ]
+ },
+ {
+  "id": "cfl",
+  "name": "context-free languages",
+  "code": [
+   "\\bCFLs?\\b"
+  ],
+  "words": [
+   "\\bcontext.free\\b"
+  ]
+ },
+ {
+  "id": "pda",
+  "name": "pushdown automata",
+  "code": [
+   "\\b[ND]?PDAs?\\b"
+  ],
+  "words": [
+   "\\bpush.?down automat"
+  ]
+ },
+ {
+  "id": "dpda",
+  "name": "deterministic PDAs and DCFLs",
+  "code": [
+   "\\bDPDAs?\\b",
+   "\\bDCFLs?\\b"
+  ],
+  "words": [
+   "\\bdeterministic (context.free|push.?down|CFL)"
+  ]
+ },
+ {
+  "id": "tm",
+  "name": "Turing machines",
+  "code": [
+   "\\bTMs?\\b"
+  ],
+  "words": [
+   "\\bTuring"
+  ]
+ },
+ {
+  "id": "re",
+  "name": "recursive and recursively enumerable languages",
+  "code": [],
+  "words": [
+   "\\brecursively enumerable",
+   "\\brecursive\\b",
+   "\\bTuring.recogni[sz]",
+   "\\bsemi.?decidable",
+   "\\bdecidable\\b"
+  ]
+ },
+ {
+  "id": "countable",
+  "name": "countable and uncountable sets",
+  "code": [],
+  "words": [
+   "\\bcountabl",
+   "\\buncountabl"
+  ]
+ },
+ {
+  "id": "undecidability",
+  "name": "undecidability",
+  "code": [],
+  "words": [
+   "\\bundecidab",
+   "\\bhalting problem",
+   "\\bRice"
+  ]
+ },
+ {
+  "id": "reduction",
+  "name": "reductions",
+  "code": [],
+  "words": [
+   "\\breducib",
+   "\\breduction",
+   "\\breduces to\\b",
+   "\\bmany.one"
+  ]
+ },
+ {
+  "id": "csl",
+  "name": "context-sensitive languages and the Chomsky hierarchy",
+  "code": [
+   "\\bCSLs?\\b"
+  ],
+  "words": [
+   "\\bcontext.sensitive",
+   "\\btype.?[0-3] (language|grammar)",
+   "\\bChomsky hierarchy",
+   "\\bunrestricted grammar"
+  ]
+ },
+ {
+  "id": "ga-remainder",
+  "name": "remainders",
+  "code": [],
+  "words": [
+   "\\bremainders?\\b"
+  ]
+ },
+ {
+  "id": "ga-exponent",
+  "name": "powers and exponents",
+  "code": [],
+  "words": [
+   "\\bexponents?\\b",
+   "\\bpower of\\b",
+   "\\bpowers of\\b"
+  ]
+ },
+ {
+  "id": "ga-ratio",
+  "name": "ratio and proportion",
+  "code": [],
+  "words": [
+   "\\bratios?\\b",
+   "\\bproportional\\b",
+   "\\bin the proportion\\b"
+  ]
+ },
+ {
+  "id": "ga-percent",
+  "name": "percentages",
+  "code": [
+   "%"
+  ],
+  "words": [
+   "\\bper ?cent"
+  ]
+ },
+ {
+  "id": "ga-profit",
+  "name": "profit, loss and discount",
+  "code": [],
+  "words": [
+   "\\bprofits?\\b",
+   "\\bdiscounts?\\b",
+   "\\bcost price\\b",
+   "\\bselling price\\b",
+   "\\bmarked price\\b"
+  ]
+ },
+ {
+  "id": "ga-average",
+  "name": "averages",
+  "code": [],
+  "words": [
+   "\\baverages?\\b",
+   "\\barithmetic mean\\b"
+  ]
+ },
+ {
+  "id": "ga-interest",
+  "name": "interest and compound growth",
+  "code": [],
+  "words": [
+   "\\binterest rate",
+   "\\bsimple interest",
+   "\\bcompound interest",
+   "\\bcompounded\\b",
+   "\\brate of interest",
+   "\\binterest of\\b"
+  ]
+ },
+ {
+  "id": "ga-speed",
+  "name": "speed, distance and time",
+  "code": [],
+  "words": [
+   "\\bspeeds?\\b",
+   "\\bkm ?/ ?h(ou)?r?\\b",
+   "\\bkmph\\b",
+   "\\bvelocity\\b"
+  ]
+ },
+ {
+  "id": "ga-work",
+  "name": "work and pipes",
+  "code": [],
+  "words": [
+   "\\bpipes?\\b",
+   "\\bcisterns?\\b",
+   "\\b(finish|complete)s? the (work|job|task)\\b",
+   "\\bman.?days?\\b"
+  ]
+ },
+ {
+  "id": "ga-log",
+  "name": "logarithms",
+  "code": [
+   "\\blog\\b"
+  ],
+  "words": [
+   "\\blogarithm"
+  ]
+ },
+ {
+  "id": "ga-quadratic",
+  "name": "quadratic equations",
+  "code": [],
+  "words": [
+   "\\bquadratic\\b",
+   "\\broots of\\b"
+  ]
+ },
+ {
+  "id": "ga-abs",
+  "name": "absolute value",
+  "code": [],
+  "words": [
+   "\\babsolute value",
+   "\\bmodulus\\b"
+  ]
+ },
+ {
+  "id": "ga-function",
+  "name": "functions",
+  "code": [
+   "\\b[fg]\\s*\\(\\s*[xyn0-9]\\s*\\)"
+  ],
+  "words": [
+   "\\bfunctions?\\b"
+  ]
+ },
+ {
+  "id": "ga-coordinate",
+  "name": "coordinates and graphs",
+  "code": [],
+  "words": [
+   "\\bslopes?\\b",
+   "\\b[xy].axis\\b",
+   "\\bcoordinates?\\b",
+   "\\bintercepts?\\b"
+  ]
+ },
+ {
+  "id": "ga-series",
+  "name": "progressions and series",
+  "code": [],
+  "words": [
+   "\\bseries\\b",
+   "\\bprogressions?\\b",
+   "\\bfibonacci\\b"
+  ]
+ },
+ {
+  "id": "ga-counting",
+  "name": "permutations and combinations",
+  "code": [],
+  "words": [
+   "\\bhow many (different )?ways",
+   "\\bnumber of (different |possible )?ways",
+   "\\bpermutations?\\b",
+   "\\bcombinations?\\b",
+   "\\bfactorial"
+  ]
+ },
+ {
+  "id": "ga-venn",
+  "name": "Venn diagrams",
+  "code": [],
+  "words": [
+   "\\bvenn\\b"
+  ]
+ },
+ {
+  "id": "ga-probability",
+  "name": "probability",
+  "code": [],
+  "words": [
+   "\\bprobability",
+   "\\bprobable\\b",
+   "\\bat random\\b",
+   "\\brandomly\\b"
+  ]
+ },
+ {
+  "id": "ga-statistics",
+  "name": "median, mode and spread",
+  "code": [],
+  "words": [
+   "\\bmedian\\b",
+   "\\bstandard deviation",
+   "\\bvariance\\b"
+  ]
+ },
+ {
+  "id": "ga-geometry",
+  "name": "plane geometry",
+  "code": [],
+  "words": [
+   "\\btriangles?\\b",
+   "\\bcircles?\\b",
+   "\\bradius\\b",
+   "\\bdiameter\\b",
+   "\\bpolygons?\\b",
+   "\\bhexagon",
+   "\\bperpendicular\\b",
+   "\\bsemi-?circle",
+   "\\brhombus",
+   "\\btrapezium",
+   "\\bdiagonals?\\b",
+   "\\bperimeter\\b",
+   "\\bcircumference\\b"
+  ]
+ },
+ {
+  "id": "ga-solids",
+  "name": "solids: volume and surface",
+  "code": [],
+  "words": [
+   "\\bcylinders?\\b",
+   "\\bcones?\\b",
+   "\\bspheres?\\b",
+   "\\bvolume\\b",
+   "\\bcuboids?\\b",
+   "\\bpyramids?\\b"
+  ]
+ },
+ {
+  "id": "ga-chart",
+  "name": "reading charts and tables",
+  "code": [],
+  "words": [
+   "\\bbar (chart|graph|diagram)",
+   "\\bpie.?(chart|diagram)",
+   "\\bline (graph|chart|plot)",
+   "\\bhistogram"
+  ]
+ },
+ {
+  "id": "ga-conditional",
+  "name": "conditionals and necessary truth",
+  "code": [],
+  "words": [
+   "\\bnecessarily\\b",
+   "\\bcontrapositive"
+  ]
+ },
+ {
+  "id": "ga-syllogism",
+  "name": "syllogisms",
+  "code": [],
+  "words": [
+   "\\bconclusions?\\b",
+   "\\bsyllogism"
+  ]
+ },
+ {
+  "id": "ga-arrangement",
+  "name": "seating and ordering clues",
+  "code": [],
+  "words": [
+   "\\bto the (left|right) of\\b",
+   "\\bimmediate(ly)? (to the )?(left|right)",
+   "\\bsecond to the (left|right)"
+  ]
+ },
+ {
+  "id": "ga-direction",
+  "name": "directions",
+  "code": [],
+  "words": [
+   "\\bnorth",
+   "\\bsouth",
+   "\\b(east|west)(wards?|ern)?\\b"
+  ]
+ },
+ {
+  "id": "ga-letters",
+  "name": "letter positions and codes",
+  "code": [],
+  "words": [
+   "\\bcoded?\\b",
+   "\\balphabet",
+   "\\bcode language"
+  ]
+ },
+ {
+  "id": "ga-clock",
+  "name": "clock hands",
+  "code": [],
+  "words": [
+   "\\bhour hand",
+   "\\bminute hand",
+   "\\bhands of (a|the) clock"
+  ]
+ },
+ {
+  "id": "ga-symmetry",
+  "name": "symmetry, mirrors and rotation",
+  "code": [],
+  "words": [
+   "\\bsymmetr",
+   "\\bmirror",
+   "\\breflect",
+   "\\brotat",
+   "\\bclockwise"
+  ]
+ },
+ {
+  "id": "ga-folding",
+  "name": "paper folding",
+  "code": [],
+  "words": [
+   "\\bfold"
+  ]
+ }
 ]

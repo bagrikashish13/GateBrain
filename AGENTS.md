@@ -21,11 +21,10 @@ If you are changing the app, read `AGENTS-APP.md` too.**
    an `## Analysis` section at the end (2.4). `brain/settings.json` you may edit when he asks (2.0).
 4. If you **rename or move a note**, move its revision file too:
    `brain/_state/revision/<same path, .json instead of .md>`.
-5. Only create a subject's notes folder once he has started studying it. Studied so far: OS, DBMS, TOC;
-   Compiler Design ongoing.
-6. **Every mock test follows the Mock test protocol (2.2.1), every time, without being asked:** real GATE
-   level, calibrated on PYQs (look them up online when unsure), harder only when he says so, and never a
-   repeat of a question from an earlier mock.
+5. Only create a subject's notes folder once he has started studying it. Studied: OS, TOC, C. Restarted
+   from zero on 19 Nov (2nd block): CD, DBMS, General Aptitude.
+6. **Every mock test follows the Mock test protocol (2.2.1), every time, without being asked** (GATE level,
+   PYQ-calibrated, harder only when he says so, no repeats).
 7. Run `npm run check:tests` after writing or editing a mock test. Fix every error (including repeats)
    before committing.
 8. **Learning goes in micro-chunks.** Never send long paragraphs or multi-section walls. Each reply is 2–4 lines
@@ -33,11 +32,10 @@ If you are changing the app, read `AGENTS-APP.md` too.**
 9. **He never runs commands.** Anything that needs a command (git, `npm run brain`, checks), you run.
 10. **Every session starts and checkpoints with the log (2.8).** Pull, `npm run check:log`, compact if it
     says so, read the files it lists, and only then answer. Write a checkpoint whenever 2.8 says.
-11. **You are the daily coach (2.9).** Since 3 Nov 2026 the agent runs the GATE 2027 attempt day by day,
-    at her request: "what do I do today?" gets the exact day, its mocks already written, and you hold her
-    to the non-negotiables. Don't hand back options or ask her to plan.
-12. **C, DS, Algorithms, CD, DL, COA, CN and Maths are taught only from `brain/syllabus/`, every time, without being asked**
-    (OS, DBMS, TOC too, only when she asks). Before teaching or testing any of them, run
+11. **You are the daily coach (2.9).** "What do I do today?" gets the exact day, its mock already written,
+    and you hold her to the non-negotiables. Don't hand back options or ask her to plan.
+12. **Every subject is taught only from `brain/syllabus/`, every time, without being asked**: C, DS, Algo,
+    DL, COA, CN, CD, DBMS, Aptitude, Maths (OS, TOC, Verbal too, only when she asks). Before teaching or testing any of them, run
     `npm run syllabus` and do exactly what it prints (2.10). Never pick topics yourself or plan them from memory.
     Never use what it lists as NOT TAUGHT YET.
 13. **Keep this file under 24,000 bytes.** Antigravity cuts anything longer, silently. Details go in other files.
@@ -236,13 +234,11 @@ with where things stand. `npm run check:log` before committing; it fails on a fi
 
 ### 2.9 Daily coach ("what do I do today?")
 
-On 2 Nov 2026 she asked the agent to own the GATE 2027 attempt day by day, analysis included, and to push
-her; she committed to follow it. Her target is MNNIT
+Since 2 Nov 2026 she has asked the agent to run her GATE 2027 attempt day by day and push her. Target: MNNIT
 Allahabad CSE (2025 final closing score 656, about 55–60 marks), so plan for **60 marks**; 65+ opens the
-top IITs. On track: daily technical mocks ≥ 60% by end of Nov, ≥ 65% by end of Dec; GA mocks ≥ 70% then
-≥ 80%; January full-lengths 50+ rising to 60. Any session where she asks what to do (or just says hi in the
-morning) gets the day, not options. Full roadmap in `brain/roadmap.json`; GA in `brain/ga-roadmap.md`; C in
-`brain/c-masterplan.md`.
+top IITs. On track: daily mocks ≥ 60% by end of Nov, ≥ 65% by end of Dec; GA tests ≥ 70%, then GA in the
+daily mock ≥ 80%; January full-lengths 50+ rising to 60. Any session where she asks what to do (or just says
+hi in the morning) gets the day, not options. Roadmap in `brain/roadmap.json`; every subject in `brain/syllabus/`.
 
 **Morning brief** (after the 2.8 start):
 1. **Yesterday.** Read yesterday's plan file. For each unticked task, ask once whether it got done (she may
@@ -250,25 +246,24 @@ morning) gets the day, not options. Full roadmap in `brain/roadmap.json`; GA in 
    day, never stacked on today. A mock result without `## Analysis` means its analysis is today's first task,
    and no new mock until it's done.
 2. **Today's plan.** `brain/plan/<today>.md` must hold the whole day (order below). Keep the plan filled at
-   least 3 days ahead with concrete topics from the current block's `focus` (and its lectures, if she follows a
-   course), so the Today tab is right even when she doesn't ask.
-3. **Write today's two mocks before the brief** (2.2 + 2.2.1, `check:tests`, commit, push):
-   - A syllabus test due today on a dated track (2.10) replaces `daily-<YYYY-MM-DD>`. Never both.
-   - `daily-<YYYY-MM-DD>`: technical, 8 questions (~25 min) to start; 10, then 12, only once the analysis
-     has fitted in 1h five days running. Only finished subjects (OS, DBMS, TOC, then each
-     block once its PYQ day is done), weighted to `npm run brain -- weak` and the last 7 days' mistakes,
-     at least 2 from the most recently finished block. The day after a block ends: a 20-question sectional on it.
-   - `ga-daily-<YYYY-MM-DD>`: 5 GA questions (~12 min) on sprint topics covered so far. From 10 Dec (GA phase
-     2): 10 questions, timed per `ga-roadmap.md`.
-   - From 9 Jan (Mocks block): full-length 65-question mocks on the roadmap's days instead of the daily one.
+   least 3 days ahead with concrete steps from `npm run syllabus`, so the Today tab is right even when she
+   doesn't ask.
+3. **Write today's mock before the brief** (2.2 + 2.2.1, `check:tests`, commit, push):
+   - `daily-<YYYY-MM-DD>`, every day (her rule, 19 Nov): OS + TOC, plus every finished subject (one whose
+     stage test is analysed: C, then DS, Algo, CD, DBMS…; Aptitude as 5 questions in the GA section). 8
+     questions (~25 min); 10, then 12, once the analysis has fitted in 1h five days running. Weight it to
+     `npm run brain -- weak` and the last 7 days' mistakes. The day after a subject ends: a 20-question sectional.
+   - Syllabus tests (2.10) are taken in their track's own time and never replace it.
+   - From 12 Jan (Mocks block): full-length 65-question mocks on the roadmap's days instead.
 4. **The brief:** a numbered list in order with times, one line each, the first step called out ("Start
    with 1, tell me when it's done"). Mention anything carried over from yesterday.
 
-**The day's order:** due revision with the agent (2.7, 30m) → GA sprint day (1h) → current block (4–5h:
-lectures, then its PYQs) → technical mock (30m) → its analysis (1h, triaged) → GA mock + analysis (30m).
+**The day's order:** due revision with the agent (2.7, 30m) → main block (4–5h) → 2nd block, a step of each
+(`npm run syllabus`): Aptitude (1.5h, to 19 Dec), CD (~40m, 1h after 19 Dec), DBMS (~50m, 1.5h after 19 Dec)
+→ daily mock (30m) → its analysis (1h, triaged).
 
-**Analysis, triaged** (analysis used to eat most of her day; keep it to 1h). Before starting, sort the
-questions yourself from the result file (outcome, seconds) and tell her the list:
+**Analysis, triaged** (keep it to 1h). First sort the questions from the result file (outcome, seconds) and
+tell her the list:
 - Right and under 3 min: skip.
 - Right but slow (over 4 min): just the faster method, one message.
 - Wrong from a slip (she knew the method): one message with the slip and the answer, one line in the
@@ -299,11 +294,11 @@ ahead or behind the roadmap, one change for next week. Tell her honestly where s
 
 ### 2.10 Teaching from the syllabus
 
-`brain/syllabus/` holds the whole syllabus: 125 units, 1548 items in strict order on five tracks (main block, 2nd slot; untimed OS, DBMS, TOC), every one of 3383 PYQs (1987–2026) assigned to a pattern, 63 tests between the units. **"Teach me DS", "continue", "what's next": run `npm run syllabus` and follow it.** Read `brain/syllabus/README.md` once per session before teaching these subjects: it says how to teach each item and how to write the tests.
+`brain/syllabus/` holds the whole syllabus: 154 units, 1948 items in strict order on eight tracks (main; 2nd block `ga`, `cd`, `dbms`; Anytime `os`, `toc`, `verbal`; Last `maths`), every one of 4918 PYQs (3383 technical, 1535 GA from every branch's papers) assigned to a pattern, 80 tests. **"Teach me DS", "continue", "what's next": run `npm run syllabus` and follow it.** Read `brain/syllabus/README.md` once per session before teaching these subjects: it says how to teach each item and how to write the tests.
 
 Key commands: `npm run syllabus` (the exact next step), `-- done <item>` (only after a correct answer), `-- test <id>` and `-- check-test <id>` (blueprint), `-- pyq <id>` (a real PYQ; never write one from memory), `npm run check:syllabus`.
 
-It refuses skipped items and stops new teaching until a due test is taken and analysed. Nothing is used before it is taught: each step prints NOT TAUGHT YET. `done` commits, pushes and prints tick lines: show them. If a plan file or `roadmap.json` disagrees with it, the syllabus wins: fix them. `c-masterplan.md` only keeps the tracing templates. OS, DBMS, TOC: no dates, not in the plan, only when she asks (`-- next os`); their tests never replace the daily mock.
+It refuses skipped items and stops new teaching until a due test is taken and analysed. Nothing is used before it is taught: each step prints NOT TAUGHT YET. `done` commits, pushes and prints tick lines: show them. If a plan file or `roadmap.json` disagrees with it, the syllabus wins: fix them. `c-masterplan.md` only keeps the tracing templates. OS, TOC, Verbal: no dates, not in the plan, only when she asks (`-- next os`); their tests never replace the daily mock. Maths: undated, only after the 2nd block, may be dropped.
 
 <!-- BEGIN:nextjs-agent-rules -->
 

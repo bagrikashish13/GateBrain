@@ -2,10 +2,11 @@
 
 Updated Thu 19 Nov 2026.
 
-- Exam planned for Sat 6 Feb. Mock block 9 Jan–1 Feb, final days 2–5 Feb.
-- Everything technical runs from `brain/syllabus/` (`npm run syllabus`):
-  - Main block: c-ut-05 analysed (10.33/15). Next: student takes retest c-ut-05-r2 in app.
-  - 2nd slot (2h): Unit CD01 finished. Next: CD02 (Grammars for parsing).
-  - Anytime (no dates, only when she asks): OS, DBMS, TOC practice, `-- next os|dbms|toc`.
-- Decided 19 Nov: 2nd block = GA (30 days) + CD + DBMS in parallel, all from zero; Anytime = OS, TOC, Verbal; Maths last. Daily mock = OS + TOC + finished subjects. Next: PYQ research, then build (see today's log).
-- New: `pyq-c-functions` PYQ paper (114 Qs) in the Tests tab, not attempted yet; analyse it when submitted.
+- Exam planned for Sat 6 Feb. Main block ends 11 Jan; mock block 12 Jan–1 Feb, final days 2–5 Feb.
+- Everything runs from `brain/syllabus/` (`npm run syllabus`), rebuilt 19 Nov (today's log):
+  - Main block: analyse c-ut-05-r2 (22%) first, then P13.
+  - 2nd block, every day, all three: Aptitude GA01, Compiler Design CD01, DBMS DB01 (all from zero, start 20 Nov).
+  - Anytime (only when she asks): OS, TOC, Verbal. Last (after the 2nd block, may be dropped): Maths.
+- Daily mock from 20 Nov: OS + TOC + every finished subject; syllabus tests never replace it.
+- `pyq-c-functions` PYQ paper (114 Qs) in the Tests tab, not attempted yet; analyse it when submitted.
+- Old untaken `dbms-queries-mock-01` is from before the reset: ignore it (uses SQL before it is taught).

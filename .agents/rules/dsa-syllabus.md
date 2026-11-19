@@ -1,11 +1,11 @@
 ---
 trigger: always_on
-description: The only syllabus for C, Data Structures and Algorithms. Follow it every time without being asked.
+description: The only syllabus for every subject (C, DS, Algorithms, DL, COA, CN, Compiler Design, DBMS, General Aptitude, Verbal, OS, TOC, Maths). Follow it every time without being asked.
 ---
 
-# C, Data Structures and Algorithms: follow the syllabus
+# Every subject: follow the syllabus
 
-Whenever the student wants to learn, revise from zero, practise or be tested on C, Data Structures or Algorithms, including "teach me", "continue", "next topic", "let's study DS":
+Whenever the student wants to learn, revise from zero, practise or be tested on any subject, including "teach me", "continue", "next topic", "let's study DS", "aptitude", "CD", "DBMS". The 2nd block (Aptitude, Compiler Design, DBMS) is done every day, all three, each from its own track:
 
 1. Run `git pull --rebase`, then `npm run syllabus`. **Do exactly what it prints.** Don't choose topics yourself, don't plan from memory, and don't offer options.
 2. Read `brain/syllabus/README.md` once per session (@brain/syllabus/README.md): how to teach each kind of item and how to write the tests.
