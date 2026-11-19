@@ -40,12 +40,17 @@ A `struct` allocates separate contiguous memory for every member (total size = s
 - **Adjacent bit-fields share one container:**
   - *Confusion:* Allocating 4 bytes separately for each declared bit-field ($4 + 4 + 4 = 12$ bytes).
   - *The click:* Bit-fields **pack together**. If three `unsigned int` bit-fields use $4 + 4 + 8 = 16$ bits, they all pack into a **single 4-byte `unsigned int` container**! A new 4-byte container is only allocated when the remaining bits in the current container are exceeded.
+- **Array alignment vs array size & union internal padding:**
+  - *Confusion:* Thinking an array member like `char text[14]` requires 14-byte alignment, or forgetting that a union's size must be padded to a multiple of its alignment requirement.
+  - *The click:* Alignment is determined by the **element type** (`char` is 1 byte, `int` is 4 bytes), NOT the array length! A union's alignment is $\max(\text{member alignments})$, and the union's own size is padded to a multiple of that alignment before determining the next struct offset.
 
 ## GATE traps
 - **The Format Specifier `%c` vs Quotes Trap:**
   - `%c` outputs the bare character, never with quotes (`0`, not `'0'`). Distractor options intentionally add `' '` to lure students.
 - **Adding Union Members Inside a Struct:**
   - In `struct S { short x[5]; union { float y; long z; } u; };`, the union contribution is $\max(\text{sizeof}(y), \text{sizeof}(z))$, NOT their sum.
+- **Union Self-Padding Trap in Structs:**
+  - If a union contains `char text[9]` and `int val[2]`, its raw max size is 9, but its alignment is 4 bytes (from `int`). The union itself occupies **12 bytes** ($\lceil 9/4 \rceil \times 4$), not 9 bytes!
 - **Passing Struct by Value vs Array Decay:**
   - Unlike arrays (which decay into pointers when passed to functions), passing a `struct` copies the **entire struct by value**. To allow modifications to persist in the caller, you must explicitly pass a pointer (`&s`).
 - **1-Bit Signed Bit-Field Trap:**
