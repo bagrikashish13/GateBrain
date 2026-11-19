@@ -107,6 +107,9 @@ Rules:
   distractors). The checker enforces GATE's mix: at least about 20% hard and at most about 40% easy (10
   questions: ≥ 2 hard, ≤ 4 easy; 5 questions: ≥ 1 hard, ≤ 2 easy). Only when he asks for a harder paper, put
   `level: tougher` in the frontmatter: then at least about 40% hard and at most about 20% easy.
+- **A PYQ paper (only when he asks for real PYQs): `level: pyq`.** Questions are verbatim PYQs, so the
+  checker skips the difficulty mix and the repeat/re-skin errors (it still checks the format). Answer keys
+  copied from a website still get verified (2.2.1 step 4): practicepaper.in had several wrong ones.
 - **Every hard question names the real PYQ it is calibrated on: `pyq: 2019-23`.** Read that PYQ first
   (`npm run syllabus -- pyq <id>`) and write a new question as hard as it, never a copy of it. In subjects with
   a syllabus in `brain/syllabus/` the id must be in its `pyq-index.jsonl`; in other subjects any GATE reference

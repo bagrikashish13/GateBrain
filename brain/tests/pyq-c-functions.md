@@ -4522,7 +4522,7 @@ P declares its own local `m`, which hides the global `m` inside P. So the global
 
 (The practicepaper.in key says (A); that ignores the local `m` in P.)
 
-Source: GATE CSE 1993. · [Detailed solution](https://drive.google.com/file/d/0B2D2Vl5_6vK1V0p0NnMydFMxWjQ/view)
+Source: GATE CSE 1993.
 
 ## Q105
 type: MCQ
@@ -4570,7 +4570,7 @@ The value of n, output by the program PARAM is:
 
 (The practicepaper.in key says "none of the above", an option dropped here; the output is 0 and n is the actual parameter of y.)
 
-Source: GATE CSE 1993. · [Detailed solution](https://drive.google.com/file/d/0B2D2Vl5_6vK1V0p0NnMydFMxWjQ/view)
+Source: GATE CSE 1993.
 
 ## Q106
 type: MCQ
