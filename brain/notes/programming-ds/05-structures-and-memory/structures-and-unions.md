@@ -40,6 +40,9 @@ A `struct` allocates separate contiguous memory for every member (total size = s
 - **Bit-field `sizeof` and 1-bit signed trap:**
   - *Confusion:* Thinking `sizeof` returns bits, or that `int x : 1; x = 1;` evaluates to `+1`.
   - *The click:* `sizeof` **always returns bytes** (the size of the underlying container, e.g. 4 bytes for `unsigned int`). Furthermore, in 2's complement, a 1-bit signed integer has only a sign bit: `1` represents **`-1`**, not `+1`! Use `unsigned int` for 1-bit flags.
+- **Converting Signed $\leftrightarrow$ Unsigned in $k$-bit Bit-Fields ($2^k$ wrap):**
+  - *To Signed:* If unsigned value $U \ge 2^{k-1}$ (MSB is 1), subtract $2^k$: $\text{Signed} = U - 2^k$ (e.g. 3 bits: $6 \to 6 - 8 = -2$; $7 \to 7 - 8 = -1$; 2 bits: $3 \to 3 - 4 = -1$).
+  - *To Unsigned:* If signed value $S < 0$, add $2^k$: $\text{Unsigned} = S + 2^k$ (e.g. 3 bits: $-2 \to -2 + 8 = 6$; $-1 \to -1 + 8 = 7$).
 - **Adjacent bit-fields share one container:**
   - *Confusion:* Allocating 4 bytes separately for each declared bit-field ($4 + 4 + 4 = 12$ bytes).
   - *The click:* Bit-fields **pack together**. If three `unsigned int` bit-fields use $4 + 4 + 8 = 16$ bits, they all pack into a **single 4-byte `unsigned int` container**! A new 4-byte container is only allocated when the remaining bits in the current container are exceeded.
