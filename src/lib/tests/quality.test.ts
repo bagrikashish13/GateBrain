@@ -50,4 +50,7 @@ describe("qualityErrors", () => {
     expect(qualityErrors(test(ten(2, 3), { subject: "os", pyq: "GATE 2019 Q23" }), known, indexed)).toEqual([]);
     expect(qualityErrors(test(ten(2, 3), { subject: "os", pyq: "the deadlock one" }), known, indexed).join(" ")).toMatch(/with its year/);
   });
+  it("leaves a PYQ paper alone: real PYQs, as asked", () => {
+    expect(qualityErrors(test(["", ...ten(0, 9).slice(1)], { level: "pyq" }), known, indexed)).toEqual([]);
+  });
 });

@@ -56,7 +56,7 @@ export type Test = {
   duration: number; // minutes
   created: string | null;
   description: string | null;
-  level: "gate" | "tougher"; // "tougher" only when he asks for a harder paper (AGENTS.md 2.2.1)
+  level: "gate" | "tougher" | "pyq"; // "tougher" only when he asks for a harder paper; "pyq": a paper of real PYQs, verbatim, when he asks for one (AGENTS.md 2.2.1)
   questions: Question[];
   totalMarks: number;
 };
@@ -103,8 +103,8 @@ export function parseTest(id: string, raw: string): ParseResult {
   const duration = Number(data.duration);
   if (!Number.isFinite(duration) || duration <= 0) errors.push("Frontmatter: duration must be the time limit in minutes, like `duration: 60`.");
   const created = data.created instanceof Date ? data.created.toISOString().slice(0, 10) : typeof data.created === "string" ? data.created : null;
-  const level = data.level === undefined || data.level === "gate" ? "gate" : data.level === "tougher" ? "tougher" : null;
-  if (!level) errors.push("Frontmatter: level must be gate (the default) or tougher.");
+  const level = data.level === undefined || data.level === "gate" ? "gate" : data.level === "tougher" || data.level === "pyq" ? data.level : null;
+  if (!level) errors.push("Frontmatter: level must be gate (the default), tougher or pyq.");
 
   const blocks = splitQuestions(body);
   if (!blocks.length) errors.push("No questions: each one starts with a `## Q1` heading.");

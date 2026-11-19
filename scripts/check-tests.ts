@@ -89,15 +89,17 @@ async function main() {
     }
 
     const base = id.endsWith("-r2") ? id.slice(0, -3) : null;
+    const pyqPaper = t.level === "pyq"; // real PYQs on purpose: matching one is expected, not a copy
     for (const m of repeats.filter((m) => m.test === id)) {
       const mine = `Q${m.n}`;
       const theirs = m.other === id ? `Q${m.otherN}` : `${m.other} Q${m.otherN}`;
       const pct = Math.round(m.score * 100);
-      if (m.score >= SAME) fail(`${mine} repeats ${theirs} (${pct}% the same). Write a new question.`);
+      if (pyqPaper) notes.push(`${mine} is close to ${theirs} (${pct}% the same).`);
+      else if (m.score >= SAME) fail(`${mine} repeats ${theirs} (${pct}% the same). Write a new question.`);
       else if (base && m.other === base && m.score >= RETEST_SAME) fail(`${mine} re-skins ${theirs}, from the test it retests (${pct}% the same). A retest needs a new setup, not new names.`);
       else notes.push(`${mine} is close to ${theirs} (${pct}% the same). Make sure it's genuinely different.`);
     }
-    for (const m of findPyqRepeats(t.questions, pyqs, weights, CLOSE)) {
+    for (const m of pyqPaper ? [] : findPyqRepeats(t.questions, pyqs, weights, CLOSE)) {
       const pct = Math.round(m.score * 100);
       if (m.score >= SAME) fail(`Q${m.n} re-skins the real PYQ ${m.pyq} (${m.title}, ${pct}% the same). Model on PYQs, never copy them.`);
       else notes.push(`Q${m.n} is close to the real PYQ ${m.pyq} (${m.title}, ${pct}% the same). Make sure it asks something different.`);
