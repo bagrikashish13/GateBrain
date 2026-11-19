@@ -111,8 +111,10 @@ describe("the real brain/syllabus", () => {
   });
 
   it("really checks something: every PYQ has its uses, and most name a concept", () => {
-    const all = [...state.pyqs.values()];
-    expect(all.every((p) => Array.isArray(p.uses))).toBe(true);
+    // Verbal Aptitude (Part 15) is grammar and reading: it names no concepts, so it is left out of the count.
+    const verbal = new Set([...state.catalog.items.values()].filter((i) => i.unit.startsWith("VA")).flatMap((i) => i.pyqs));
+    expect([...state.pyqs.values()].every((p) => Array.isArray(p.uses))).toBe(true);
+    const all = [...state.pyqs.values()].filter((p) => !verbal.has(p.id));
     expect(all.filter((p) => p.uses?.length).length).toBeGreaterThan(all.length * 0.8);
     expect(concepts.length).toBeGreaterThan(80);
   });

@@ -21,7 +21,7 @@ const SHOWN_DAYS = 4;
 
 type Dated = { day: PhaseDay; span: DaySpan | null; i: number };
 const datedDays = (phase: Phase): Dated[] => phase.days.map((day, i) => ({ day, span: daySpan(day, phase), i }));
-/** Soonest first (the 2nd slot's days fall in among the main block's); entries without a date last. */
+/** Soonest first (the 2nd block's days fall in among the main block's); entries without a date last. */
 const soonest = (xs: Dated[]) => [...xs].sort((a, b) => (a.span && b.span ? a.span.from.localeCompare(b.span.from) || a.i - b.i : a.span ? -1 : b.span ? 1 : a.i - b.i));
 const covers = (d: Dated, day: string) => !!d.span && d.span.from <= day && day <= d.span.to;
 const dayHead = (d: Dated) => (d.day.label.includes("·") ? d.day.label.split("·")[0].trim() : d.span ? rangeLabel(d.span.from, d.span.to) : null);

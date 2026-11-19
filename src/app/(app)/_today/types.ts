@@ -27,6 +27,6 @@ export type TodayData = {
     next: { id: string; title: string; questions: number; duration: number } | null;
     last: { id: string; attempt: string; title: string; score: number; max: number } | null;
   };
-  /** The next step on each track still running ("Main block", "2nd slot"). */
+  /** The next step on each dated track still running ("Main block", "Aptitude", "Compiler Design", "DBMS"). */
   syllabus: { done: number; total: number; today: number; next: { track: string; text: string }[] } | null;
 };

@@ -156,6 +156,16 @@ describe("drill", () => {
     expect(d.must.map((p) => p.id)).toEqual(["1990-1"]);
     expect(d.extra.map((p) => p.id)).toEqual(["1989-1"]);
   });
+
+  it("tops a GA pattern up from the other branches' papers to four, CS first, the rest extra", () => {
+    const branch = (id: string, year: number, paper: Pyq["paper"]): Pyq => ({ ...pyq(id, year), paper });
+    const ga = [pyq("2024s1-ga3", 2024), branch("CE2025s1-ga10", 2025, "CE"), branch("ME2023-ga4", 2023, "ME"), branch("EE2019-ga2", 2019, "EE"), branch("EC2016-ga1", 2016, "EC"), pyq("2012-60", 2012)];
+    const map = new Map(ga.map((p) => [p.id, p]));
+    const item = { id: "GA01.2", unit: "GA01", kind: "Q" as const, text: "x", pyqs: ga.map((p) => p.id), teaches: [], subtopic: null };
+    const d = drill(item, map);
+    expect(d.must.map((p) => p.id)).toEqual(["2024s1-ga3", "CE2025s1-ga10", "ME2023-ga4", "EE2019-ga2"]);
+    expect(d.extra.map((p) => p.id)).toEqual(["EC2016-ga1", "2012-60"]);
+  });
 });
 
 describe("nextStep", () => {
@@ -267,7 +277,7 @@ describe("planTest and auditTest", () => {
 });
 
 describe("two tracks", () => {
-  // D01 and its test on the main block; K01 (two-letter unit ids) on the 2nd slot, held only by its own test.
+  // D01 and its test on the main block; K01 (two-letter unit ids) on the Compiler Design track, held only by its own test.
   const md = `${MD}
 ## KD01 · Parsing
 notes: compiler-design/02-parsing
@@ -284,8 +294,8 @@ hours: 1
       { test: "t1", kind: "unit", covers: ["D01"], by: "2026-11-02" },
       { unit: "D02", by: "2026-11-03" },
       { test: "t2", kind: "unit", covers: ["D02"], by: "2026-11-04" },
-      { unit: "KD01", by: "2026-11-01", track: "second" },
-      { test: "k1", kind: "unit", covers: ["KD01"], by: "2026-11-02", track: "second" },
+      { unit: "KD01", by: "2026-11-01", track: "cd" },
+      { test: "k1", kind: "unit", covers: ["KD01"], by: "2026-11-02", track: "cd" },
     ],
   };
   const two = (over: Partial<State> = {}) => state({ catalog: cat, sequence: seq, ...over });
@@ -293,7 +303,7 @@ hours: 1
   it("gives each track its own next step", () => {
     const m = nextStep(two());
     expect(m.kind === "teach" && m.item.id).toBe("D01.1");
-    const n = nextStep(two(), "second");
+    const n = nextStep(two(), "cd");
     expect(n.kind === "teach" && n.item.id).toBe("KD01.1");
   });
 
@@ -306,12 +316,12 @@ hours: 1
 
   it("validates dates per track and refuses a test covering the other track", () => {
     expect(validate(cat, PYQS, seq, { done: {} })).toEqual([]);
-    const bad: Sequence = { ...seq, steps: [...seq.steps, { test: "k2", kind: "unit", covers: ["D01"], by: "2026-11-03", track: "second" }] };
+    const bad: Sequence = { ...seq, steps: [...seq.steps, { test: "k2", kind: "unit", covers: ["D01"], by: "2026-11-03", track: "cd" }] };
     expect(validate(cat, PYQS, bad, { done: {} }).join("\n")).toContain("on the other track");
   });
 
   it("wants dates on the dated tracks and none on the untimed ones", () => {
-    const anytime: Sequence = { ...seq, steps: seq.steps.map((st) => (st.track === "second" ? { ...st, by: undefined, track: "os" as const } : st)) };
+    const anytime: Sequence = { ...seq, steps: seq.steps.map((st) => (st.track === "cd" ? { ...st, by: undefined, track: "os" as const } : st)) };
     expect(validate(cat, PYQS, anytime, { done: {} })).toEqual([]);
     expect(nextStep(two({ sequence: anytime }), "os")).toMatchObject({ kind: "teach", by: null });
     const dated: Sequence = { ...anytime, steps: anytime.steps.map((st) => (st.track === "os" ? { ...st, by: "2026-11-05" } : st)) };

@@ -2,31 +2,46 @@
 // The repo is public, so it never stores this text: scripts fetch the books once per device into
 // .runtime/pyq-cache/ (scripts/pyq-books.ts) and use these functions on the fly.
 
-export type PyqRef = { id: string; paper: "CS" | "IT" | "DA"; year: number; set: number | null; q: string; title: string };
+/** GA is common to every GATE paper, so its PYQs come from all of them: CE civil, EC, ME, EE, CH chemical, IN, BT. */
+export type Paper = "CS" | "IT" | "DA" | "CE" | "EC" | "ME" | "EE" | "CH" | "IN" | "BT";
+export type PyqRef = { id: string; paper: Paper; year: number; set: number | null; q: string; title: string };
 export type BookEntry = PyqRef & { section: string; topic: string; text: string; tags: string[]; line: number; url: string | null };
 
 // "Question: 01,ii" and "Question: 01-iv" are sub-parts of an old composite question; "Question: 14, ISRO2016-74"
 // (comma and a space) is the same question in another exam. "| GA | Question: 6" is a General Aptitude
 // question (numbered on its own since 2014, so its id gets "ga": 2026s2-ga6). The books write those four
 // ways: "| GA | Question: 6", "| GA Question: 6", "| Question: GA-6" and "| Question: GA06".
-const TITLE = /GATE\s+(CSE?|IT|DA|DS&AI)\s+(\d{4})\s*(?:\|?\s*Set\s*(\d+))?\s*(?:\|\s*(GA)\s*)?\|\s*(GA\s+)?Question:\s*(GA[-.\s]?)?([0-9A-Za-z.-]+(?:,(?:[ivxlc]+|[a-z])\b)?)/;
+// Other branches' papers: "GATE Civil 2025 Set 1 | GA Question: 10" → CE2025s1-ga10.
+const PAPERS: [RegExp, Paper, string][] = [
+  [/^CSE?$/, "CS", "GATE CSE"],
+  [/^IT$/, "IT", "GATE IT"],
+  [/^(DA|DS&AI|Data Science)/, "DA", "GATE DS&AI"],
+  [/^(Civil|CE)$/, "CE", "GATE Civil"],
+  [/^(ECE|EC)$/, "EC", "GATE ECE"],
+  [/^(Mechanical|ME)$/, "ME", "GATE Mechanical"],
+  [/^(Electrical|EE)$/, "EE", "GATE Electrical"],
+  [/^(Chemical|CH)$/, "CH", "GATE Chemical"],
+  [/^IN$/, "IN", "GATE IN"],
+  [/^BT$/, "BT", "GATE BT"],
+];
+const TITLE = /GATE\s+(CSE?|IT|DA|DS&AI|Data Science and Artificial Intelligence|Civil|CE|ECE|EC|Mechanical|ME|Electrical|EE|Chemical|CH|IN|BT)\s+(\d{4})\s*(?:\|?\s*Set\s*(\d+))?\s*(?:\|\s*(GA)\s*)?\|\s*(GA\s+)?Question:\s*(GA[-.\s]?)?([0-9A-Za-z.-]+(?:,(?:[ivxlc]+|[a-z])\b)?)/;
 
 /** "GATE CSE 2016 | Set 1 | Question: 25" → { id: "2016s1-25", … }, the ids brain/syllabus/ uses. */
 export function pyqRef(title: string): PyqRef | null {
   const m = TITLE.exec(title);
   if (!m) return null;
-  const paper = m[1].startsWith("CS") ? "CS" : m[1] === "IT" ? "IT" : "DA";
+  const [, paper, name] = PAPERS.find(([r]) => r.test(m[1]))!;
   const year = Number(m[2]);
   const set = m[3] ? Number(m[3]) : null;
   const ga = m[4] || m[5] || m[6] ? "ga" : "";
   const q = ga && /^\d+$/.test(m[7]) ? String(Number(m[7])) : m[7];
   const s = set ? `s${set}` : "";
   const id = paper === "CS" ? `${year}${s}-${ga}${q.replace(/[-,]/g, ".")}` : `${paper}${year}${s}-${ga}${q}`;
-  const name = paper === "CS" ? "GATE CSE" : paper === "IT" ? "GATE IT" : "GATE DS&AI";
   return { id, paper, year, set, q: `${ga}${q}`, title: `${name} ${year}${set ? ` Set ${set}` : ""} | ${ga ? "GA " : ""}Question: ${q}` };
 }
 
-const HEADING = /^\s*(\d+\.\d+\.\d+)\s+(.+?):\s+(GATE\s.+?)\s*(?:\btop\b.*)?$/;
+// No topic on questions GATE Overflow hasn't filed yet: "1.0.3 GATE Chemical 2024 | GA Question: 10".
+const HEADING = /^\s*(\d+\.\d+\.\d+)\s+(?:(.+?):\s+)?(GATE\s.+?)\s*(?:\btop\b.*)?$/;
 const TAGS = /^\s*(?:gate|gatecse|gateit|gateda)[a-z0-9-]*(?:\s+[a-z0-9][a-z0-9.+#-]*)+\s*(?:https?:\/\/\S+)?\s*$/;
 const STOP = /^\s*(?:Answer key\b|Answer\s*$|Answer\s+\S*$|Answer Keys\b)/;
 const NOISE = (t: string) =>
@@ -65,7 +80,7 @@ export function parseBook(raw: string): BookEntry[] {
       if (!NOISE(t)) body.push(lines[j].trimEnd());
     }
     const url = /https?:\/\/gateoverflow\.in\/\d+/.exec(lines[i])?.[0] ?? null; // the 2022 books print it on the heading
-    out.push({ ...ref, section: h[1], topic: h[2].trim(), text: dedent(body).trim(), tags, line: i, url });
+    out.push({ ...ref, section: h[1], topic: (h[2] ?? "").trim(), text: dedent(body).trim(), tags, line: i, url });
     i = j - 1;
   }
   return out;

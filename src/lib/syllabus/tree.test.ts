@@ -118,7 +118,7 @@ describe("buildTree", () => {
 });
 
 describe("two tracks", () => {
-  // Part 5 on the 2nd slot, with its own unit test; the main block keeps Part 1 and the grand test.
+  // Part 5 on the Compiler Design track, with its own unit test; the main block keeps Part 1 and the grand test.
   const md = `${MD}
 # Part 5 · Compiler Design
 
@@ -131,16 +131,16 @@ hours: 1
 `;
   const seq: Sequence = {
     ...SEQ,
-    steps: [...SEQ.steps, { unit: "KD01", by: "2026-11-01", track: "second" }, { test: "k1", kind: "unit", covers: ["KD01"], by: "2026-11-02", track: "second" }],
+    steps: [...SEQ.steps, { unit: "KD01", by: "2026-11-01", track: "cd" }, { test: "k1", kind: "unit", covers: ["KD01"], by: "2026-11-02", track: "cd" }],
   };
   const two = (over: Partial<State> = {}) => state({ catalog: buildCatalog(parseSyllabus("x.md", md, [])), sequence: seq, ...over });
 
   it("lists each track's parts together, grand tests last on theirs", () => {
     const t = buildTree(two(), "2026-11-01");
-    expect(t.parts.map((p) => `${p.track}:${p.title}`)).toEqual(["main:Programming in C", "main:Grand tests", "second:Compiler Design"]);
+    expect(t.parts.map((p) => `${p.track}:${p.title}`)).toEqual(["main:Programming in C", "main:Grand tests", "cd:Compiler Design"]);
     expect(t.tracks.map((x) => [x.name, x.done, x.total])).toEqual([
       ["Main block", 0, 4],
-      ["2nd slot", 0, 2],
+      ["Compiler Design", 0, 2],
     ]);
   });
 

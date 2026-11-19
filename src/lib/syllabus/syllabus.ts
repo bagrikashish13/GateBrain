@@ -2,9 +2,9 @@ import { slugOf } from "@/lib/brain/names";
 import type { Test } from "@/lib/tests/format";
 import type { Result } from "@/lib/tests/result";
 import { compileConcepts, conceptsIn, orderErrors, teachingOrder, type Concept } from "./order";
-import { isAnytime, trackOf, TRACK_NAME, TRACKS, type Track } from "./tracks";
+import { isUndated, trackOf, TRACK_NAME, TRACKS, type Track } from "./tracks";
 
-export { ANYTIME, ANYTIME_NAME, isAnytime, trackOf, TRACK_NAME, TRACKS, type Track } from "./tracks";
+export { ANYTIME, ANYTIME_NAME, isAnytime, isLater, isUndated, LATER, LATER_NAME, SECOND_BLOCK, SECOND_BLOCK_NAME, trackOf, TRACK_NAME, TRACKS, type Track } from "./tracks";
 
 // The C + Data Structures + Algorithms syllabus in brain/syllabus/ (pure: no fs). The Markdown files say
 // what to teach and in which order, sequence.json where the tests fall, progress.json what is done, and
@@ -16,10 +16,13 @@ export const KIND_NAME: Record<ItemKind, string> = { T: "concept", Q: "PYQ patte
 
 export type Item = { id: string; unit: string; kind: ItemKind; text: string; pyqs: string[]; teaches: string[]; subtopic: string | null };
 export type Unit = { id: string; title: string; part: string; notes: string; hours: number; items: Item[] };
+/** The paper a PYQ is from. GA is common to every GATE paper, so its PYQs come from all of them: CE civil, EC, ME, EE, CH, IN, BT. */
+export type Paper = "CS" | "IT" | "DA" | "CE" | "EC" | "ME" | "EE" | "CH" | "IN" | "BT";
+export const isCsPaper = (p: Paper) => p === "CS" || p === "IT" || p === "DA";
 export type Pyq = {
   id: string;
   title: string;
-  paper: "CS" | "IT" | "DA";
+  paper: Paper;
   year: number;
   set: number | null;
   q: string;
@@ -43,7 +46,7 @@ export type Blueprint = {
   pass: number; // fraction of the marks
   earlierMax: number; // questions allowed from units before this test's own
 };
-// `by`: the target date. The untimed tracks (ANYTIME) have none.
+// `by`: the target date. The untimed tracks (Anytime and Last) have none.
 export type UnitStep = { unit: string; by?: string; track?: Track };
 export type TestStep = { test: string; kind: string; covers: string[]; by?: string; track?: Track };
 export type Step = UnitStep | TestStep;
@@ -160,7 +163,7 @@ export function validate(catalog: Catalog, pyqs: Map<string, Pyq>, sequence: Seq
     const track = trackOf(step);
     const name = isUnitStep(step) ? step.unit : step.test;
     if (!TRACKS.includes(track)) out.push(`${name}: unknown track "${track}".`);
-    else if (isAnytime(track)) {
+    else if (isUndated(track)) {
       if (step.by) out.push(`${name}: the ${TRACK_NAME[track]} track has no dates; remove "by".`);
     } else if (!step.by) out.push(`${name}: needs a target date ("by").`);
     else {
@@ -199,12 +202,28 @@ export function validate(catalog: Catalog, pyqs: Map<string, Pyq>, sequence: Seq
 
 // ---- What a learner solves for a pattern
 
-/** Must-solve PYQs first: everything since 2014, plus an older one when there are few. Newest first. */
+/** GA patterns draw on every branch's papers: this many must-solve PYQs a pattern, CS papers first. */
+export const BRANCH_MUST = 4;
+
+/**
+ * Must-solve PYQs first: everything since 2014 from the CS papers, plus an older one when there are few. Newest
+ * first. A GA pattern also has the other branches' papers: they fill it up to BRANCH_MUST, newest first, and the
+ * rest are extra practice (GA has some 1500 PYQs across the branches; all of them would not fit in 30 days).
+ */
 export function drill(item: Item, pyqs: Map<string, Pyq>): { must: Pyq[]; extra: Pyq[] } {
   const all = item.pyqs.map((id) => pyqs.get(id)).filter((p): p is Pyq => !!p);
   if (item.kind === "L") return { must: all.slice(0, 1), extra: all.slice(1) };
-  const modern = all.filter((p) => p.year >= 2014);
-  const older = all.filter((p) => p.year < 2014);
+  const cs = all.filter((p) => isCsPaper(p.paper));
+  const branch = all.filter((p) => !isCsPaper(p.paper));
+  const modern = cs.filter((p) => p.year >= 2014);
+  const older = cs.filter((p) => p.year < 2014);
+  if (branch.length) {
+    const fill = Math.max(0, BRANCH_MUST - modern.length);
+    const pool = [...branch.filter((p) => p.year >= 2014), ...older, ...branch.filter((p) => p.year < 2014)];
+    const must = [...modern, ...pool.slice(0, fill)];
+    const taken = new Set(must.map((p) => p.id));
+    return { must, extra: all.filter((p) => !taken.has(p.id)) };
+  }
   const fromOlder = Math.max(0, 2 - modern.length);
   return { must: [...modern, ...older.slice(0, fromOlder)], extra: older.slice(fromOlder) };
 }
@@ -344,7 +363,8 @@ export function planTest(s: State, id: string): TestPlan | null {
   const index = s.sequence.steps.findIndex((st) => !isUnitStep(st) && st.test === base);
   if (index < 0) return null;
   const step = s.sequence.steps[index] as TestStep;
-  const blueprint = s.sequence.blueprints[id === base ? step.kind : "unit"];
+  // A retest is a unit test of its own family: "ga-stage" is retested as "ga-unit", "stage" as "unit".
+  const blueprint = s.sequence.blueprints[id === base ? step.kind : step.kind.startsWith("ga-") ? "ga-unit" : "unit"];
   if (!blueprint) return null;
   const track = trackOf(step);
   const before = s.sequence.steps.slice(0, index).flatMap((st) => (isUnitStep(st) && trackOf(st) === track ? [st.unit] : []));

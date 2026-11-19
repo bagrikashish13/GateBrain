@@ -19,6 +19,11 @@ import {
   daysBehind,
   drill,
   isAnytime,
+  isLater,
+  isUndated,
+  LATER_NAME,
+  SECOND_BLOCK,
+  SECOND_BLOCK_NAME,
   isUnitStep,
   itemHistory,
   KIND_NAME,
@@ -45,8 +50,9 @@ const today = dayKey(new Date());
 
 const HELP = `npm run syllabus -- <command>
 
-  next [track]          the exact next step on the dated tracks (the default), or on one track:
-                        main, second, or the untimed os, dbms, toc (practised only when she asks)
+  next [track]          the exact next step on every dated track (the default), or on one track:
+                        main; the 2nd block's ga, cd, dbms; the untimed os, toc, verbal (Anytime,
+                        only when she asks); maths (Last, only once the 2nd block is done)
   done <item> [item…]   tick items, after the student answered their check correctly. Commits and pushes
   unit <unit>           one whole unit with what is done, like D07
   status                every unit and test, and pace against the target dates
@@ -181,21 +187,29 @@ Then show the student the tick lines it prints.`);
 }
 
 /**
- * The next step on each dated track (the main block, then the 2nd slot), then one line for each untimed
- * track: those are practised only when the student asks, so they never crowd the day.
+ * The next step on each dated track (the main block, then the 2nd block's three subjects: all of them every
+ * day), then one line for each untimed track: those are practised only when the student asks (Anytime) or
+ * once the 2nd block is done (Last), so they never crowd the day.
  */
 function printBoth(): void {
   const tracks = TRACKS.filter((t) => state.sequence.steps.some((s) => trackOf(s) === t));
-  const dated = tracks.filter((t) => !isAnytime(t));
+  const dated = tracks.filter((t) => !isUndated(t));
   for (const [i, t] of dated.entries()) {
-    if (tracks.length > 1) console.log(`${i ? "\n" : ""}════ ${TRACK_NAME[t].toUpperCase()} ════`);
+    const block = SECOND_BLOCK.includes(t) ? `${SECOND_BLOCK_NAME.toUpperCase()} · ` : "";
+    console.log(`${i ? "\n" : ""}════ ${block}${TRACK_NAME[t].toUpperCase()} ════`);
     printNext(nextStep(state, t));
   }
   const anytime = tracks.filter(isAnytime);
-  if (!anytime.length) return;
-  console.log(`\n════ ANYTIME (no dates, never in the day's plan: only when she asks to practise one) ════`);
-  for (const t of anytime) console.log(`${TRACK_NAME[t]}: ${oneLine(nextStep(state, t))}.`);
-  console.log(`Full next step for one: npm run syllabus -- next ${anytime.join(" | ")}`);
+  if (anytime.length) {
+    console.log(`\n════ ANYTIME (no dates, never in the day's plan: only when she asks to practise one) ════`);
+    for (const t of anytime) console.log(`${TRACK_NAME[t]}: ${oneLine(nextStep(state, t))}.`);
+    console.log(`Full next step for one: npm run syllabus -- next ${anytime.join(" | ")}`);
+  }
+  const later = tracks.filter(isLater);
+  if (later.length) {
+    console.log(`\n════ ${LATER_NAME.toUpperCase()} (lowest priority: only once the 2nd block is done; may be dropped) ════`);
+    for (const t of later) console.log(`${TRACK_NAME[t]}: ${oneLine(nextStep(state, t))}.`);
+  }
 }
 
 function progressJson(done: Record<string, string>, seen: string[]): string {
@@ -357,9 +371,22 @@ async function book(name: BookName): Promise<Book | null> {
 
 const solid = (s: string) => s.replace(/\s+/g, "").length;
 
-/** The 2022 books keep the math as text (questions up to 2021); the 2027 books have everything up to 2026. */
+/**
+ * The 2022 books keep the math as text (questions up to 2021); the 2027 books have everything up to 2026.
+ * General Aptitude (ids with "-ga", or another branch's paper like CE2025s1-ga10) is in the common GA book,
+ * and a branch's 2026 set in that branch's own book.
+ */
+function booksFor(id: string, year: number): BookName[] {
+  const branch = /^(CE|EC|ME|EE|CH|IN|BT)\d{4}/.exec(id)?.[1];
+  const own: Partial<Record<string, BookName>> = { ME: "gaME", EE: "gaEE", EC: "gaEC", CE: "gaCE" };
+  if (branch) return ["ga", ...(own[branch] ? [own[branch]!] : [])];
+  const technical: BookName[] = year <= 2021 ? ["old", "old1", "old3", "new", "new1", "new3"] : ["new", "new1", "new3"];
+  if (!/-ga/.test(id)) return technical;
+  return ["ga", ...(id.startsWith("DA") ? (["gaDA"] as BookName[]) : []), ...technical.filter((b) => b.endsWith("1"))];
+}
+
 async function findPyq(p: Pick<Pyq, "id" | "year">): Promise<{ text: string; answer: string | null; title: string; url: string | null } | null> {
-  const order: BookName[] = p.year <= 2021 ? ["old", "old1", "old3", "new", "new1", "new3"] : ["new", "new1", "new3"];
+  const order = booksFor(p.id, p.year);
   let found: BookEntry | null = null;
   let answer: string | null = null;
   let url: string | null = null;
@@ -392,14 +419,14 @@ async function showPyq(ids: string[]): Promise<void> {
   for (const id of ids) {
     const p = state.pyqs.get(id);
     if (!p) {
-      // Not a syllabus PYQ (General Aptitude, cited by brain/ga-roadmap.md, like 2026s2-ga6): straight from the books.
+      // Not a syllabus PYQ: straight from the books.
       const year = Number(/(\d{4})/.exec(id)?.[1] ?? 0);
       const found = year ? await findPyq({ id, year } as Pyq) : null;
       if (!found) {
         console.log(`Unknown PYQ ${id}.`);
         continue;
       }
-      console.log(`\n=== ${found.title} · not in the syllabus index (General Aptitude or another paper)\nLink: ${found.url ?? "none, search the title"}`);
+      console.log(`\n=== ${found.title} · not in the syllabus index\nLink: ${found.url ?? "none, search the title"}`);
       console.log(found.text);
       console.log(`Answer key: ${found.answer ?? "not in the book"}`);
       if (year > 2021) console.log(`Note: symbols and numbers may be missing from this text. Do not guess them: search the title on gateoverflow.in or ask the student to read them out.`);

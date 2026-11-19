@@ -7,7 +7,7 @@ import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { checkLog, startupFiles } from "../src/lib/log";
 import { loadSyllabus } from "../src/lib/syllabus/load";
-import { isAnytime, nextStep, oneLine, TRACK_NAME, TRACKS, trackOf } from "../src/lib/syllabus/syllabus";
+import { ANYTIME, LATER, nextStep, oneLine, SECOND_BLOCK, TRACK_NAME, TRACKS, trackOf, type Track } from "../src/lib/syllabus/syllabus";
 import { dayKey } from "../src/lib/time";
 
 const root = join(process.env.REPO_PATH || join(import.meta.dirname, ".."), "brain", "log");
@@ -32,11 +32,12 @@ console.log(`Today ${today}. Read first (brain/log/): ${start.length ? start.map
 try {
   const { state } = loadSyllabus(join(root, ".."));
   const tracks = TRACKS.filter((tr) => state.sequence.steps.some((s) => trackOf(s) === tr));
-  const dated = tracks.filter((tr) => !isAnytime(tr));
-  const now = dated.map((tr) => `${dated.length > 1 ? `${TRACK_NAME[tr]}: ` : ""}${oneLine(nextStep(state, tr))}`).join("; ");
-  console.log(`Teaching from the syllabus (C, DS, Algorithms${dated.length > 1 ? ", Compiler Design, Digital Logic, COA, Networks, Maths" : ""})? Run "npm run syllabus" and follow it. Right now: ${now}.`);
-  const anytime = tracks.filter(isAnytime);
-  if (anytime.length) console.log(`Practising ${anytime.map((tr) => TRACK_NAME[tr]).join(", ")} (no dates, only when she asks)? npm run syllabus -- next ${anytime.join(" | ")}.`);
+  const line = (list: Track[]) => list.filter((tr) => tracks.includes(tr)).map((tr) => `${TRACK_NAME[tr]}: ${oneLine(nextStep(state, tr))}`).join("; ");
+  console.log(`Teaching from the syllabus? Run "npm run syllabus" and follow it, every track, every day.`);
+  console.log(`  Main block: ${oneLine(nextStep(state, "main"))}.`);
+  console.log(`  2nd block (every day, all three): ${line(SECOND_BLOCK)}.`);
+  console.log(`Anytime (no dates, only when she asks): ${line(ANYTIME)}. npm run syllabus -- next ${ANYTIME.join(" | ")}.`);
+  console.log(`Last, if time allows (not before the 2nd block is done): ${line(LATER)}.`);
 } catch (err) {
   console.log(`Syllabus unreadable, fix it first (npm run check:syllabus): ${(err as Error).message}`);
 }

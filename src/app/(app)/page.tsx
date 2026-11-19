@@ -58,9 +58,10 @@ async function Today() {
         done: loaded.tree.done,
         total: loaded.tree.total,
         today: loaded.tree.today,
-        // The day's plan only: the untimed tracks (OS, DBMS, TOC) are practised when she asks.
+        // The day's plan only: the main block and the 2nd block. Anytime (OS, TOC, Verbal) is practised when she
+        // asks, and Last (Maths) only once the 2nd block is done.
         next: loaded.tree.tracks.flatMap((t) => {
-          const text = t.anytime ? null : nextLine(t.next);
+          const text = t.anytime || t.later ? null : nextLine(t.next);
           return text ? [{ track: t.name, text }] : [];
         }),
       }

@@ -15,6 +15,14 @@ export const BOOKS = {
   new1: `${RELEASES}/gatecse-2027/filter1_volume1.pdf`,
   old3: `${RELEASES}/gatecse-2022-vol1%2C2/Volume-3.pdf`, // COA, CN, DBMS, Digital Logic, OS
   new3: `${RELEASES}/gatecse-2027/filter1_volume3.pdf`,
+  // General Aptitude is common to every GATE paper: every branch's GA questions up to 2025, then each
+  // branch's 2027 book for its 2026 GA set (CS 2026 is in new1).
+  ga: `${RELEASES}/gate-2026-common/em.pdf`,
+  gaME: `${RELEASES}/gateme-2027/me.pdf`,
+  gaEE: `${RELEASES}/gateee-2027/ee.pdf`,
+  gaEC: `${RELEASES}/gateece-2027/ece.pdf`,
+  gaCE: `${RELEASES}/gatece-2027/ce.pdf`,
+  gaDA: `${RELEASES}/gateda-2026/da.pdf`,
 } as const;
 export type BookName = keyof typeof BOOKS;
 const PDFTOTEXT = ["pdftotext", "C:\\Program Files\\Git\\mingw64\\bin\\pdftotext.exe", "/mingw64/bin/pdftotext", "/usr/bin/pdftotext"];
@@ -48,7 +56,7 @@ export async function bookText(repo: string, which: BookName, quiet = false): Pr
 }
 
 /** Every PYQ text this device can get, one per id. `missing` lists the books it couldn't. */
-export async function allPyqTexts(repo: string, which: BookName[] = ["new", "new1", "new3"]): Promise<{ texts: Map<string, BookEntry>; missing: BookName[] }> {
+export async function allPyqTexts(repo: string, which: BookName[] = ["new", "new1", "new3", "ga"]): Promise<{ texts: Map<string, BookEntry>; missing: BookName[] }> {
   const books: BookEntry[][] = [];
   const missing: BookName[] = [];
   for (const name of which) {

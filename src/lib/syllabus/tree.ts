@@ -1,12 +1,12 @@
 import { addDayKey } from "@/lib/time";
 import { orderCoverage, orderErrors } from "./order";
 import { daysBehind, drill, isUnitStep, nextStep, retestId, scoreOf, subjectOf, type ItemKind, type Next, type State } from "./syllabus";
-import { isAnytime, TRACK_NAME, TRACKS, trackOf, type Track } from "./tracks";
+import { isAnytime, isLater, isUndated, TRACK_NAME, TRACKS, trackOf, type Track } from "./tracks";
 
 // What the Syllabus tab shows (pure, serialisable): everything to study in teaching order, on its tracks,
 // what is ticked, what comes next on each track, and the proof that nothing is missing or out of order.
-// The untimed tracks (OS, DBMS, TOC) have no dates, so nothing on them is ever late, and their hours
-// don't count in "hours left", which is about the dated plan.
+// The untimed tracks (Anytime: OS, TOC, Verbal; Last: Maths) have no dates, so nothing on them is ever late,
+// and their hours don't count in "hours left", which is about the dated plan.
 
 export type ItemState = "done" | "next" | "todo";
 export type TreeItem = { id: string; kind: ItemKind; text: string; subtopic: string | null; state: ItemState; seen: boolean; doneOn: string | null; pyqs: number };
@@ -55,8 +55,8 @@ export type NextView =
   | { kind: "notes"; unit: string; unitTitle: string }
   | { kind: "test"; state: "write" | "take" | "analyse" | "reteach"; id: string; label: string; score: number | null }
   | { kind: "finished" };
-/** `anytime`: an untimed track (no dates, not in the day's plan). */
-export type TrackView = { track: Track; name: string; anytime: boolean; total: number; done: number; hoursLeft: number; next: NextView };
+/** `anytime`: an Anytime track; `later`: the Last track (both: no dates, not in the day's plan). */
+export type TrackView = { track: Track; name: string; anytime: boolean; later: boolean; total: number; done: number; hoursLeft: number; next: NextView };
 export type SyllabusTree = {
   /** Every part, track by track (the main block first), each track's grand tests last. */
   parts: TreePart[];
@@ -202,6 +202,7 @@ export function buildTree(s: State, today: string): SyllabusTree {
       track: t,
       name: TRACK_NAME[t],
       anytime: isAnytime(t),
+      later: isLater(t),
       total: sum(mine.map((p) => p.total)),
       done: sum(mine.map((p) => p.done)),
       hoursLeft: Math.ceil(sum(mine.map((p) => p.hoursLeft))),
@@ -214,7 +215,7 @@ export function buildTree(s: State, today: string): SyllabusTree {
     tracks,
     total: allItems.length,
     done: allItems.filter((i) => i.state === "done").length,
-    hoursLeft: Math.ceil(sum(list.filter((p) => !isAnytime(p.track)).map((p) => p.hoursLeft))),
+    hoursLeft: Math.ceil(sum(list.filter((p) => !isUndated(p.track)).map((p) => p.hoursLeft))),
     pyqs: { indexed: s.pyqs.size, covered: covered.size, toSolve: toSolve.size, solved: solved.size },
     tests: { total: testCount, taken },
     today: days.filter((d) => d === today).length,

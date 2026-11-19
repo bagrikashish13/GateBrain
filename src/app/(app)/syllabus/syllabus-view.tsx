@@ -8,6 +8,7 @@ import { cn } from "cn";
 import { Fold } from "@/components/fold";
 import { Progress } from "@/components/progress";
 import { SubjectMarker } from "@/components/subject-marker";
+import { ANYTIME_NAME, LATER_NAME, SECOND_BLOCK, SECOND_BLOCK_NAME } from "@/lib/syllabus/tracks";
 import { GRAND_PART, type NextView, type SyllabusTree, type TrackView, type TreeItem, type TreePart, type TreeTest, type TreeUnit } from "@/lib/syllabus/tree";
 import { syncAction } from "../actions";
 
@@ -75,12 +76,21 @@ const toggleIn = (set: Dispatch<SetStateAction<Set<string>>>, id: string) =>
     return n;
   });
 
-/** The tracks shown together: each dated track on its own, the untimed ones (OS, DBMS, TOC) as one "Anytime" group. */
-type Group = { key: string; name: string; anytime: boolean; tracks: TrackView[] };
+/**
+ * The tracks shown together: the main block; the 2nd block (Aptitude, CD, DBMS, all three every day); the untimed
+ * ones as one "Anytime" group (OS, TOC, Verbal); and "Last, if time allows" (Maths). Undated groups get one card.
+ */
+type Group = { key: string; name: string; undated: boolean; tracks: TrackView[] };
 function groupsOf(tree: SyllabusTree): Group[] {
-  const dated = tree.tracks.filter((t) => !t.anytime).map((t) => ({ key: t.track, name: t.name, anytime: false, tracks: [t] }));
+  const dated = tree.tracks.filter((t) => !t.anytime && !t.later);
+  const second = dated.filter((t) => (SECOND_BLOCK as string[]).includes(t.track));
+  const groups: Group[] = dated.filter((t) => !second.includes(t)).map((t) => ({ key: t.track, name: t.name, undated: false, tracks: [t] }));
+  if (second.length) groups.push({ key: "second", name: SECOND_BLOCK_NAME, undated: false, tracks: second });
   const anytime = tree.tracks.filter((t) => t.anytime);
-  return anytime.length ? [...dated, { key: "anytime", name: "Anytime", anytime: true, tracks: anytime }] : dated;
+  if (anytime.length) groups.push({ key: "anytime", name: ANYTIME_NAME, undated: true, tracks: anytime });
+  const later = tree.tracks.filter((t) => t.later);
+  if (later.length) groups.push({ key: "later", name: LATER_NAME, undated: true, tracks: later });
+  return groups;
 }
 
 /**
@@ -202,10 +212,10 @@ export function SyllabusView({ tree, colours }: { tree: SyllabusTree; colours: R
 
         <div className="grid grid-cols-1 gap-2">
           {groups.map((g) =>
-            g.anytime ? (
-              <AnytimeCard key={g.key} tracks={g.tracks} tree={tree} colours={colours} onReveal={reveal} />
+            g.undated ? (
+              <AnytimeCard key={g.key} name={g.name} tracks={g.tracks} tree={tree} colours={colours} onReveal={reveal} />
             ) : (
-              <NextCard key={g.key} track={g.tracks[0]} spot={spotOf(tree, g.tracks[0])} onReveal={reveal} />
+              g.tracks.map((t) => <NextCard key={t.track} track={t} spot={spotOf(tree, t)} onReveal={reveal} />)
             ),
           )}
         </div>
@@ -234,7 +244,7 @@ export function SyllabusView({ tree, colours }: { tree: SyllabusTree; colours: R
               <span className="num text-[13px] text-muted-foreground">
                 <span className="font-semibold text-fg">{g.tracks.reduce((n, t) => n + t.done, 0)}</span>/{g.tracks.reduce((n, t) => n + t.total, 0)}
               </span>
-              <span className="label num ml-auto">{g.anytime ? "No dates" : `${g.tracks[0].hoursLeft}h left`}</span>
+              <span className="label num ml-auto">{g.undated ? "No dates" : `${g.tracks.reduce((n, t) => n + t.hoursLeft, 0)}h left`}</span>
             </h2>
             <ol className="grid grid-cols-1 border-t border-line">
               {tree.parts
@@ -381,13 +391,13 @@ function NextCard({ track, spot, onReveal }: { track: TrackView; spot: Spot | nu
   );
 }
 
-/** The untimed tracks in one card: one row each, the subject and where it stands; a tap opens it below. */
-function AnytimeCard({ tracks, tree, colours, onReveal }: { tracks: TrackView[]; tree: SyllabusTree; colours: Record<string, string>; onReveal: (spot: Spot) => void }) {
+/** Untimed tracks in one card (Anytime, or Last): one row each, the subject and where it stands; a tap opens it below. */
+function AnytimeCard({ name, tracks, tree, colours, onReveal }: { name: string; tracks: TrackView[]; tree: SyllabusTree; colours: Record<string, string>; onReveal: (spot: Spot) => void }) {
   const style = { "--cut": "14px", "--cut-edge": "var(--line-2)", "--cut-fill": "var(--raised)" } as CSSProperties;
   return (
     <div className="cut grid grid-cols-1 px-4 pt-3 pb-1.5" style={style}>
       <span className="flex items-baseline justify-between gap-3 text-[12px] text-faint">
-        <span className="font-semibold text-muted-foreground">Anytime</span>
+        <span className="font-semibold text-muted-foreground">{name}</span>
         <span>No dates</span>
       </span>
       <ul className="grid grid-cols-1">
@@ -398,7 +408,7 @@ function AnytimeCard({ tracks, tree, colours, onReveal }: { tracks: TrackView[];
             <li key={t.track}>
               <button type="button" onClick={() => spot && onReveal(spot)} className="flex min-h-11 w-full items-center gap-2.5 text-left">
                 <SubjectMarker colour={part?.subject ? (colours[part.subject] ?? null) : null} />
-                <span className="w-11 flex-none text-[13.5px] font-semibold">{t.name}</span>
+                <span className="w-14 flex-none text-[13.5px] font-semibold">{t.name}</span>
                 <span className="min-w-0 flex-1 truncate text-[13px] text-muted-foreground">{nowLine(t.next) ?? "All taught, all tested"}</span>
                 <span className={cn("num flex-none text-[12.5px]", t.done === t.total ? "font-semibold text-mint" : "text-faint")}>
                   {t.done}/{t.total}
