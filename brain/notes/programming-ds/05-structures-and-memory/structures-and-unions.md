@@ -22,6 +22,9 @@ A `struct` allocates separate contiguous memory for every member (total size = s
 - **Postfix pointer advancement in `p++->c`:**
   - *Confusion:* Believing `p++->c` reads the member of the next struct.
   - *The click:* Postfix `++` evaluates using the **old/current pointer** first (reading the current struct's `c`), and *then* advances `p` to the next struct in the array.
+- **Dereferencing with advancing struct pointer (`*p++->str`):**
+  - *Confusion:* Thinking `*p++->str` increments the string pointer itself, or reads the character from the next struct.
+  - *The click:* `p++->str` fetches the string pointer from the **current** struct; `*` dereferences it to read its single character; and *then* `p` increments to the next struct. The next struct's own string pointer is completely untouched!
 - **Why memory padding exists:**
   - *Confusion:* Why does `struct { char c; int i; };` take 8 bytes instead of 5?
   - *The click:* CPUs access memory at multiples of member sizes. A 4-byte `int` cannot sit at odd offsets (1, 2, 3); it must start at an address divisible by 4. So offsets 1, 2, 3 are empty padding bytes!
