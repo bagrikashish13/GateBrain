@@ -11,6 +11,8 @@ services:
     build: .
     image: gatebrain:latest
     restart: unless-stopped
+    # tini as PID 1: reaps the git child processes the app spawns (they piled up as zombies).
+    init: true
     env_file: .env
     user: "${HOST_UID:-1000}:${HOST_GID:-1000}"
     environment:
