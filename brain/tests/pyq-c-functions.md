@@ -2,7 +2,7 @@
 title: PYQ · C functions (all 114)
 duration: 270
 created: 2026-11-19
-level: pyq
+paper: pyq
 description: Every functions PYQ from practicepaper.in, newest first (GATE 2026 back to 1987, plus ISRO). 114 questions, 150 marks.
 ---
 

@@ -103,8 +103,9 @@ export function parseTest(id: string, raw: string): ParseResult {
   const duration = Number(data.duration);
   if (!Number.isFinite(duration) || duration <= 0) errors.push("Frontmatter: duration must be the time limit in minutes, like `duration: 60`.");
   const created = data.created instanceof Date ? data.created.toISOString().slice(0, 10) : typeof data.created === "string" ? data.created : null;
-  const level = data.level === undefined || data.level === "gate" ? "gate" : data.level === "tougher" || data.level === "pyq" ? data.level : null;
-  if (!level) errors.push("Frontmatter: level must be gate (the default), tougher or pyq.");
+  // A PYQ paper says `paper: pyq` (a key older app versions ignore, so the file still opens on them); `level: pyq` works too.
+  const level = data.paper === "pyq" || data.level === "pyq" ? "pyq" : data.level === undefined || data.level === "gate" ? "gate" : data.level === "tougher" ? "tougher" : null;
+  if (!level) errors.push("Frontmatter: level must be gate (the default) or tougher (a PYQ paper: paper: pyq).");
 
   const blocks = splitQuestions(body);
   if (!blocks.length) errors.push("No questions: each one starts with a `## Q1` heading.");

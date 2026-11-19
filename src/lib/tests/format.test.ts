@@ -66,9 +66,11 @@ Four.
     expect(r.test.questions[0]).toMatchObject({ difficulty: "hard", pyq: ["2019-23", "2016s1-25"], text: "How many?" });
   });
 
-  it("reads a PYQ paper's level", () => {
-    const r = parseTest("t", `---\ntitle: T\nduration: 3\nlevel: pyq\n---\n\n## Q1\ntype: NAT\nmarks: 1\nsubject: os\nanswer: 4\n\nHow many?\n`);
-    expect(r.ok && r.test.level).toBe("pyq");
+  it("reads a PYQ paper", () => {
+    for (const line of ["paper: pyq", "level: pyq"]) {
+      const r = parseTest("t", `---\ntitle: T\nduration: 3\n${line}\n---\n\n## Q1\ntype: NAT\nmarks: 1\nsubject: os\nanswer: 4\n\nHow many?\n`);
+      expect(r.ok && r.test.level).toBe("pyq");
+    }
   });
   it("refuses an unknown difficulty or level", () => {
     const raw = `---

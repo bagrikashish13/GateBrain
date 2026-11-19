@@ -6,7 +6,7 @@ import type { Test } from "./format";
 //   - The mix is GATE's: at least ~20% hard and at most ~40% easy (a "tougher" paper: ~40% hard, ~20% easy).
 //   - Every hard question names the real PYQ it is calibrated on: `pyq: 2019-23`. In the subjects of
 //     brain/syllabus/ the id must exist in its PYQ index; elsewhere any GATE reference with its year.
-//   - A PYQ paper (`level: pyq`) is real PYQs as asked: none of these rules apply to it.
+//   - A PYQ paper (`paper: pyq`) is real PYQs as asked: none of these rules apply to it.
 
 /** Tests created before this day were written under the old rules: their difficulty isn't checked. */
 export const RULES_FROM = "2026-11-10";
