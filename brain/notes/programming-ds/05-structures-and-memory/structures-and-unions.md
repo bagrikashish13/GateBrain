@@ -37,6 +37,9 @@ A `struct` allocates separate contiguous memory for every member (total size = s
 - **Bit-field `sizeof` and 1-bit signed trap:**
   - *Confusion:* Thinking `sizeof` returns bits, or that `int x : 1; x = 1;` evaluates to `+1`.
   - *The click:* `sizeof` **always returns bytes** (the size of the underlying container, e.g. 4 bytes for `unsigned int`). Furthermore, in 2's complement, a 1-bit signed integer has only a sign bit: `1` represents **`-1`**, not `+1`! Use `unsigned int` for 1-bit flags.
+- **Adjacent bit-fields share one container:**
+  - *Confusion:* Allocating 4 bytes separately for each declared bit-field ($4 + 4 + 4 = 12$ bytes).
+  - *The click:* Bit-fields **pack together**. If three `unsigned int` bit-fields use $4 + 4 + 8 = 16$ bits, they all pack into a **single 4-byte `unsigned int` container**! A new 4-byte container is only allocated when the remaining bits in the current container are exceeded.
 
 ## GATE traps
 - **The Format Specifier `%c` vs Quotes Trap:**
@@ -47,6 +50,8 @@ A `struct` allocates separate contiguous memory for every member (total size = s
   - Unlike arrays (which decay into pointers when passed to functions), passing a `struct` copies the **entire struct by value**. To allow modifications to persist in the caller, you must explicitly pass a pointer (`&s`).
 - **1-Bit Signed Bit-Field Trap:**
   - `int b : 1; b = 1; if (b == 1)` evaluates to **FALSE** because `b` holds `-1`.
+- **Bit-Field Container Sharing vs Multiple Allocations:**
+  - In `unsigned int a:4, b:4, c:8;`, total bits is 16, which fits in one 32-bit (4-byte) `unsigned int`. Do not allocate 4 bytes for each field; together they take only 4 bytes.
 
 ## Example
 **GATE CSE 2000 (Q1.17):**
