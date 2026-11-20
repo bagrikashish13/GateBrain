@@ -1,16 +1,16 @@
 {
   "note": "toc/05-turing-machines-undecidability/closure-properties-rec-re.md",
   "card": {
-    "due": "2026-11-20T08:27:25.675Z",
-    "stability": 23.8831,
+    "due": "2027-01-04T07:16:56.337Z",
+    "stability": 99.9883,
     "difficulty": 1,
-    "elapsed_days": 3,
-    "scheduled_days": 24,
+    "elapsed_days": 24,
+    "scheduled_days": 45,
     "learning_steps": 0,
-    "reps": 2,
+    "reps": 3,
     "lapses": 0,
     "state": 2,
-    "last_review": "2026-10-27T08:27:25.675Z"
+    "last_review": "2026-11-20T07:16:56.337Z"
   },
   "log": [
     {
@@ -20,6 +20,10 @@
     {
       "at": "2026-10-27T08:27:25.675Z",
       "rating": "easy"
+    },
+    {
+      "at": "2026-11-20T07:16:56.337Z",
+      "rating": "gotit"
     }
   ]
 }
