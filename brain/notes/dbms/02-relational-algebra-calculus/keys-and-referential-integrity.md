@@ -37,6 +37,7 @@ A superkey is any superset containing at least one candidate key. A candidate ke
   - *The click:* A prime attribute only needs to belong to *some* (at least one) candidate key.
 
 ## GATE traps
+- **MSQ checking slip on FK updates:** Updating a foreign key attribute in a child tuple is fundamentally equivalent to inserting a new FK value — if the new value doesn't exist in the parent PK, it violates referential integrity. In MSQs on operations violating referential integrity, always evaluate all 4 modification types independently: Insert into Child (violates), Delete from Parent (violates), Update Parent PK (violates), and Update Child FK (violates).
 - **ON DELETE SET NULL vs CASCADE (GATE 2017):**
   - If parent row is deleted and the child foreign key has `ON DELETE SET NULL`, the child row is NOT deleted — its FK column simply becomes NULL. It does not trigger further cascading deletes on that child!
 - **Foreign key misconceptions (GATE 2021):**
