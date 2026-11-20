@@ -57,8 +57,19 @@ The compiler pipeline runs: Characters $\to$ [Lexical: DFA] $\to$ Tokens $\to$ [
   - *Confusion:* Stopping at the first valid token match (e.g., seeing `bba` matches $T_1$ with length 3).
   - *The click:* Always look ahead to the farthest character that still matches a pattern. If `bbaac` matches $T_3$ (length 5), length 5 **beats** length 3. You must take the longest match!
 
+- **String Length with $\varepsilon$:**
+  - *Confusion:* Counting $\varepsilon$ as having length or splitting strings.
+  - *The click:* $\varepsilon$ is the empty string with length $0$. In concatenation, $ab \cdot \varepsilon \cdot ba = abba$, so $|s| = 4$ symbols.
+
+- **Digits leading into identifiers (`23mm`):**
+  - *Confusion:* Expecting `23mm` to be an invalid identifier error at the lexer level.
+  - *The click:* Identifiers cannot start with a digit (`letter (letter|digit)*`). So the lexer munches the longest match for `digit+` (`23` $\to$ `NUMBER`), stops, and then starts scanning `mm` as a separate `IDENTIFIER`. Total = 2 tokens.
+
 ## GATE traps
 
+- **Misspelt keywords (`whlie`, `fro`):**
+  - *Trap:* Expecting the lexer to throw a lexical error on misspelt keywords like `whlie (x > 0)`.
+  - *Fact:* A misspelt keyword matches the valid pattern for an **identifier**. The lexer passes it without error; the error is detected later during syntax or semantic analysis.
 - **Symbol table lifetime:**
   - *Trap:* Thinking the symbol table is only for front-end and can be discarded after parsing.
   - *Fact:* The back-end **cannot** generate machine code without the symbol table—it needs variable sizes, struct offsets, and types to allocate stack frames and target registers.
