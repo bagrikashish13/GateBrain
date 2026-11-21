@@ -42,6 +42,9 @@
 - **Loop invariant anxiety / "Do I have to remember all these?":**
   - *Confusion:* Feeling stressed about having to derive or remember complex invariant equations.
   - *The click:* In GATE, these are **always MCQs**. You **never** need to memorize them. Plug in tiny values ($0$ and $1$) at Step 0 (before loop) and Step 1 (after 1 iteration). Wrong options are eliminated within 10 seconds.
+- **Modular Exponentiation trace & early loop exit:**
+  - *Confusion:* Multiplying linearly by hand (error-prone) or stopping the trace when `exp` reaches 1.
+  - *The click:* The code is binary exponentiation running in $\lfloor \log_2 \text{exp} \rfloor + 1$ iterations. `exp` halves each step; when `exp % 2 == 1`, `result` multiplies by the current squared `base`. The loop guard `while (exp > 0)` requires executing the final iteration for `exp = 1` before terminating at `exp = 0`!
 
 ## GATE traps
 
@@ -52,6 +55,8 @@
   - In max/min subarray problems, always consider arrays with mixed positive and negative numbers.
 - **Precondition missing a termination guard:**
   - In repeated subtraction division, $y > 0$ is strictly required as part of the precondition; without it, $y = 0$ causes an infinite loop.
+- **Stopping binary/modular exponentiation at `exp = 1`:**
+  - The loop condition is `while (exp > 0)`. When `exp == 1`, $1 > 0$ is true: it MUST execute this final iteration to fold the highest power of 2 into `result`, updating `exp = 1 / 2 = 0`. Skipping it leaves `result` missing the leading bit!
 
 ## Example
 
