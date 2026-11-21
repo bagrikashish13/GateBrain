@@ -42,6 +42,9 @@
   - *The click:* Shifting right moves binary bits off the rightmost edge of the register. Those bits physically fall off into oblivion—they cannot be rounded up. Losing positive fractional bits is mathematically the floor function.
 - **Associativity memory shortcut:**
   - *The click:* Do not memorize 15 separate associativities. Only **THREE** categories associate Right-to-Left ($R \rightarrow L$): Unary, Ternary (`?:`), and Assignment (`=`). Every other operator in C associates Left-to-Right ($L \rightarrow R$).
+- **`^` is Bitwise XOR, not AND or exponentiation:**
+  - *Confusion:* Thinking `^` is AND (like math $\land$) or power, so `val ^ val` would be `val`.
+  - *The click:* In C, `&` is AND, while `^` is XOR. XOR cancels identical bits ($1 \oplus 1 = 0, 0 \oplus 0 = 0$), so `val ^ val` is ALWAYS `0`! Furthermore, adding a number to its bitwise NOT gives all 1s ($x + \sim x = -1$), so $\sim x = -(x + 1)$.
 
 ## GATE traps
 - **Bitwise AND vs Equality Trap:**
@@ -52,6 +55,9 @@
   `==` binds tighter than `=`. `x = y == z` evaluates as `x = (y == z)`.
 - **`sizeof` Side Effect Trap:**
   `sizeof(x++)` leaves `x` completely unchanged.
+- **Bitwise XOR and NOT Trap:**
+  - `^` is bitwise XOR: `val ^ val == 0`, `val ^ 0 == val`.
+  - `~x` is 1's complement NOT and equals `-(x + 1)`, NOT `-x` (arithmetic negation is `-x = ~x + 1`).
 
 ## Example
 **GATE CSE 2017 Set 2 · Q54:**
