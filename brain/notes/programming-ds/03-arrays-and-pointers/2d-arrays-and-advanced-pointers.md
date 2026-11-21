@@ -75,6 +75,8 @@ Address:    1000       1004       1008        1012       1016       1020
   - `p + 1` on `void *` is a compile error in ISO C (GNU C treats `sizeof(void)` as 1 as an extension, but GATE follows ISO C).
 - **Dangling Local Return:**
   - `int *f() { int x = 10; return &x; }` returns a pointer to a destroyed stack frame $\to$ Dangling Pointer!
+- **1D Pointer Offset over 2D Array:**
+  - For an $R \times C$ array in row-major order, offset $k$ from base accesses `matrix[k / C][k % C]`. For a $3 \times 3$ matrix, `*(p + 7)` accesses `matrix[7/3][7%3] = matrix[2][1] = 8`. Careful with quick arithmetic ($6 + 8 = 14$).
 
 ## Example: GATE CSE
 ```c

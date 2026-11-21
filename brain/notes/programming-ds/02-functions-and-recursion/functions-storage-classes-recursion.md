@@ -110,6 +110,8 @@ x = 0 -> 1 -> 2 ...
   - If a function declares `int x;`, any reference to `x` inside that function refers exclusively to the local variable; the global `x` is inaccessible by direct name.
 - **Swapping Pointers Without Dereference:**
   - In C, all arguments are strictly passed by value. A function doing `int *temp = p; p = q; q = temp;` only swaps its own local parameter pointers; without dereferencing (`*p`, `*q`), the caller's variables in `main` are untouched.
+- **Towers of Hanoi Move Count ($2^n - 1$):**
+  - The recurrence $M(n) = 2M(n-1) + 1$ solves to $M(n) = 2^n - 1$. For $n = 6$: $2^6 - 1 = 64 - 1 = 63$. Never forget the $-1$ subtraction under time pressure.
 
 ## Example
 **GATE CSE 2015 Set 1:**
