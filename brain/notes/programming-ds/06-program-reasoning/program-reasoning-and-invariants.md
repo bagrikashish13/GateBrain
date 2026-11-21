@@ -42,6 +42,9 @@
 - **Loop invariant anxiety / "Do I have to remember all these?":**
   - *Confusion:* Feeling stressed about having to derive or remember complex invariant equations.
   - *The click:* In GATE, these are **always MCQs**. You **never** need to memorize them. Plug in tiny values ($0$ and $1$) at Step 0 (before loop) and Step 1 (after 1 iteration). Wrong options are eliminated within 10 seconds.
+- **Picking sample values ("letting values") for invariant & postcondition MCQs:**
+  - *Confusion:* Freezing up or feeling overwhelmed about what numbers to choose to trace code.
+  - *The click:* Always choose tiny numbers that allow the loop to run just 1 or 2 iterations and stop (e.g. $x = 7, y = 3$). Record the terminal variable values upon exit and plug them into the options: false options immediately produce absurd arithmetic (like $1 = 17$) and die instantly.
 - **Modular Exponentiation trace & early loop exit:**
   - *Confusion:* Multiplying linearly by hand (error-prone) or stopping the trace when `exp` reaches 1.
   - *The click:* The code is binary exponentiation running in $\lfloor \log_2 \text{exp} \rfloor + 1$ iterations. `exp` halves each step; when `exp % 2 == 1`, `result` multiplies by the current squared `base`. The loop guard `while (exp > 0)` requires executing the final iteration for `exp = 1` before terminating at `exp = 0`!
