@@ -108,6 +108,8 @@ x = 0 -> 1 -> 2 ...
   - `static int count = 5;` is executed only once by the runtime system. It is skipped on all subsequent entries into the function.
 - **Global Shadowing:**
   - If a function declares `int x;`, any reference to `x` inside that function refers exclusively to the local variable; the global `x` is inaccessible by direct name.
+- **Swapping Pointers Without Dereference:**
+  - In C, all arguments are strictly passed by value. A function doing `int *temp = p; p = q; q = temp;` only swaps its own local parameter pointers; without dereferencing (`*p`, `*q`), the caller's variables in `main` are untouched.
 
 ## Example
 **GATE CSE 2015 Set 1:**
