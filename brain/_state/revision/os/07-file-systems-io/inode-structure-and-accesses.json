@@ -1,16 +1,16 @@
 {
   "note": "os/07-file-systems-io/inode-structure-and-accesses.md",
   "card": {
-    "due": "2026-11-06T01:14:46.731Z",
-    "stability": 8.4473,
-    "difficulty": 6.3909,
-    "elapsed_days": 3,
-    "scheduled_days": 8,
+    "due": "2027-01-08T13:54:28.567Z",
+    "stability": 63.6309,
+    "difficulty": 5.1701,
+    "elapsed_days": 26,
+    "scheduled_days": 45,
     "learning_steps": 0,
-    "reps": 3,
+    "reps": 4,
     "lapses": 0,
     "state": 2,
-    "last_review": "2026-10-29T01:14:46.731Z"
+    "last_review": "2026-11-24T13:54:28.567Z"
   },
   "log": [
     {
@@ -24,6 +24,10 @@
     {
       "at": "2026-10-29T01:14:46.731Z",
       "rating": "gotit"
+    },
+    {
+      "at": "2026-11-24T13:54:28.567Z",
+      "rating": "easy"
     }
   ]
 }
