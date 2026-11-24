@@ -7,6 +7,7 @@ Through: 2026-W47
 - C Programming: 100% completed (188/188 items done, `c-stage` analysed at 72%).
 - Data Structures & Algorithms: starting asymptotic notation (X01).
 - 2nd block: GA numbers sprint (GA01), CD grammars (CD02), DBMS relational algebra (DB03).
+- Teaching: from zero, step by step, no line cap, full theory before questions (her rule, 25 Nov).
 - Target: Top 7 IITs (65–70 marks).
 
 ## Strong

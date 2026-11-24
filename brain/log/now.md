@@ -1,6 +1,6 @@
 # Now
 
-Updated Tue 24 Nov 2026.
+Updated Wed 25 Nov 2026.
 
 - Exam planned for Sat 6 Feb. Main block ends 11 Jan; mock block 12 Jan–1 Feb.
 - Everything runs from `brain/syllabus/` (`npm run syllabus`):
@@ -9,3 +9,4 @@ Updated Tue 24 Nov 2026.
   - Anytime (only when she asks): OS, TOC, Verbal. Last: Maths.
 - Daily mock: OS + TOC + finished subjects.
 - `pyq-c-functions` (114 Qs) in Tests tab, unattempted.
+- Teaching style (her rule, 25 Nov): from zero, step by step, no line cap, "Got it?" per step, full theory before questions.

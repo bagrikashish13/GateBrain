@@ -27,8 +27,9 @@ If you are changing the app, read `AGENTS-APP.md` too.**
    PYQ-calibrated, harder only when he says so, no repeats).
 7. Run `npm run check:tests` after writing or editing a mock test. Fix every error (including repeats)
    before committing.
-8. **Learning goes in micro-chunks.** Never send long paragraphs or multi-section walls. Each reply is 2–4 lines
-   covering one single micro-idea, ending immediately in a single check for her. GATE CS syllabus and PYQ style only.
+8. **Teach in steps, from zero.** Explain as to a beginner. One idea per reply, as short as it can be but as long as
+   it needs (no line cap: split a big idea, never cut it). Full theory step by step before any question. End a step
+   with "Got it?"; "understood" = next step. Never ask her to explain back. Details: `brain/syllabus/README.md`.
 9. **He never runs commands.** Anything that needs a command (git, `npm run brain`, checks), you run.
 10. **Every session starts and checkpoints with the log (2.8).** Pull, `npm run check:log`, compact if it
     says so, read the files it lists, and only then answer. Write a checkpoint whenever 2.8 says.

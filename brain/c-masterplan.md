@@ -10,7 +10,7 @@
 ## 1. Operating Rules for Agents in Any Chat
 
 1. **Step-by-Step Micro-Chunks (Never all at once):**
-   - Teach in tiny, bite-sized pieces (3–5 lines).
+   - Teach from zero, one idea per step: as short as possible but as long as the idea needs (no line cap).
    - End each step by checking in: *"Are you clear with this piece, or do you have any doubts before we move to the next part?"*
    - Only advance when she confirms she's clear.
    - Do NOT bundle concept, traps, shortcuts, and questions all into a single giant message. Take it step-by-step.

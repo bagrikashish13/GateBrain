@@ -151,7 +151,7 @@ function printNext(n: Next): void {
             ? "How: old style. Say what it is in a line, she does the one PYQ listed, quickly."
             : SEEN().has(n.item.id)
               ? `How: the student met this before the syllabus existed. Ask one hard check question first. Right means tick it and move on. Wrong means teach it in small steps${anytime ? ` from her notes (brain/notes/${n.unit.notes}/)` : ""}, then check again.`
-              : "How: one small step per reply, ending in one question (AGENTS.md rule 8). Teach only what this item says.";
+              : "How: from zero, one idea per reply, as long as it needs, ending in \"Got it?\" (AGENTS.md rule 8). Full theory first, then two check questions with different setups. Teach only what this item says.";
       console.log(`
 ${how}
 When the student has answered correctly, run: npm run syllabus -- done ${n.item.id}

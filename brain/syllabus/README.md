@@ -90,7 +90,7 @@ Each unit is a topic, each `###` a subtopic, each line one minor topic with one 
 
 - **T, concept:** teach it, check it.
 - **Q, PYQ pattern:** a type of question GATE has really asked. Show the method, then the student solves the PYQs.
-- **N, never asked yet:** inside the official wording but with no PYQ so far. Short, one question of your own. This is the guard against a surprise.
+- **N, never asked yet:** inside the official wording but with no PYQ so far. Taught like T, one question of your own. This is the guard against a surprise.
 - **L, legacy:** only asked in old papers or under the old syllabus. One or two lines and one PYQ. Never in a test.
 
 **Real weight, computed from the last 10 CS papers (2021–2026):** about 17 of 100 marks per paper (range 14–21): C 4.4, Data Structures 5.4, Algorithms 7.4. Question types 49% MCQ, 19% MSQ, 33% NAT. Marks 46% one-mark, 54% two-mark. These numbers set the test blueprints.
@@ -99,17 +99,21 @@ Each unit is a topic, each `###` a subtopic, each line one minor topic with one 
 
 ## How to teach an item
 
-Small steps always (AGENTS.md rule 8): one idea per reply, ending in one question, then wait.
+Steps always (AGENTS.md rule 8, her rule since 25 Nov):
 
-- **T:** 3–5 lines in plain words, using the template below if one applies, then one check question. If the answer is wrong, re-explain differently. Teach only what the item says.
-- **Q:** show the method on a small example, then the student solves the listed PYQs one at a time, newest first, before seeing any method applied to them. Get the text with `npm run syllabus -- pyq <id>`. All PYQs since 2014 are required; older ones are extra unless the command lists them.
-- **N:** the idea in a few lines, one question of your own in GATE style.
+- **From zero.** Explain everything as to a beginner who knows nothing about it.
+- **One idea per reply,** as short as possible but as long as the idea needs. No line cap: a big idea is split across replies, never cut. Never the whole theory in one reply: each step is a small win.
+- **Each step ends with "Got it?"** and waits. "Understood" means the next step. Never ask her to explain her thinking or write down what she understood.
+
+- **T:** the full theory first, one step per reply: what it is and why it works, the rule or formula and where it comes from, a worked example step by step, then the variations and traps GATE uses (with the template below if one applies). A line holding several ideas (GA03.1: cost price, profit, marked price, discount) is taught one idea at a time. Then two check questions with different setups, one at a time. A miss: re-explain that step differently, then a fresh question. Teach only what the item says.
+- **Q:** show the method on a small example, step by step like T, then the student solves the listed PYQs one at a time, newest first, before seeing any method applied to them. Get the text with `npm run syllabus -- pyq <id>`. All PYQs since 2014 are required; older ones are extra unless the command lists them.
+- **N:** the idea taught in steps like T, then one question of your own in GATE style.
 - **L:** say what it is in a line or two, and do the one PYQ listed. Tell the student it is old style.
 
 Rules that keep this honest:
 
 - **Never write a PYQ from memory.** Use `pyq`. If its text has holes (2022 onwards lose symbols), open the link or ask the student to read it out. Cite real ids only.
-- **Tick only after a correct answer**, on the check or on the last PYQ of the pattern, without a hint. Explaining something is not teaching it. A tick has to mean something.
+- **Tick only after the theory is taught and the answers are right without a hint:** both T checks, or the last PYQ of the pattern. One right answer can be luck, and explaining something is not teaching it. A tick has to mean something.
 - **Show the tick lines `done` prints, and say so when a unit is complete.** The student asked for this: progress they can see is part of how they keep going.
 - **Items marked "seen"** were met in the C sprint, before this syllabus and out of order. They are not ticked. Ask one hard check first: right means `done` and move on, wrong means teach it. It should go fast.
 - **"I already know this":** the same. One hard check. Fast is fine; skipping is not.
