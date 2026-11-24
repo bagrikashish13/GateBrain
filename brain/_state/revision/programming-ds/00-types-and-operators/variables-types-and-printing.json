@@ -1,21 +1,25 @@
 {
   "note": "programming-ds/00-types-and-operators/variables-types-and-printing.md",
   "card": {
-    "due": "2026-11-22T03:11:05.929Z",
-    "stability": 8.2956,
+    "due": "2027-01-07T13:55:39.451Z",
+    "stability": 44.0969,
     "difficulty": 1,
-    "elapsed_days": 0,
-    "scheduled_days": 8,
+    "elapsed_days": 10,
+    "scheduled_days": 44,
     "learning_steps": 0,
-    "reps": 1,
+    "reps": 2,
     "lapses": 0,
     "state": 2,
-    "last_review": "2026-11-14T03:11:05.929Z"
+    "last_review": "2026-11-24T13:55:39.451Z"
   },
   "log": [
     {
       "at": "2026-11-14T03:11:05.929Z",
       "rating": "easy"
+    },
+    {
+      "at": "2026-11-24T13:55:39.451Z",
+      "rating": "gotit"
     }
   ]
 }
