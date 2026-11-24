@@ -1,16 +1,16 @@
 {
   "note": "dbms/05-file-organization-indexing/b-plus-tree-node-capacity.md",
   "card": {
-    "due": "2026-11-24T00:40:41.678Z",
-    "stability": 21.4114,
-    "difficulty": 2.1112,
-    "elapsed_days": 7,
-    "scheduled_days": 21,
+    "due": "2026-11-26T13:55:30.225Z",
+    "stability": 2.1088,
+    "difficulty": 7.3922,
+    "elapsed_days": 21,
+    "scheduled_days": 2,
     "learning_steps": 0,
-    "reps": 2,
-    "lapses": 0,
+    "reps": 3,
+    "lapses": 1,
     "state": 2,
-    "last_review": "2026-11-03T00:40:41.678Z"
+    "last_review": "2026-11-24T13:55:30.225Z"
   },
   "log": [
     {
@@ -20,6 +20,10 @@
     {
       "at": "2026-11-03T00:40:41.678Z",
       "rating": "gotit"
+    },
+    {
+      "at": "2026-11-24T13:55:30.225Z",
+      "rating": "forgot"
     }
   ]
 }
