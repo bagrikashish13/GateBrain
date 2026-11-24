@@ -1,21 +1,25 @@
 {
   "note": "programming-ds/03-arrays-and-pointers/pointers-and-1d-arrays.md",
   "card": {
-    "due": "2026-11-13T09:06:37.120Z",
-    "stability": 8.2956,
+    "due": "2027-01-08T13:54:37.872Z",
+    "stability": 61.8627,
     "difficulty": 1,
-    "elapsed_days": 0,
-    "scheduled_days": 8,
+    "elapsed_days": 19,
+    "scheduled_days": 45,
     "learning_steps": 0,
-    "reps": 1,
+    "reps": 2,
     "lapses": 0,
     "state": 2,
-    "last_review": "2026-11-05T09:06:37.120Z"
+    "last_review": "2026-11-24T13:54:37.872Z"
   },
   "log": [
     {
       "at": "2026-11-05T09:06:37.120Z",
       "rating": "easy"
+    },
+    {
+      "at": "2026-11-24T13:54:37.872Z",
+      "rating": "gotit"
     }
   ]
 }
